@@ -1,13 +1,9 @@
-import React from "react"
-import renderIf from "../functions/renderIf"
-import { View, Text, StyleSheet } from "react-native"
+import React from "react";
+import renderIf from "../functions/renderIf";
+import { View, Text, StyleSheet } from "react-native";
 
 export default function TopBar(type = null) {
-    return (
-        <View style={s.primary}>
-            {renderIf(type === null, <Text style={s.heading}>Something</Text>)}
-        </View>
-    )
+    return <View style={s.primary}>{renderIf(type === null, <Text style={s.heading}>Something</Text>)}</View>;
 }
 
 const s = StyleSheet.create({
@@ -23,5 +19,5 @@ const s = StyleSheet.create({
         color: "#FFF",
         fontSize: 20,
         fontWeight: "600",
-    }
-})
+    },
+});
