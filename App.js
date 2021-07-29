@@ -1,24 +1,24 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
-import Container from "./components/Container";
+import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function App() {
     return (
-        <Container>
-            <StatusBar style="inverted" />
-        </Container>
+        <View style={st.container}>
+            <StatusBar style="auto" />
+            <Text style={st.text}>Hello</Text>
+        </View>
     );
 }
 
-const styles = StyleSheet.create({
+const st = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#fff",
     },
-    headingText: {
-        fontSize: 16,
+    text: {
+        fontSize: 20,
     },
 });
