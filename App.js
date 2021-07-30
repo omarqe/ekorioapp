@@ -1,15 +1,15 @@
 import React from "react";
 import CT from "./src/const.json";
-import ArtIntro from "./assets/arts/intro-screen.svg";
-import Container from "./src/components/container";
-import { Text, View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity } from "react-native";
 import Button from "./src/components/button";
+import IntroArt from "./assets/arts/intro-screen.svg";
+import Container from "./src/components/container";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function App() {
     return (
         <Container style={ss.container} paddingX={40}>
             <View style={ss.artContainer}>
-                <ArtIntro width={280} height={325} />
+                <IntroArt width={280} height={325} />
             </View>
 
             <View style={ss.ctaContainer}>
