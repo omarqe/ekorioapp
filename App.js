@@ -1,57 +1,18 @@
 import React from "react";
-import CT from "./src/const.json";
-import Button from "./src/components/button";
-import IntroArt from "./assets/arts/intro-screen.svg";
-import Container from "./src/components/container";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import IntroScreen from "./src/screens/intro";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+
+// Initialise stack navigator
+const Stack = createStackNavigator();
+const screenOptions = { headerShown: false };
 
 export default function App() {
     return (
-        <Container style={ss.container} paddingX={40}>
-            <View style={ss.artContainer}>
-                <IntroArt width={280} height={325} />
-            </View>
-
-            <View style={ss.ctaContainer}>
-                <Button text="Create an Account" style={{ marginBottom: 15 }} onPress={() => alert("Creating account...")} />
-                <TouchableOpacity onPress={() => alert("Signing in...")}>
-                    <Text style={ss.signInHint}>
-                        Already a member? <Text style={ss.signInText}>Sign in.</Text>
-                    </Text>
-                </TouchableOpacity>
-            </View>
-        </Container>
+        <NavigationContainer>
+            <Stack.Navigator initialRouteName="Intro">
+                <Stack.Screen name="Intro" component={IntroScreen} options={screenOptions} />
+            </Stack.Navigator>
+        </NavigationContainer>
     );
 }
-
-const ss = StyleSheet.create({
-    container: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: CT.BG_PURPLE_900,
-    },
-    artContainer: {
-        width: "100%",
-        display: "flex",
-        marginTop: "-50%",
-        alignItems: "center",
-    },
-    ctaContainer: {
-        width: "100%",
-        bottom: 50,
-        display: "flex",
-        position: "absolute",
-    },
-    signInHint: {
-        color: CT.BG_PURPLE_300,
-        fontSize: 16,
-        textAlign: "center",
-    },
-    signInText: {
-        color: "#FFF",
-        fontSize: 16,
-        fontWeight: "600",
-        marginLeft: 5,
-    },
-});
