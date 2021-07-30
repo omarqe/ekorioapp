@@ -1,8 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { StatusBar } from "expo-status-bar";
 import { View, StyleSheet } from "react-native";
 
-export default function Container({ children, style = {}, paddingX = 25, statusBarStyle = "light" }) {
+const Container = ({ children, style = {}, paddingX = 25, statusBarStyle = "light" }) => {
     const containerStyle = {
         paddingLeft: paddingX,
         paddingRight: paddingX,
@@ -16,7 +17,13 @@ export default function Container({ children, style = {}, paddingX = 25, statusB
             {children}
         </View>
     );
-}
+};
+
+Container.propTypes = {
+    style: PropTypes.object,
+    paddingX: PropTypes.number,
+    statusBarStyle: PropTypes.string,
+};
 
 const ss = StyleSheet.create({
     container: {
@@ -24,3 +31,5 @@ const ss = StyleSheet.create({
         paddingTop: 60,
     },
 });
+
+export default Container;

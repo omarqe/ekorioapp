@@ -1,9 +1,11 @@
 import React from "react";
 import CT from "../const.json";
-import _omit from "lodash/omit";
+import PropTypes from "prop-types";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function Button(props) {
+import _omit from "lodash/omit";
+
+const Button = (props) => {
     const appendProps = _omit(props, ["style"]);
     const { text, style } = props;
 
@@ -15,7 +17,7 @@ export default function Button(props) {
             <Text style={textStyle}>{text}</Text>
         </TouchableOpacity>
     );
-}
+};
 
 const ss = StyleSheet.create({
     base: {
@@ -30,3 +32,11 @@ const ss = StyleSheet.create({
         textAlign: "center",
     },
 });
+
+Button.propTypes = {
+    text: PropTypes.string,
+    style: PropTypes.object,
+    onPress: PropTypes.func,
+};
+
+export default Button;
