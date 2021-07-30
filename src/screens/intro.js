@@ -5,7 +5,7 @@ import IntroArt from "../../assets/arts/intro-screen.svg";
 import Container from "../components/container";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function IntroScreen() {
+export default function IntroScreen({ navigation: nav }) {
     return (
         <Container style={ss.container} paddingX={40}>
             <View style={ss.artContainer}>
@@ -13,7 +13,7 @@ export default function IntroScreen() {
             </View>
 
             <View style={ss.ctaContainer}>
-                <Button text="Create an Account" style={{ marginBottom: 15 }} onPress={() => alert("Creating account...")} />
+                <Button text="Create an Account" style={{ marginBottom: 15 }} onPress={() => nav.navigate("signup")} />
                 <TouchableOpacity onPress={() => alert("Signing in...")}>
                     <Text style={ss.signInHint}>
                         Already a member? <Text style={ss.signInText}>Sign in.</Text>
