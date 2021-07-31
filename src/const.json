@@ -22,10 +22,13 @@
     "BG_GRAY_800": "#323f4b",
     "BG_GRAY_900": "#1f2933",
     "BG_YELLOW_500": "#ffb100",
+    "BG_YELLOW_600": "#d09000",
     "BG_YELLOW_700": "#9b7211",
     "BG_YELLOW_900": "#4b390d",
     "BG_VERIFIED": "#3fc5f0",
     "CTA_POSITIVE": "#29bb89",
     "CTA_NEGATIVE": "#e2513d",
-    "CTA_NEUTRAL": "#2c84ff"
+    "CTA_NEUTRAL": "#2c84ff",
+
+    "LOGIN_CONTENT_PADDING": 30
 }

@@ -1,22 +1,22 @@
 import React from "react";
 import CT from "../const.json";
 import Button from "../components/button";
-import StarsBg from "../components/starsbg";
+import StarsBackdrop from "../components/stars-backdrop";
 import Container from "../components/container";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Alert, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
 import IntroArt from "../../assets/arts/intro-screen.svg";
 
 export default function IntroScreen({ navigation: nav }) {
     return (
         <Container style={ss.container} paddingX={40}>
-            <StarsBg />
+            <StarsBackdrop />
             <View style={ss.artContainer}>
                 <IntroArt width={280} height={325} />
             </View>
 
             <View style={ss.ctaContainer}>
-                <Button text="Create an Account" style={{ marginBottom: 15 }} onPress={() => nav.navigate("signup")} />
+                <Button label="Create a Free Account" style={{ marginBottom: 15 }} onPress={() => nav.navigate("signup")} />
                 <TouchableOpacity onPress={() => alert("Signing in...")}>
                     <Text style={ss.signInHint}>
                         Already a member? <Text style={ss.signInEmphasis}>Sign in.</Text>

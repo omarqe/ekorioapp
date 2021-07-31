@@ -3,7 +3,7 @@ import Stars from "../../assets/stars.svg";
 import { View, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-export default function StarsBg() {
+export default function StarsBackdrop() {
     return (
         <View style={ss.starsBg}>
             <Stars />
