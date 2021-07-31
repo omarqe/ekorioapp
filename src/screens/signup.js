@@ -1,13 +1,17 @@
 import React from "react";
-import Button from "../components/button";
+import CT from "../const.json";
+import StarsBg from "../components/starsbg";
 import Container from "../components/container";
-import { Text } from "react-native";
+import { View, StyleSheet } from "react-native";
 
-export default function SignUpScreen({ navigation: nav }) {
+export default function SignupScreen({ navigation: nav }) {
     return (
-        <Container>
-            <Text>Sign up screen</Text>
-            <Button text="Back" onPress={() => nav.goBack()} />
+        <Container bgColor={CT.BG_PURPLE_900}>
+            <StarsBg />
         </Container>
     );
 }
+
+const ss = StyleSheet.create({
+    header: {},
+});
