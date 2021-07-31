@@ -4,11 +4,11 @@ import PropTypes from "prop-types";
 import { StatusBar } from "expo-status-bar";
 import { View, StyleSheet } from "react-native";
 
-const Container = ({ children, style = {}, paddingX = 25, background = CT.BG_WHITE, statusBarStyle = "light" }) => {
+const Container = ({ children, style = {}, paddingX = 25, bgColor = CT.BG_WHITE, statusBarStyle = "light" }) => {
     let containerStyle = {
-        background,
         paddingLeft: paddingX,
         paddingRight: paddingX,
+        backgroundColor: bgColor,
         ...ss.container,
         ...style,
     };
@@ -23,8 +23,8 @@ const Container = ({ children, style = {}, paddingX = 25, background = CT.BG_WHI
 
 Container.propTypes = {
     style: PropTypes.object,
+    bgColor: PropTypes.string,
     paddingX: PropTypes.number,
-    background: PropTypes.string,
     statusBarStyle: PropTypes.string,
 };
 

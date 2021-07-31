@@ -1,28 +1,34 @@
 import React from "react";
 import CT from "../const.json";
 import PropTypes from "prop-types";
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 import _omit from "lodash/omit";
 
 const Button = (props) => {
-    const appendProps = _omit(props, ["style"]);
-    const { text, style } = props;
-
-    let textStyle = ss.text;
-    let buttonStyle = { ...ss.base, ...style };
+    const { text, style, touchableStyle } = props;
+    const textStyle = ss.text;
+    const buttonStyle = { ...ss.buttonStyle, ...style };
+    const appendedProps = _omit(props, ["style", "touchableStyle"]);
 
     return (
-        <TouchableOpacity style={buttonStyle} {...appendProps}>
-            <Text style={textStyle}>{text}</Text>
-        </TouchableOpacity>
+        <View style={buttonStyle}>
+            <TouchableOpacity style={{ ...ss.touchable, ...touchableStyle }} {...appendedProps}>
+                <Text style={textStyle}>{text}</Text>
+            </TouchableOpacity>
+        </View>
     );
 };
 
+const radius = 8;
 const ss = StyleSheet.create({
-    base: {
+    buttonStyle: {
+        borderRadius: radius,
+        backgroundColor: CT.BG_YELLOW_700,
+    },
+    touchable: {
         padding: 15,
-        borderRadius: 8,
+        borderRadius: radius,
         backgroundColor: CT.BG_YELLOW_500,
     },
     text: {
