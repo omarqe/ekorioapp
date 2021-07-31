@@ -1,10 +1,12 @@
 import React from "react";
+import CT from "../const.json";
 import PropTypes from "prop-types";
 import { StatusBar } from "expo-status-bar";
 import { View, StyleSheet } from "react-native";
 
-const Container = ({ children, style = {}, paddingX = 25, statusBarStyle = "light" }) => {
-    const containerStyle = {
+const Container = ({ children, style = {}, paddingX = 25, background = CT.BG_WHITE, statusBarStyle = "light" }) => {
+    let containerStyle = {
+        background,
         paddingLeft: paddingX,
         paddingRight: paddingX,
         ...ss.container,
@@ -22,6 +24,7 @@ const Container = ({ children, style = {}, paddingX = 25, statusBarStyle = "ligh
 Container.propTypes = {
     style: PropTypes.object,
     paddingX: PropTypes.number,
+    background: PropTypes.string,
     statusBarStyle: PropTypes.string,
 };
 
