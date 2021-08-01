@@ -32,6 +32,9 @@ const ss = StyleSheet.create({
     base: {
         width: 40,
         height: 40,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
     },
     iconStyle: {
         fontSize: 22,

@@ -1,6 +1,6 @@
 import React from "react";
-import CT from "../const.json";
-import ButtonOrb from "./button-orb";
+import CT from "../../const.json";
+import ButtonOrb from "../button-orb";
 import PropTypes from "prop-types";
 import { View, Text, StyleSheet } from "react-native";
 
@@ -9,7 +9,7 @@ const LoginHeader = ({ nav, title, subtitle }) => {
     return (
         <React.Fragment>
             <View style={ss.top}>
-                <ButtonOrb icon="arrow-left" style={{ marginLeft: -5 }} onPress={goBack} />
+                <ButtonOrb icon="arrow-left" style={{ marginLeft: -15 }} onPress={goBack} />
             </View>
             <View style={ss.header}>
                 <Text style={ss.headingTitle}>{title}</Text>
