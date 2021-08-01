@@ -8,10 +8,18 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-brands-svg-icons": "^5.15.3",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/pro-light-svg-icons": "^5.15.3",
+    "@fortawesome/pro-regular-svg-icons": "^5.15.3",
+    "@fortawesome/pro-solid-svg-icons": "^5.15.3",
+    "@fortawesome/react-native-fontawesome": "^0.2.7",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.5",
     "expo": "~42.0.1",
+    "expo-linear-gradient": "~9.2.0",
     "expo-status-bar": "~1.0.4",
     "lodash": "^4.17.21",
     "react": "16.13.1",
@@ -21,10 +29,9 @@
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.4.0",
-    "react-native-svg": "12.1.1",
+    "react-native-svg": "^12.1.1",
     "react-native-svg-transformer": "^0.14.3",
-    "react-native-web": "~0.13.12",
-    "expo-linear-gradient": "~9.2.0"
+    "react-native-web": "~0.13.12"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
