@@ -1,6 +1,5 @@
 import React from "react";
 import CT from "../const.json";
-import Icon from "../components/icon";
 import Button from "../components/button";
 import StarsBackdrop from "../components/stars-backdrop";
 import Container from "../components/container";
