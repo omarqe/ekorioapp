@@ -1,7 +1,7 @@
 import React from "react";
 import CT from "../const.json";
 import Container from "../components/container";
-import LoginComponent from "../components/login-component";
+import LoginComponent from "../components/auth/login-component";
 
 export default function SignupScreen({ navigation }) {
     return (
