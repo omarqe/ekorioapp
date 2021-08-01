@@ -1,13 +1,16 @@
 import React from "react";
 import CT from "../const.json";
-import Button from "./button";
+import ButtonOrb from "./button-orb";
 import PropTypes from "prop-types";
 import { View, Text, StyleSheet } from "react-native";
 
 const LoginHeader = ({ nav, title, subtitle }) => {
+    const goBack = () => nav.goBack();
     return (
         <React.Fragment>
-            <View style={ss.top}></View>
+            <View style={ss.top}>
+                <ButtonOrb icon="arrow-left" style={{ marginLeft: -5 }} onPress={goBack} />
+            </View>
             <View style={ss.header}>
                 <Text style={ss.headingTitle}>{title}</Text>
                 <Text style={ss.headingSubtitle}>{subtitle}</Text>
@@ -25,6 +28,7 @@ const ss = StyleSheet.create({
     top: {
         width: "100%",
         height: 50,
+        paddingTop: 10,
         paddingLeft: CT.LOGIN_CONTENT_PADDING,
         paddingRight: CT.LOGIN_CONTENT_PADDING,
     },
