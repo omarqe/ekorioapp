@@ -1,20 +1,24 @@
 import React from "react";
 import CT from "../../const.json";
+import Field from "../field";
 import Button from "../button";
 import WaveForm from "../../../assets/wave-form.svg";
 import PropTypes from "prop-types";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 
 const LoginBody = ({ label }) => {
     return (
         <View style={ss.container}>
             <WaveForm />
-            <View style={ss.body}>
+            <ScrollView style={ss.body}>
                 <View style={ss.content}>
-                    <Text>Part 2</Text>
+                    <Field type="name" label="Full Name" placeholder="John Doe" />
+                    <Field type="email" label="Email Address" placeholder="name@email.com" />
+                    <Field type="phone" label="Phone Number" placeholder="+60 12-456 7890" />
+                    <Field type="password" label="Password" placeholder="Password" last />
                 </View>
                 <Button label={label} />
-            </View>
+            </ScrollView>
         </View>
     );
 };
@@ -29,7 +33,7 @@ const ss = StyleSheet.create({
     },
     body: {
         padding: CT.LOGIN_CONTENT_PADDING,
-        paddingTop: 50,
+        paddingTop: 40,
         paddingBottom: 40,
         backgroundColor: CT.BG_WHITE,
     },

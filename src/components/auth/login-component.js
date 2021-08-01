@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import LoginBody from "./login-body";
 import LoginHeader from "./login-header";
 import StarsBackdrop from "../stars-backdrop";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, KeyboardAvoidingView } from "react-native";
 
 const LoginComponent = ({ nav, title, subtitle, btnLabel }) => {
     return (
@@ -11,7 +11,9 @@ const LoginComponent = ({ nav, title, subtitle, btnLabel }) => {
             <StarsBackdrop />
             <View style={ss.container}>
                 <LoginHeader nav={nav} title={title} subtitle={subtitle} />
-                <LoginBody label={btnLabel} />
+                <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={40}>
+                    <LoginBody label={btnLabel} />
+                </KeyboardAvoidingView>
             </View>
         </React.Fragment>
     );
