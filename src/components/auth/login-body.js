@@ -18,7 +18,7 @@ const LoginBody = ({ label, fields = [] }) => {
             <WaveForm />
             <ScrollView style={ss.body}>
                 <View style={ss.content}>
-                    <Fields fields={fields} grouping />
+                    <Fields fields={fields} />
                 </View>
                 <Button label={label} />
             </ScrollView>
