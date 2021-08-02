@@ -9,7 +9,6 @@ export default function SignupScreen({ navigation }) {
         { type: "name", label: "Full Name", placeholder: "John Doe" },
         { type: "email", label: "Email Address", placeholder: "john@email.com" },
         { type: "password", label: "Password", placeholder: "••••••••" },
-        { type: "phone", label: "Phone Number", placeholder: "+601234567890" },
     ];
 
     return (
