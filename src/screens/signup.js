@@ -15,7 +15,6 @@ export default function SignupScreen({ navigation }) {
         <Container bgColor={CT.BG_PURPLE_900} paddingX={0}>
             <LoginContext.Provider value={{ fields, navigation }}>
                 <LoginComponent
-                    nav={navigation}
                     title="Create a free account"
                     subtitle="Please enter your details below."
                     btnLabel="Create Account"
