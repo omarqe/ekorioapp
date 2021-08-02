@@ -5,15 +5,17 @@ import PropTypes from "prop-types";
 import LoginContext from "./login-context";
 import { View, Text, StyleSheet } from "react-native";
 
-const LoginHeader = ({ title, subtitle }) => {
+const LoginHeader = ({ title, subtitle, keyboardShown }) => {
     const { navigation } = useContext(LoginContext);
     const goBack = () => navigation?.goBack();
 
     return (
         <React.Fragment>
-            <View style={ss.top}>
-                <ButtonOrb icon="arrow-left" style={{ marginLeft: -15 }} onPress={goBack} />
-            </View>
+            {!keyboardShown && (
+                <View style={ss.top}>
+                    <ButtonOrb icon="arrow-left" style={{ marginLeft: -10 }} onPress={goBack} />
+                </View>
+            )}
             <View style={ss.header}>
                 <Text style={ss.headingTitle}>{title}</Text>
                 <Text style={ss.headingSubtitle}>{subtitle}</Text>
@@ -25,6 +27,7 @@ const LoginHeader = ({ title, subtitle }) => {
 LoginHeader.propTypes = {
     title: PropTypes.string,
     subtitle: PropTypes.string,
+    keyboardShown: PropTypes.bool,
 };
 
 const ss = StyleSheet.create({

@@ -1,16 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import LoginBody from "./login-body";
 import LoginHeader from "./login-header";
 import StarsBackdrop from "../stars-backdrop";
-import { View, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { View, StyleSheet, Keyboard, KeyboardAvoidingView } from "react-native";
 
 const LoginComponent = ({ title, subtitle, btnLabel }) => {
+    const [keyboardShown, setKeyboardShown] = useState(false);
+    useEffect(() => {
+        const keyboardWillShowListener = Keyboard.addListener("keyboardWillShow", () => setKeyboardShown(true));
+        const keyboardWillHideListener = Keyboard.addListener("keyboardWillHide", () => setKeyboardShown(false));
+        return () => {
+            keyboardWillShowListener.remove();
+            keyboardWillHideListener.remove();
+        };
+    }, []);
+
     return (
         <React.Fragment>
             <StarsBackdrop />
             <View style={ss.container}>
-                <LoginHeader title={title} subtitle={subtitle} />
+                <LoginHeader title={title} subtitle={subtitle} keyboardShown={keyboardShown} />
                 <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={40}>
                     <LoginBody label={btnLabel} />
                 </KeyboardAvoidingView>
