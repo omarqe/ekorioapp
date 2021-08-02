@@ -4,7 +4,7 @@ import Button from "../components/button";
 import StarsBackdrop from "../components/stars-backdrop";
 import Container from "../components/container";
 import IntroArt from "../../assets/arts/intro-screen.svg";
-import { Alert, Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function IntroScreen({ navigation: nav }) {
     return (
@@ -16,7 +16,7 @@ export default function IntroScreen({ navigation: nav }) {
 
             <View style={ss.ctaContainer}>
                 <Button label="Create a Free Account" style={{ marginBottom: 15 }} onPress={() => nav.navigate("signup")} />
-                <TouchableOpacity onPress={() => Alert.alert("Sign In", "Please enter your credentials.")}>
+                <TouchableOpacity onPress={() => nav.navigate("signin")}>
                     <Text style={ss.signInHint}>
                         Already a member? <Text style={ss.signInEmphasis}>Sign in.</Text>
                     </Text>
