@@ -1,4 +1,4 @@
-import React, { useRef, useState, createContext } from "react";
+import React, { useRef } from "react";
 import Field from "./field";
 import PropTypes from "prop-types";
 import FieldContext from "./field-context";
@@ -22,8 +22,8 @@ const fields = ({ fields = [], grouping = false }) => {
         }
 
         return (
-            <FieldContext.Provider value={{ ref: refs[i] }}>
-                <Field key={i} {...props} />
+            <FieldContext.Provider key={i} value={{ ref: refs[i] }}>
+                <Field {...props} />
             </FieldContext.Provider>
         );
     });

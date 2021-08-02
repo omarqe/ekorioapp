@@ -5,12 +5,12 @@ import LoginHeader from "./login-header";
 import StarsBackdrop from "../stars-backdrop";
 import { View, StyleSheet, KeyboardAvoidingView } from "react-native";
 
-const LoginComponent = ({ nav, title, subtitle, btnLabel }) => {
+const LoginComponent = ({ title, subtitle, btnLabel }) => {
     return (
         <React.Fragment>
             <StarsBackdrop />
             <View style={ss.container}>
-                <LoginHeader nav={nav} title={title} subtitle={subtitle} />
+                <LoginHeader title={title} subtitle={subtitle} />
                 <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={40}>
                     <LoginBody label={btnLabel} />
                 </KeyboardAvoidingView>

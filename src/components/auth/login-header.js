@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import CT from "../../const.json";
 import ButtonOrb from "../button-orb";
 import PropTypes from "prop-types";
+import LoginContext from "./login-context";
 import { View, Text, StyleSheet } from "react-native";
 
-const LoginHeader = ({ nav, title, subtitle }) => {
-    const goBack = () => nav.goBack();
+const LoginHeader = ({ title, subtitle }) => {
+    const { navigation } = useContext(LoginContext);
+    const goBack = () => navigation?.goBack();
+
     return (
         <React.Fragment>
             <View style={ss.top}>

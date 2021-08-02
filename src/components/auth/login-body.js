@@ -1,18 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import CT from "../../const.json";
 import Fields from "../fields";
 import Button from "../button";
 import WaveForm from "../../../assets/wave-form.svg";
 import PropTypes from "prop-types";
+import LoginContext from "./login-context";
 import { View, StyleSheet, ScrollView } from "react-native";
 
-const LoginBody = ({ label }) => {
-    const fields = [
-        { type: "name", label: "Full Name", placeholder: "John Doe" },
-        { type: "email", label: "Email Address", placeholder: "john@email.com" },
-        { type: "password", label: "Password", placeholder: "••••••••" },
-        { type: "phone", label: "Phone Number", placeholder: "+601234567890" },
-    ];
+const LoginBody = ({ label, fields = [] }) => {
+    const ctx = useContext(LoginContext);
+    if (ctx?.fields !== undefined) {
+        fields = ctx.fields;
+    }
 
     return (
         <View style={ss.container}>
