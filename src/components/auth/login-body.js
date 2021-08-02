@@ -2,13 +2,13 @@ import React, { useContext } from "react";
 import CT from "../../const.json";
 import Fields from "../fields";
 import Button from "../button";
+import Context from "../context";
 import WaveForm from "../../../assets/wave-form.svg";
 import PropTypes from "prop-types";
-import LoginContext from "./login-context";
 import { View, StyleSheet, ScrollView } from "react-native";
 
 const LoginBody = ({ label, fields = [] }) => {
-    const ctx = useContext(LoginContext);
+    const ctx = useContext(Context.Login);
     if (ctx?.fields !== undefined) {
         fields = ctx.fields;
     }

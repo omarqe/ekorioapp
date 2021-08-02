@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import CT from "../../const.json";
+import Context from "../context";
 import ButtonOrb from "../button-orb";
 import PropTypes from "prop-types";
-import LoginContext from "./login-context";
 import { View, Text, StyleSheet } from "react-native";
 
 const LoginHeader = ({ title, subtitle, keyboardShown }) => {
-    const { navigation } = useContext(LoginContext);
+    const { navigation } = useContext(Context.Login);
     const goBack = () => navigation?.goBack();
 
     return (

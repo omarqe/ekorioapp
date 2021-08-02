@@ -1,10 +1,12 @@
 import React, { useRef } from "react";
 import Field from "./field";
+import Context from "./context";
 import PropTypes from "prop-types";
 import FieldContext from "./field-context";
 
 const fields = ({ fields = [], grouping = false }) => {
     let refs = [];
+    const Provider = Context.Fields.Provider;
 
     return fields.map((props, i) => {
         refs.push(useRef(null));
@@ -22,9 +24,9 @@ const fields = ({ fields = [], grouping = false }) => {
         }
 
         return (
-            <FieldContext.Provider key={i} value={{ ref: refs[i] }}>
+            <Provider key={i} value={{ ref: refs[i] }}>
                 <Field {...props} />
-            </FieldContext.Provider>
+            </Provider>
         );
     });
 };

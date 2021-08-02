@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import CT from "../const.json";
 import PropTypes from "prop-types";
-import FieldContext from "./field-context";
+import Context from "./context";
 import { TextInput, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
@@ -10,7 +10,7 @@ const Input = (props) => {
     const { type = null, style = {} } = props;
     const appendedProps = _omit(props, ["type", "style"]);
     const inputStyle = { ...ss.textInput, ...style };
-    const ctx = useContext(FieldContext);
+    const ctx = useContext(Context.Fields);
 
     let preparedProps = {};
     switch (type) {
