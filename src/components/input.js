@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import CT from "../const.json";
 import PropTypes from "prop-types";
+import FieldContext from "./field-context";
 import { TextInput, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
 
 const Input = (props) => {
     const { type = null, style = {} } = props;
-    const appendedProps = _omit(props, ["style"]);
+    const appendedProps = _omit(props, ["type", "style"]);
     const inputStyle = { ...ss.textInput, ...style };
+    const ctx = useContext(FieldContext);
 
     let preparedProps = {};
     switch (type) {
@@ -33,11 +35,12 @@ const Input = (props) => {
             break;
     }
 
-    return <TextInput style={inputStyle} {...preparedProps} {...appendedProps} />;
+    return <TextInput ref={ctx?.ref} style={inputStyle} {...preparedProps} {...appendedProps} />;
 };
 
 Input.propTypes = {
     type: PropTypes.oneOf(["name", "password", "email", "tel", "phone", "number", "url"]),
+    style: PropTypes.object,
     placeholder: PropTypes.string,
 };
 

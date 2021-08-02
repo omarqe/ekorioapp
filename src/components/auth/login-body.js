@@ -1,21 +1,25 @@
 import React from "react";
 import CT from "../../const.json";
-import Field from "../field";
+import Fields from "../fields";
 import Button from "../button";
 import WaveForm from "../../../assets/wave-form.svg";
 import PropTypes from "prop-types";
 import { View, StyleSheet, ScrollView } from "react-native";
 
 const LoginBody = ({ label }) => {
+    const fields = [
+        { type: "name", label: "Full Name", placeholder: "John Doe" },
+        { type: "email", label: "Email Address", placeholder: "john@email.com" },
+        { type: "password", label: "Password", placeholder: "••••••••" },
+        { type: "phone", label: "Phone Number", placeholder: "+601234567890" },
+    ];
+
     return (
         <View style={ss.container}>
             <WaveForm />
             <ScrollView style={ss.body}>
                 <View style={ss.content}>
-                    <Field type="name" label="Full Name" placeholder="John Doe" />
-                    <Field type="email" label="Email Address" placeholder="name@email.com" />
-                    <Field type="phone" label="Phone Number" placeholder="+60 12-456 7890" />
-                    <Field type="password" label="Password" placeholder="Password" last />
+                    <Fields fields={fields} grouping />
                 </View>
                 <Button label={label} />
             </ScrollView>
@@ -25,6 +29,7 @@ const LoginBody = ({ label }) => {
 
 LoginBody.propTypes = {
     label: PropTypes.string,
+    fields: PropTypes.arrayOf(PropTypes.object),
 };
 
 const ss = StyleSheet.create({
