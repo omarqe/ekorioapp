@@ -15,23 +15,24 @@ const Input = (props) => {
     let preparedProps = {};
     switch (type) {
         case "name":
-            preparedProps = { autoCapitalize: "words" };
+        case "username":
+            preparedProps = { autoCapitalize: "words", textContentType: type };
             break;
         case "password":
-            preparedProps = { keyboardType: "visible-password", secureTextEntry: true };
+            preparedProps = { keyboardType: "visible-password", secureTextEntry: true, textContentType: "password" };
             break;
         case "email":
-            preparedProps = { keyboardType: "email-address", autoCapitalize: "none" };
+            preparedProps = { keyboardType: "email-address", autoCapitalize: "none", textContentType: "emailAddress" };
             break;
         case "tel":
         case "phone":
-            preparedProps = { keyboardType: "phone-pad" };
+            preparedProps = { keyboardType: "phone-pad", textContentType: "telephoneNumber" };
             break;
         case "number":
             preparedProps = { keyboardType: "number-pad" };
             break;
         case "url":
-            preparedProps = { keyboardType: "url" };
+            preparedProps = { keyboardType: "url", textContentType: "URL" };
             break;
     }
 
