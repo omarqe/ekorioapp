@@ -40,7 +40,7 @@ const Input = (props) => {
 };
 
 Input.propTypes = {
-    type: PropTypes.oneOf(["name", "password", "email", "tel", "phone", "number", "url"]),
+    type: PropTypes.oneOf(["name", "username", "password", "email", "tel", "phone", "number", "url"]),
     style: PropTypes.object,
     placeholder: PropTypes.string,
 };
