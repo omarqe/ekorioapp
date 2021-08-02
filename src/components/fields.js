@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import Field from "./field";
 import Context from "./context";
 import PropTypes from "prop-types";
-import FieldContext from "./field-context";
 
 const fields = ({ fields = [], grouping = false }) => {
     let refs = [];
