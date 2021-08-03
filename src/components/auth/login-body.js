@@ -9,7 +9,7 @@ import { View, StyleSheet, ScrollView } from "react-native";
 
 const LoginBody = ({ label, fields = [] }) => {
     const context = useContext(Context.Login);
-    const { fields: fieldsContext, grouping = false } = context;
+    const { fields: fieldsContext, onSubmit, grouping = false } = context;
     if (fieldsContext !== undefined && typeof fieldsContext === "object") {
         fields = fieldsContext;
     }
@@ -21,7 +21,7 @@ const LoginBody = ({ label, fields = [] }) => {
                 <View style={ss.content}>
                     <Fields fields={fields} grouping={grouping} />
                 </View>
-                <Button label={label} />
+                <Button label={label} onPress={onSubmit} />
             </ScrollView>
         </View>
     );
