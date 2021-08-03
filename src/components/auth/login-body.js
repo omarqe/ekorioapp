@@ -16,7 +16,7 @@ const LoginBody = ({ label, fields = [] }) => {
     return (
         <View style={ss.container}>
             <WaveForm />
-            <ScrollView style={ss.body}>
+            <ScrollView style={ss.body} keyboardShouldPersistTaps="handled">
                 <View style={ss.content}>
                     <Fields fields={fields} />
                 </View>
