@@ -13,7 +13,7 @@ export default function SigninScreen({ navigation }) {
 
     return (
         <Container bgColor={CT.BG_PURPLE_900} paddingX={0}>
-            <Provider value={{ fields, navigation }}>
+            <Provider value={{ fields, navigation, grouping: true }}>
                 <LoginComponent title="Welcome Back! 👋" subtitle="Please sign in to your account." btnLabel="Sign In" />
             </Provider>
         </Container>

@@ -30,6 +30,7 @@
     "CTA_POSITIVE": "#29bb89",
     "CTA_NEGATIVE": "#e2513d",
     "CTA_NEUTRAL": "#2c84ff",
+    "BORDER_FOCUS": "#96BAFF",
 
     "FIELD_BOTTOM_SPACING": 15,
     "LOGIN_CONTENT_PADDING": 30,

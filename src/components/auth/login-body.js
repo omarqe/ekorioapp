@@ -8,17 +8,18 @@ import PropTypes from "prop-types";
 import { View, StyleSheet, ScrollView } from "react-native";
 
 const LoginBody = ({ label, fields = [] }) => {
-    const ctx = useContext(Context.Login);
-    if (ctx?.fields !== undefined) {
-        fields = ctx.fields;
+    const context = useContext(Context.Login);
+    const { fields: fieldsContext, grouping = false } = context;
+    if (fieldsContext !== undefined && typeof fieldsContext === "object") {
+        fields = fieldsContext;
     }
 
     return (
         <View style={ss.container}>
             <WaveForm />
-            <ScrollView style={ss.body} keyboardShouldPersistTaps="handled">
+            <ScrollView style={ss.body} keyboardShouldPersistTaps="always">
                 <View style={ss.content}>
-                    <Fields fields={fields} />
+                    <Fields fields={fields} grouping={grouping} />
                 </View>
                 <Button label={label} />
             </ScrollView>
