@@ -4,14 +4,8 @@ import PropTypes from "prop-types";
 import { StatusBar } from "expo-status-bar";
 import { View, StyleSheet } from "react-native";
 
-const Container = ({
-    children,
-    style = {},
-    isLogin = false,
-    bgColor = CT.BG_WHITE,
-    paddingX = 0,
-    statusBarStyle = "light",
-}) => {
+const Container = (props) => {
+    let { children, style, isLogin = false, bgColor = CT.BG_WHITE, paddingX = 0, statusBarStyle = "light" } = props;
     let containerStyle = {
         paddingLeft: paddingX,
         paddingRight: paddingX,
