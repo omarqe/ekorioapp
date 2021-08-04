@@ -39,7 +39,6 @@ const ss = StyleSheet.create({
     top: {
         width: "100%",
         height: 50,
-        zIndex: 10,
         paddingTop: 10,
         paddingLeft: CT.LOGIN_CONTENT_PADDING,
         paddingRight: CT.LOGIN_CONTENT_PADDING,
