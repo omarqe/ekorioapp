@@ -7,30 +7,46 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import _omit from "lodash/omit";
 
 const ButtonOrb = (props) => {
-    let { style = {}, color = CT.BG_WHITE, icon, iconProps = {}, touchableStyle = {}, inverted = false } = props;
-    const buttonStyle = { ...ss.base, ...style };
-    const appendedProps = _omit(props, ["style", "color", "icon", "iconProps", "touchableStyle"]);
+    let { style = {}, color = CT.BG_WHITE, icon, glow = false, small = false, inverted = false, iconProps = {} } = props;
 
-    if (inverted) {
-        color = CT.BG_PURPLE_900;
+    let iconSize = small ? 20 : 22;
+    let innerStyle = { ...ss.inner };
+    let buttonStyle = { ...ss.base, ...style };
+    let appendedProps = _omit(props, ["style", "color", "icon", "iconProps", "touchableStyle"]);
+
+    if (inverted) color = CT.BG_PURPLE_900;
+    if (glow) {
+        iconSize = 18;
+        buttonStyle = {
+            ...buttonStyle,
+            borderRadius: 40,
+            backgroundColor: CT.BG_PURPLE_700,
+            ...style,
+        };
+        innerStyle = {
+            padding: 4,
+            borderRadius: 20,
+            backgroundColor: CT.BG_PURPLE_500,
+        };
     }
 
     return (
-        <View style={buttonStyle}>
-            <TouchableOpacity style={touchableStyle} {...appendedProps}>
-                <Icon icon={`far ${icon}`} color={color} iconStyle={ss.iconStyle} size={22} {...iconProps} />
-            </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={buttonStyle} {...appendedProps}>
+            <View style={innerStyle}>
+                <Icon icon={`far ${icon}`} color={color} size={iconSize} {...iconProps} />
+            </View>
+        </TouchableOpacity>
     );
 };
 
 ButtonOrb.propTypes = {
-    color: PropTypes.string,
     style: PropTypes.object,
+    color: PropTypes.string,
     icon: PropTypes.string.isRequired,
-    iconProps: PropTypes.object,
-    touchableStyle: PropTypes.object,
+    glow: PropTypes.bool,
+    small: PropTypes.bool,
     inverted: PropTypes.bool,
+    iconProps: PropTypes.object,
 };
 
 const ss = StyleSheet.create({
@@ -41,8 +57,8 @@ const ss = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-    iconStyle: {
-        fontSize: 22,
+    inner: {
+        padding: 5,
     },
 });
 
