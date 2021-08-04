@@ -22,7 +22,13 @@ export default function SignupVerifyScreen({ navigation }) {
     const resendDisabled = sec > 0;
     const goBack = () => navigation.goBack();
     const onFocus = () => ref?.current?.focus();
-    const onChangeOTP = (otp) => setOTP(otp);
+    const onChangeOTP = (otp) => {
+        setOTP(otp);
+        if (otp?.length >= 6) {
+            // temporary..
+            navigation.navigate("home");
+        }
+    };
 
     // Resend OTP timer
     useEffect(() => {
