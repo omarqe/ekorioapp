@@ -35,7 +35,7 @@ Container.propTypes = {
     isLogin: PropTypes.bool,
     bgColor: PropTypes.string,
     paddingX: PropTypes.number,
-    statusBarStyle: PropTypes.string,
+    statusBarStyle: PropTypes.oneOf(["auto", "dark", "inverted", "light"]),
 };
 
 const ss = StyleSheet.create({
