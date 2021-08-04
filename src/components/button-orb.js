@@ -7,9 +7,13 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import _omit from "lodash/omit";
 
 const ButtonOrb = (props) => {
-    const { style = {}, color = CT.BG_WHITE, icon, iconProps = {}, touchableStyle = {} } = props;
+    let { style = {}, color = CT.BG_WHITE, icon, iconProps = {}, touchableStyle = {}, inverted = false } = props;
     const buttonStyle = { ...ss.base, ...style };
     const appendedProps = _omit(props, ["style", "color", "icon", "iconProps", "touchableStyle"]);
+
+    if (inverted) {
+        color = CT.BG_PURPLE_900;
+    }
 
     return (
         <View style={buttonStyle}>
@@ -26,6 +30,7 @@ ButtonOrb.propTypes = {
     icon: PropTypes.string.isRequired,
     iconProps: PropTypes.object,
     touchableStyle: PropTypes.object,
+    inverted: PropTypes.bool,
 };
 
 const ss = StyleSheet.create({

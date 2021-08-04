@@ -2,6 +2,7 @@ import React from "react";
 import IntroScreen from "./src/screens/intro";
 import SigninScreen from "./src/screens/signin";
 import SignupScreen from "./src/screens/signup";
+import SignupVerifyScreen from "./src/screens/signup-verify";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -24,6 +25,7 @@ export default function App() {
                 <Stack.Screen name="intro" component={IntroScreen} options={screenOptions} />
                 <Stack.Screen name="signin" component={SigninScreen} options={{ ...screenOptions }} />
                 <Stack.Screen name="signup" component={SignupScreen} options={{ ...screenOptions }} />
+                <Stack.Screen name="signup-verify" component={SignupVerifyScreen} options={{ ...screenOptions }} />
             </Stack.Navigator>
         </NavigationContainer>
     );
