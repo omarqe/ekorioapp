@@ -8,7 +8,7 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function IntroScreen({ navigation: nav }) {
     return (
-        <Container style={ss.container} paddingX={40}>
+        <Container style={ss.container} paddingX={40} isLogin>
             <StarsBackdrop />
             <View style={ss.artContainer}>
                 <IntroArt width={280} height={325} />
