@@ -1,8 +1,8 @@
 import React from "react";
-import CT from "../const.json";
-import Button from "../components/button";
-import StarsBackdrop from "../components/stars-backdrop";
-import Container from "../components/container";
+import CT from "../../const.json";
+import Button from "../../components/button";
+import StarsBackdrop from "../../components/stars-backdrop";
+import Container from "../../components/container";
 import IntroArt from "../../assets/arts/intro-screen.svg";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
