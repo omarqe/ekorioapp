@@ -1,8 +1,8 @@
 import React from "react";
-import CT from "../const.json";
-import Context from "../components/context";
-import Container from "../components/container";
-import LoginComponent from "../components/auth/login-component";
+import CT from "../../const.json";
+import Context from "../../components/context";
+import Container from "../../components/container";
+import LoginComponent from "../../components/auth/login-component";
 
 export default function SignupScreen({ navigation }) {
     const onSubmit = () => navigation.navigate("signup-verify");

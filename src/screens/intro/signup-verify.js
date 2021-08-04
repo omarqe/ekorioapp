@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import CT from "../const.json";
-import OTPIcon from "../../assets/arts/otp-icon.svg";
-import Container from "../components/container";
-import ButtonOrb from "../components/button-orb";
+import CT from "../../const.json";
+import OTPIcon from "../../../assets/arts/otp-icon.svg";
+import Container from "../../components/container";
+import ButtonOrb from "../../components/button-orb";
 import {
     View,
     Text,
