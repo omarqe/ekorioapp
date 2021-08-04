@@ -16,7 +16,7 @@ export default function SignupScreen({ navigation }) {
 
     return (
         <Container bgColor={CT.BG_PURPLE_900} paddingX={0}>
-            <Provider value={{ fields, navigation, onSubmit, grouping: true }}>
+            <Provider value={{ fields, navigation, onSubmit, grouping: true, swapTitle: true }}>
                 <LoginComponent
                     title="Create a free account"
                     subtitle="Please enter your details below."

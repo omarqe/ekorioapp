@@ -6,20 +6,27 @@ import PropTypes from "prop-types";
 import { View, Text, StyleSheet } from "react-native";
 
 const LoginHeader = ({ title, subtitle, keyboardShown }) => {
-    const { navigation } = useContext(Context.Login);
+    const { navigation, swapTitle } = useContext(Context.Login);
     const goBack = () => navigation?.goBack();
+    const doSwapTitle = swapTitle && keyboardShown;
 
     return (
         <React.Fragment>
-            {!keyboardShown && (
-                <View style={ss.top}>
-                    <ButtonOrb icon="arrow-left" style={{ marginLeft: -10 }} onPress={goBack} />
+            <View style={ss.top}>
+                <ButtonOrb icon="arrow-left" style={{ marginLeft: -10 }} onPress={goBack} />
+                {doSwapTitle && (
+                    <View style={ss.topTitle}>
+                        <Text style={ss.topHeadingTitle}>{title}</Text>
+                        <Text style={ss.topHeadingSubtitle}>{subtitle}</Text>
+                    </View>
+                )}
+            </View>
+            {!doSwapTitle && (
+                <View style={ss.header}>
+                    <Text style={ss.headingTitle}>{title}</Text>
+                    <Text style={ss.headingSubtitle}>{subtitle}</Text>
                 </View>
             )}
-            <View style={ss.header}>
-                <Text style={ss.headingTitle}>{title}</Text>
-                <Text style={ss.headingSubtitle}>{subtitle}</Text>
-            </View>
         </React.Fragment>
     );
 };
@@ -34,9 +41,25 @@ const ss = StyleSheet.create({
     top: {
         width: "100%",
         height: 50,
+        zIndex: 10,
         paddingTop: 10,
         paddingLeft: CT.LOGIN_CONTENT_PADDING,
         paddingRight: CT.LOGIN_CONTENT_PADDING,
+
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "row",
+    },
+    topTitle: {
+        marginLeft: 10,
+    },
+    topHeadingTitle: {
+        color: CT.BG_WHITE,
+        fontSize: 20,
+        fontWeight: "600",
+    },
+    topHeadingSubtitle: {
+        color: CT.BG_PURPLE_300,
     },
     header: {
         flex: 1,
