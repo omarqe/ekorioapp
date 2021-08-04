@@ -16,15 +16,15 @@ const ButtonOrb = (props) => {
 
     if (inverted) color = CT.BG_PURPLE_900;
     if (glow) {
-        iconSize = 18;
+        iconSize = 14;
         buttonStyle = {
             ...buttonStyle,
             borderRadius: 40,
-            backgroundColor: CT.BG_PURPLE_700,
+            backgroundColor: CT.BG_PURPLE_800,
             ...style,
         };
         innerStyle = {
-            padding: 4,
+            padding: 6,
             borderRadius: 20,
             backgroundColor: CT.BG_PURPLE_500,
         };
@@ -33,7 +33,7 @@ const ButtonOrb = (props) => {
     return (
         <TouchableOpacity style={buttonStyle} {...appendedProps}>
             <View style={innerStyle}>
-                <Icon icon={`far ${icon}`} color={color} size={iconSize} {...iconProps} />
+                <Icon icon={[glow ? "fas" : "far", icon]} color={color} size={iconSize} {...iconProps} />
             </View>
         </TouchableOpacity>
     );
