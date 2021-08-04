@@ -21,12 +21,10 @@ const LoginHeader = ({ title, subtitle, keyboardShown }) => {
                     </View>
                 )}
             </View>
-            {!doSwapTitle && (
-                <View style={ss.header}>
-                    <Text style={ss.headingTitle}>{title}</Text>
-                    <Text style={ss.headingSubtitle}>{subtitle}</Text>
-                </View>
-            )}
+            <View style={ss.header}>
+                <Text style={ss.headingTitle}>{title}</Text>
+                <Text style={ss.headingSubtitle}>{subtitle}</Text>
+            </View>
         </React.Fragment>
     );
 };
