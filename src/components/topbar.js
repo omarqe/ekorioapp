@@ -8,15 +8,87 @@ import { View, Text, StyleSheet } from "react-native";
 import _omit from "lodash/omit";
 
 const TopBar = (props) => {
-    let { type = 0, style = {}, title = "", logoProps = {} } = props;
+    let topBarStyle = { ...ss.base, ...style };
+    let { type = 0, style = {}, title = null, subtitle = null, logoProps = {} } = props;
     let { leftIcon, leftIconProps = {}, rightIcon, rightIconProps = {} } = props;
 
-    let topBarStyle = { ...ss.base, ...style };
+    let leftIconStyle = ss.leftIcon;
+    let rightIconStyle = ss.rightIcon;
+
+    // Update margins
+    if (leftIconProps.glow === true) leftIconStyle = { ...leftIconStyle, marginRight: 0 };
+    if (rightIconProps.glow === true) rightIconStyle = { ...rightIconStyle, marginRight: 0 };
 
     switch (type) {
         case 0:
         default:
-            const rightIconStyle = rightIconProps?.style || {};
+            return (
+                <View style={topBarStyle}>
+                    <View style={ss.content}>
+                        <View style={ss.leftContent}>
+                            {leftIcon && (
+                                <ButtonOrb
+                                    icon={leftIcon}
+                                    style={leftIconStyle}
+                                    color={CT.BG_PURPLE_400}
+                                    {...leftIconProps}
+                                    small
+                                />
+                            )}
+                        </View>
+                        <View style={ss.midContent}>
+                            <Text style={ss.title}>{title}</Text>
+                            {subtitle && <Text style={ss.subtitle}>{subtitle}</Text>}
+                        </View>
+                        <View style={ss.rightContent}>
+                            {rightIcon && (
+                                <ButtonOrb
+                                    icon={rightIcon}
+                                    style={rightIconStyle}
+                                    color={CT.BG_PURPLE_400}
+                                    {...rightIconProps}
+                                    small
+                                />
+                            )}
+                        </View>
+                    </View>
+                </View>
+            );
+
+        case 1:
+            return (
+                <View style={topBarStyle}>
+                    <View style={ss.content}>
+                        {leftIcon && (
+                            <View style={ss.leftContent}>
+                                <ButtonOrb
+                                    icon={leftIcon}
+                                    style={leftIconStyle}
+                                    color={CT.BG_PURPLE_400}
+                                    {...leftIconProps}
+                                    small
+                                />
+                            </View>
+                        )}
+                        <View style={{ ...ss.midContent, flex: 8 }}>
+                            <Text style={ss.largeTitle}>{title}</Text>
+                        </View>
+                        {rightIcon && (
+                            <View style={ss.rightContent}>
+                                <ButtonOrb
+                                    icon={rightIcon}
+                                    style={rightIconStyle}
+                                    color={CT.BG_PURPLE_400}
+                                    {...rightIconProps}
+                                    small
+                                />
+                            </View>
+                        )}
+                    </View>
+                </View>
+            );
+
+        case 2:
             rightIconProps = _omit(rightIconProps, ["style"]);
 
             return (
@@ -30,7 +102,7 @@ const TopBar = (props) => {
                                 <ButtonOrb
                                     glow
                                     icon={rightIcon}
-                                    style={{ ...ss.rightIcon, marginRight: 0, ...rightIconStyle }}
+                                    style={{ ...rightIconStyle, marginRight: 0 }}
                                     {...rightIconProps}
                                 />
                             )}
@@ -39,34 +111,18 @@ const TopBar = (props) => {
                 </View>
             );
 
-        case 1:
+        case 3:
             return (
                 <View style={topBarStyle}>
                     <View style={ss.content}>
                         <View style={ss.leftContent}>
-                            {leftIcon && (
-                                <ButtonOrb
-                                    icon={leftIcon}
-                                    style={ss.leftIcon}
-                                    color={CT.BG_PURPLE_400}
-                                    {...leftIconProps}
-                                    small
-                                />
-                            )}
+                            {leftIcon && <ButtonOrb icon={leftIcon} style={leftIconStyle} {...leftIconProps} />}
                         </View>
-                        <View style={ss.midContent}>
-                            <Text style={ss.title}>{title}</Text>
+                        <View style={{ ...ss.midContent, alignItems: "center" }}>
+                            <Logo {...logoProps} />
                         </View>
                         <View style={ss.rightContent}>
-                            {rightIcon && (
-                                <ButtonOrb
-                                    icon={rightIcon}
-                                    style={ss.rightIcon}
-                                    color={CT.BG_PURPLE_400}
-                                    {...rightIconProps}
-                                    small
-                                />
-                            )}
+                            {rightIcon && <ButtonOrb icon={rightIcon} style={rightIconStyle} {...rightIconProps} />}
                         </View>
                     </View>
                 </View>
@@ -75,9 +131,10 @@ const TopBar = (props) => {
 };
 
 TopBar.propTypes = {
-    type: PropTypes.oneOf(["default"]),
+    type: PropTypes.oneOf([0, 1, 2, 3]),
     style: PropTypes.object,
     title: PropTypes.string,
+    subtitle: PropTypes.string,
     leftIcon: PropTypes.string,
     rightIcon: PropTypes.string,
     logoProps: PropTypes.object,
@@ -85,11 +142,7 @@ TopBar.propTypes = {
     rightIconProps: PropTypes.object,
 };
 
-const contentCommonStyle = {
-    flex: 1,
-    display: "flex",
-    justifyContent: "center",
-};
+const contentCommonStyle = { flex: 1, display: "flex", justifyContent: "center" };
 const ss = StyleSheet.create({
     base: {
         width: "100%",
@@ -131,7 +184,18 @@ const ss = StyleSheet.create({
         textAlign: "center",
         fontSize: 18,
         fontWeight: "600",
-        paddingTop: 5,
+        paddingTop: 2,
+    },
+    subtitle: {
+        color: CT.BG_PURPLE_300,
+        fontSize: 12,
+        textAlign: "center",
+        marginTop: 1,
+    },
+    largeTitle: {
+        color: CT.BG_WHITE,
+        fontSize: 22,
+        fontWeight: "600",
     },
 });
 
