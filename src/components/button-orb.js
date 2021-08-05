@@ -26,6 +26,7 @@ const ButtonOrb = (props) => {
     if (inverted) color = CT.BG_PURPLE_900;
     if (disabled) buttonStyle = { ...buttonStyle, opacity: 0.5 };
     if (glow) {
+        color = CT.BG_PURPLE_200;
         iconSize = 14;
         buttonStyle = {
             ...buttonStyle,
