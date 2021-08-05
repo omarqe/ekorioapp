@@ -116,13 +116,29 @@ const TopBar = (props) => {
                 <View style={topBarStyle}>
                     <View style={ss.content}>
                         <View style={ss.leftContent}>
-                            {leftIcon && <ButtonOrb icon={leftIcon} style={leftIconStyle} {...leftIconProps} />}
+                            {leftIcon && (
+                                <ButtonOrb
+                                    icon={leftIcon}
+                                    style={leftIconStyle}
+                                    color={CT.BG_PURPLE_400}
+                                    {...leftIconProps}
+                                    small
+                                />
+                            )}
                         </View>
                         <View style={{ ...ss.midContent, alignItems: "center" }}>
                             <Logo {...logoProps} />
                         </View>
                         <View style={ss.rightContent}>
-                            {rightIcon && <ButtonOrb icon={rightIcon} style={rightIconStyle} {...rightIconProps} />}
+                            {rightIcon && (
+                                <ButtonOrb
+                                    icon={rightIcon}
+                                    style={rightIconStyle}
+                                    color={CT.BG_PURPLE_400}
+                                    {...rightIconProps}
+                                    small
+                                />
+                            )}
                         </View>
                     </View>
                 </View>
