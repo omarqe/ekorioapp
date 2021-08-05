@@ -186,10 +186,10 @@ const ss = StyleSheet.create({
     },
 
     leftIcon: {
-        marginLeft: -15,
+        marginLeft: -13,
     },
     rightIcon: {
-        marginRight: -15,
+        marginRight: -13,
     },
 
     text: {
