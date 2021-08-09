@@ -1,12 +1,13 @@
 import React from "react";
-import CT from "../../const.json";
+// import CT from "../../const.json";
+import Pet from "../../components/home/pet";
 import Menu from "../../components/layout/menu";
 import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import TopBar from "../../components/topbar";
 import Header from "../../components/layout/header";
 import Container from "../../components/container";
-import { View, Text } from "react-native";
+import { Text } from "react-native";
 
 export default function HomeScreen({ route }) {
     return (
@@ -20,8 +21,9 @@ export default function HomeScreen({ route }) {
             />
 
             <Layout withHeader>
-                <Header>
-                    <Text style={{ color: CT.BG_PURPLE_300 }}>This is a header</Text>
+                <Header horizontal>
+                    <Pet active />
+                    <Pet add />
                 </Header>
                 <Body>
                     <Text>Asdas</Text>

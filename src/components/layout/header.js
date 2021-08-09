@@ -1,32 +1,58 @@
 import React from "react";
 import CT from "../../const.json";
 import PropTypes from "prop-types";
-import { View, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
+import _renderIf from "../../functions/renderIf";
 
 const Header = (props) => {
-    const { children } = props;
-    const appendedProps = _omit(props, ["children"]);
+    let { children, horizontal = false, contentStyle = {}, contentProps = {} } = props;
+    let appendedProps = _omit(props, ["children", "contentStyle"]);
+
+    if (horizontal) {
+        contentProps = {
+            horizontal: true,
+            alwaysBounceHorizontal: true,
+            showsHorizontalScrollIndicator: false,
+        };
+    }
+
+    contentStyle = { ...ss.content, ...contentStyle };
 
     return (
         <View style={ss.base} {...appendedProps}>
-            {children}
+            {_renderIf(
+                horizontal,
+                <ScrollView contentContainerStyle={contentStyle} {...contentProps}>
+                    {children}
+                </ScrollView>,
+                <View style={contentStyle} {...contentProps}>
+                    {children}
+                </View>
+            )}
         </View>
     );
 };
 
 Header.propTypes = {
     type: PropTypes.oneOf([0, 1, 2, 3]),
+    horizontal: PropTypes.bool,
+    contentStyle: PropTypes.object,
+    contentProps: PropTypes.object,
 };
 
+const paddingX = CT.VIEW_PADDING_X;
 const ss = StyleSheet.create({
     base: {
-        paddingTop: 10,
-        paddingLeft: CT.VIEW_PADDING_X,
-        paddingRight: CT.VIEW_PADDING_X,
         paddingBottom: 50,
         backgroundColor: CT.BG_PURPLE_900,
+    },
+    content: {
+        display: "flex",
+        paddingLeft: CT.VIEW_PADDING_X,
+        paddingRight: CT.VIEW_PADDING_X,
+        flexDirection: "row",
     },
 });
 
