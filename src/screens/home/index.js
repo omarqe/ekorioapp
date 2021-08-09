@@ -1,13 +1,18 @@
 import React from "react";
 // import CT from "../../const.json";
+
 import Pet from "../../components/home/pet";
 import Menu from "../../components/layout/menu";
 import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
-import TopBar from "../../components/topbar";
 import Header from "../../components/layout/header";
+
+import TopBar from "../../components/topbar";
+import Button from "../../components/button";
+import Heading from "../../components/heading";
 import Container from "../../components/container";
-import { Text } from "react-native";
+
+import { View, StyleSheet } from "react-native";
 
 export default function HomeScreen({ route }) {
     return (
@@ -26,7 +31,12 @@ export default function HomeScreen({ route }) {
                     <Pet add />
                 </Header>
                 <Body>
-                    <Text>Asdas</Text>
+                    <View style={ss.healthStatsHeading}>
+                        <Heading text="Health Stats" subtitle="Last evaluated 3 weeks ago" style={{ marginRight: "auto" }} />
+                        <View>
+                            <Button label="Reevaluate Health" color="white" small />
+                        </View>
+                    </View>
                 </Body>
             </Layout>
 
@@ -34,3 +44,12 @@ export default function HomeScreen({ route }) {
         </Container>
     );
 }
+
+const ss = StyleSheet.create({
+    healthStatsHeading: {
+        display: "flex",
+        alignItems: "center",
+        marginBottom: 20,
+        flexDirection: "row",
+    },
+});
