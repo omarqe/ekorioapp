@@ -162,10 +162,12 @@ const contentCommonStyle = { flex: 1, display: "flex", justifyContent: "center" 
 const ss = StyleSheet.create({
     base: {
         width: "100%",
+        zIndex: 10,
+        minHeight: CT.TOPBAR_MIN_HEIGHT,
         paddingTop: CT.VIEW_PADDING_TOP,
         paddingLeft: CT.VIEW_PADDING_X,
         paddingRight: CT.VIEW_PADDING_X,
-        paddingBottom: 20,
+        paddingBottom: 10,
         backgroundColor: CT.BG_PURPLE_900,
     },
     content: {

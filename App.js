@@ -33,7 +33,7 @@ export default function App() {
 
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="intro">
+            <Stack.Navigator initialRouteName="home">
                 {screens.map((props, i) => (
                     <Stack.Screen key={i} {...props} options={screenOptions} />
                 ))}
