@@ -1,5 +1,6 @@
 import React from "react";
 import CT from "../../const.json";
+import Menu from "../../components/layout/menu";
 import Layout from "../../components/layout";
 import TopBar from "../../components/topbar";
 import Header from "../../components/layout/header";
@@ -36,15 +37,7 @@ export default function HomeScreen({ navigation }) {
                 </View>
             </Layout>
 
-            <View
-                style={{
-                    width: "100%",
-                    height: 100,
-                    borderTopWidth: 1,
-                    borderTopColor: CT.BG_GRAY_100,
-                    backgroundColor: CT.BG_WHITE,
-                }}
-            ></View>
+            <Menu />
         </Container>
     );
 }
