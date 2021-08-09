@@ -2,7 +2,7 @@ import React from "react";
 import CT from "../../const.json";
 import Context from "../../components/context";
 import Container from "../../components/container";
-import LoginComponent from "../../components/auth/login-component";
+import LoginComponent from "../../components/intro/login-component";
 
 export default function SigninScreen({ navigation }) {
     const onSubmit = () => navigation.navigate("home"); // temporary...
