@@ -7,7 +7,7 @@ import Header from "../../components/layout/header";
 import Container from "../../components/container";
 import { View, Text } from "react-native";
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({ route }) {
     return (
         <Container>
             <TopBar
@@ -37,7 +37,7 @@ export default function HomeScreen({ navigation }) {
                 </View>
             </Layout>
 
-            <Menu />
+            <Menu name={route?.name} />
         </Container>
     );
 }

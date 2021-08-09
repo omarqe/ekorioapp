@@ -13,20 +13,18 @@ import HospitalActive from "../../../assets/icons/hospital__active.svg";
 import CalendarActive from "../../../assets/icons/calendar-alt__active.svg";
 import UserActive from "../../../assets/icons/user-circle__active.svg";
 
-const Menu = ({ active = 0 }) => {
+const Menu = ({ name = 0 }) => {
     const menu = [
-        { label: "Home", icon: SpaceCat, iconActive: SpaceCatActive },
-        { label: "Veterinars", icon: Hospital, iconActive: HospitalActive },
-        { label: "Appointments", icon: Calendar, iconActive: CalendarActive },
-        { label: "Me", icon: User, iconActive: UserActive },
+        { id: "home", label: "Home", icon: SpaceCat, iconActive: SpaceCatActive },
+        { id: "veterinars", label: "Veterinars", icon: Hospital, iconActive: HospitalActive },
+        { id: "appointments", label: "Appointments", icon: Calendar, iconActive: CalendarActive },
+        { id: "me", label: "Me", icon: User, iconActive: UserActive },
     ];
-
-    let activeLabel = {};
 
     return (
         <View style={ss.menu}>
-            {menu.map(({ label, icon, iconActive }, i) => {
-                const isActive = active === i;
+            {menu.map(({ id, label, icon, iconActive }, i) => {
+                const isActive = name === id;
                 const MenuIcon = isActive ? iconActive : icon;
                 const labelStyle = isActive ? { ...ss.label, color: CT.BG_PURPLE_500, fontWeight: "600" } : ss.label;
 
@@ -47,7 +45,7 @@ const Menu = ({ active = 0 }) => {
 };
 
 Menu.propTypes = {
-    active: PropTypes.number,
+    name: PropTypes.string,
 };
 
 const ss = StyleSheet.create({
