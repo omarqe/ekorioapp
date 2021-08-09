@@ -1,9 +1,10 @@
 import React from "react";
 import CT from "../../const.json";
+import Layout from "../../components/layout";
 import TopBar from "../../components/topbar";
-import Header from "../../components/header";
+import Header from "../../components/layout/header";
 import Container from "../../components/container";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text } from "react-native";
 
 export default function HomeScreen({ navigation }) {
     return (
@@ -16,30 +17,24 @@ export default function HomeScreen({ navigation }) {
                 logoProps={{ onPress: () => alert("Moving up!") }}
             />
 
-            <View style={{ flex: 1, zIndex: 90, position: "relative" }}>
+            <Layout withHeader>
+                <Header>
+                    <Text style={{ color: CT.BG_PURPLE_300 }}>This is a header</Text>
+                </Header>
                 <View
-                    style={{ top: 0, width: "100%", height: "50%", backgroundColor: CT.BG_PURPLE_900, position: "absolute" }}
-                />
-                <View
-                    style={{ bottom: 0, width: "100%", height: "50%", backgroundColor: CT.BG_GRAY_50, position: "absolute" }}
-                />
-                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                    <Header />
-                    <View
-                        style={{
-                            flex: 1,
-                            width: "100%",
-                            padding: 25,
-                            marginTop: -CT.BODY_RADIUS,
-                            backgroundColor: CT.BG_WHITE,
-                            borderTopLeftRadius: CT.BODY_RADIUS,
-                            borderTopRightRadius: CT.BODY_RADIUS,
-                        }}
-                    >
-                        <Text>asdasdasd</Text>
-                    </View>
-                </ScrollView>
-            </View>
+                    style={{
+                        flex: 1,
+                        width: "100%",
+                        padding: CT.VIEW_PADDING_X,
+                        marginTop: -CT.BODY_RADIUS,
+                        backgroundColor: CT.BG_WHITE,
+                        borderTopLeftRadius: CT.BODY_RADIUS,
+                        borderTopRightRadius: CT.BODY_RADIUS,
+                    }}
+                >
+                    <Text>asdasdasd</Text>
+                </View>
+            </Layout>
 
             <View
                 style={{

@@ -1,12 +1,17 @@
 import React from "react";
-import CT from "../const.json";
+import CT from "../../const.json";
 import PropTypes from "prop-types";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
+
+import _omit from "lodash/omit";
 
 const Header = (props) => {
+    const { children } = props;
+    const appendedProps = _omit(props, ["children"]);
+
     return (
-        <View style={ss.base} {...props}>
-            <Text style={{ color: CT.BG_PURPLE_300 }}>Header</Text>
+        <View style={ss.base} {...appendedProps}>
+            {children}
         </View>
     );
 };
