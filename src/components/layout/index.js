@@ -5,7 +5,7 @@ import { View, ScrollView, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
 
-const Body = (props) => {
+const Layout = (props) => {
     let { base = "white", withHeader = false, children } = props;
     const appendedProps = _omit(props, ["base", "children", "withHeader"]);
 
@@ -22,7 +22,7 @@ const Body = (props) => {
     );
 };
 
-Body.propTypes = {
+Layout.propTypes = {
     base: PropTypes.oneOf(["gray", "white", "purple"]),
     withHeader: PropTypes.bool,
 };
@@ -42,4 +42,4 @@ const ss = StyleSheet.create({
     },
 });
 
-export default Body;
+export default Layout;

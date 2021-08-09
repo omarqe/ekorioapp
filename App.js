@@ -20,7 +20,6 @@ library.add(fab, far, fal, fas);
 
 // Initialise stack navigator
 const Stack = createStackNavigator();
-const screenOptions = { headerShown: false };
 
 export default function App() {
     const screens = [
@@ -28,15 +27,14 @@ export default function App() {
         { name: "signin", component: SigninScreen },
         { name: "signup", component: SignupScreen },
         { name: "signup-verify", component: SignupVerifyScreen },
-
         { name: "home", component: HomeScreen },
     ];
 
     return (
         <NavigationContainer>
-            <Stack.Navigator activeIndex={2} initialRouteName="home">
+            <Stack.Navigator activeIndex={2} screenOptions={{ headerShown: false }} initialRouteName="home">
                 {screens.map((props, i) => (
-                    <Stack.Screen key={i} {...props} options={screenOptions} />
+                    <Stack.Screen key={i} {...props} />
                 ))}
             </Stack.Navigator>
         </NavigationContainer>
