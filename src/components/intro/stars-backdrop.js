@@ -1,5 +1,5 @@
 import React from "react";
-import Stars from "../../assets/stars.svg";
+import Stars from "../../../assets/stars.svg";
 import { View, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 

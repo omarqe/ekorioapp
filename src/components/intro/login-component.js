@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import LoginBody from "./login-body";
 import LoginHeader from "./login-header";
-import StarsBackdrop from "../stars-backdrop";
+import StarsBackdrop from "./stars-backdrop";
 import { View, StyleSheet, Keyboard, KeyboardAvoidingView } from "react-native";
 
 const LoginComponent = ({ title, subtitle, btnLabel }) => {
