@@ -52,12 +52,10 @@ const ss = StyleSheet.create({
     menu: {
         width: "100%",
         height: 100,
-        paddingLeft: 10,
-        paddingRight: 10,
 
         display: "flex",
         flexDirection: "row",
-        justifyContent: "space-around",
+        justifyContent: "space-evenly",
 
         borderTopWidth: 1,
         borderTopColor: CT.BG_GRAY_100,
