@@ -12,7 +12,8 @@ import { View, Text, StyleSheet } from "react-native";
 import _isArray from "lodash/isArray";
 import _startCase from "lodash/startCase";
 
-const columnw = 100;
+const lowRatio = CT.PIXELRATIO < 3;
+const columnw = lowRatio ? 90 : 100;
 const Charts = ({ data = [] }) => {
     const chartBg = CT.BG_WHITE;
     const chartIcons = {
@@ -37,9 +38,8 @@ const Charts = ({ data = [] }) => {
                                     hideLegend
                                     width={columnw}
                                     height={columnw}
-                                    radius={44}
-                                    strokeWidth={12}
-                                    style={{}}
+                                    radius={lowRatio ? 40 : 44}
+                                    strokeWidth={lowRatio ? 10 : 12}
                                     data={{
                                         colors: [CT.BG_PURPLE_500],
                                         data: [value],
