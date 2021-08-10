@@ -1,9 +1,16 @@
-import { Platform } from "react-native";
+import { Platform, PixelRatio } from "react-native";
 
 export default {
     IS_IOS: Platform.OS === "ios",
     IS_IPAD: Platform.isPad,
     IS_ANDROID: Platform.OS === "android",
+
+    IS_MDPI: PixelRatio.get() === 1,
+    IS_HDPI: PixelRatio.get() === 1.5,
+    IS_XHDPI: PixelRatio.get() === 2,
+    IS_2XHDPI: PixelRatio.get() === 3,
+    IS_3XHDPI: PixelRatio.get() === 3.5,
+    PIXELRATIO: PixelRatio.get(),
 
     BG_BLACK: "#000000",
     BG_WHITE: "#FFFFFF",
