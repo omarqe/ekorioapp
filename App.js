@@ -10,6 +10,9 @@ import HomeScreen from "./src/screens/home";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
+// Action sheet
+import { ActionSheetProvider } from "@expo/react-native-action-sheet";
+
 // FontAwesome configuration
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
@@ -31,12 +34,14 @@ export default function App() {
     ];
 
     return (
-        <NavigationContainer>
-            <Stack.Navigator activeIndex={2} screenOptions={{ headerShown: false }} initialRouteName="home">
-                {screens.map((props, i) => (
-                    <Stack.Screen key={i} {...props} />
-                ))}
-            </Stack.Navigator>
-        </NavigationContainer>
+        <ActionSheetProvider>
+            <NavigationContainer>
+                <Stack.Navigator activeIndex={2} screenOptions={{ headerShown: false }} initialRouteName="home">
+                    {screens.map((props, i) => (
+                        <Stack.Screen key={i} {...props} />
+                    ))}
+                </Stack.Navigator>
+            </NavigationContainer>
+        </ActionSheetProvider>
     );
 }
