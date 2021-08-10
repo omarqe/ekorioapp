@@ -6,7 +6,7 @@ import { View, Text, StyleSheet } from "react-native";
 import _omit from "lodash/omit";
 
 const Badge = (props) => {
-    let { style = {}, labelStyle = {}, text, size = 1, xs = false, lg = false } = props;
+    let { style = {}, textStyle: labelStyle = {}, text, size = 1, xs = false, lg = false } = props;
     let baseStyle = { ...ss.base, ...style };
     let textStyle = { ...ss.text, ...labelStyle };
 
