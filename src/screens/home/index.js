@@ -11,10 +11,9 @@ import Header from "../../components/layout/header";
 
 import Heading from "../../components/heading";
 import TopBar from "../../components/topbar";
-import PetID from "../../components/pet-id";
-import Button from "../../components/button";
-import ButtonIcon from "../../components/button-icon";
 import Container from "../../components/container";
+import ButtonIcon from "../../components/button-icon";
+import PetIdentity from "../../components/pet-identity";
 
 import { View, StyleSheet } from "react-native";
 import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
@@ -64,6 +63,19 @@ const Home = ({ route }) => {
         ],
     };
 
+    const petData = [
+        { label: "Name", value: "Cheshire" },
+        { label: "Microchip ID", value: "0028031030021", verfied: true },
+        { label: "Parent's Name", value: "Eve Harrison" },
+        { label: "Colors", value: ["#3E4C59", "#9AA5B1"] },
+        { label: "Breed", value: "British Shorthair" },
+        { label: "Birthday", value: "Jan 1, 2021" },
+        { label: "Age (Cat Year)", value: "7 months" },
+        { label: "Age (Human Year)", value: "11 years" },
+        { label: "Gender", value: "Male" },
+        { label: "Weight", value: "2.50 kg" },
+    ];
+
     const onMoreOptions = () => {
         const options = ["Reevaluate Health", "View Medical History", "Done"];
         const cancelButtonIndex = 2;
@@ -112,33 +124,7 @@ const Home = ({ route }) => {
                 </Body>
 
                 <Body gray>
-                    <View style={ss.headingSection}>
-                        <Heading size={1} text="Pet Identity" subtitle="Family since 20 June 2021" badge={{ text: "Cat" }} />
-                        <View style={ss.actionBtnContainer}>
-                            <Button icon="far edit" label="Update Pet" color="white" small iconRight />
-                        </View>
-                    </View>
-
-                    <View style={ss.row}>
-                        <PetID label="Name" value="Cheshire" />
-                        <PetID label="Microchip ID" value="0028031030021" verified />
-                    </View>
-                    <View style={ss.row}>
-                        <PetID label="Parent's Name" value="Eve Harrison" />
-                        <PetID label="Colors" value={["#3E4C59", "#9AA5B1"]} />
-                    </View>
-                    <View style={ss.row}>
-                        <PetID label="Breed" value="British Shorthair" />
-                        <PetID label="Birthday" value="Jan 1, 2021" />
-                    </View>
-                    <View style={ss.row}>
-                        <PetID label="Age (Cat Year)" value="7 months" />
-                        <PetID label="Age (Human Year)" value="11 years" />
-                    </View>
-                    <View style={{ ...ss.row, marginBottom: 0 }}>
-                        <PetID label="Gender" value="Male" />
-                        <PetID label="Weight" value="2.50 kg" />
-                    </View>
+                    <PetIdentity data={petData} />
                 </Body>
             </Layout>
 
@@ -148,19 +134,6 @@ const Home = ({ route }) => {
 };
 
 const ss = StyleSheet.create({
-    row: {
-        display: "flex",
-        marginBottom: 15,
-        flexDirection: "row",
-    },
-    column: {
-        flex: 1,
-    },
-    kickerStyle: {
-        color: CT.BG_GRAY_400,
-        fontSize: 16,
-    },
-
     actionBtnContainer: {
         marginLeft: "auto",
     },
