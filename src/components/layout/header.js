@@ -42,7 +42,6 @@ Header.propTypes = {
     contentProps: PropTypes.object,
 };
 
-const paddingX = CT.VIEW_PADDING_X;
 const ss = StyleSheet.create({
     base: {
         paddingBottom: 50,
