@@ -110,7 +110,7 @@ const Home = ({ route }) => {
 
                 <Body topRounded overlap>
                     <View style={ss.headingSection}>
-                        <Heading size={1} text="Health Stats" subtitle="Last evaluated 3 weeks ago" />
+                        <Heading text="Health Stats" subtitle="Last evaluated 3 weeks ago" />
                         <View style={ss.actionBtnContainer}>
                             <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={onMoreOptions} inverted />
                         </View>

@@ -26,7 +26,7 @@ const Heading = (props) => {
             {kicker && <Text style={kickerStyle}>{kicker}</Text>}
             <View style={ss.title}>
                 <Text style={textStyle}>{text}</Text>
-                {badge && <Badge sm {...badge} />}
+                {badge && <Badge xs {...badge} />}
             </View>
             {subtitle && <Text style={subtitleStyle}>{subtitle}</Text>}
         </View>

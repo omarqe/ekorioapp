@@ -15,7 +15,7 @@ const PetIdentity = ({ data }) => {
     return (
         <React.Fragment>
             <View style={ss.headingSection}>
-                <Heading size={1} text="Pet Identity" subtitle="Family since 20 June 2021" badge={{ text: "Cat" }} />
+                <Heading text="Pet Identity" subtitle="Family since 20 June 2021" badge={{ text: "Cat" }} />
                 <View style={ss.actionBtnContainer}>
                     <Button icon="far edit" label="Update Pet" color="white" small iconRight />
                 </View>
