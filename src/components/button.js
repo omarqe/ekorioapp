@@ -25,7 +25,7 @@ const Button = (props) => {
 
     if (small) {
         labelStyle = { ...labelStyle, fontSize: 14, textTransform: "none" };
-        buttonTouchStyle = { ...buttonTouchStyle, padding: 10 };
+        buttonTouchStyle = { ...buttonTouchStyle, padding: CT.PIXELRATIO < 3 ? 8 : 10 };
     }
 
     switch (color) {
