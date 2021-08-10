@@ -27,7 +27,11 @@ const Button = (props) => {
 
     return (
         <View style={buttonStyle}>
-            <TouchableOpacity style={{ ...buttonTouchStyle, ...touchableStyle }} {...appendedProps}>
+            <TouchableOpacity
+                style={{ ...buttonTouchStyle, ...touchableStyle }}
+                activeOpacity={CT.ACTIVE_OPACITY}
+                {...appendedProps}
+            >
                 <Text style={labelStyle}>{label}</Text>
             </TouchableOpacity>
         </View>
