@@ -39,6 +39,13 @@ const ButtonIcon = (props) => {
             borderRadius: 20,
             backgroundColor: CT.BG_PURPLE_500,
         };
+
+        // Inverted glow has different colour
+        if (inverted) {
+            color = CT.BG_GRAY_400;
+            buttonStyle = { ...buttonStyle, backgroundColor: CT.BG_GRAY_50 };
+            innerStyle = { ...innerStyle, backgroundColor: CT.BG_GRAY_100 };
+        }
     }
 
     return (
