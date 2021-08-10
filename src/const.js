@@ -1,4 +1,10 @@
+import { Platform } from "react-native";
+
 export default {
+    IS_IOS: Platform.OS === "ios",
+    IS_IPAD: Platform.isPad,
+    IS_ANDROID: Platform.OS === "android",
+
     BG_BLACK: "#000000",
     BG_WHITE: "#FFFFFF",
     BG_PURPLE_X: "#271f34",
