@@ -1,5 +1,5 @@
 import React from "react";
-import CT from "../const.json";
+import CT from "../const.js";
 import Icon from "./icon";
 import PropTypes from "prop-types";
 import { View, TouchableOpacity, StyleSheet } from "react-native";

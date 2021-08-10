@@ -1,5 +1,5 @@
 import React from "react";
-import CT from "../../const.json";
+import CT from "../../const.js";
 import PropTypes from "prop-types";
 import { View, StyleSheet } from "react-native";
 

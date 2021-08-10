@@ -1,5 +1,5 @@
 import React from "react";
-import CT from "../../const.json";
+import CT from "../../const.js";
 
 import Charts from "../../components/home/charts";
 import Pet from "../../components/home/pet";

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import CT from "../../const.json";
+import CT from "../../const.js";
 import Context from "../context";
 import ButtonOrb from "../button-orb";
 import PropTypes from "prop-types";

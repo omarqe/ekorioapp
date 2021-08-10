@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import CT from "../const.json";
+import CT from "../const.js";
 import PropTypes from "prop-types";
 import Context from "./context";
 import { View, TextInput, StyleSheet } from "react-native";

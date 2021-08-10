@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import CT from "../const.json";
+import CT from "../const.js";
 import Input from "./input";
 import Context from "./context";
 import PropTypes from "prop-types";

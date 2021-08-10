@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CT from "../../const.json";
+import CT from "../../const.js";
 import Icon from "../icon";
 import PropTypes from "prop-types";
 import { Text, View, Image, StyleSheet, TouchableWithoutFeedback } from "react-native";

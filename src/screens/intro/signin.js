@@ -1,5 +1,5 @@
 import React from "react";
-import CT from "../../const.json";
+import CT from "../../const.js";
 import Context from "../../components/context";
 import Container from "../../components/container";
 import LoginComponent from "../../components/intro/login-component";

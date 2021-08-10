@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import CT from "../../const.json";
+import CT from "../../const.js";
 import Fields from "../fields";
 import Button from "../button";
 import Context from "../context";

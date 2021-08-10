@@ -1,5 +1,5 @@
 import React from "react";
-import CT from "../const.json";
+import CT from "../const.js";
 import Logo from "../../assets/logo.svg";
 import ButtonOrb from "../components/button-orb";
 import PropTypes from "prop-types";
