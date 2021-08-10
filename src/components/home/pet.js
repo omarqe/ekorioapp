@@ -76,14 +76,8 @@ const ss = StyleSheet.create({
         backgroundColor: CT.BG_PURPLE_800,
     },
     name: {
-        marginTop: 5,
         color: CT.BG_PURPLE_400,
-        flex: 1,
-        display: "flex",
-        flexDirection: "row",
-        flexWrap: "nowrap",
-        flexShrink: 1,
-
+        marginTop: 5,
         textAlign: "center",
         fontWeight: "600",
         fontSize: 12,
