@@ -14,7 +14,7 @@ import _startCase from "lodash/startCase";
 
 const columnw = 100;
 const Charts = ({ data = [] }) => {
-    const progressBg = CT.BG_WHITE;
+    const chartBg = CT.BG_WHITE;
     const chartIcons = {
         physical: ChartCatIcon,
         nutrition: ChartMeatIcon,
@@ -45,8 +45,8 @@ const Charts = ({ data = [] }) => {
                                         data: [value],
                                     }}
                                     chartConfig={{
-                                        backgroundGradientFrom: progressBg,
-                                        backgroundGradientTo: progressBg,
+                                        backgroundGradientFrom: chartBg,
+                                        backgroundGradientTo: chartBg,
                                         decimalPlaces: 2,
                                         color: () => CT.BG_GRAY_50,
                                         style: {
