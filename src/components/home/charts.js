@@ -81,11 +81,9 @@ const Charts = ({ data = [] }) => {
 
 const ss = StyleSheet.create({
     container: {
-        height: 200,
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-        borderRadius: CT.BODY_RADIUS,
     },
     column: {
         flex: 1,

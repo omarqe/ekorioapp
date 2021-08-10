@@ -62,7 +62,6 @@ export default function HomeScreen({ route }) {
                             <Button label="Reevaluate Health" color="white" small />
                         </View>
                     </View>
-
                     <Charts data={chartData} />
                 </Body>
             </Layout>
@@ -78,12 +77,5 @@ const ss = StyleSheet.create({
         alignItems: "center",
         marginBottom: 20,
         flexDirection: "row",
-    },
-    primaryStats: {
-        height: 200,
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        borderRadius: CT.BODY_RADIUS,
     },
 });
