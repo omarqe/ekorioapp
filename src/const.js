@@ -50,7 +50,7 @@ export default {
     VIEW_PADDING_TOP: 60,
 
     BODY_RADIUS: 25,
-    ACTIVE_OPACITY: 0.7,
+    ACTIVE_OPACITY: 0.55,
     TOPBAR_MIN_HEIGHT: 120,
     FIELD_BOTTOM_SPACING: 15,
     LOGIN_OTP_TIMEOUT: 60,
@@ -63,6 +63,6 @@ export default {
             width: 0,
             height: 1,
         },
-        elevation: 2,
+        elevation: 0.5,
     },
 };
