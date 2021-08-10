@@ -6,9 +6,10 @@ import { View, ScrollView, StyleSheet } from "react-native";
 import _omit from "lodash/omit";
 
 const Layout = (props) => {
-    let { base = "white", withHeader = false, children } = props;
+    let { base = "white", gray = false, withHeader = false, children } = props;
     const appendedProps = _omit(props, ["base", "children", "withHeader"]);
 
+    if (gray) base = "gray";
     const baseColor = { white: CT.BG_WHITE, gray: CT.BG_GRAY_50, purple: CT.BG_PURPLE_900 };
     const topStyle = { ...ss.mirage, top: 0, backgroundColor: withHeader ? baseColor.purple : baseColor[base] };
     const bottomStyle = { ...ss.mirage, bottom: 0, backgroundColor: baseColor[base] };
@@ -24,6 +25,7 @@ const Layout = (props) => {
 
 Layout.propTypes = {
     base: PropTypes.oneOf(["gray", "white", "purple"]),
+    gray: PropTypes.bool,
     withHeader: PropTypes.bool,
 };
 
