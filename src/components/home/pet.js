@@ -8,7 +8,7 @@ import _renderIf from "../../functions/renderIf";
 
 const Pet = ({ add, active = false, onPress, onPressIn, onPressOut }) => {
     const [pressed, setPressed] = useState(false);
-    let data = { name: "Dabbeu", imageSrc: require("../../../assets/pet-sample.png") };
+    let data = { name: "Cheshire", imageSrc: require("../../../assets/pet-sample.png") };
     let nameStyle = ss.name;
     let baseStyle = ss.base;
     let imageBaseStyle = ss.imageBase;
