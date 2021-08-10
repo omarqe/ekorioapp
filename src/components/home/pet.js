@@ -18,10 +18,8 @@ const Pet = ({ add, active = false, onPress, onPressIn, onPressOut }) => {
         nameStyle = { ...nameStyle, color: CT.BG_YELLOW_300 };
         imageBaseStyle = { ...imageBaseStyle, backgroundColor: CT.BG_YELLOW_500 };
     }
-
     if (pressed) {
-        nameStyle = { ...nameStyle, color: active ? CT.BG_YELLOW_600 : CT.BG_PURPLE_500 };
-        imageBaseStyle = { ...imageBaseStyle, opacity: 0.5 };
+        imageBaseStyle = [imageBaseStyle, { transform: [{ scale: 0.96 }] }];
     }
 
     const _onPressIn = () => {
