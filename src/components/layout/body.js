@@ -3,13 +3,13 @@ import CT from "../../const.js";
 import PropTypes from "prop-types";
 import { View, StyleSheet } from "react-native";
 
-const Body = ({ base = "white", flex = false, gray = false, rounded = false, overlap = false, children }) => {
+const Body = ({ base = "white", flex = false, gray = false, topRounded = false, overlap = false, children }) => {
     let baseColor = { white: CT.BG_WHITE, gray: CT.BG_GRAY_50, purple: CT.BG_PURPLE_900 };
     let baseStyle = { ...ss.base, backgroundColor: baseColor[base] };
 
     if (flex) baseStyle = { ...baseStyle, flex: 1 }; // Add flex: 1 to baseStyle
     if (gray) baseStyle = { ...baseStyle, backgroundColor: baseColor.gray };
-    if (rounded) {
+    if (topRounded) {
         baseStyle = {
             ...baseStyle,
             borderTopLeftRadius: CT.BODY_RADIUS,
@@ -38,7 +38,7 @@ Body.propTypes = {
     base: PropTypes.oneOf(["white", "gray", "purple"]),
     flex: PropTypes.bool,
     gray: PropTypes.bool,
-    rounded: PropTypes.bool,
+    topRounded: PropTypes.bool,
     overlap: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
 };
 
