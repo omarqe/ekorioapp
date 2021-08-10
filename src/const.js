@@ -62,6 +62,6 @@ export default {
             width: 0,
             height: 1,
         },
-        elevation: 1,
+        elevation: 0.5,
     },
 };
