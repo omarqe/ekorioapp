@@ -1,9 +1,13 @@
 import { Platform, PixelRatio } from "react-native";
 
+const isIOS = Platform.OS === "ios";
+const isIpad = Platform.isPad;
+const isAndroid = Platform.OS === "android";
+
 export default {
-    IS_IOS: Platform.OS === "ios",
-    IS_IPAD: Platform.isPad,
-    IS_ANDROID: Platform.OS === "android",
+    IS_IOS: isIOS,
+    IS_IPAD: isIpad,
+    IS_ANDROID: isAndroid,
 
     IS_MDPI: PixelRatio.get() === 1,
     IS_HDPI: PixelRatio.get() === 1.5,
@@ -47,11 +51,11 @@ export default {
     BORDER_FOCUS: "#96BAFF",
 
     VIEW_PADDING_X: 25,
-    VIEW_PADDING_TOP: 60,
+    VIEW_PADDING_TOP: isIOS ? 60 : 40,
 
     BODY_RADIUS: 25,
     ACTIVE_OPACITY: 0.55,
-    TOPBAR_MIN_HEIGHT: 120,
+    TOPBAR_MIN_HEIGHT: isIOS ? 120 : 100,
     FIELD_BOTTOM_SPACING: 15,
     LOGIN_OTP_TIMEOUT: 60,
     LOGIN_CONTENT_PADDING: 30,

@@ -51,7 +51,7 @@ Menu.propTypes = {
 const ss = StyleSheet.create({
     menu: {
         width: "100%",
-        height: 100,
+        height: CT.IS_IOS ? 100 : 80,
 
         display: "flex",
         flexDirection: "row",
