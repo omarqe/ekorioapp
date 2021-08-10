@@ -1,6 +1,7 @@
 import React from "react";
 import CT from "../../const.js";
 
+import HealthDetails from "../../components/home/health-details.js";
 import Charts from "../../components/home/charts";
 import Pet from "../../components/home/pet";
 import Menu from "../../components/layout/menu";
@@ -8,19 +9,19 @@ import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
 
-import Icon from "../../components/icon";
-import Badge from "../../components/badge";
 import TopBar from "../../components/topbar";
-import Button from "../../components/button";
+// import Button from "../../components/button";
+import ButtonOrb from "../../components/button-orb";
 import Heading from "../../components/heading";
 import Container from "../../components/container";
 
 import { View, Text, StyleSheet } from "react-native";
+import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
 
 import _times from "lodash/times";
-import HealthDetails from "../../components/home/health-details.js";
 
-export default function HomeScreen({ route }) {
+const Home = ({ route }) => {
+    const { showActionSheetWithOptions } = useActionSheet();
     const healthData = {
         chart: [
             {
@@ -62,6 +63,13 @@ export default function HomeScreen({ route }) {
         ],
     };
 
+    const onMoreOptions = () => {
+        const options = ["Evaluate Health", "View Medical History", "Done"];
+        const cancelButtonIndex = 2;
+
+        showActionSheetWithOptions({ options, cancelButtonIndex }, (buttonIndex) => {});
+    };
+
     return (
         <Container>
             <TopBar
@@ -81,7 +89,8 @@ export default function HomeScreen({ route }) {
                     <View style={ss.headingSection}>
                         <Heading text="Health Stats" subtitle="Last evaluated 3 weeks ago" style={{ marginRight: "auto" }} />
                         <View>
-                            <Button label="Reevaluate Health" color="white" small />
+                            {/* <Button label="Reevaluate Health" color="white" small /> */}
+                            <ButtonOrb icon="ellipsis-h" onPress={onMoreOptions} inverted />
                         </View>
                     </View>
                     <View style={ss.section}>
@@ -100,7 +109,7 @@ export default function HomeScreen({ route }) {
             <Menu name={route?.name} />
         </Container>
     );
-}
+};
 
 const ss = StyleSheet.create({
     headingSection: {
@@ -135,4 +144,17 @@ const ss = StyleSheet.create({
         marginLeft: 5,
         marginRight: "auto",
     },
+    medicalHistoryBtn: {
+        marginTop: 10,
+        padding: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        color: CT.BG_PURPLE_400,
+        fontSize: 16,
+        fontWeight: "600",
+        textDecorationLine: "underline",
+    },
 });
+
+const HomeScreen = connectActionSheet(Home);
+export default HomeScreen;
