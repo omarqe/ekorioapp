@@ -47,8 +47,10 @@ const HealthDetails = ({ data = [], onPress }) => {
                     return (
                         <TouchableWithoutFeedback {...props}>
                             <View style={itemStyle}>
+                                <View style={ss.badgeContainer}>
+                                    <Badge text={`${score}/10`} textStyle={ss.badge} xs />
+                                </View>
                                 <Text style={ss.label}>{label}</Text>
-                                <Badge text={`${score}/10`} xs />
                                 <Icon icon="fas chevron-right" size={12} color={iconColor} style={ss.icon} />
                             </View>
                         </TouchableWithoutFeedback>
@@ -85,7 +87,14 @@ const ss = StyleSheet.create({
     label: {
         color: CT.BG_GRAY_700,
         fontWeight: "700",
-        marginRight: 3,
+    },
+    badgeContainer: {
+        display: "flex",
+        minWidth: 40,
+        marginRight: 10,
+    },
+    badge: {
+        textAlign: "center",
     },
 });
 

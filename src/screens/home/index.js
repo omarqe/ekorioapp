@@ -54,7 +54,7 @@ const Home = ({ route }) => {
             { id: 0, label: "Fleas", score: 10 },
             { id: 0, label: "Ticks", score: 10 },
             { id: 0, label: "Heart", score: 9 },
-            { id: 0, label: "Hearworms", score: 9 },
+            { id: 0, label: "Heartworms", score: 9 },
             { id: 0, label: "Breathing", score: 10 },
             { id: 0, label: "Bones & Joints", score: 7 },
             { id: 0, label: "Alertness & Balance", score: 7 },
@@ -65,7 +65,7 @@ const Home = ({ route }) => {
 
     const petData = [
         { label: "Name", value: "Cheshire" },
-        { label: "Microchip ID", value: "0028031030021", verfied: true },
+        { label: "Microchip ID", value: "0028031030021", verified: true },
         { label: "Parent's Name", value: "Eve Harrison" },
         { label: "Colors", value: ["#3E4C59", "#9AA5B1"] },
         { label: "Breed", value: "British Shorthair" },
