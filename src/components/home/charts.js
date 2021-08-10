@@ -120,7 +120,7 @@ const ss = StyleSheet.create({
         fontWeight: "600",
     },
     chartLabel: {
-        color: CT.BG_GRAY_700,
+        color: CT.BG_GRAY_800,
         fontSize: 18,
         fontWeight: "600",
         textAlign: "center",
