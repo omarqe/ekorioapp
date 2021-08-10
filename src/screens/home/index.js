@@ -10,12 +10,11 @@ import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
 
 import TopBar from "../../components/topbar";
-// import Button from "../../components/button";
 import ButtonIcon from "../../components/button-icon";
 import Heading from "../../components/heading";
 import Container from "../../components/container";
 
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
 
 import _times from "lodash/times";
@@ -64,10 +63,19 @@ const Home = ({ route }) => {
     };
 
     const onMoreOptions = () => {
-        const options = ["Evaluate Health", "View Medical History", "Done"];
+        const options = ["Reevaluate Health", "View Medical History", "Done"];
         const cancelButtonIndex = 2;
 
-        showActionSheetWithOptions({ options, cancelButtonIndex }, (buttonIndex) => {});
+        showActionSheetWithOptions({ options, cancelButtonIndex }, (buttonIndex) => {
+            switch (buttonIndex) {
+                case 0:
+                    alert("Reevaluate health!");
+                    break;
+                case 1:
+                    alert("Viewing medical history");
+                    break;
+            }
+        });
     };
 
     return (
@@ -87,10 +95,14 @@ const Home = ({ route }) => {
                 </Header>
                 <Body rounded overlap>
                     <View style={ss.headingSection}>
-                        <Heading text="Health Stats" subtitle="Last evaluated 3 weeks ago" style={{ marginRight: "auto" }} />
+                        <Heading
+                            size={1}
+                            text="Health Stats"
+                            style={{ marginRight: "auto" }}
+                            subtitle="Last evaluated 3 weeks ago"
+                        />
                         <View>
-                            {/* <Button label="Reevaluate Health" color="white" small /> */}
-                            <ButtonIcon icon="ellipsis-h" onPress={onMoreOptions} inverted />
+                            <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={onMoreOptions} inverted />
                         </View>
                     </View>
                     <View style={ss.section}>
@@ -100,9 +112,8 @@ const Home = ({ route }) => {
                         <HealthDetails data={healthData?.details} />
                     </View>
                 </Body>
-
-                <Body gray flex>
-                    <Text>asdasdasd</Text>
+                <Body gray>
+                    <Heading size={1} text="Pet Details" subtitle="Family since 20 June 2021" badge={{ text: "Cat" }} />
                 </Body>
             </Layout>
 
