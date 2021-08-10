@@ -23,7 +23,7 @@ const ButtonOrb = (props) => {
     let buttonStyle = { ...ss.base, ...style };
     let appendedProps = _omit(props, ["style", "color", "icon", "iconProps", "touchableStyle"]);
 
-    if (inverted) color = CT.BG_PURPLE_900;
+    if (inverted) color = CT.BG_GRAY_600;
     if (disabled) buttonStyle = { ...buttonStyle, opacity: 0.5 };
     if (glow) {
         color = CT.BG_PURPLE_200;
