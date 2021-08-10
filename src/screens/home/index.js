@@ -11,7 +11,7 @@ import Header from "../../components/layout/header";
 
 import TopBar from "../../components/topbar";
 // import Button from "../../components/button";
-import ButtonOrb from "../../components/button-orb";
+import ButtonIcon from "../../components/button-icon";
 import Heading from "../../components/heading";
 import Container from "../../components/container";
 
@@ -90,7 +90,7 @@ const Home = ({ route }) => {
                         <Heading text="Health Stats" subtitle="Last evaluated 3 weeks ago" style={{ marginRight: "auto" }} />
                         <View>
                             {/* <Button label="Reevaluate Health" color="white" small /> */}
-                            <ButtonOrb icon="ellipsis-h" onPress={onMoreOptions} inverted />
+                            <ButtonIcon icon="ellipsis-h" onPress={onMoreOptions} inverted />
                         </View>
                     </View>
                     <View style={ss.section}>

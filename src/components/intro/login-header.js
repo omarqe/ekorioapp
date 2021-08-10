@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import CT from "../../const.js";
 import Context from "../context";
-import ButtonOrb from "../button-orb";
+import ButtonIcon from "../button-icon";
 import PropTypes from "prop-types";
 import { View, Text, StyleSheet } from "react-native";
 
@@ -13,7 +13,7 @@ const LoginHeader = ({ title, subtitle, keyboardShown }) => {
     return (
         <React.Fragment>
             <View style={ss.top}>
-                <ButtonOrb icon="arrow-left" style={{ marginLeft: -10 }} onPress={goBack} />
+                <ButtonIcon icon="arrow-left" style={{ marginLeft: -10 }} onPress={goBack} />
                 {doSwapTitle && (
                     <View style={ss.topTitle}>
                         <Text style={ss.topHeadingTitle}>{title}</Text>

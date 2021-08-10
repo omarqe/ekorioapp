@@ -6,7 +6,7 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
 
-const ButtonOrb = (props) => {
+const ButtonIcon = (props) => {
     let {
         style = {},
         color = CT.BG_WHITE,
@@ -50,7 +50,7 @@ const ButtonOrb = (props) => {
     );
 };
 
-ButtonOrb.propTypes = {
+ButtonIcon.propTypes = {
     style: PropTypes.object,
     color: PropTypes.string,
     icon: PropTypes.string.isRequired,
@@ -74,4 +74,4 @@ const ss = StyleSheet.create({
     },
 });
 
-export default ButtonOrb;
+export default ButtonIcon;

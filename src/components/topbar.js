@@ -1,7 +1,7 @@
 import React from "react";
 import CT from "../const.js";
 import Logo from "../../assets/logo.svg";
-import ButtonOrb from "../components/button-orb";
+import ButtonIcon from "../components/button-icon";
 import PropTypes from "prop-types";
 import { View, Text, StyleSheet } from "react-native";
 
@@ -27,7 +27,7 @@ const TopBar = (props) => {
                     <View style={ss.content}>
                         <View style={ss.leftContent}>
                             {leftIcon && (
-                                <ButtonOrb
+                                <ButtonIcon
                                     icon={leftIcon}
                                     style={leftIconStyle}
                                     color={CT.BG_PURPLE_400}
@@ -42,7 +42,7 @@ const TopBar = (props) => {
                         </View>
                         <View style={ss.rightContent}>
                             {rightIcon && (
-                                <ButtonOrb
+                                <ButtonIcon
                                     icon={rightIcon}
                                     style={rightIconStyle}
                                     color={CT.BG_PURPLE_400}
@@ -61,7 +61,7 @@ const TopBar = (props) => {
                     <View style={ss.content}>
                         {leftIcon && (
                             <View style={ss.leftContent}>
-                                <ButtonOrb
+                                <ButtonIcon
                                     icon={leftIcon}
                                     style={leftIconStyle}
                                     color={CT.BG_PURPLE_400}
@@ -75,7 +75,7 @@ const TopBar = (props) => {
                         </View>
                         {rightIcon && (
                             <View style={ss.rightContent}>
-                                <ButtonOrb
+                                <ButtonIcon
                                     icon={rightIcon}
                                     style={rightIconStyle}
                                     color={CT.BG_PURPLE_400}
@@ -99,7 +99,7 @@ const TopBar = (props) => {
                         </View>
                         <View style={ss.rightContent}>
                             {rightIcon && (
-                                <ButtonOrb
+                                <ButtonIcon
                                     glow
                                     icon={rightIcon}
                                     style={{ ...rightIconStyle, marginRight: 0 }}
@@ -117,7 +117,7 @@ const TopBar = (props) => {
                     <View style={ss.content}>
                         <View style={ss.leftContent}>
                             {leftIcon && (
-                                <ButtonOrb
+                                <ButtonIcon
                                     icon={leftIcon}
                                     style={leftIconStyle}
                                     color={CT.BG_PURPLE_400}
@@ -131,7 +131,7 @@ const TopBar = (props) => {
                         </View>
                         <View style={ss.rightContent}>
                             {rightIcon && (
-                                <ButtonOrb
+                                <ButtonIcon
                                     icon={rightIcon}
                                     style={rightIconStyle}
                                     color={CT.BG_PURPLE_400}

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import CT from "../../const.js";
 import OTPIcon from "../../../assets/arts/otp-icon.svg";
 import Container from "../../components/container";
-import ButtonOrb from "../../components/button-orb";
+import ButtonIcon from "../../components/button-icon";
 import {
     View,
     Text,
@@ -39,7 +39,7 @@ export default function SignupVerifyScreen({ navigation }) {
     return (
         <Container paddingX={25} statusBarStyle="dark" isLogin>
             <View style={ss.top}>
-                <ButtonOrb icon="arrow-left" onPress={goBack} inverted />
+                <ButtonIcon icon="arrow-left" onPress={goBack} inverted />
             </View>
             <KeyboardAvoidingView style={ss.body} behavior="padding">
                 <OTPIcon />
