@@ -70,7 +70,9 @@ const ss = StyleSheet.create({
     },
     item: {
         display: "flex",
-        padding: 12,
+        padding: 10,
+        paddingLeft: 12,
+        paddingRight: 12,
         alignItems: "center",
         flexDirection: "row",
         backgroundColor: CT.BG_WHITE,

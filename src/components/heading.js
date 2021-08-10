@@ -7,13 +7,15 @@ import { View, Text, StyleSheet } from "react-native";
 import _omit from "lodash/omit";
 
 const Heading = (props) => {
-    const { size = 0, text, badge = null, subtitle } = props;
+    const { size = 0, text, kicker, badge = null, subtitle } = props;
+    const { textStyle: customTextStyle, kickerStyle: customKickerStyle, subtitleStyle: customSubtitleStyle } = props;
     const appendedProps = _omit(props, ["size", "text", "subtitle"]);
     const titleSizes = [20, 22, 24, 28, 32];
     const subtitleSizes = [14, 16, 18, 20, 24];
 
-    let textStyle = { ...ss.text, fontSize: titleSizes[size] };
-    let subtitleStyle = { ...ss.subtitle, fontSize: subtitleSizes[size] };
+    let textStyle = { ...ss.text, fontSize: titleSizes[size], ...customTextStyle };
+    let kickerStyle = { ...ss.subtitle, fontSize: subtitleSizes[size], ...customKickerStyle };
+    let subtitleStyle = { ...ss.subtitle, fontSize: subtitleSizes[size], ...customSubtitleStyle };
 
     if (badge !== null) {
         badge.style = { ...badge?.style, marginLeft: 5 };
@@ -21,6 +23,7 @@ const Heading = (props) => {
 
     return (
         <View {...appendedProps}>
+            {kicker && <Text style={kickerStyle}>{kicker}</Text>}
             <View style={ss.title}>
                 <Text style={textStyle}>{text}</Text>
                 {badge && <Badge sm {...badge} />}
@@ -34,7 +37,11 @@ Heading.propTypes = {
     size: PropTypes.oneOf([0, 1, 2, 3, 4]),
     text: PropTypes.string,
     badge: PropTypes.object,
+    kicker: PropTypes.string,
     subtitle: PropTypes.string,
+    textStyle: PropTypes.object,
+    kickerStyle: PropTypes.object,
+    subtitleStyle: PropTypes.object,
 };
 
 const ss = StyleSheet.create({
@@ -48,7 +55,8 @@ const ss = StyleSheet.create({
         fontWeight: "700",
     },
     subtitle: {
-        color: CT.BG_GRAY_500,
+        color: CT.BG_GRAY_400,
+        fontWeight: "500",
     },
 });
 
