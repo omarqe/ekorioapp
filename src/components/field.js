@@ -21,7 +21,7 @@ const Field = (props) => {
     return (
         <TouchableWithoutFeedback onPress={onPressShouldFocus}>
             <View style={{ paddingBottom: last ? 0 : CT.FIELD_BOTTOM_SPACING }}>
-                <Text style={ss.label}>{label}</Text>
+                <Text style={styles.label}>{label}</Text>
                 <Input type={type} {...appendedProps} />
             </View>
         </TouchableWithoutFeedback>
@@ -34,7 +34,7 @@ Field.propTypes = {
     label: PropTypes.string,
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     label: {
         color: CT.BG_GRAY_500,
         fontWeight: "600",

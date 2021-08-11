@@ -19,9 +19,9 @@ const Button = (props) => {
         "touchableStyle",
     ]);
 
-    let labelStyle = ss.label;
-    let buttonStyle = { ...ss.buttonStyle, ...style };
-    let buttonTouchStyle = { ...ss.touchable };
+    let labelStyle = styles.label;
+    let buttonStyle = { ...styles.buttonStyle, ...style };
+    let buttonTouchStyle = { ...styles.touchable };
 
     if (small) {
         labelStyle = { ...labelStyle, fontSize: 14, textTransform: "none" };
@@ -57,7 +57,7 @@ const Button = (props) => {
 };
 
 const radius = 8;
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     buttonStyle: {
         ...CT.SHADOW_SM,
         borderWidth: 1,

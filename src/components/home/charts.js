@@ -24,15 +24,15 @@ const Charts = ({ data = [] }) => {
 
     if (_isArray(data) && data.length > 0) {
         return (
-            <View style={ss.container}>
+            <View style={styles.container}>
                 {data.map(({ id, value, label, indicator = "down", delta = 0.1 }, i) => {
                     const ChartIcon = chartIcons[id];
                     const vPer100 = (value * 100).toFixed(0);
                     const dPer100 = (delta * 100).toFixed(0);
 
                     return (
-                        <View key={i} style={ss.column}>
-                            <View style={ss.chart}>
+                        <View key={i} style={styles.column}>
+                            <View style={styles.chart}>
                                 <ProgressChart
                                     withCustomBarColorFromData
                                     hideLegend
@@ -56,16 +56,16 @@ const Charts = ({ data = [] }) => {
                                         },
                                     }}
                                 />
-                                {id && <ChartIcon style={ss.chartIcon} />}
+                                {id && <ChartIcon style={styles.chartIcon} />}
                             </View>
 
-                            <View style={ss.chartOverview}>
-                                <Text style={ss.chartValueLg}>
+                            <View style={styles.chartOverview}>
+                                <Text style={styles.chartValueLg}>
                                     {vPer100}
-                                    <Text style={ss.chartValueSymbol}>%</Text>
+                                    <Text style={styles.chartValueSymbol}>%</Text>
                                 </Text>
-                                <Text style={ss.chartLabel}>{label}</Text>
-                                <Text style={ss.chartDesc}>
+                                <Text style={styles.chartLabel}>{label}</Text>
+                                <Text style={styles.chartDesc}>
                                     {_startCase(indicator)} {dPer100}% from last week
                                 </Text>
                             </View>
@@ -79,7 +79,7 @@ const Charts = ({ data = [] }) => {
     return "";
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         display: "flex",
         flexDirection: "row",

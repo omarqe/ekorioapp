@@ -5,14 +5,14 @@ import { LinearGradient } from "expo-linear-gradient";
 
 export default function StarsBackdrop() {
     return (
-        <View style={ss.starsBg}>
+        <View style={styles.starsBg}>
             <Stars />
-            <LinearGradient style={ss.starsGradient} colors={["rgba(26,20,35,0)", "rgba(26,20,35,1)"]} />
+            <LinearGradient style={styles.starsGradient} colors={["rgba(26,20,35,0)", "rgba(26,20,35,1)"]} />
         </View>
     );
 }
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     starsBg: {
         top: 0,
         left: 0,

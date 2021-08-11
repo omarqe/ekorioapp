@@ -12,18 +12,18 @@ const LoginHeader = ({ title, subtitle, keyboardShown }) => {
 
     return (
         <React.Fragment>
-            <View style={ss.top}>
+            <View style={styles.top}>
                 <ButtonIcon icon="arrow-left" style={{ marginLeft: -10 }} onPress={goBack} />
                 {doSwapTitle && (
-                    <View style={ss.topTitle}>
-                        <Text style={ss.topHeadingTitle}>{title}</Text>
-                        <Text style={ss.topHeadingSubtitle}>{subtitle}</Text>
+                    <View style={styles.topTitle}>
+                        <Text style={styles.topHeadingTitle}>{title}</Text>
+                        <Text style={styles.topHeadingSubtitle}>{subtitle}</Text>
                     </View>
                 )}
             </View>
-            <View style={ss.header}>
-                <Text style={ss.headingTitle}>{title}</Text>
-                <Text style={ss.headingSubtitle}>{subtitle}</Text>
+            <View style={styles.header}>
+                <Text style={styles.headingTitle}>{title}</Text>
+                <Text style={styles.headingSubtitle}>{subtitle}</Text>
             </View>
         </React.Fragment>
     );
@@ -35,7 +35,7 @@ LoginHeader.propTypes = {
     keyboardShown: PropTypes.bool,
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     top: {
         width: "100%",
         height: 50,

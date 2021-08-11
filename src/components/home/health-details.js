@@ -17,7 +17,7 @@ const HealthDetails = ({ data = [], onPress }) => {
 
     if (_isArray(data) && data.length > 0) {
         return (
-            <View style={ss.base}>
+            <View style={styles.base}>
                 {data.map(({ id, label, score }, i) => {
                     const isPressed = pressedIndex === i;
                     const iconColor = isPressed ? CT.BG_GRAY_300 : CT.BG_GRAY_200;
@@ -29,7 +29,7 @@ const HealthDetails = ({ data = [], onPress }) => {
                     };
 
                     // Adjust item's borderRadius for the first and last items
-                    let itemStyle = { ...ss.item };
+                    let itemStyle = { ...styles.item };
                     if (i === 0) itemStyle = { ...itemStyle, borderTopLeftRadius: 7, borderTopRightRadius: 7 };
                     if (i === data.length - 1) {
                         itemStyle = {
@@ -46,11 +46,11 @@ const HealthDetails = ({ data = [], onPress }) => {
                     return (
                         <TouchableWithoutFeedback {...props}>
                             <View style={itemStyle}>
-                                <View style={ss.badgeContainer}>
-                                    <Badge text={`${score}/10`} textStyle={ss.badge} xs />
+                                <View style={styles.badgeContainer}>
+                                    <Badge text={`${score}/10`} textStyle={styles.badge} xs />
                                 </View>
-                                <Text style={ss.label}>{label}</Text>
-                                <Icon icon="fas chevron-right" size={12} color={iconColor} style={ss.icon} />
+                                <Text style={styles.label}>{label}</Text>
+                                <Icon icon="fas chevron-right" size={12} color={iconColor} style={styles.icon} />
                             </View>
                         </TouchableWithoutFeedback>
                     );
@@ -62,7 +62,7 @@ const HealthDetails = ({ data = [], onPress }) => {
     return null;
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     base: {
         ...CT.SHADOW_SM,
         borderWidth: 1,

@@ -5,7 +5,7 @@ import { View, StyleSheet } from "react-native";
 
 const Body = ({ base = "white", flex = false, gray = false, topRounded = false, overlap = false, children }) => {
     let baseColor = { white: CT.BG_WHITE, gray: CT.BG_GRAY_50, purple: CT.BG_PURPLE_900 };
-    let baseStyle = { ...ss.base, backgroundColor: baseColor[base] };
+    let baseStyle = { ...styles.base, backgroundColor: baseColor[base] };
 
     if (flex) baseStyle = { ...baseStyle, flex: 1 }; // Add flex: 1 to baseStyle
     if (gray) baseStyle = { ...baseStyle, backgroundColor: baseColor.gray };
@@ -26,7 +26,7 @@ const Body = ({ base = "white", flex = false, gray = false, topRounded = false, 
     return <View style={baseStyle}>{children}</View>;
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     base: {
         width: "100%",
         padding: CT.VIEW_PADDING_X,

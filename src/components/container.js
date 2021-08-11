@@ -10,7 +10,7 @@ const Container = (props) => {
         paddingLeft: paddingX,
         paddingRight: paddingX,
         backgroundColor: bgColor,
-        ...ss.container,
+        ...styles.container,
         ...style,
     };
 
@@ -38,7 +38,7 @@ Container.propTypes = {
     statusBarStyle: PropTypes.oneOf(["auto", "dark", "inverted", "light"]),
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
     },

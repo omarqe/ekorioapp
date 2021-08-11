@@ -11,14 +11,14 @@ const Layout = (props) => {
 
     if (gray) base = "gray";
     const baseColor = { white: CT.BG_WHITE, gray: CT.BG_GRAY_50, purple: CT.BG_PURPLE_900 };
-    const topStyle = { ...ss.mirage, top: 0, backgroundColor: withHeader ? baseColor.purple : baseColor[base] };
-    const bottomStyle = { ...ss.mirage, bottom: 0, backgroundColor: baseColor[base] };
+    const topStyle = { ...styles.mirage, top: 0, backgroundColor: withHeader ? baseColor.purple : baseColor[base] };
+    const bottomStyle = { ...styles.mirage, bottom: 0, backgroundColor: baseColor[base] };
 
     return (
-        <View style={ss.base} {...appendedProps}>
+        <View style={styles.base} {...appendedProps}>
             <View style={topStyle} />
             <View style={bottomStyle} />
-            <ScrollView contentContainerStyle={ss.bodyContentContainer}>{children}</ScrollView>
+            <ScrollView contentContainerStyle={styles.bodyContentContainer}>{children}</ScrollView>
         </View>
     );
 };
@@ -29,7 +29,7 @@ Layout.propTypes = {
     withHeader: PropTypes.bool,
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     base: {
         flex: 1,
         position: "relative",

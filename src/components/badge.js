@@ -7,8 +7,8 @@ import _omit from "lodash/omit";
 
 const Badge = (props) => {
     let { style = {}, textStyle: labelStyle = {}, text, size = 1, xs = false, lg = false } = props;
-    let baseStyle = { ...ss.base, ...style };
-    let textStyle = { ...ss.text, ...labelStyle };
+    let baseStyle = { ...styles.base, ...style };
+    let textStyle = { ...styles.text, ...labelStyle };
 
     // Handle size shortcuts
     if (xs) size = 0;
@@ -37,7 +37,7 @@ const Badge = (props) => {
     );
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     base: {
         backgroundColor: CT.BG_GRAY_100,
     },

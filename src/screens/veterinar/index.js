@@ -11,6 +11,6 @@ const VeterinarScreen = () => {
     );
 };
 
-const ss = StyleSheet.create({});
+const styles = StyleSheet.create({});
 
 export default VeterinarScreen;

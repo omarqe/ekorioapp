@@ -19,7 +19,7 @@ const LoginComponent = ({ title, subtitle, btnLabel }) => {
     return (
         <React.Fragment>
             <StarsBackdrop />
-            <View style={ss.container}>
+            <View style={styles.container}>
                 <LoginHeader title={title} subtitle={subtitle} keyboardShown={keyboardShown} />
                 <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={50}>
                     <LoginBody label={btnLabel} />
@@ -35,7 +35,7 @@ LoginComponent.propTypes = {
     btnLabel: PropTypes.string,
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         display: "flex",

@@ -108,16 +108,16 @@ const Home = ({ route }) => {
                 </Header>
 
                 <Body topRounded overlap>
-                    <View style={ss.headingSection}>
+                    <View style={styles.headingSection}>
                         <Heading text="Health Stats" subtitle="Last evaluated 3 weeks ago" />
-                        <View style={ss.actionBtnContainer}>
+                        <View style={styles.actionBtnContainer}>
                             <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={onMoreOptions} inverted />
                         </View>
                     </View>
-                    <View style={ss.section}>
+                    <View style={styles.section}>
                         <Charts data={healthData?.chart} />
                     </View>
-                    <View style={{ ...ss.section, marginBottom: 0 }}>
+                    <View style={{ ...styles.section, marginBottom: 0 }}>
                         <HealthDetails data={healthData?.details} />
                     </View>
                 </Body>
@@ -130,7 +130,7 @@ const Home = ({ route }) => {
     );
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     actionBtnContainer: {
         marginLeft: "auto",
     },

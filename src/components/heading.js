@@ -13,9 +13,9 @@ const Heading = (props) => {
     const titleSizes = [20, 22, 24, 28, 32];
     const subtitleSizes = [14, 16, 18, 20, 24];
 
-    let textStyle = { ...ss.text, fontSize: titleSizes[size], ...customTextStyle };
-    let kickerStyle = { ...ss.subtitle, fontSize: subtitleSizes[size], ...customKickerStyle };
-    let subtitleStyle = { ...ss.subtitle, fontSize: subtitleSizes[size], ...customSubtitleStyle };
+    let textStyle = { ...styles.text, fontSize: titleSizes[size], ...customTextStyle };
+    let kickerStyle = { ...styles.subtitle, fontSize: subtitleSizes[size], ...customKickerStyle };
+    let subtitleStyle = { ...styles.subtitle, fontSize: subtitleSizes[size], ...customSubtitleStyle };
 
     if (badge !== null) {
         badge.style = { ...badge?.style, marginLeft: 5 };
@@ -24,7 +24,7 @@ const Heading = (props) => {
     return (
         <View {...appendedProps}>
             {kicker && <Text style={kickerStyle}>{kicker}</Text>}
-            <View style={ss.title}>
+            <View style={styles.title}>
                 <Text style={textStyle}>{text}</Text>
                 {badge && <Badge xs {...badge} />}
             </View>
@@ -44,7 +44,7 @@ Heading.propTypes = {
     subtitleStyle: PropTypes.object,
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     title: {
         display: "flex",
         alignItems: "center",

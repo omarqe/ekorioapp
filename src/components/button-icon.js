@@ -20,8 +20,8 @@ const ButtonIcon = (props) => {
     } = props;
 
     let iconSize = small ? 20 : 22;
-    let innerStyle = { ...ss.inner };
-    let buttonStyle = { ...ss.base, ...style };
+    let innerStyle = { ...styles.inner };
+    let buttonStyle = { ...styles.base, ...style };
     let appendedProps = _omit(props, ["style", "color", "icon", "iconProps", "touchableStyle"]);
 
     if (inverted) color = CT.BG_GRAY_600;
@@ -53,7 +53,7 @@ const ButtonIcon = (props) => {
     return (
         <TouchableOpacity style={buttonStyle} {...appendedProps}>
             <View style={innerStyle}>
-                {glow && dot && <View style={ss.dot} />}
+                {glow && dot && <View style={styles.dot} />}
                 <Icon icon={[glow ? "fas" : "far", icon]} color={color} size={iconSize} {...iconProps} />
             </View>
         </TouchableOpacity>
@@ -72,7 +72,7 @@ ButtonIcon.propTypes = {
     iconProps: PropTypes.object,
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     base: {
         width: 40,
         height: 40,

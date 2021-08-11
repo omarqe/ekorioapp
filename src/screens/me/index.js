@@ -20,8 +20,8 @@ const MeScreen = () => {
                     <Heading
                         text="Eve Harrison"
                         subtitle="Joined 2 weeks ago"
-                        textStyle={ss.headerText}
-                        subtitleStyle={ss.headerSub}
+                        textStyle={styles.headerText}
+                        subtitleStyle={styles.headerSub}
                     />
                 </Header>
                 <Body gray flex></Body>
@@ -30,7 +30,7 @@ const MeScreen = () => {
     );
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     headerText: {
         color: CT.BG_PURPLE_50,
         fontSize: 18,

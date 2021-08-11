@@ -8,12 +8,12 @@ import { View, Text, StyleSheet } from "react-native";
 import _omit from "lodash/omit";
 
 const TopBar = (props) => {
-    let topBarStyle = { ...ss.base, ...style };
+    let topBarStyle = { ...styles.base, ...style };
     let { type = 0, style = {}, title = null, subtitle = null, logoProps = {} } = props;
     let { leftIcon, leftIconProps = {}, rightIcon, rightIconProps = {} } = props;
 
-    let leftIconStyle = ss.leftIcon;
-    let rightIconStyle = ss.rightIcon;
+    let leftIconStyle = styles.leftIcon;
+    let rightIconStyle = styles.rightIcon;
 
     // Update margins
     if (leftIconProps.glow === true) leftIconStyle = { ...leftIconStyle, marginRight: 0 };
@@ -24,8 +24,8 @@ const TopBar = (props) => {
         default:
             return (
                 <View style={topBarStyle}>
-                    <View style={ss.content}>
-                        <View style={ss.leftContent}>
+                    <View style={styles.content}>
+                        <View style={styles.leftContent}>
                             {leftIcon && (
                                 <ButtonIcon
                                     icon={leftIcon}
@@ -36,11 +36,11 @@ const TopBar = (props) => {
                                 />
                             )}
                         </View>
-                        <View style={ss.midContent}>
-                            <Text style={ss.title}>{title}</Text>
-                            {subtitle && <Text style={ss.subtitle}>{subtitle}</Text>}
+                        <View style={styles.midContent}>
+                            <Text style={styles.title}>{title}</Text>
+                            {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
                         </View>
-                        <View style={ss.rightContent}>
+                        <View style={styles.rightContent}>
                             {rightIcon && (
                                 <ButtonIcon
                                     icon={rightIcon}
@@ -58,9 +58,9 @@ const TopBar = (props) => {
         case 1:
             return (
                 <View style={topBarStyle}>
-                    <View style={ss.content}>
+                    <View style={styles.content}>
                         {leftIcon && (
-                            <View style={ss.leftContent}>
+                            <View style={styles.leftContent}>
                                 <ButtonIcon
                                     icon={leftIcon}
                                     style={leftIconStyle}
@@ -70,11 +70,11 @@ const TopBar = (props) => {
                                 />
                             </View>
                         )}
-                        <View style={{ ...ss.midContent, flex: 8 }}>
-                            <Text style={ss.largeTitle}>{title}</Text>
+                        <View style={{ ...styles.midContent, flex: 8 }}>
+                            <Text style={styles.largeTitle}>{title}</Text>
                         </View>
                         {rightIcon && (
-                            <View style={ss.rightContent}>
+                            <View style={styles.rightContent}>
                                 <ButtonIcon
                                     icon={rightIcon}
                                     style={rightIconStyle}
@@ -93,11 +93,11 @@ const TopBar = (props) => {
 
             return (
                 <View style={topBarStyle}>
-                    <View style={ss.content}>
-                        <View style={{ ...ss.leftContent, paddingTop: 4, justifyContent: "flex-start" }}>
+                    <View style={styles.content}>
+                        <View style={{ ...styles.leftContent, paddingTop: 4, justifyContent: "flex-start" }}>
                             <Logo {...logoProps} />
                         </View>
-                        <View style={ss.rightContent}>
+                        <View style={styles.rightContent}>
                             {rightIcon && (
                                 <ButtonIcon
                                     glow
@@ -114,8 +114,8 @@ const TopBar = (props) => {
         case 3:
             return (
                 <View style={topBarStyle}>
-                    <View style={ss.content}>
-                        <View style={ss.leftContent}>
+                    <View style={styles.content}>
+                        <View style={styles.leftContent}>
                             {leftIcon && (
                                 <ButtonIcon
                                     icon={leftIcon}
@@ -126,10 +126,10 @@ const TopBar = (props) => {
                                 />
                             )}
                         </View>
-                        <View style={{ ...ss.midContent, alignItems: "center" }}>
+                        <View style={{ ...styles.midContent, alignItems: "center" }}>
                             <Logo {...logoProps} />
                         </View>
-                        <View style={ss.rightContent}>
+                        <View style={styles.rightContent}>
                             {rightIcon && (
                                 <ButtonIcon
                                     icon={rightIcon}
@@ -159,7 +159,7 @@ TopBar.propTypes = {
 };
 
 const contentCommonStyle = { flex: 1, height: 40, display: "flex", justifyContent: "center" };
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     base: {
         width: "100%",
         zIndex: 10,

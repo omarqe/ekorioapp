@@ -9,9 +9,9 @@ import _renderIf from "../../functions/renderIf";
 const Pet = ({ add, active = false, onPress, onPressIn, onPressOut }) => {
     const [pressed, setPressed] = useState(false);
     let data = { name: "Cheshire", imageSrc: require("../../../assets/pet-sample.png") };
-    let nameStyle = ss.name;
-    let baseStyle = ss.base;
-    let imageBaseStyle = ss.imageBase;
+    let nameStyle = styles.name;
+    let baseStyle = styles.base;
+    let imageBaseStyle = styles.imageBase;
 
     if (add) active = false;
     if (active) {
@@ -39,7 +39,7 @@ const Pet = ({ add, active = false, onPress, onPressIn, onPressOut }) => {
                     {_renderIf(
                         add === true,
                         <Icon icon="far plus" color={CT.BG_PURPLE_400} size={20} />,
-                        <Image style={ss.image} source={data?.imageSrc} />
+                        <Image style={styles.image} source={data?.imageSrc} />
                     )}
                 </View>
                 <Text style={nameStyle}>{add ? "Add Pet" : data?.name}</Text>
@@ -59,7 +59,7 @@ Pet.propTypes = {
 
 const size = 60;
 const padding = 3;
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     base: {
         width: size + padding * 2,
         marginRight: 10,

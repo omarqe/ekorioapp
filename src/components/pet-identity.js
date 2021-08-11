@@ -13,15 +13,15 @@ const PetIdentity = ({ data }) => {
 
     return (
         <React.Fragment>
-            <View style={ss.headingSection}>
+            <View style={styles.headingSection}>
                 <Heading text="Pet Identity" subtitle="Family since 20 June 2021" badge={{ text: "Cat" }} />
-                <View style={ss.actionBtnContainer}>
+                <View style={styles.actionBtnContainer}>
                     <Button icon="far edit" label="Update Pet" color="white" small iconRight />
                 </View>
             </View>
 
             {chunks.map((items, i) => (
-                <View key={i} style={{ ...ss.row, marginBottom: i === chunks.length - 1 ? 0 : 15 }}>
+                <View key={i} style={{ ...styles.row, marginBottom: i === chunks.length - 1 ? 0 : 15 }}>
                     {items.map((props, j) => (
                         <PetID key={j} {...props} />
                     ))}
@@ -31,7 +31,7 @@ const PetIdentity = ({ data }) => {
     );
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     row: {
         display: "flex",
         flexDirection: "row",

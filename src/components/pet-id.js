@@ -13,26 +13,26 @@ const PetID = ({ label, value, style, labelStyle, valueStyle, verified = false }
     let colors = [];
     if (valueIsArray) {
         value.map((color, i) => {
-            colors = [...colors, <View key={i} style={{ ...ss.colorBlock, backgroundColor: color }} />];
+            colors = [...colors, <View key={i} style={{ ...styles.colorBlock, backgroundColor: color }} />];
         });
     }
 
     return (
-        <View style={{ ...ss.base, ...style }}>
-            <Text style={{ ...ss.label, ...labelStyle }}>{label}</Text>
+        <View style={{ ...styles.base, ...style }}>
+            <Text style={{ ...styles.label, ...labelStyle }}>{label}</Text>
             {_renderIf(
                 valueIsArray,
-                <View style={ss.colorBlocks}>{colors}</View>,
-                <View style={ss.valueBlock}>
-                    <Text style={{ ...ss.value, ...valueStyle }}>{value}</Text>
-                    {verified && <Icon icon="fas badge-check" style={ss.verified} />}
+                <View style={styles.colorBlocks}>{colors}</View>,
+                <View style={styles.valueBlock}>
+                    <Text style={{ ...styles.value, ...valueStyle }}>{value}</Text>
+                    {verified && <Icon icon="fas badge-check" style={styles.verified} />}
                 </View>
             )}
         </View>
     );
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     base: {
         flex: 1,
     },

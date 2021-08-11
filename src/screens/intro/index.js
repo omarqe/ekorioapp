@@ -8,17 +8,17 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function IntroScreen({ navigation: nav }) {
     return (
-        <Container style={ss.container} paddingX={40} isLogin>
+        <Container style={styles.container} paddingX={40} isLogin>
             <StarsBackdrop />
-            <View style={ss.artContainer}>
+            <View style={styles.artContainer}>
                 <IntroArt width={280} height={325} />
             </View>
 
-            <View style={ss.ctaContainer}>
+            <View style={styles.ctaContainer}>
                 <Button label="Create a Free Account" style={{ marginBottom: 15 }} onPress={() => nav.navigate("signup")} />
                 <TouchableOpacity onPress={() => nav.navigate("signin")}>
-                    <Text style={ss.signInHint}>
-                        Already a member? <Text style={ss.signInEmphasis}>Sign in.</Text>
+                    <Text style={styles.signInHint}>
+                        Already a member? <Text style={styles.signInEmphasis}>Sign in.</Text>
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -26,7 +26,7 @@ export default function IntroScreen({ navigation: nav }) {
     );
 }
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         display: "flex",
         alignItems: "center",

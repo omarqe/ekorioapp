@@ -11,6 +11,6 @@ const AppointmentScreen = () => {
     );
 };
 
-const ss = StyleSheet.create({});
+const styles = StyleSheet.create({});
 
 export default AppointmentScreen;

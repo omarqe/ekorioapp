@@ -15,10 +15,10 @@ const LoginBody = ({ label, fields = [] }) => {
     }
 
     return (
-        <View style={ss.container}>
+        <View style={styles.container}>
             <WaveForm />
-            <ScrollView style={ss.body} keyboardShouldPersistTaps="always">
-                <View style={ss.content}>
+            <ScrollView style={styles.body} keyboardShouldPersistTaps="always">
+                <View style={styles.content}>
                     <Fields fields={fields} grouping={grouping} />
                 </View>
                 <Button label={label} onPress={onSubmit} />
@@ -32,7 +32,7 @@ LoginBody.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.object),
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         position: "relative",
     },

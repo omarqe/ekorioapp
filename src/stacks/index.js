@@ -53,7 +53,7 @@ export default {
     },
 
     Authenticated: () => {
-        const { tabBarStyle, tabBarItemStyle } = ss;
+        const { tabBarStyle, tabBarItemStyle } = styles;
         const tabs = [
             {
                 name: "home_stacks",
@@ -88,15 +88,15 @@ export default {
             tabBarIcon: ({ focused }) => {
                 const Icon = _find(tabs, ["name", route?.name]).icons[focused ? 1 : 0];
                 return (
-                    <View style={ss.iconContainer}>
-                        {focused && <View style={ss.iconShadow} />}
+                    <View style={styles.iconContainer}>
+                        {focused && <View style={styles.iconShadow} />}
                         <Icon />
                     </View>
                 );
             },
             tabBarLabel: ({ focused }) => {
                 const label = _find(tabs, (o) => o.name === route?.name).label ?? route?.name;
-                const labelStyle = { ...ss.label, color: focused ? CT.BG_PURPLE_500 : CT.BG_GRAY_500 };
+                const labelStyle = { ...styles.label, color: focused ? CT.BG_PURPLE_500 : CT.BG_GRAY_500 };
                 return <Text style={labelStyle}>{label}</Text>;
             },
         });
@@ -111,7 +111,7 @@ export default {
     },
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     label: {
         fontSize: 12,
         fontWeight: "500",

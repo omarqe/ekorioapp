@@ -39,27 +39,27 @@ export default function SignupVerifyScreen({ navigation }) {
 
     return (
         <Container paddingX={25} statusBarStyle="dark" isLogin>
-            <View style={ss.top}>
+            <View style={styles.top}>
                 <ButtonIcon icon="arrow-left" onPress={goBack} inverted />
             </View>
-            <KeyboardAvoidingView style={ss.body} behavior="padding">
+            <KeyboardAvoidingView style={styles.body} behavior="padding">
                 <OTPIcon />
-                <View style={ss.description}>
-                    <Text style={ss.heading}>Please enter verification code</Text>
-                    <Text style={ss.subtitle}>We've sent verification code to:</Text>
+                <View style={styles.description}>
+                    <Text style={styles.heading}>Please enter verification code</Text>
+                    <Text style={styles.subtitle}>We've sent verification code to:</Text>
                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                        <Text style={ss.subtitlePhone}>+60 12-345 6789</Text>
+                        <Text style={styles.subtitlePhone}>+60 12-345 6789</Text>
                         <TouchableOpacity>
-                            <Text style={ss.subtitleWrongNumber}>(Wrong number?)</Text>
+                            <Text style={styles.subtitleWrongNumber}>(Wrong number?)</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
                 <TouchableWithoutFeedback onPress={onFocus}>
-                    <View style={ss.otpContainer}>
+                    <View style={styles.otpContainer}>
                         {_times(6, (n) => {
                             const digit = otp[n] !== undefined ? otp[n] : null;
                             const hasDigit = digit !== null;
-                            const digitStyle = { ...ss.otpDigit, color: hasDigit ? CT.BG_GRAY_900 : CT.BG_GRAY_200 };
+                            const digitStyle = { ...styles.otpDigit, color: hasDigit ? CT.BG_GRAY_900 : CT.BG_GRAY_200 };
 
                             return (
                                 <React.Fragment key={n}>
@@ -71,9 +71,9 @@ export default function SignupVerifyScreen({ navigation }) {
                     </View>
                 </TouchableWithoutFeedback>
                 <View>
-                    <Text style={ss.ctaNotReceive}>Didn't receive the code?</Text>
+                    <Text style={styles.ctaNotReceive}>Didn't receive the code?</Text>
                     <TouchableOpacity disabled={sec > 0}>
-                        <Text style={{ ...ss.ctaResend, opacity: resendDisabled ? 0.3 : 1 }}>
+                        <Text style={{ ...styles.ctaResend, opacity: resendDisabled ? 0.3 : 1 }}>
                             {resendDisabled ? `RESEND IN ${sec}s` : "RESEND CODE"}
                         </Text>
                     </TouchableOpacity>
@@ -82,7 +82,7 @@ export default function SignupVerifyScreen({ navigation }) {
                 <TextInput
                     ref={ref}
                     value={otp}
-                    style={ss.inputStyle}
+                    style={styles.inputStyle}
                     onChangeText={onChangeOTP}
                     keyboardType="number-pad"
                     textContentType="oneTimeCode"
@@ -93,7 +93,7 @@ export default function SignupVerifyScreen({ navigation }) {
     );
 }
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     description: {
         marginTop: 15,
     },

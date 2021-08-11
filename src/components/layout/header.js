@@ -9,8 +9,8 @@ import _renderIf from "../../functions/renderIf";
 const Header = (props) => {
     let { children, overlap = false, horizontal = false, contentStyle: cStyle = {}, contentProps = {} } = props;
     let appendedProps = _omit(props, ["children", "contentStyle"]);
-    let contentStyle = { ...ss.content, ...cStyle };
-    let baseStyle = ss.base;
+    let contentStyle = { ...styles.content, ...cStyle };
+    let baseStyle = styles.base;
 
     if (horizontal) {
         contentProps = {
@@ -46,7 +46,7 @@ Header.propTypes = {
     contentProps: PropTypes.object,
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     base: {
         paddingBottom: 20,
         backgroundColor: CT.BG_PURPLE_900,
