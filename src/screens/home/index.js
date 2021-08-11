@@ -102,7 +102,7 @@ const Home = ({ route }) => {
             />
 
             <Layout gray withHeader>
-                <Header horizontal>
+                <Header horizontal overlap>
                     <Pet active />
                     <Pet add />
                 </Header>
