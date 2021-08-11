@@ -6,7 +6,7 @@ import { StyleSheet } from "react-native";
 const MeScreen = () => {
     return (
         <Container>
-            <TopBar type={1} title="Me" leftIcon="arrow-left" />
+            <TopBar type={1} title="Me" />
         </Container>
     );
 };
