@@ -96,7 +96,7 @@ const ss = StyleSheet.create({
         paddingRight: 10,
     },
     tabBarItemStyle: {
-        paddingTop: CT.IS_IOS ? 0 : 15,
+        paddingTop: CT.IS_IOS ? 0 : 8,
         paddingBottom: CT.IS_IOS ? 0 : 15,
     },
     iconShadow: {
