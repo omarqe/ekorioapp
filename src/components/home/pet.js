@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CT from "../../const.js";
 import Icon from "../icon";
 import PropTypes from "prop-types";
-import { Text, View, Image, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { Text, View, Image, StyleSheet, Pressable } from "react-native";
 
 import _renderIf from "../../functions/renderIf";
 
@@ -33,7 +33,7 @@ const Pet = ({ add, active = false, onPress, onPressIn, onPressOut }) => {
     };
 
     return (
-        <TouchableWithoutFeedback onPress={onPress} onPressOut={_onPressOut} onPressIn={_onPressIn}>
+        <Pressable onPress={onPress} onPressOut={_onPressOut} onPressIn={_onPressIn}>
             <View style={baseStyle}>
                 <View style={imageBaseStyle}>
                     {_renderIf(
@@ -44,7 +44,7 @@ const Pet = ({ add, active = false, onPress, onPressIn, onPressOut }) => {
                 </View>
                 <Text style={nameStyle}>{add ? "Add Pet" : data?.name}</Text>
             </View>
-        </TouchableWithoutFeedback>
+        </Pressable>
     );
 };
 
