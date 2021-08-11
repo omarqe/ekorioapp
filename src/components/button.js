@@ -70,6 +70,7 @@ const ss = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         flexDirection: "row",
+        justifyContent: "center",
         borderRadius: radius,
         backgroundColor: CT.BG_YELLOW_500,
     },
