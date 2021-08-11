@@ -56,39 +56,40 @@ export default function App() {
         { name: "appointments", component: HomeStackScreen },
         { name: "me", component: HomeStackScreen },
     ];
+    const tabScreenOptions = ({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ focused }) => {
+            const icons = {
+                home: [SpaceCatIcon, SpaceCatIconActive],
+                veterinars: [HospitalIcon, HospitalIconActive],
+                appointments: [CalendarIcon, CalendarIconActive],
+                me: [MeIcon, MeIconActive],
+            };
+            const Icon = icons[route?.name][focused ? 1 : 0];
+            return <Icon />;
+        },
+        tabBarLabel: ({ focused }) => {
+            const style = {
+                color: focused ? CT.BG_PURPLE_500 : CT.BG_GRAY_500,
+                fontSize: 12,
+                fontWeight: "500",
+                textTransform: "capitalize",
+            };
+            return <Text style={style}>{route?.name}</Text>;
+        },
+        tabBarStyle: {
+            height: CT.IS_IOS ? 90 : 80,
+        },
+        tabBarItemStyle: {
+            paddingTop: CT.IS_IOS ? 0 : 15,
+            paddingBottom: CT.IS_IOS ? 0 : 15,
+        },
+    });
 
     return (
         <ActionSheetProvider>
             <NavigationContainer>
-                <Tab.Navigator
-                    screenOptions={({ route }) => ({
-                        headerShown: false,
-                        tabBarIcon: ({ focused }) => {
-                            const icons = {
-                                home: [SpaceCatIcon, SpaceCatIconActive],
-                                veterinars: [HospitalIcon, HospitalIconActive],
-                                appointments: [CalendarIcon, CalendarIconActive],
-                                me: [MeIcon, MeIconActive],
-                            };
-
-                            const Icon = icons[route?.name][focused ? 1 : 0];
-                            return <Icon />;
-                        },
-                        tabBarLabel: ({ focused }) => {
-                            const style = {
-                                color: focused ? CT.BG_PURPLE_500 : CT.BG_GRAY_500,
-                                fontSize: 12,
-                                fontWeight: focused ? "600" : "500",
-                                textTransform: "capitalize",
-                            };
-                            return <Text style={style}>{route?.name}</Text>;
-                        },
-                        tabBarStyle: {
-                            height: 90,
-                            borderColor: CT.BG_BLACK,
-                        },
-                    })}
-                >
+                <Tab.Navigator screenOptions={tabScreenOptions}>
                     {tabs.map((props, i) => (
                         <Tab.Screen key={i} {...props} />
                     ))}
