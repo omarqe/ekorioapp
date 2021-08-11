@@ -96,7 +96,7 @@ const Home = ({ route }) => {
             <TopBar
                 type={2}
                 leftIcon="arrow-left"
-                rightIcon="bell"
+                rightIcon="cog"
                 rightIconProps={{ onPress: () => alert("Opening notifications..") }}
                 logoProps={{ onPress: () => alert("Moving up!") }}
             />

@@ -5,24 +5,27 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 // Menu Icons
 import MeIcon from "../../assets/icons/user-circle.svg";
-import SpaceCatIcon from "../../assets/icons/space-cat.svg";
-import HospitalIcon from "../../assets/icons/hospital.svg";
-import CalendarIcon from "../../assets/icons/calendar.svg";
 import MeIconActive from "../../assets/icons/user-circle__active.svg";
+import BellsIcon from "../../assets/icons/bells.svg";
+import BellsIconActive from "../../assets/icons/bells__active.svg";
+import SpaceCatIcon from "../../assets/icons/space-cat.svg";
 import SpaceCatIconActive from "../../assets/icons/space-cat__active.svg";
-import HospitalIconActive from "../../assets/icons/hospital__active.svg";
-import CalendarIconActive from "../../assets/icons/calendar.svg";
+import CalendarIcon from "../../assets/icons/calendar.svg";
+import CalendarIconActive from "../../assets/icons/calendar__active.svg";
+// import HospitalIcon from "../../assets/icons/hospital.svg";
+// import HospitalIconActive from "../../assets/icons/hospital__active.svg";
 
 // Navigation Stacks
-import HomeStackScreen from "../stacks/home";
+import HomeStackScreen from "./home";
 
 const Tab = createBottomTabNavigator();
 export default {
     Inner: () => {
         const tabs = [
             { name: "home", component: HomeStackScreen },
-            { name: "veterinars", component: HomeStackScreen },
+            // { name: "veterinars", component: HomeStackScreen },
             { name: "appointments", component: HomeStackScreen },
+            { name: "notifications", component: HomeStackScreen },
             { name: "me", component: HomeStackScreen },
         ];
         const screenOptions = ({ route }) => ({
@@ -30,8 +33,9 @@ export default {
             tabBarIcon: ({ focused }) => {
                 const icons = {
                     home: [SpaceCatIcon, SpaceCatIconActive],
-                    veterinars: [HospitalIcon, HospitalIconActive],
+                    // veterinars: [HospitalIcon, HospitalIconActive],
                     appointments: [CalendarIcon, CalendarIconActive],
+                    notifications: [BellsIcon, BellsIconActive],
                     me: [MeIcon, MeIconActive],
                 };
                 const Icon = icons[route?.name][focused ? 1 : 0];
