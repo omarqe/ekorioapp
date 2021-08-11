@@ -19,7 +19,7 @@ const MeScreen = () => {
                 <Header>
                     <Heading
                         text="Eve Harrison"
-                        subtitle="Joined 2 weeks ago"
+                        subtitle="Member since 2 weeks ago"
                         textStyle={styles.headerText}
                         subtitleStyle={styles.headerSub}
                     />

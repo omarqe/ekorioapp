@@ -89,8 +89,8 @@ const styles = StyleSheet.create({
     },
     badgeContainer: {
         display: "flex",
-        minWidth: 40,
-        marginRight: 10,
+        minWidth: 39,
+        marginRight: 8,
     },
     badge: {
         textAlign: "center",

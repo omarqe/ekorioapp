@@ -17,7 +17,7 @@ const Badge = (props) => {
     // Control badge appearance based on size
     switch (size) {
         case 0:
-            baseStyle = { ...baseStyle, padding: 5, paddingLeft: 6, paddingRight: 6, borderRadius: 6 };
+            baseStyle = { ...baseStyle, padding: 4, paddingLeft: 5, paddingRight: 6, borderRadius: 6 };
             textStyle = { ...textStyle, fontSize: 12 };
             break;
         case 1:
