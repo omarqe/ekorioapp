@@ -15,7 +15,7 @@ export default function IntroScreen({ navigation: nav }) {
             </View>
 
             <View style={styles.ctaContainer}>
-                <Button label="Create a Free Account" style={{ marginBottom: 15 }} onPress={() => nav.navigate("signup")} />
+                <Button label="Create a Free Account" style={{ marginBottom: 5 }} onPress={() => nav.navigate("signup")} />
                 <TouchableOpacity onPress={() => nav.navigate("signin")}>
                     <Text style={styles.signInHint}>
                         Already a member? <Text style={styles.signInEmphasis}>Sign in.</Text>
@@ -41,12 +41,13 @@ const styles = StyleSheet.create({
     },
     ctaContainer: {
         width: "100%",
-        bottom: 10,
+        bottom: CT.IS_IOS ? 0 : 20,
         display: "flex",
         position: "absolute",
     },
     signInHint: {
         color: CT.BG_PURPLE_300,
+        padding: 10,
         fontSize: 16,
         textAlign: "center",
     },

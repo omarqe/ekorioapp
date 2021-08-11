@@ -35,18 +35,18 @@ const Stack = createStackNavigator();
 
 export default {
     Intro: () => {
-        const options = { headerShown: false, animationTypeForReplace: "pop" };
+        const options = { headerShown: false };
         const screens = [
             { name: "intro", component: IntroScreen },
-            { name: "signin", component: SigninScreen },
+            { name: "signin", component: SigninScreen, options: { animationTypeForReplace: "push" } },
             { name: "signup", component: SignupScreen },
-            { name: "signup-verify", component: SignupVerifyScreen },
+            { name: "signup-verify", component: SignupVerifyScreen, options: { animationTypeForReplace: "push" } },
         ];
 
         return (
             <Stack.Navigator>
                 {screens.map((props, i) => (
-                    <Stack.Screen key={i} {...props} options={options} />
+                    <Stack.Screen key={i} {...props} options={{ ...options, ...props?.options }} />
                 ))}
             </Stack.Navigator>
         );

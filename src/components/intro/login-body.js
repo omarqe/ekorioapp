@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     body: {
         padding: CT.LOGIN_CONTENT_PADDING,
         paddingTop: 40,
-        paddingBottom: 30,
+        paddingBottom: 10,
         backgroundColor: CT.BG_WHITE,
     },
     content: {
