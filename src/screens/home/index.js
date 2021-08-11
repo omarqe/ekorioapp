@@ -128,7 +128,7 @@ const Home = ({ route }) => {
                 </Body>
             </Layout>
 
-            <Menu name={route?.name} />
+            {/* <Menu name={route?.name} /> */}
         </Container>
     );
 };

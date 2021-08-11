@@ -3,15 +3,14 @@ import CT from "../../const.js";
 import PropTypes from "prop-types";
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
 
+import User from "../../../assets/icons/user-circle.svg";
 import SpaceCat from "../../../assets/icons/cat-space.svg";
 import Hospital from "../../../assets/icons/hospital.svg";
 import Calendar from "../../../assets/icons/calendar-alt.svg";
-import User from "../../../assets/icons/user-circle.svg";
-
+import UserActive from "../../../assets/icons/user-circle__active.svg";
 import SpaceCatActive from "../../../assets/icons/cat-space__active.svg";
 import HospitalActive from "../../../assets/icons/hospital__active.svg";
 import CalendarActive from "../../../assets/icons/calendar-alt__active.svg";
-import UserActive from "../../../assets/icons/user-circle__active.svg";
 
 const Menu = ({ name = 0 }) => {
     const menu = [
