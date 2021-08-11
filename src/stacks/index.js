@@ -21,30 +21,45 @@ import VeterinarStacks from "./stacks-veterinar";
 import AppointmentStacks from "./stacks-appointment";
 import MeStacks from "./stacks-me";
 
+import _find from "lodash/find";
+
 const Tab = createBottomTabNavigator();
 export default {
     Inner: () => {
         const { tabBarStyle, tabBarItemStyle } = ss;
         const tabs = [
-            { name: "home", component: HomeStacks },
-            { name: "veterinars", component: VeterinarStacks },
-            { name: "appointments", component: AppointmentStacks },
-            // { name: "notifications", component: HomeStacks },
-            { name: "me", component: MeStacks },
+            {
+                name: "home_stacks",
+                label: "My Pets",
+                icons: [SpaceCatIcon, SpaceCatIconActive],
+                component: HomeStacks,
+            },
+            {
+                name: "veterinar_stacks",
+                label: "Find Vets",
+                icons: [HospitalIcon, HospitalIconActive],
+                component: VeterinarStacks,
+            },
+            {
+                name: "appointment_stacks",
+                label: "Appointments",
+                icons: [CalendarIcon, CalendarIconActive],
+                component: AppointmentStacks,
+            },
+            {
+                name: "me_stacks",
+                label: "Me",
+                icons: [MeIcon, MeIconActive],
+                component: MeStacks,
+            },
         ];
+
         const screenOptions = ({ route }) => ({
             headerShown: false,
             tabBarStyle,
             tabBarItemStyle,
             tabBarIcon: ({ focused }) => {
-                const icons = {
-                    home: [SpaceCatIcon, SpaceCatIconActive],
-                    veterinars: [HospitalIcon, HospitalIconActive],
-                    appointments: [CalendarIcon, CalendarIconActive],
-                    // notifications: [BellsIcon, BellsIconActive],
-                    me: [MeIcon, MeIconActive],
-                };
-                const Icon = icons[route?.name][focused ? 1 : 0];
+                const Icon = _find(tabs, ["name", route?.name]).icons[focused ? 1 : 0];
                 return (
                     <View style={ss.iconContainer}>
                         {focused && <View style={ss.iconShadow} />}
@@ -53,9 +68,9 @@ export default {
                 );
             },
             tabBarLabel: ({ focused }) => {
-                const names = { home: "My Pets", veterinars: "Find Vets" };
+                const label = _find(tabs, (o) => o.name === route?.name).label ?? route?.name;
                 const labelStyle = { ...ss.label, color: focused ? CT.BG_PURPLE_500 : CT.BG_GRAY_500 };
-                return <Text style={labelStyle}>{names[route?.name] ?? route?.name}</Text>;
+                return <Text style={labelStyle}>{label}</Text>;
             },
         });
 
