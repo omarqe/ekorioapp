@@ -1,6 +1,6 @@
 import React from "react";
 import CT from "../const";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 // Menu Icons
