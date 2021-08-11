@@ -3,12 +3,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import HomeScreen from "../screens/home";
 
-const HomeStack = createStackNavigator();
-const HomeStackScreen = () => {
+const Stack = createStackNavigator();
+const HomeStacks = () => {
     const options = { screenOptions: { headerShown: false } };
     const screens = [{ name: "home", component: HomeScreen }];
 
-    return _renderStacks(HomeStack, screens, options);
+    return _renderStacks(Stack, screens, options);
 };
 
-export default HomeStackScreen;
+export default HomeStacks;

@@ -16,18 +16,21 @@ import HospitalIconActive from "../../assets/icons/hospital__active.svg";
 // import BellsIconActive from "../../assets/icons/bells__active.svg";
 
 // Navigation Stacks
-import HomeStackScreen from "./home-stack";
+import HomeStacks from "./stacks-home";
+import VeterinarStacks from "./stacks-veterinar";
+import AppointmentStacks from "./stacks-appointment";
+import MeStacks from "./stacks-me";
 
 const Tab = createBottomTabNavigator();
 export default {
     Inner: () => {
         const { tabBarStyle, tabBarItemStyle } = ss;
         const tabs = [
-            { name: "home", component: HomeStackScreen },
-            { name: "veterinars", component: HomeStackScreen },
-            { name: "appointments", component: HomeStackScreen },
-            // { name: "notifications", component: HomeStackScreen },
-            { name: "me", component: HomeStackScreen },
+            { name: "home", component: HomeStacks },
+            { name: "veterinars", component: VeterinarStacks },
+            { name: "appointments", component: AppointmentStacks },
+            // { name: "notifications", component: HomeStacks },
+            { name: "me", component: MeStacks },
         ];
         const screenOptions = ({ route }) => ({
             headerShown: false,
