@@ -1,5 +1,5 @@
 import React from "react";
-import Interfaces from "./src/stacks/interfaces";
+import UIStacks from "./src/stacks";
 import { NavigationContainer } from "@react-navigation/native";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 
@@ -15,7 +15,7 @@ export default function App() {
     return (
         <ActionSheetProvider>
             <NavigationContainer>
-                <Interfaces.Inner />
+                <UIStacks.Inner />
             </NavigationContainer>
         </ActionSheetProvider>
     );
