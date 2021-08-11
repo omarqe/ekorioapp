@@ -11,6 +11,7 @@ const ButtonIcon = (props) => {
         style = {},
         color = CT.BG_WHITE,
         icon,
+        dot = false,
         glow = false,
         small = false,
         disabled = false,
@@ -52,6 +53,7 @@ const ButtonIcon = (props) => {
     return (
         <TouchableOpacity style={buttonStyle} {...appendedProps}>
             <View style={innerStyle}>
+                {glow && dot && <View style={ss.dot} />}
                 <Icon icon={[glow ? "fas" : "far", icon]} color={color} size={iconSize} {...iconProps} />
             </View>
         </TouchableOpacity>
@@ -62,6 +64,7 @@ ButtonIcon.propTypes = {
     style: PropTypes.object,
     color: PropTypes.string,
     icon: PropTypes.string.isRequired,
+    dot: PropTypes.bool,
     glow: PropTypes.bool,
     small: PropTypes.bool,
     disabled: PropTypes.bool,
@@ -79,6 +82,15 @@ const ss = StyleSheet.create({
     },
     inner: {
         padding: 5,
+        position: "relative",
+    },
+    dot: {
+        right: 0,
+        width: 7,
+        height: 7,
+        position: "absolute",
+        borderRadius: 7,
+        backgroundColor: CT.BG_YELLOW_500,
     },
 });
 
