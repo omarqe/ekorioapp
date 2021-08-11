@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import CT from "../../const.js";
 import Context from "../../components/context";
 import Container from "../../components/container";
 import LoginComponent from "../../components/intro/login-component";
 
 export default function SigninScreen({ navigation }) {
-    const onSubmit = () => navigation.navigate("home"); // temporary...
     const Provider = Context.Login.Provider;
+    const auth = useContext(Context.Auth);
     const fields = [
         { type: "email", label: "Email Address", placeholder: "john@email.com" },
         { type: "password", label: "Password", placeholder: "••••••••" },
     ];
+
+    const onSubmit = () => auth.onLogin(true); // temporary...
 
     return (
         <Container bgColor={CT.BG_PURPLE_900} paddingX={0} isLogin>

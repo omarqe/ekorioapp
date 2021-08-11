@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import CT from "../../const.js";
+import Context from "../../components/context";
 import OTPIcon from "../../../assets/arts/otp-icon.svg";
 import Container from "../../components/container";
 import ButtonIcon from "../../components/button-icon";
@@ -19,14 +20,14 @@ export default function SignupVerifyScreen({ navigation }) {
     const [otp, setOTP] = useState("");
     const [sec, setSec] = useState(CT.LOGIN_OTP_TIMEOUT);
     const ref = useRef(null);
+    const auth = useContext(Context.Auth);
     const resendDisabled = sec > 0;
     const goBack = () => navigation.goBack();
     const onFocus = () => ref?.current?.focus();
     const onChangeOTP = (otp) => {
         setOTP(otp);
         if (otp?.length >= 6) {
-            // temporary..
-            navigation.navigate("home");
+            auth.onLogin(true);
         }
     };
 

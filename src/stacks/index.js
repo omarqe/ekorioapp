@@ -1,6 +1,7 @@
 import React from "react";
 import CT from "../const";
 import { View, Text, StyleSheet } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 // Menu Icons
@@ -21,10 +22,36 @@ import VeterinarStacks from "./stacks-veterinar";
 import AppointmentStacks from "./stacks-appointment";
 import MeStacks from "./stacks-me";
 
+// Intro Screens
+import IntroScreen from "../screens/intro";
+import SigninScreen from "../screens/intro/signin";
+import SignupScreen from "../screens/intro/signup";
+import SignupVerifyScreen from "../screens/intro/signup-verify";
+
 import _find from "lodash/find";
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
 export default {
+    Intro: () => {
+        const options = { headerShown: false, animationTypeForReplace: "pop" };
+        const screens = [
+            { name: "intro", component: IntroScreen },
+            { name: "signin", component: SigninScreen },
+            { name: "signup", component: SignupScreen },
+            { name: "signup-verify", component: SignupVerifyScreen },
+        ];
+
+        return (
+            <Stack.Navigator>
+                {screens.map((props, i) => (
+                    <Stack.Screen key={i} {...props} options={options} />
+                ))}
+            </Stack.Navigator>
+        );
+    },
+
     Authenticated: () => {
         const { tabBarStyle, tabBarItemStyle } = ss;
         const tabs = [
