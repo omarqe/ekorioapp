@@ -4,7 +4,6 @@ import CT from "../../const.js";
 import HealthDetails from "../../components/home/health-details.js";
 import Charts from "../../components/home/charts";
 import Pet from "../../components/home/pet";
-import Menu from "../../components/layout/menu";
 import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
@@ -127,8 +126,6 @@ const Home = ({ route }) => {
                     <PetIdentity data={petData} />
                 </Body>
             </Layout>
-
-            {/* <Menu name={route?.name} /> */}
         </Container>
     );
 };

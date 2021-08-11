@@ -4,17 +4,17 @@ import { Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 // Menu Icons
-import MeIcon from "./assets/icons/user-circle.svg";
-import SpaceCatIcon from "./assets/icons/cat-space.svg";
-import HospitalIcon from "./assets/icons/hospital.svg";
-import CalendarIcon from "./assets/icons/calendar-alt.svg";
-import MeIconActive from "./assets/icons/user-circle__active.svg";
-import SpaceCatIconActive from "./assets/icons/cat-space__active.svg";
-import HospitalIconActive from "./assets/icons/hospital__active.svg";
-import CalendarIconActive from "./assets/icons/calendar-alt__active.svg";
+import MeIcon from "../../assets/icons/user-circle.svg";
+import SpaceCatIcon from "../../assets/icons/space-cat.svg";
+import HospitalIcon from "../../assets/icons/hospital.svg";
+import CalendarIcon from "../../assets/icons/calendar.svg";
+import MeIconActive from "../../assets/icons/user-circle__active.svg";
+import SpaceCatIconActive from "../../assets/icons/space-cat__active.svg";
+import HospitalIconActive from "../../assets/icons/hospital__active.svg";
+import CalendarIconActive from "../../assets/icons/calendar.svg";
 
 // Navigation Stacks
-import HomeStackScreen from "./src/stacks/home";
+import HomeStackScreen from "../stacks/home";
 
 const Tab = createBottomTabNavigator();
 export default {
