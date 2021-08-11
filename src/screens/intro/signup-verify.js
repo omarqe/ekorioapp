@@ -1,17 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import CT from "../../const.json";
+import React, { useRef, useState, useEffect, useContext } from "react";
+import CT from "../../const.js";
+import Context from "../../components/context";
 import OTPIcon from "../../../assets/arts/otp-icon.svg";
 import Container from "../../components/container";
-import ButtonOrb from "../../components/button-orb";
-import {
-    View,
-    Text,
-    TextInput,
-    StyleSheet,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    KeyboardAvoidingView,
-} from "react-native";
+import ButtonIcon from "../../components/button-icon";
+import KeyboardAvoiding from "../../components/keyboard-avoiding";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 
 import _times from "lodash/times";
 
@@ -19,10 +13,16 @@ export default function SignupVerifyScreen({ navigation }) {
     const [otp, setOTP] = useState("");
     const [sec, setSec] = useState(CT.LOGIN_OTP_TIMEOUT);
     const ref = useRef(null);
+    const auth = useContext(Context.Auth);
     const resendDisabled = sec > 0;
     const goBack = () => navigation.goBack();
     const onFocus = () => ref?.current?.focus();
-    const onChangeOTP = (otp) => setOTP(otp);
+    const onChangeOTP = (otp) => {
+        setOTP(otp);
+        if (otp?.length >= 6) {
+            auth.onLogin(true);
+        }
+    };
 
     // Resend OTP timer
     useEffect(() => {
@@ -31,31 +31,31 @@ export default function SignupVerifyScreen({ navigation }) {
     }, [sec]);
 
     return (
-        <Container paddingX={25} isLogin>
-            <View style={ss.top}>
-                <ButtonOrb icon="arrow-left" onPress={goBack} inverted />
+        <Container paddingX={25} statusBarStyle="dark" safeTop="light" isLogin>
+            <View style={styles.top}>
+                <ButtonIcon icon="arrow-left" onPress={goBack} inverted />
             </View>
-            <KeyboardAvoidingView style={ss.body} behavior="padding">
+            <KeyboardAvoiding style={styles.body}>
                 <OTPIcon />
-                <View style={ss.description}>
-                    <Text style={ss.heading}>Please enter verification code</Text>
-                    <Text style={ss.subtitle}>We've sent verification code to:</Text>
+                <View style={styles.description}>
+                    <Text style={styles.heading}>Please enter verification code</Text>
+                    <Text style={styles.subtitle}>We've sent verification code to:</Text>
                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                        <Text style={ss.subtitlePhone}>+60 12-345 6789</Text>
+                        <Text style={styles.subtitlePhone}>+60 12-345 6789</Text>
                         <TouchableOpacity>
-                            <Text style={ss.subtitleWrongNumber}>(Wrong number?)</Text>
+                            <Text style={styles.subtitleWrongNumber}>(Wrong number?)</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
                 <TouchableWithoutFeedback onPress={onFocus}>
-                    <View style={ss.otpContainer}>
-                        {_times(6, (n, key) => {
+                    <View style={styles.otpContainer}>
+                        {_times(6, (n) => {
                             const digit = otp[n] !== undefined ? otp[n] : null;
                             const hasDigit = digit !== null;
-                            const digitStyle = { ...ss.otpDigit, color: hasDigit ? CT.BG_GRAY_900 : CT.BG_GRAY_200 };
+                            const digitStyle = { ...styles.otpDigit, color: hasDigit ? CT.BG_GRAY_900 : CT.BG_GRAY_200 };
 
                             return (
-                                <React.Fragment key={key}>
+                                <React.Fragment key={n}>
                                     <Text style={digitStyle}>{digit ?? "-"}</Text>
                                     {n === 2 && <View style={{ width: 5 }} />}
                                 </React.Fragment>
@@ -64,9 +64,9 @@ export default function SignupVerifyScreen({ navigation }) {
                     </View>
                 </TouchableWithoutFeedback>
                 <View>
-                    <Text style={ss.ctaNotReceive}>Didn't receive the code?</Text>
+                    <Text style={styles.ctaNotReceive}>Didn't receive the code?</Text>
                     <TouchableOpacity disabled={sec > 0}>
-                        <Text style={{ ...ss.ctaResend, opacity: resendDisabled ? 0.3 : 1 }}>
+                        <Text style={{ ...styles.ctaResend, opacity: resendDisabled ? 0.3 : 1 }}>
                             {resendDisabled ? `RESEND IN ${sec}s` : "RESEND CODE"}
                         </Text>
                     </TouchableOpacity>
@@ -75,18 +75,18 @@ export default function SignupVerifyScreen({ navigation }) {
                 <TextInput
                     ref={ref}
                     value={otp}
-                    style={ss.inputStyle}
+                    style={styles.inputStyle}
                     onChangeText={onChangeOTP}
                     keyboardType="number-pad"
                     textContentType="oneTimeCode"
                     autoFocus
                 />
-            </KeyboardAvoidingView>
+            </KeyboardAvoiding>
         </Container>
     );
 }
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     description: {
         marginTop: 15,
     },

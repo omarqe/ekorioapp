@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import CT from "../const.json";
+import CT from "../const.js";
 import PropTypes from "prop-types";
 import Context from "./context";
 import { View, TextInput, StyleSheet } from "react-native";
@@ -26,7 +26,7 @@ const Input = (props) => {
         }
     };
 
-    let inputBaseStyle = { ...ss.inputBase, ...style };
+    let inputBaseStyle = { ...styles.inputBase, ...style };
     if (isFocused) {
         inputBaseStyle = { ...inputBaseStyle, borderColor: CT.BORDER_FOCUS };
     }
@@ -78,7 +78,7 @@ Input.propTypes = {
     placeholder: PropTypes.string,
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     inputBase: {
         padding: 15,
         fontSize: 16,

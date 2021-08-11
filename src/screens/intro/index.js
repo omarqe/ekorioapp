@@ -1,24 +1,24 @@
 import React from "react";
-import CT from "../../const.json";
+import CT from "../../const.js";
 import Button from "../../components/button";
-import StarsBackdrop from "../../components/stars-backdrop";
+import StarsBackdrop from "../../components/intro/stars-backdrop";
 import Container from "../../components/container";
 import IntroArt from "../../../assets/arts/intro-screen.svg";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function IntroScreen({ navigation: nav }) {
     return (
-        <Container style={ss.container} paddingX={40} isLogin>
+        <Container style={styles.container} paddingX={40} safeBottom="dark" isLogin>
             <StarsBackdrop />
-            <View style={ss.artContainer}>
+            <View style={styles.artContainer}>
                 <IntroArt width={280} height={325} />
             </View>
 
-            <View style={ss.ctaContainer}>
-                <Button label="Create a Free Account" style={{ marginBottom: 15 }} onPress={() => nav.navigate("signup")} />
+            <View style={styles.ctaContainer}>
+                <Button label="Create a Free Account" style={{ marginBottom: 5 }} onPress={() => nav.navigate("signup")} />
                 <TouchableOpacity onPress={() => nav.navigate("signin")}>
-                    <Text style={ss.signInHint}>
-                        Already a member? <Text style={ss.signInEmphasis}>Sign in.</Text>
+                    <Text style={styles.signInHint}>
+                        Already a member? <Text style={styles.signInEmphasis}>Sign in.</Text>
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -26,7 +26,7 @@ export default function IntroScreen({ navigation: nav }) {
     );
 }
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         display: "flex",
         alignItems: "center",
@@ -36,17 +36,18 @@ const ss = StyleSheet.create({
     artContainer: {
         width: "100%",
         display: "flex",
-        marginTop: "-50%",
+        marginTop: "-20%",
         alignItems: "center",
     },
     ctaContainer: {
         width: "100%",
-        bottom: 50,
+        bottom: CT.IS_IOS ? 0 : 20,
         display: "flex",
         position: "absolute",
     },
     signInHint: {
         color: CT.BG_PURPLE_300,
+        padding: 10,
         fontSize: 16,
         textAlign: "center",
     },

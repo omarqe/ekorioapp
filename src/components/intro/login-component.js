@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import CT from "../../const";
 import PropTypes from "prop-types";
 import LoginBody from "./login-body";
 import LoginHeader from "./login-header";
-import StarsBackdrop from "../stars-backdrop";
+import StarsBackdrop from "./stars-backdrop";
 import { View, StyleSheet, Keyboard, KeyboardAvoidingView } from "react-native";
 
 const LoginComponent = ({ title, subtitle, btnLabel }) => {
@@ -19,11 +20,9 @@ const LoginComponent = ({ title, subtitle, btnLabel }) => {
     return (
         <React.Fragment>
             <StarsBackdrop />
-            <View style={ss.container}>
+            <View style={styles.container}>
                 <LoginHeader title={title} subtitle={subtitle} keyboardShown={keyboardShown} />
-                <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={50}>
-                    <LoginBody label={btnLabel} />
-                </KeyboardAvoidingView>
+                <LoginBody label={btnLabel} />
             </View>
         </React.Fragment>
     );
@@ -35,7 +34,7 @@ LoginComponent.propTypes = {
     btnLabel: PropTypes.string,
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         display: "flex",

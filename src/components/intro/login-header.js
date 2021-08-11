@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import CT from "../../const.json";
+import CT from "../../const.js";
 import Context from "../context";
-import ButtonOrb from "../button-orb";
+import ButtonIcon from "../button-icon";
 import PropTypes from "prop-types";
 import { View, Text, StyleSheet } from "react-native";
 
@@ -12,18 +12,18 @@ const LoginHeader = ({ title, subtitle, keyboardShown }) => {
 
     return (
         <React.Fragment>
-            <View style={ss.top}>
-                <ButtonOrb icon="arrow-left" style={{ marginLeft: -10 }} onPress={goBack} />
+            <View style={styles.top}>
+                <ButtonIcon icon="arrow-left" style={{ marginLeft: -10 }} onPress={goBack} />
                 {doSwapTitle && (
-                    <View style={ss.topTitle}>
-                        <Text style={ss.topHeadingTitle}>{title}</Text>
-                        <Text style={ss.topHeadingSubtitle}>{subtitle}</Text>
+                    <View style={styles.topTitle}>
+                        <Text style={styles.topHeadingTitle}>{title}</Text>
+                        <Text style={styles.topHeadingSubtitle}>{subtitle}</Text>
                     </View>
                 )}
             </View>
-            <View style={ss.header}>
-                <Text style={ss.headingTitle}>{title}</Text>
-                <Text style={ss.headingSubtitle}>{subtitle}</Text>
+            <View style={styles.header}>
+                <Text style={styles.headingTitle}>{title}</Text>
+                <Text style={styles.headingSubtitle}>{subtitle}</Text>
             </View>
         </React.Fragment>
     );
@@ -35,11 +35,10 @@ LoginHeader.propTypes = {
     keyboardShown: PropTypes.bool,
 };
 
-const ss = StyleSheet.create({
+const styles = StyleSheet.create({
     top: {
         width: "100%",
         height: 50,
-        zIndex: 10,
         paddingTop: 10,
         paddingLeft: CT.LOGIN_CONTENT_PADDING,
         paddingRight: CT.LOGIN_CONTENT_PADDING,
