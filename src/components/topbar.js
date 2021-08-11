@@ -167,7 +167,7 @@ const ss = StyleSheet.create({
         paddingTop: CT.VIEW_PADDING_TOP,
         paddingLeft: CT.VIEW_PADDING_X,
         paddingRight: CT.VIEW_PADDING_X,
-        paddingBottom: 10,
+        paddingBottom: 15,
         backgroundColor: CT.BG_PURPLE_900,
     },
     content: {

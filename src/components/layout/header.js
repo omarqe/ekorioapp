@@ -49,6 +49,7 @@ const ss = StyleSheet.create({
     },
     content: {
         display: "flex",
+        paddingTop: 5,
         paddingLeft: CT.VIEW_PADDING_X,
         paddingRight: CT.VIEW_PADDING_X,
         flexDirection: "row",
