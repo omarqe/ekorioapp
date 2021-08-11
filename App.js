@@ -15,7 +15,7 @@ export default function App() {
     return (
         <ActionSheetProvider>
             <NavigationContainer>
-                <UIStacks.Inner />
+                <UIStacks.Authenticated />
             </NavigationContainer>
         </ActionSheetProvider>
     );

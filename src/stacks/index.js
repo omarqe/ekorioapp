@@ -25,7 +25,7 @@ import _find from "lodash/find";
 
 const Tab = createBottomTabNavigator();
 export default {
-    Inner: () => {
+    Authenticated: () => {
         const { tabBarStyle, tabBarItemStyle } = ss;
         const tabs = [
             {
