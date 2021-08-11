@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import CT from "../../const";
 import PropTypes from "prop-types";
 import LoginBody from "./login-body";
 import LoginHeader from "./login-header";
@@ -21,9 +22,7 @@ const LoginComponent = ({ title, subtitle, btnLabel }) => {
             <StarsBackdrop />
             <View style={styles.container}>
                 <LoginHeader title={title} subtitle={subtitle} keyboardShown={keyboardShown} />
-                <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={50}>
-                    <LoginBody label={btnLabel} />
-                </KeyboardAvoidingView>
+                <LoginBody label={btnLabel} />
             </View>
         </React.Fragment>
     );

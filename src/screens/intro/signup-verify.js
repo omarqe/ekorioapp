@@ -4,15 +4,8 @@ import Context from "../../components/context";
 import OTPIcon from "../../../assets/arts/otp-icon.svg";
 import Container from "../../components/container";
 import ButtonIcon from "../../components/button-icon";
-import {
-    View,
-    Text,
-    TextInput,
-    StyleSheet,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    KeyboardAvoidingView,
-} from "react-native";
+import KeyboardAvoiding from "../../components/keyboard-avoiding";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 
 import _times from "lodash/times";
 
@@ -42,7 +35,7 @@ export default function SignupVerifyScreen({ navigation }) {
             <View style={styles.top}>
                 <ButtonIcon icon="arrow-left" onPress={goBack} inverted />
             </View>
-            <KeyboardAvoidingView style={styles.body} behavior="padding">
+            <KeyboardAvoiding style={styles.body}>
                 <OTPIcon />
                 <View style={styles.description}>
                     <Text style={styles.heading}>Please enter verification code</Text>
@@ -88,7 +81,7 @@ export default function SignupVerifyScreen({ navigation }) {
                     textContentType="oneTimeCode"
                     autoFocus
                 />
-            </KeyboardAvoidingView>
+            </KeyboardAvoiding>
         </Container>
     );
 }
