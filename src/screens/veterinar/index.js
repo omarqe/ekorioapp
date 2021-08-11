@@ -6,7 +6,7 @@ import { StyleSheet } from "react-native";
 const VeterinarScreen = () => {
     return (
         <Container>
-            <TopBar type={1} title="Find Veterinars" />
+            <TopBar type={1} title="Find Veterinars" rightIcon="map-marker-alt" rightIconProps={{ glow: true }} />
         </Container>
     );
 };

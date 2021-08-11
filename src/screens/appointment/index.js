@@ -6,7 +6,7 @@ import { StyleSheet } from "react-native";
 const AppointmentScreen = () => {
     return (
         <Container>
-            <TopBar type={1} title="Appointments" />
+            <TopBar type={1} title="Appointments" rightIcon="plus" rightIconProps={{ glow: true }} />
         </Container>
     );
 };
