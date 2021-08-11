@@ -56,13 +56,13 @@ export default function SignupVerifyScreen({ navigation }) {
                 </View>
                 <TouchableWithoutFeedback onPress={onFocus}>
                     <View style={ss.otpContainer}>
-                        {_times(6, (n, key) => {
+                        {_times(6, (n) => {
                             const digit = otp[n] !== undefined ? otp[n] : null;
                             const hasDigit = digit !== null;
                             const digitStyle = { ...ss.otpDigit, color: hasDigit ? CT.BG_GRAY_900 : CT.BG_GRAY_200 };
 
                             return (
-                                <React.Fragment key={key}>
+                                <React.Fragment key={n}>
                                     <Text style={digitStyle}>{digit ?? "-"}</Text>
                                     {n === 2 && <View style={{ width: 5 }} />}
                                 </React.Fragment>
