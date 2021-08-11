@@ -10,7 +10,6 @@ import _chunk from "lodash/chunk";
 
 const PetIdentity = ({ data }) => {
     const chunks = _chunk(data, 2);
-    console.log("chunks", chunks);
 
     return (
         <React.Fragment>

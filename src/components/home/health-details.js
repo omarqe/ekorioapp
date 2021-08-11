@@ -9,12 +9,11 @@ import _isArray from "lodash/isArray";
 
 const HealthDetails = ({ data = [], onPress }) => {
     const [pressedIndex, setPressedIndex] = useState(null);
+    const _onPressOut = () => setPressedIndex(null);
+    const _onPressIn = (index) => setPressedIndex(index);
     const _onPress = (id) => {
         if (typeof onPress === "function") onPress(id);
     };
-    const _onPressIn = (index) => setPressedIndex(index);
-    const _onPressOut = () => setPressedIndex(null);
-    console.log("pressedIndex", pressedIndex);
 
     if (_isArray(data) && data.length > 0) {
         return (
