@@ -51,7 +51,7 @@ export default {
     BORDER_FOCUS: "#96BAFF",
 
     VIEW_PADDING_X: 25,
-    VIEW_PADDING_TOP: isIOS ? 60 : 40,
+    VIEW_PADDING_TOP: isIOS ? 10 : 40,
 
     BODY_RADIUS: 25,
     ACTIVE_OPACITY: 0.55,

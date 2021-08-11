@@ -5,7 +5,7 @@ import Button from "../button";
 import Context from "../context";
 import WaveForm from "../../../assets/wave-form.svg";
 import PropTypes from "prop-types";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 const LoginBody = ({ label, fields = [] }) => {
     const context = useContext(Context.Login);
@@ -17,12 +17,12 @@ const LoginBody = ({ label, fields = [] }) => {
     return (
         <View style={styles.container}>
             <WaveForm />
-            <ScrollView style={styles.body} keyboardShouldPersistTaps="always">
+            <View style={styles.body}>
                 <View style={styles.content}>
                     <Fields fields={fields} grouping={grouping} />
                 </View>
                 <Button label={label} onPress={onSubmit} />
-            </ScrollView>
+            </View>
         </View>
     );
 };
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     body: {
         padding: CT.LOGIN_CONTENT_PADDING,
         paddingTop: 40,
-        paddingBottom: 40,
+        paddingBottom: 20,
         backgroundColor: CT.BG_WHITE,
     },
     content: {
