@@ -158,7 +158,7 @@ TopBar.propTypes = {
     rightIconProps: PropTypes.object,
 };
 
-const contentCommonStyle = { flex: 1, display: "flex", justifyContent: "center" };
+const contentCommonStyle = { flex: 1, height: 40, display: "flex", justifyContent: "center" };
 const ss = StyleSheet.create({
     base: {
         width: "100%",
