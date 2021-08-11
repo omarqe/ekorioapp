@@ -8,7 +8,7 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function IntroScreen({ navigation: nav }) {
     return (
-        <Container style={styles.container} paddingX={40} isLogin>
+        <Container style={styles.container} paddingX={40} safeBottom="dark" isLogin>
             <StarsBackdrop />
             <View style={styles.artContainer}>
                 <IntroArt width={280} height={325} />
@@ -36,12 +36,12 @@ const styles = StyleSheet.create({
     artContainer: {
         width: "100%",
         display: "flex",
-        marginTop: "-50%",
+        marginTop: "-20%",
         alignItems: "center",
     },
     ctaContainer: {
         width: "100%",
-        bottom: 50,
+        bottom: 10,
         display: "flex",
         position: "absolute",
     },

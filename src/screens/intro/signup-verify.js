@@ -38,7 +38,7 @@ export default function SignupVerifyScreen({ navigation }) {
     }, [sec]);
 
     return (
-        <Container paddingX={25} statusBarStyle="dark" isLogin>
+        <Container paddingX={25} statusBarStyle="dark" safeTop="light" isLogin>
             <View style={styles.top}>
                 <ButtonIcon icon="arrow-left" onPress={goBack} inverted />
             </View>

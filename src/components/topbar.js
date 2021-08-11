@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     base: {
         width: "100%",
         zIndex: 10,
-        minHeight: CT.TOPBAR_MIN_HEIGHT,
+        // minHeight: CT.TOPBAR_MIN_HEIGHT,
         paddingTop: CT.VIEW_PADDING_TOP,
         paddingLeft: CT.VIEW_PADDING_X,
         paddingRight: CT.VIEW_PADDING_X,
