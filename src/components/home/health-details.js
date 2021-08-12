@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         marginLeft: "auto",
     },
     label: {
-        color: CT.BG_GRAY_700,
+        color: CT.FONT_COLOR,
         fontWeight: "700",
     },
     badgeContainer: {

@@ -51,11 +51,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
     },
     text: {
-        color: CT.BG_GRAY_900,
+        color: CT.FONT_COLOR,
         fontWeight: "700",
     },
     subtitle: {
-        color: CT.BG_GRAY_400,
+        color: CT.FONT_COLOR_LIGHT,
         fontWeight: "500",
     },
 });

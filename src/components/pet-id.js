@@ -37,12 +37,12 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     label: {
-        color: CT.BG_GRAY_400,
+        color: CT.FONT_COLOR_LIGHT,
         fontSize: 14,
         fontWeight: "500",
     },
     value: {
-        color: CT.BG_GRAY_700,
+        color: CT.FONT_COLOR,
         position: "relative",
         fontSize: 18,
         fontWeight: "700",

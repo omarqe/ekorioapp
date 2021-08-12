@@ -107,9 +107,10 @@ const styles = StyleSheet.create({
         paddingRight: 10,
     },
     chartValueLg: {
-        textAlign: "center",
+        color: CT.FONT_COLOR,
         fontSize: 32,
         fontWeight: "700",
+        textAlign: "center",
         marginLeft: 5,
     },
     chartValueSymbol: {
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
         fontWeight: "600",
     },
     chartLabel: {
-        color: CT.BG_GRAY_800,
+        color: CT.FONT_COLOR,
         fontSize: 18,
         fontWeight: "600",
         textAlign: "center",
