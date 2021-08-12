@@ -21,7 +21,15 @@ export default function AccountSettingsScreen({ navigation }) {
                 { type: "email", label: "Email Address", placeholder: "eve@email.com", defaultValue: "eve@email.com" },
                 { type: "phone", label: "Phone Number", placeholder: "+60123456789", defaultValue: "+60123456789" },
                 [
-                    { type: "text", label: "Gender", placeholder: "Male", defaultValue: "Male" },
+                    {
+                        type: "select",
+                        label: "Gender",
+                        placeholder: "Please select",
+                        options: [
+                            { label: "Male", value: "male" },
+                            { label: "Female", value: "female" },
+                        ],
+                    },
                     { type: "text", label: "Birthday", placeholder: "01/01/1970", defaultValue: "01/01/1970" },
                 ],
             ],
@@ -37,8 +45,20 @@ export default function AccountSettingsScreen({ navigation }) {
                     { label: "City", placeholder: "Cyberjaya", defaultValue: "Cyberjaya" },
                 ],
                 [
-                    { type: "text", label: "State", placeholder: "Selangor", defaultValue: "Selangor" },
-                    { type: "text", label: "Country", placeholder: "Malaysia", defaultValue: "Malaysia" },
+                    {
+                        type: "select",
+                        label: "State",
+                        placeholder: "Selangor",
+                        defaultValue: "Selangor",
+                        options: [{ label: "Selangor", value: "selangor" }],
+                    },
+                    {
+                        type: "select",
+                        label: "Country",
+                        placeholder: "Malaysia",
+                        defaultValue: "Malaysia",
+                        options: [{ label: "Malaysia", value: "malaysia" }],
+                    },
                 ],
             ],
         },
@@ -53,7 +73,7 @@ export default function AccountSettingsScreen({ navigation }) {
                     leftIcon="arrow-left"
                     leftIconProps={{ onPress: navigation.goBack }}
                 />
-                <Layout alwaysBounceVertical={false} keyboardShouldPersistTaps="always" gray withHeader>
+                <Layout alwaysBounceVertical={false} scrollEnabled={false} keyboardShouldPersistTaps="always" gray withHeader>
                     <Body gray flex topRounded>
                         {fieldGroups.map(({ heading, description, fields }, i) => (
                             <View key={i} style={{ marginBottom: 25 }}>
