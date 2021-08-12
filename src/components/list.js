@@ -2,19 +2,53 @@ import React from "react";
 import CT from "../const";
 import ListItem from "./list-item";
 import PropTypes from "prop-types";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, LogBox, FlatList, SectionList, StyleSheet } from "react-native";
 
+import _omit from "lodash/omit";
 import _isArray from "lodash/isArray";
+import _findLastIndex from "lodash/findLastIndex";
 
-export default function List({ name, note, list = [] }) {
-    if (_isArray(list) && list.length > 0) {
+LogBox.ignoreLogs(["VirtualizedLists should never be nested inside"]);
+
+export default function List(props) {
+    const { list = [], sections = [] } = props;
+    const _props = _omit(props, ["list", "sections"]);
+    const isSectioned = _isArray(sections) && sections.length > 0;
+    const isListed = _isArray(list) && list.length > 0;
+
+    const _renderSectionHeader = ({ section: { title } }) => <Text style={styles.name}>{title}</Text>;
+    const _renderSectionFooter = ({ section: { note } }) => note && <Text style={styles.note}>{note}</Text>;
+    const _keyExtractor = ({ text, subtitle }) => text + subtitle;
+    const _renderItem = ({ item, index, section }) => (
+        <ListItem last={index === _findLastIndex(isSectioned ? section?.data : list)} {...item} />
+    );
+
+    if (isSectioned) {
         return (
             <View>
-                {name && <Text style={styles.name}>{name}</Text>}
-                {list.map((props, i) => (
-                    <ListItem key={i} last={i === list.length - 1} {...props} />
-                ))}
-                {note && <Text style={styles.note}>{note}</Text>}
+                <SectionList
+                    sections={sections}
+                    renderItem={_renderItem}
+                    keyExtractor={_keyExtractor}
+                    renderSectionHeader={_renderSectionHeader}
+                    renderSectionFooter={_renderSectionFooter}
+                    scrollEnabled={false}
+                    bounces={false}
+                    {..._props}
+                />
+            </View>
+        );
+    } else if (isListed) {
+        return (
+            <View>
+                <FlatList
+                    data={list}
+                    renderItem={_renderItem}
+                    keyExtractor={_keyExtractor}
+                    scrollEnabled={false}
+                    bounces={false}
+                    {..._props}
+                />
             </View>
         );
     }
@@ -43,6 +77,6 @@ const styles = StyleSheet.create({
 });
 
 List.propTypes = {
-    name: PropTypes.string,
     list: PropTypes.arrayOf(PropTypes.object),
+    sections: PropTypes.arrayOf(PropTypes.object),
 };

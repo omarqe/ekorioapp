@@ -16,10 +16,10 @@ import { Text, StyleSheet, TouchableOpacity } from "react-native";
 const MeScreen = ({ navigation }) => {
     const go = (name) => navigation.navigate(name);
     const auth = useContext(Context.Auth);
-    const list = [
+    const sections = [
         {
-            name: "Personal",
-            list: [
+            title: "Personal",
+            data: [
                 {
                     icon: "cog",
                     text: "Account Settings",
@@ -41,15 +41,15 @@ const MeScreen = ({ navigation }) => {
             ],
         },
         {
-            name: "Feedbacks",
-            list: [
+            title: "Feedbacks",
+            data: [
                 { icon: "grin-stars", text: "Rate us on App Store", subtitle: "Like Ekorio? Give us 5 stars on App Store" },
                 { icon: "envelope", text: "Send Feedback", subtitle: "Send feedback or enquiry via email" },
             ],
         },
         {
-            name: "Resources",
-            list: [
+            title: "Resources",
+            data: [
                 { icon: "lock-alt", text: "Privacy Policy", subtitle: "Learn how we use your data" },
                 { icon: "info-circle", text: "About Us", subtitle: "Learn more about us" },
                 { icon: "life-ring", text: "Help & Support", subtitle: "Find help on how to use our app" },
@@ -70,9 +70,7 @@ const MeScreen = ({ navigation }) => {
                     />
                 </Header>
                 <Body gray flex expanded>
-                    {list.map((props, i) => (
-                        <List key={i} {...props} />
-                    ))}
+                    <List sections={sections} />
                     <TouchableOpacity style={{ marginTop: 5 }} onPress={auth.onLogout}>
                         <Text style={styles.logout}>Log out from account</Text>
                     </TouchableOpacity>
