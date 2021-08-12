@@ -71,7 +71,6 @@ export default function FloatingField(props) {
                 <View>
                     <Pressable style={baseStyle} onPress={_onPressFocusInput}>
                         <Text style={styles.label}>{label}</Text>
-                        {/* <Text style={valueStyle}>{value ?? defaultValue ?? placeholder}</Text> */}
                         <Picker
                             ref={inputRef}
                             items={options}
