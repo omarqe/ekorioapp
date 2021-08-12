@@ -22,7 +22,7 @@ const Heading = (props) => {
     if (gapless) baseStyle = { ...baseStyle, marginBottom: 0 };
 
     return (
-        <View style={{ ...styles.base, ...style }} {...appendedProps}>
+        <View style={baseStyle} {...appendedProps}>
             {kicker && <Text style={kickerStyle}>{kicker}</Text>}
             <View style={styles.title}>
                 <Text style={textStyle}>{text}</Text>
@@ -48,7 +48,7 @@ Heading.propTypes = {
 
 const styles = StyleSheet.create({
     base: {
-        marginBottom: 10,
+        marginBottom: 5,
     },
     title: {
         display: "flex",
@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
     },
     subtitle: {
         color: CT.FONT_COLOR_LIGHT,
+        marginBottom: 2,
     },
 });
 
