@@ -31,29 +31,16 @@ const Input = (props) => {
         inputBaseStyle = { ...inputBaseStyle, borderColor: CT.BORDER_FOCUS };
     }
 
-    let typeProps = {};
-    switch (type) {
-        case "name":
-        case "username":
-            typeProps = { autoCapitalize: "words", textContentType: type };
-            break;
-        case "password":
-            typeProps = { keyboardType: "visible-password", secureTextEntry: true, textContentType: "password" };
-            break;
-        case "email":
-            typeProps = { keyboardType: "email-address", autoCapitalize: "none", textContentType: "emailAddress" };
-            break;
-        case "tel":
-        case "phone":
-            typeProps = { keyboardType: "phone-pad", textContentType: "telephoneNumber" };
-            break;
-        case "number":
-            typeProps = { keyboardType: "number-pad" };
-            break;
-        case "url":
-            typeProps = { keyboardType: "url", textContentType: "URL" };
-            break;
-    }
+    let typeProps = {
+        tel: { keyboardType: "phone-pad", textContentType: "telephoneNumber" },
+        url: { keyboardType: "url", textContentType: "URL" },
+        name: { autoCapitalize: "words", textContentType: type },
+        email: { keyboardType: "email-address", autoCapitalize: "none", textContentType: "emailAddress" },
+        number: { keyboardType: "number-pad" },
+        password: { keyboardType: "visible-password", secureTextEntry: true, textContentType: "password" },
+    };
+    typeProps.phone = typeProps.tel;
+    typeProps.username = typeProps.name;
 
     return (
         <View style={inputBaseStyle}>
@@ -62,7 +49,7 @@ const Input = (props) => {
                 style={inputStyle}
                 onBlur={_onBlur}
                 onFocus={_onFocus}
-                {...typeProps}
+                {...typeProps[type]}
                 {...appendedProps}
             />
         </View>
