@@ -13,12 +13,13 @@ import { fas } from "@fortawesome/pro-solid-svg-icons";
 library.add(fab, far, fal, fas);
 
 export default function App() {
+    const [signedIn, setSignedIn] = useState(true);
     const AuthProvider = Context.Auth.Provider;
-    const [signedIn, setSignedIn] = useState(false);
+    const toggleAuth = () => setSignedIn(!signedIn);
 
     return (
         <ActionSheetProvider>
-            <AuthProvider value={{ onLogin: setSignedIn }}>
+            <AuthProvider value={{ onLogin: toggleAuth, onLogout: toggleAuth }}>
                 <NavigationContainer>{signedIn ? <UIStacks.Authenticated /> : <UIStacks.Intro />}</NavigationContainer>
             </AuthProvider>
         </ActionSheetProvider>

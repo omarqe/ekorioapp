@@ -50,6 +50,9 @@ export default {
     CTA_NEUTRAL: "#2c84ff",
     BORDER_FOCUS: "#96BAFF",
 
+    FONT_COLOR: "#3e4c59",
+    FONT_COLOR_LIGHT: "#7b8794",
+
     VIEW_PADDING_X: 25,
     VIEW_PADDING_TOP: isIOS ? 10 : 40,
 
