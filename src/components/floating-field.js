@@ -1,12 +1,12 @@
 import React, { useRef, useState } from "react";
 import CT from "../const";
 import PropTypes from "prop-types";
-import { Text, Pressable, TextInput, StyleSheet } from "react-native";
+import { View, Text, Pressable, TextInput, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
 
 export default function FloatingField(props) {
-    const { type = null, label, style = {}, onBlur, onFocus, gapless = false } = props;
+    const { type = null, label, guide, style = {}, onBlur, onFocus, gapless = false } = props;
     const [focused, setFocused] = useState(false);
     const inputRef = useRef(null);
     const inputProps = _omit(props, ["type", "label", "style", "onBlur", "onFocus", "gapless"]);
@@ -53,18 +53,21 @@ export default function FloatingField(props) {
     }
 
     return (
-        <Pressable style={baseStyle} onPress={_onPressFocusInput}>
-            <Text style={styles.label}>{label}</Text>
-            <TextInput
-                ref={inputRef}
-                style={styles.input}
-                onBlur={_onBlur}
-                onFocus={_onFocus}
-                placeholderTextColor={CT.BG_GRAY_100}
-                {...typeProps}
-                {...inputProps}
-            />
-        </Pressable>
+        <View>
+            <Pressable style={baseStyle} onPress={_onPressFocusInput}>
+                <Text style={styles.label}>{label}</Text>
+                <TextInput
+                    ref={inputRef}
+                    style={styles.input}
+                    onBlur={_onBlur}
+                    onFocus={_onFocus}
+                    placeholderTextColor={CT.BG_GRAY_100}
+                    {...typeProps}
+                    {...inputProps}
+                />
+            </Pressable>
+            {guide && <Text style={styles.guide}>{guide}</Text>}
+        </View>
     );
 }
 
@@ -88,11 +91,20 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "600",
     },
+    guide: {
+        color: CT.FONT_COLOR_LIGHT,
+        textAlign: "justify",
+        fontSize: 12,
+        marginTop: 3,
+        paddingLeft: 2,
+        paddingRight: 2,
+    },
 });
 
 FloatingField.propTypes = {
     type: PropTypes.oneOf(CT.INPUT_TYPES),
     label: PropTypes.string,
     style: PropTypes.object,
+    guide: PropTypes.any,
     gapless: PropTypes.bool,
 };
