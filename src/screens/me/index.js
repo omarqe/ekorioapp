@@ -13,15 +13,31 @@ import Container from "../../components/container";
 
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 
-const MeScreen = () => {
+const MeScreen = ({ navigation }) => {
+    const go = (name) => navigation.navigate(name);
     const auth = useContext(Context.Auth);
     const list = [
         {
             name: "Personal",
             list: [
-                { icon: "cog", text: "Account Settings", subtitle: "Update your account details" },
-                { icon: "key", text: "Change Password", subtitle: "Update your account password" },
-                { icon: "gift", text: "Refer Friends", subtitle: "Refer your friends and get extra pet slots" },
+                {
+                    icon: "cog",
+                    text: "Account Settings",
+                    onPress: go.bind(null, "account_settings"),
+                    subtitle: "Update your account details",
+                },
+                {
+                    icon: "key",
+                    text: "Update Password",
+                    onPress: go.bind(null, "account_password"),
+                    subtitle: "Update your account password",
+                },
+                {
+                    icon: "gift",
+                    text: "Refer Friends",
+                    onPress: go.bind(null, "referral"),
+                    subtitle: "Refer your friends and get extra pet slots",
+                },
             ],
         },
         {
