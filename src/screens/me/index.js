@@ -19,7 +19,7 @@ const MeScreen = ({ navigation }) => {
     const sections = [
         {
             title: "Personal",
-            note: "When two people signed up to Ekorio using your referral link, you will receive one additional pet slot.",
+            note: "For every two people signed up to Ekorio using your referral link, you will receive one additional pet slot.",
             data: [
                 {
                     icon: "cog",
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "700",
         textAlign: "center",
+        marginBottom: 10,
     },
 });
 
