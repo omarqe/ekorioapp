@@ -33,7 +33,7 @@ export default function AccountSettingsScreen({ navigation }) {
                 { label: "Address Line 1", placeholder: "Unit, street name, etc.", defaultValue: "1D, Jalan Teknokrat 5" },
                 { label: "Address Line 2 (Optional)", placeholder: "Apartment, suites, etc." },
                 [
-                    { type: "number", label: "Postcode", placeholder: "63000", defaultValue: "63000" },
+                    { type: "number", label: "Postcode", placeholder: "63000", maxLength: 5, defaultValue: "63000" },
                     { label: "City", placeholder: "Cyberjaya", defaultValue: "Cyberjaya" },
                 ],
                 [

@@ -63,7 +63,7 @@ export default function AccountPasswordScreen({ navigation }) {
                             ))}
                         </View>
 
-                        <Button label="Update Account" />
+                        <Button label="Update Password" />
                     </Body>
                 </Layout>
             </Container>
