@@ -55,8 +55,8 @@ export default function AccountPasswordScreen({ navigation }) {
 
                         <View style={styles.guideContainer}>
                             <Text style={styles.guide}>Your password must:</Text>
-                            {passwordPoints.map((text) => (
-                                <View style={styles.item}>
+                            {passwordPoints.map((text, i) => (
+                                <View key={i} style={styles.item}>
                                     <View style={styles.bullet} />
                                     <Text style={styles.guideBullet}>{text}</Text>
                                 </View>
