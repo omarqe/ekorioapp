@@ -45,7 +45,7 @@ export default function AccountSettingsScreen({ navigation }) {
     ];
 
     return (
-        <KeyboardAvoiding offset={0}>
+        <KeyboardAvoiding>
             <Container>
                 <TopBar
                     type={1}
@@ -56,7 +56,7 @@ export default function AccountSettingsScreen({ navigation }) {
                 <Layout alwaysBounceVertical={false} keyboardShouldPersistTaps="always" gray withHeader>
                     <Body gray flex topRounded>
                         {fieldGroups.map(({ heading, description, fields }, i) => (
-                            <View key={i} style={{ marginBottom: 20 }}>
+                            <View key={i} style={{ marginBottom: 25 }}>
                                 <Heading text={heading} subtitle={description} />
                                 <FloatingFields fields={fields} />
                             </View>
