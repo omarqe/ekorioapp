@@ -50,7 +50,7 @@ const MeScreen = ({ navigation }) => {
         {
             name: "Resources",
             list: [
-                { icon: "lock", text: "Privacy Policy", subtitle: "Learn how we use your data" },
+                { icon: "lock-alt", text: "Privacy Policy", subtitle: "Learn how we use your data" },
                 { icon: "info-circle", text: "About Us", subtitle: "Learn more about us" },
                 { icon: "life-ring", text: "Help & Support", subtitle: "Find help on how to use our app" },
             ],
