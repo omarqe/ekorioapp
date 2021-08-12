@@ -13,28 +13,45 @@ import Container from "../../components/container";
 
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 
-const MeScreen = () => {
+const MeScreen = ({ navigation }) => {
+    const go = (name) => navigation.navigate(name);
     const auth = useContext(Context.Auth);
-    const list = [
+    const sections = [
         {
-            name: "Personal",
-            list: [
-                { icon: "cog", text: "Account Settings", subtitle: "Update your account details" },
-                { icon: "key", text: "Change Password", subtitle: "Update your account password" },
-                { icon: "gift", text: "Refer Friends", subtitle: "Refer your friends and get extra pet slots" },
+            title: "Personal",
+            note: "For every two people signed up to Ekorio using your referral link, you will receive one additional pet slot.",
+            data: [
+                {
+                    icon: "cog",
+                    text: "Account Settings",
+                    onPress: go.bind(null, "account_settings"),
+                    subtitle: "Update your account details",
+                },
+                {
+                    icon: "key",
+                    text: "Update Password",
+                    onPress: go.bind(null, "account_password"),
+                    subtitle: "Update your account password",
+                },
+                {
+                    icon: "gift",
+                    text: "Refer Friends",
+                    onPress: go.bind(null, "referral"),
+                    subtitle: "Refer your friends and get extra pet slots",
+                },
             ],
         },
         {
-            name: "Feedbacks",
-            list: [
+            title: "Feedbacks",
+            data: [
                 { icon: "grin-stars", text: "Rate us on App Store", subtitle: "Like Ekorio? Give us 5 stars on App Store" },
                 { icon: "envelope", text: "Send Feedback", subtitle: "Send feedback or enquiry via email" },
             ],
         },
         {
-            name: "Resources",
-            list: [
-                { icon: "lock", text: "Privacy Policy", subtitle: "Learn how we use your data" },
+            title: "Resources",
+            data: [
+                { icon: "lock-alt", text: "Privacy Policy", subtitle: "Learn how we use your data" },
                 { icon: "info-circle", text: "About Us", subtitle: "Learn more about us" },
                 { icon: "life-ring", text: "Help & Support", subtitle: "Find help on how to use our app" },
             ],
@@ -54,9 +71,7 @@ const MeScreen = () => {
                     />
                 </Header>
                 <Body gray flex expanded>
-                    {list.map((props, i) => (
-                        <List key={i} {...props} />
-                    ))}
+                    <List sections={sections} />
                     <TouchableOpacity style={{ marginTop: 5 }} onPress={auth.onLogout}>
                         <Text style={styles.logout}>Log out from account</Text>
                     </TouchableOpacity>
@@ -81,6 +96,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "700",
         textAlign: "center",
+        marginBottom: 10,
     },
 });
 

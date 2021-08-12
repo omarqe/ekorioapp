@@ -31,29 +31,16 @@ const Input = (props) => {
         inputBaseStyle = { ...inputBaseStyle, borderColor: CT.BORDER_FOCUS };
     }
 
-    let preparedProps = {};
-    switch (type) {
-        case "name":
-        case "username":
-            preparedProps = { autoCapitalize: "words", textContentType: type };
-            break;
-        case "password":
-            preparedProps = { keyboardType: "visible-password", secureTextEntry: true, textContentType: "password" };
-            break;
-        case "email":
-            preparedProps = { keyboardType: "email-address", autoCapitalize: "none", textContentType: "emailAddress" };
-            break;
-        case "tel":
-        case "phone":
-            preparedProps = { keyboardType: "phone-pad", textContentType: "telephoneNumber" };
-            break;
-        case "number":
-            preparedProps = { keyboardType: "number-pad" };
-            break;
-        case "url":
-            preparedProps = { keyboardType: "url", textContentType: "URL" };
-            break;
-    }
+    let typeProps = {
+        tel: { keyboardType: "phone-pad", textContentType: "telephoneNumber" },
+        url: { keyboardType: "url", textContentType: "URL" },
+        name: { autoCapitalize: "words", textContentType: type },
+        email: { keyboardType: "email-address", autoCapitalize: "none", textContentType: "emailAddress" },
+        number: { keyboardType: "number-pad" },
+        password: { keyboardType: "visible-password", secureTextEntry: true, textContentType: "password" },
+    };
+    typeProps.phone = typeProps.tel;
+    typeProps.username = typeProps.name;
 
     return (
         <View style={inputBaseStyle}>
@@ -62,7 +49,7 @@ const Input = (props) => {
                 style={inputStyle}
                 onBlur={_onBlur}
                 onFocus={_onFocus}
-                {...preparedProps}
+                {...typeProps[type]}
                 {...appendedProps}
             />
         </View>
@@ -72,7 +59,7 @@ const Input = (props) => {
 Input.propTypes = {
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
-    type: PropTypes.oneOf(["name", "username", "password", "email", "tel", "phone", "number", "url"]),
+    type: PropTypes.oneOf(CT.INPUT_TYPES),
     style: PropTypes.object,
     inputStyle: PropTypes.object,
     placeholder: PropTypes.string,

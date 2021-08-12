@@ -16,6 +16,8 @@ export default {
     IS_3XHDPI: PixelRatio.get() === 3.5,
     PIXELRATIO: PixelRatio.get(),
 
+    INPUT_TYPES: ["text", "name", "select", "username", "password", "email", "tel", "phone", "number", "url"],
+
     BG_BLACK: "#000000",
     BG_WHITE: "#FFFFFF",
     BG_PURPLE_X: "#271f34",
