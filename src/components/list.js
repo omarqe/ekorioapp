@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         lineHeight: 20,
         textAlign: "justify",
         color: CT.BG_GRAY_400,
-        paddingTop: 8,
+        paddingTop: 5,
         paddingLeft: CT.VIEW_PADDING_X,
         paddingRight: CT.VIEW_PADDING_X,
         marginBottom: 15,

@@ -19,6 +19,7 @@ const MeScreen = ({ navigation }) => {
     const sections = [
         {
             title: "Personal",
+            note: "When two people signed up to Ekorio using your referral link, you will receive one additional pet slot.",
             data: [
                 {
                     icon: "cog",

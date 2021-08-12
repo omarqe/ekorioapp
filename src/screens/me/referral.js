@@ -29,7 +29,7 @@ export default function ReferralScreen({ navigation }) {
                         <Heading size={1} text="Need extra pet slot?" textStyle={styles.headingText} gapless />
                         <Heading size={1} text="Refer your friends to Ekorio now!" textStyle={styles.headingText} />
                         <Text style={styles.description}>
-                            For each successful referral, you'll get one additional pet slow for your account.
+                            Upon two successful referrals, you'll get one additional pet slow for your account.
                         </Text>
                     </View>
 
