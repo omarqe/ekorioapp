@@ -9,7 +9,8 @@
 web-build/
 node_modules/
 npm-debug.*
-template.js
+template-screen.js
+template-component.js
 
 # macOS
 .DS_Store
