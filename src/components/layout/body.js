@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { View, StyleSheet } from "react-native";
 
 const Body = ({
+    style = {},
     base = "white",
     flex = false,
     gray = false,
@@ -13,7 +14,7 @@ const Body = ({
     children,
 }) => {
     let baseColor = { white: CT.BG_WHITE, gray: CT.BG_GRAY_50, purple: CT.BG_PURPLE_900 };
-    let baseStyle = { ...styles.base, backgroundColor: baseColor[base] };
+    let baseStyle = { ...styles.base, backgroundColor: baseColor[base], ...style };
 
     if (expanded) baseStyle = { ...baseStyle, padding: 0 };
     if (flex) baseStyle = { ...baseStyle, flex: 1 }; // Add flex: 1 to baseStyle
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
 });
 
 Body.propTypes = {
+    style: PropTypes.object,
     base: PropTypes.oneOf(["white", "gray", "purple"]),
     flex: PropTypes.bool,
     gray: PropTypes.bool,

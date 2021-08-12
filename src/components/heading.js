@@ -37,7 +37,7 @@ Heading.propTypes = {
     gapless: PropTypes.bool,
     style: PropTypes.object,
     size: PropTypes.oneOf([0, 1, 2, 3, 4]),
-    text: PropTypes.string,
+    text: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     badge: PropTypes.object,
     kicker: PropTypes.string,
     subtitle: PropTypes.string,
