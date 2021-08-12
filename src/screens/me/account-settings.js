@@ -73,7 +73,7 @@ export default function AccountSettingsScreen({ navigation }) {
                     leftIcon="arrow-left"
                     leftIconProps={{ onPress: navigation.goBack }}
                 />
-                <Layout alwaysBounceVertical={false} scrollEnabled={false} keyboardShouldPersistTaps="always" gray withHeader>
+                <Layout alwaysBounceVertical={false} keyboardShouldPersistTaps="always" gray withHeader>
                     <Body gray flex topRounded>
                         {fieldGroups.map(({ heading, description, fields }, i) => (
                             <View key={i} style={{ marginBottom: 25 }}>
