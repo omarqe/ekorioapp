@@ -63,7 +63,7 @@ export default function AccountPasswordScreen({ navigation }) {
                             ))}
                         </View>
 
-                        <Button label="Update Password" />
+                        <Button label="Update Password" onPress={navigation.goBack} />
                     </Body>
                 </Layout>
             </Container>
