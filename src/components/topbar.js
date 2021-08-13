@@ -9,7 +9,7 @@ import _omit from "lodash/omit";
 
 const TopBar = (props) => {
     let topBarStyle = { ...styles.base, ...style };
-    let { type = 0, style = {}, title = null, subtitle = null, logoProps = {} } = props;
+    let { type = 0, style = {}, kicker = null, title = null, subtitle = null, logoProps = {} } = props;
     let { leftIcon, leftIconProps = {}, rightIcon, rightIconProps = {} } = props;
 
     let leftIconStyle = styles.leftIcon;
@@ -37,6 +37,7 @@ const TopBar = (props) => {
                             )}
                         </View>
                         <View style={styles.midContent}>
+                            {kicker && <Text style={styles.kicker}>{kicker}</Text>}
                             <Text style={styles.title}>{title}</Text>
                             {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
                         </View>
@@ -150,6 +151,7 @@ TopBar.propTypes = {
     type: PropTypes.oneOf([0, 1, 2, 3]),
     style: PropTypes.object,
     title: PropTypes.string,
+    kicker: PropTypes.string,
     subtitle: PropTypes.string,
     leftIcon: PropTypes.string,
     rightIcon: PropTypes.string,
@@ -200,15 +202,20 @@ const styles = StyleSheet.create({
     title: {
         color: CT.BG_WHITE,
         textAlign: "center",
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: "600",
-        paddingTop: 2,
+    },
+    kicker: {
+        color: CT.BG_PURPLE_300,
+        fontSize: 14,
+        textAlign: "center",
+        marginBottom: 2,
     },
     subtitle: {
         color: CT.BG_PURPLE_300,
-        fontSize: 12,
+        fontSize: 14,
         textAlign: "center",
-        marginTop: 1,
+        marginTop: 2,
     },
     largeTitle: {
         color: CT.BG_WHITE,
