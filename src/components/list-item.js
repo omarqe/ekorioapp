@@ -6,13 +6,13 @@ import PropTypes from "prop-types";
 import { Text, View, Pressable, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
-
 export default function ListItem(props) {
-    const { padded = false, badge, last, icon, text, subtitle, onPressIn, onPressOut } = props;
+    const { padded = false, tags, badge, last, icon, text, subtitle, onPressIn, onPressOut } = props;
     const appendedProps = _omit(props, [
         "padded",
         "badge",
         "style",
+        "tags",
         "last",
         "icon",
         "text",
@@ -57,9 +57,18 @@ export default function ListItem(props) {
                     </View>
                 )}
 
-                <View style={styles.footer}>
-                    <Text style={styles.footerText}>asdadasdasd</Text>
-                </View>
+                {tags && (
+                    <View style={styles.tags}>
+                        {tags.map(({ icon, text, iconProps }, i) => {
+                            return (
+                                <View key={i} style={styles.tagItem}>
+                                    <Icon icon={`fal ${icon}`} size={12} style={styles.tagIcon} {...iconProps} />
+                                    <Text style={styles.tagText}>{text}</Text>
+                                </View>
+                            );
+                        })}
+                    </View>
+                )}
             </View>
         </Pressable>
     );
@@ -93,23 +102,41 @@ const styles = StyleSheet.create({
         color: CT.FONT_COLOR,
         fontSize: 16,
         fontWeight: "700",
+        marginBottom: 2,
     },
     subtitle: {
         color: CT.FONT_COLOR_LIGHT,
         fontSize: 14,
     },
-    footer: {
-        marginTop: 10,
+    tags: {
+        display: "flex",
+        marginTop: 15,
+        flexDirection: "row",
     },
-    footerText: {
+    tagItem: {
+        display: "flex",
+        alignItems: "center",
+        marginRight: 3,
+        flexDirection: "row",
+
+        padding: 3,
+        borderRadius: 5,
+        backgroundColor: "rgba(0,0,0,.04)",
+    },
+    tagIcon: {
         color: CT.BG_GRAY_300,
-        fontSize: 14,
+        marginRight: 3,
+    },
+    tagText: {
+        color: CT.BG_GRAY_500,
+        fontSize: 12,
     },
 });
 
 ListItem.propTypes = {
     padded: PropTypes.bool,
     badge: PropTypes.object,
+    tags: PropTypes.arrayOf(PropTypes.object),
     icon: PropTypes.string,
     text: PropTypes.string.isRequired,
     last: PropTypes.bool,
