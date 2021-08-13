@@ -5,7 +5,10 @@ import { Text, View, ScrollView, Pressable, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
 
-export default function Tabs({ tabs = [], active = 0, onPress, onPressIn, onPressOut }) {
+export default function Tabs(props) {
+    const { tabs = [], active = 0, onPress, onPressIn, onPressOut } = props;
+    const appendedProps = _omit(props, ["tab", "active", "onPress", "onPressIn", "onPressOut"]);
+
     if (tabs?.length > 0) {
         const [pressedIndex, setPressedIndex] = useState(null);
         const _onPressIn = (index) => {
@@ -22,7 +25,7 @@ export default function Tabs({ tabs = [], active = 0, onPress, onPressIn, onPres
         };
 
         return (
-            <ScrollView style={styles.base} contentContainerStyle={styles.baseContent} horizontal>
+            <ScrollView style={styles.base} contentContainerStyle={styles.baseContent} horizontal {...appendedProps}>
                 <View style={styles.content}>
                     {tabs.map((props, index) => {
                         const itemProps = _omit(props, ["text"]);
@@ -69,23 +72,21 @@ const styles = StyleSheet.create({
         marginRight: -CT.VIEW_PADDING_X,
     },
     baseContent: {
-        flex: 1,
+        flexGrow: 1,
     },
     content: {
         flex: 1,
         width: "100%",
         display: "flex",
-        paddingLeft: 10,
-        paddingRight: 10,
         flexDirection: "row",
         justifyContent: "space-between",
+        paddingHorizontal: 15,
     },
     item: {
         flex: 1,
-        marginLeft: 5,
-        marginRight: 5,
-        paddingTop: 15,
-        paddingBottom: 15,
+        padding: 15,
+        marginHorizontal: 5,
+        paddingHorizontal: 18,
         borderBottomWidth: 3,
     },
     text: {
