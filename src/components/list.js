@@ -25,7 +25,7 @@ export default function List(props) {
 
     if (isSectioned) {
         return (
-            <View>
+            <View style={styles.base}>
                 <SectionList
                     sections={sections}
                     renderItem={_renderItem}
@@ -40,7 +40,7 @@ export default function List(props) {
         );
     } else if (isListed) {
         return (
-            <View>
+            <View style={styles.base}>
                 <FlatList
                     data={list}
                     renderItem={_renderItem}
@@ -73,6 +73,9 @@ const styles = StyleSheet.create({
         paddingLeft: CT.VIEW_PADDING_X,
         paddingRight: CT.VIEW_PADDING_X,
         marginBottom: 15,
+    },
+    base: {
+        flex: 1,
     },
 });
 

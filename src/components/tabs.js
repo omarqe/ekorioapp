@@ -37,7 +37,7 @@ export default function Tabs(props) {
                         };
                         if (index === active) {
                             textStyle = { ...textStyle, color: CT.BG_PURPLE_100 };
-                            itemStyle = { ...itemStyle, borderColor: CT.BG_YELLOW_500 };
+                            itemStyle = { ...itemStyle, borderBottomColor: CT.BG_YELLOW_500 };
                         }
                         if (index === pressedIndex) {
                             itemStyle = { ...itemStyle, backgroundColor: CT.BG_PURPLE_800 };
@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
         paddingHorizontal: 18,
         borderBottomWidth: 3,
+        borderBottomColor: CT.BG_PURPLE_900,
     },
     text: {
         color: CT.BG_PURPLE_400,
