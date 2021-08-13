@@ -7,10 +7,11 @@ import _omit from "lodash/omit";
 import _renderIf from "../../functions/renderIf";
 
 const Header = (props) => {
-    let { children, overlap = false, horizontal = false, contentStyle: cStyle = {}, contentProps = {} } = props;
-    let appendedProps = _omit(props, ["children", "contentStyle"]);
-    let contentStyle = { ...styles.content, ...cStyle };
-    let baseStyle = styles.base;
+    let { children, overlap = false, horizontal = false, style = {}, contentStyle: cstyle = {}, contentProps = {} } = props;
+    let appendedProps = _omit(props, ["children", "overlap", "horizontal", "style", "contentStyle", "contentProps"]);
+
+    let contentStyle = { ...styles.content, ...cstyle };
+    let baseStyle = { ...styles.base, ...style };
 
     if (horizontal) {
         contentProps = {
@@ -41,6 +42,8 @@ const Header = (props) => {
 
 Header.propTypes = {
     type: PropTypes.oneOf([0, 1, 2, 3]),
+    style: PropTypes.object,
+    overlap: PropTypes.bool,
     horizontal: PropTypes.bool,
     contentStyle: PropTypes.object,
     contentProps: PropTypes.object,
