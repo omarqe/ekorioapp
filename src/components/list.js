@@ -11,16 +11,16 @@ import _findLastIndex from "lodash/findLastIndex";
 LogBox.ignoreLogs(["VirtualizedLists should never be nested inside"]);
 
 export default function List(props) {
-    const { list = [], sections = [] } = props;
+    const { list = [], sections = [], padded = false } = props;
     const _props = _omit(props, ["list", "sections"]);
     const isSectioned = _isArray(sections) && sections.length > 0;
     const isListed = _isArray(list) && list.length > 0;
 
     const _renderSectionHeader = ({ section: { title } }) => <Text style={styles.name}>{title}</Text>;
     const _renderSectionFooter = ({ section: { note } }) => note && <Text style={styles.note}>{note}</Text>;
-    const _keyExtractor = ({ text, subtitle }) => text + subtitle;
+    const _keyExtractor = ({ text, subtitle }, index) => text + subtitle + index;
     const _renderItem = ({ item, index, section }) => (
-        <ListItem last={index === _findLastIndex(isSectioned ? section?.data : list)} {...item} />
+        <ListItem last={index === _findLastIndex(isSectioned ? section?.data : list)} padded={padded} {...item} />
     );
 
     if (isSectioned) {
@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
 });
 
 List.propTypes = {
+    padded: PropTypes.bool,
     list: PropTypes.arrayOf(PropTypes.object),
     sections: PropTypes.arrayOf(PropTypes.object),
 };

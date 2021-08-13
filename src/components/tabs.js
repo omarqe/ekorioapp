@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-        paddingHorizontal: 15,
+        paddingHorizontal: 20,
     },
     item: {
         flex: 1,

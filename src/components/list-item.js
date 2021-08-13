@@ -1,14 +1,25 @@
 import React, { useState } from "react";
 import CT from "../const";
 import Icon from "./icon";
+import Badge from "./badge";
 import PropTypes from "prop-types";
 import { Text, View, Pressable, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
 
 export default function ListItem(props) {
-    const appendedProps = _omit(props, ["style", "onPressIn", "onPressOut"]);
-    const { last, icon, text, subtitle, onPressOut, onPressIn } = props;
+    const { padded = false, badge, last, icon, text, subtitle, onPressIn, onPressOut } = props;
+    const appendedProps = _omit(props, [
+        "padded",
+        "badge",
+        "style",
+        "last",
+        "icon",
+        "text",
+        "subtitle",
+        "onPressIn",
+        "onPressOut",
+    ]);
 
     const [pressed, setPressed] = useState(false);
     const _onPressIn = () => {
@@ -27,6 +38,7 @@ export default function ListItem(props) {
     let baseStyle = styles.base;
 
     if (last) baseStyle = { ...baseStyle, borderBottomWidth: 1 };
+    if (padded) baseStyle = { ...baseStyle, paddingVertical: 15 };
     if (pressed) baseStyle = { ...baseStyle, backgroundColor: CT.BG_GRAY_50 };
 
     return (
@@ -39,6 +51,15 @@ export default function ListItem(props) {
             <View style={styles.labelContainer}>
                 <Text style={styles.title}>{text}</Text>
                 {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
+                {badge && (
+                    <View style={styles.badgeContainer}>
+                        <Badge xs {...badge} />
+                    </View>
+                )}
+
+                <View style={styles.footer}>
+                    <Text style={styles.footerText}>asdadasdasd</Text>
+                </View>
             </View>
         </Pressable>
     );
@@ -46,25 +67,28 @@ export default function ListItem(props) {
 
 const styles = StyleSheet.create({
     base: {
-        paddingTop: 12,
-        paddingLeft: CT.VIEW_PADDING_X,
-        paddingRight: CT.VIEW_PADDING_X,
-        paddingBottom: 12,
-
         display: "flex",
         alignItems: "center",
         flexDirection: "row",
-
+        paddingVertical: 12,
+        paddingHorizontal: CT.VIEW_PADDING_X,
         backgroundColor: CT.BG_WHITE,
-        borderColor: CT.BG_GRAY_100,
         borderTopWidth: 1,
-        // borderBottomWidth: 1,
+        borderColor: CT.BG_GRAY_100,
     },
     iconContainer: {
         width: 25,
         marginRight: 10,
     },
-    labelContainer: {},
+    labelContainer: {
+        flex: 1,
+        position: "relative",
+    },
+    badgeContainer: {
+        top: 0,
+        right: 0,
+        position: "absolute",
+    },
     title: {
         color: CT.FONT_COLOR,
         fontSize: 16,
@@ -74,9 +98,18 @@ const styles = StyleSheet.create({
         color: CT.FONT_COLOR_LIGHT,
         fontSize: 14,
     },
+    footer: {
+        marginTop: 10,
+    },
+    footerText: {
+        color: CT.BG_GRAY_300,
+        fontSize: 14,
+    },
 });
 
 ListItem.propTypes = {
+    padded: PropTypes.bool,
+    badge: PropTypes.object,
     icon: PropTypes.string,
     text: PropTypes.string.isRequired,
     last: PropTypes.bool,
