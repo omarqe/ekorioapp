@@ -37,7 +37,7 @@ const MeScreen = ({ navigation }) => {
                     icon: "gift",
                     text: "Refer Friends",
                     onPress: go.bind(null, "referral"),
-                    subtitle: "Refer your friends and get extra pet slots",
+                    subtitle: "Share Ekorio with your friends",
                 },
             ],
         },
