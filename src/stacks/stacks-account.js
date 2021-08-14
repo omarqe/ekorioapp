@@ -7,7 +7,7 @@ import AccountPasswordScreen from "../screens/account/password";
 import AccountReferralScreen from "../screens/account/referral";
 
 const Stack = createStackNavigator();
-const MeStacks = () => {
+const AccountStacks = () => {
     const options = { screenOptions: { headerShown: false } };
     const screens = [
         { name: "account", component: AccountScreen },
@@ -19,4 +19,4 @@ const MeStacks = () => {
     return _renderStacks(Stack, screens, options);
 };
 
-export default MeStacks;
+export default AccountStacks;
