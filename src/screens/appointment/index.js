@@ -97,7 +97,7 @@ const AppointmentScreen = ({ navigation }) => {
     });
 
     const _onPressItem = (index) => {
-        navigation.navigate("appointment_details");
+        navigation.navigate("appointment__details");
     };
 
     const _renderScene = SceneMap(_createSceneMap(state?.routes, _onPressItem, Scene));
