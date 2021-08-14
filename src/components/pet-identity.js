@@ -8,16 +8,18 @@ import { View, StyleSheet } from "react-native";
 
 import _chunk from "lodash/chunk";
 
-const PetIdentity = ({ data }) => {
+const PetIdentity = ({ data, updatePet = false }) => {
     const chunks = _chunk(data, 2);
 
     return (
         <React.Fragment>
             <View style={styles.headingSection}>
-                <Heading size={1} text="Pet Identity" subtitle="Family since 20 June 2021" badge={{ text: "Cat" }} />
-                <View style={styles.actionBtnContainer}>
-                    <Button icon="far edit" label="Update Pet" color="white" small iconRight />
-                </View>
+                <Heading size={1} text="Pet Identity" subtitle="Family since 20 June 2021" badge={{ text: "Cat" }} gapless />
+                {updatePet && (
+                    <View style={styles.actionBtnContainer}>
+                        <Button icon="far edit" label="Update Pet" color="white" small iconRight />
+                    </View>
+                )}
             </View>
 
             {chunks.map((items, i) => (
@@ -49,13 +51,14 @@ const styles = StyleSheet.create({
     headingSection: {
         display: "flex",
         alignItems: "center",
-        marginBottom: 30,
+        marginBottom: 20,
         flexDirection: "row",
     },
 });
 
 PetIdentity.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
+    updatePet: PropTypes.bool,
 };
 
 export default PetIdentity;

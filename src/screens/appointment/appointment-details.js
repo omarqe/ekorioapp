@@ -32,16 +32,16 @@ export default function AppointmentDetailsScreen({ navigation }) {
     return (
         <Container>
             <TopBar
-                type={1}
                 title="Appointment Details"
                 leftIcon="arrow-left"
                 leftIconProps={{ onPress: navigation.goBack }}
+                rightIcon="ellipsis-h"
             />
             <Header contentStyle={styles.headerContent} style={styles.header}>
                 <Banner style={styles.banner} wrapperStyle={styles.bannerWrapper}>
                     <View style={styles.bannerContent}>
                         <View style={styles.badgeContainer}>
-                            <Badge text="Dermatology" xs />
+                            <Badge text="Checkup" xs />
                         </View>
                         <Heading
                             size={1}
@@ -54,7 +54,7 @@ export default function AppointmentDetailsScreen({ navigation }) {
                         icon="directions"
                         style={styles.directions}
                         weight="fas"
-                        iconProps={{ color: CT.CTA_NEUTRAL }}
+                        iconProps={{ size: 20, color: CT.CTA_NEUTRAL }}
                         inverted
                     />
                 </Banner>

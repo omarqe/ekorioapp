@@ -97,7 +97,6 @@ const AppointmentScreen = ({ navigation }) => {
     });
 
     const _onPressItem = (index) => {
-        console.log("index", index);
         navigation.navigate("appointment_details");
     };
 
