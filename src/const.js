@@ -74,4 +74,14 @@ export default {
         },
         elevation: 0.5,
     },
+    SHADOW_LG: {
+        shadowOpacity: 0.1,
+        shadowColor: "#000000",
+        shadowRadius: 8,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        elevation: 0.5,
+    },
 };

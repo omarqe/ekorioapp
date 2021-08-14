@@ -16,13 +16,13 @@ import { TabView, SceneMap } from "react-native-tab-view";
 import _renderIf from "../../functions/renderIf";
 import _createSceneMap from "../../functions/createSceneMap";
 
-const Scene = ({ data }) => {
+const Scene = ({ data, onPress }) => {
     return (
         <Layout scrollEnabled={false} gray>
             <Body gray flex expanded>
                 {_renderIf(
                     data?.length > 0,
-                    <List list={data} padded bounces scrollEnabled />,
+                    <List list={data} onPress={onPress} padded bounces scrollEnabled />,
                     <Empty title="Oh mom, look it's empty! 👀" subtitle="Your pet appointment records will appear here" />
                 )}
             </Body>
@@ -30,7 +30,7 @@ const Scene = ({ data }) => {
     );
 };
 
-const AppointmentScreen = () => {
+const AppointmentScreen = ({ navigation }) => {
     const [state, setState] = useState({
         index: 0,
         routes: [
@@ -96,7 +96,12 @@ const AppointmentScreen = () => {
         ],
     });
 
-    const _renderScene = SceneMap(_createSceneMap(state?.routes, Scene));
+    const _onPressItem = (index) => {
+        console.log("index", index);
+        navigation.navigate("appointment_details");
+    };
+
+    const _renderScene = SceneMap(_createSceneMap(state?.routes, _onPressItem, Scene));
     const _renderTabBar = ({ navigationState: state }) => (
         <Header style={styles.header}>
             <Tabs tabs={state?.routes} active={state?.index} onPress={_onIndexChange} alwaysBounceHorizontal={false} />

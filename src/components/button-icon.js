@@ -11,6 +11,7 @@ const ButtonIcon = (props) => {
         style = {},
         color = CT.BG_WHITE,
         icon,
+        weight = "far",
         dot = false,
         glow = false,
         small = false,
@@ -54,7 +55,7 @@ const ButtonIcon = (props) => {
         <TouchableOpacity style={buttonStyle} {...appendedProps}>
             <View style={innerStyle}>
                 {glow && dot && <View style={styles.dot} />}
-                <Icon icon={[glow ? "fas" : "far", icon]} color={color} size={iconSize} {...iconProps} />
+                <Icon icon={[glow ? "fas" : weight, icon]} color={color} size={iconSize} {...iconProps} />
             </View>
         </TouchableOpacity>
     );
@@ -67,6 +68,7 @@ ButtonIcon.propTypes = {
     dot: PropTypes.bool,
     glow: PropTypes.bool,
     small: PropTypes.bool,
+    weight: PropTypes.oneOf(["fas", "far", "fal", "fab"]),
     disabled: PropTypes.bool,
     inverted: PropTypes.bool,
     iconProps: PropTypes.object,
