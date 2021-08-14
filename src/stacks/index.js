@@ -5,8 +5,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 // Menu Icons
-import MeIcon from "../../assets/icons/user-circle.svg";
-import MeIconActive from "../../assets/icons/user-circle__active.svg";
+import AccountIcon from "../../assets/icons/user-circle.svg";
+import AccountIconActive from "../../assets/icons/user-circle__active.svg";
 import SpaceCatIcon from "../../assets/icons/space-cat.svg";
 import SpaceCatIconActive from "../../assets/icons/space-cat__active.svg";
 import CalendarIcon from "../../assets/icons/calendar.svg";
@@ -20,7 +20,7 @@ import HospitalIconActive from "../../assets/icons/hospital__active.svg";
 import HomeStacks from "./stacks-home";
 import VeterinarStacks from "./stacks-veterinar";
 import AppointmentStacks from "./stacks-appointment";
-import MeStacks from "./stacks-me";
+import AccountStacks from "./stacks-account";
 
 // Intro Screens
 import IntroScreen from "../screens/intro";
@@ -76,8 +76,8 @@ export default {
             {
                 name: "me_stacks",
                 label: "Me",
-                icons: [MeIcon, MeIconActive],
-                component: MeStacks,
+                icons: [AccountIcon, AccountIconActive],
+                component: AccountStacks,
             },
         ];
 
