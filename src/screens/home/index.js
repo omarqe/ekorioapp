@@ -75,18 +75,14 @@ const Home = ({ route }) => {
         { label: "Weight", value: "2.50 kg" },
     ];
 
-    const onMoreOptions = () => {
+    const onOptions = () => {
         const options = ["Reevaluate Health", "View Medical History", "Done"];
         const cancelButtonIndex = 2;
 
         showActionSheetWithOptions({ options, cancelButtonIndex }, (buttonIndex) => {
-            switch (buttonIndex) {
-                case 0:
-                    alert("Reevaluate health!");
-                    break;
-                case 1:
-                    alert("Viewing medical history");
-                    break;
+            cmd = [alert.bind(null, "Reevaluating health"), navigation.navigate("medical_history")];
+            if (typeof cmd[buttonIndex] === "function") {
+                cmd[buttonIndex]();
             }
         });
     };
@@ -111,7 +107,7 @@ const Home = ({ route }) => {
                     <View style={styles.headingSection}>
                         <Heading size={1} text="Health Stats" subtitle="Last evaluated 3 weeks ago" gapless />
                         <View style={styles.actionBtnContainer}>
-                            <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={onMoreOptions} inverted />
+                            <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={onOptions} inverted />
                         </View>
                     </View>
                     <View style={styles.section}>

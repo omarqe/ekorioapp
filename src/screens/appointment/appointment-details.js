@@ -31,33 +31,21 @@ const AppointmentDetails = ({ navigation }) => {
         { label: "Weight", value: "2.50 kg" },
     ];
 
-    const execute = (buttonIndex) => {
-        const cmd = {
-            0: alert.bind(null, "Opening Waze"),
-            1: alert.bind(null, "Opening Google Maps"),
-        };
-
-        if (cmd[buttonIndex] !== undefined) {
-            cmd[buttonIndex]();
-        }
-    };
-
-    const onMoreOptions = () => {
+    const onOptions = () => {
         const options = ["Get Directions", "Cancel Appointment", "Cancel"];
         const cancelButtonIndex = 2;
         const destructiveButtonIndex = 1;
 
         showActionSheetWithOptions({ options, cancelButtonIndex, destructiveButtonIndex }, (buttonIndex) => {
-            switch (buttonIndex) {
-                case 0:
-                    onGetDirections();
-                    break;
-                case 1:
-                    Alert.alert("Are you sure?", "Are you sure you want to cancel this appointment?", [
-                        { text: "Cancel", style: "cancel", onPress: () => null },
-                        { text: "Confirm", style: "destructive", onPress: navigation.goBack },
-                    ]);
-                    break;
+            const cmd = [
+                onGetDirections,
+                Alert.alert.bind(null, "Are you sure?", "Are you sure you want to cancel this appointment?", [
+                    { text: "Cancel", style: "cancel", onPress: () => null },
+                    { text: "Confirm", style: "destructive", onPress: navigation.goBack },
+                ]),
+            ];
+            if (typeof cmd[buttonIndex] === "function") {
+                cmd[buttonIndex]();
             }
         });
     };
@@ -67,7 +55,10 @@ const AppointmentDetails = ({ navigation }) => {
         const cancelButtonIndex = 2;
 
         showActionSheetWithOptions({ options, cancelButtonIndex }, (buttonIndex) => {
-            execute(buttonIndex);
+            const cmd = [alert.bind(null, "Opening Waze.."), alert.bind(null, "Opening Google Maps..")];
+            if (typeof cmd[buttonIndex] === "function") {
+                cmd[buttonIndex]();
+            }
         });
     };
 
@@ -78,7 +69,7 @@ const AppointmentDetails = ({ navigation }) => {
                 leftIcon="arrow-left"
                 leftIconProps={{ onPress: navigation.goBack }}
                 rightIcon="ellipsis-h"
-                rightIconProps={{ onPress: onMoreOptions }}
+                rightIconProps={{ onPress: onOptions }}
             />
             <Header contentStyle={styles.headerContent} style={styles.header}>
                 <Banner style={styles.banner} wrapperStyle={styles.bannerWrapper}>

@@ -23,7 +23,7 @@ const Scene = ({ data, onPress }) => {
                 {_renderIf(
                     data?.length > 0,
                     <List list={data} onPress={onPress} padded bounces scrollEnabled />,
-                    <Empty title="Oh mom, look it's empty! 👀" subtitle="Your pet appointment records will appear here" />
+                    <Empty title="Oh mom, look it's empty! 👀" subtitle="Your upcoming appointments will appear here" />
                 )}
             </Body>
         </Layout>
