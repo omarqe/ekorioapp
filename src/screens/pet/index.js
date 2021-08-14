@@ -105,7 +105,7 @@ const _PetScreen = ({ navigation }) => {
 
                 <Body topRounded overlap>
                     <View style={styles.headingSection}>
-                        <Heading size={2} text="Health Stats" subtitle="Last evaluated 3 weeks ago" gapless />
+                        <Heading text="Health Stats" subtitle="Last evaluated 3 weeks ago" gapless />
                         <View style={styles.actionBtnContainer}>
                             <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={onOptions} inverted />
                         </View>
