@@ -10,12 +10,14 @@ import TopBar from "../../components/topbar";
 import Banner from "../../components/banner";
 import Heading from "../../components/heading";
 import Container from "../../components/container";
+import ButtonIcon from "../../components/button-icon";
 import PetIdentity from "../../components/pet-identity";
 
-import { View, StyleSheet } from "react-native";
-import ButtonIcon from "../../components/button-icon";
+import { View, Alert, StyleSheet } from "react-native";
+import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
 
-export default function AppointmentDetailsScreen({ navigation }) {
+const AppointmentDetails = ({ navigation }) => {
+    const { showActionSheetWithOptions } = useActionSheet();
     const petData = [
         { label: "Name", value: "Cheshire" },
         { label: "Microchip ID", value: "0028031030021", verified: true },
@@ -29,6 +31,46 @@ export default function AppointmentDetailsScreen({ navigation }) {
         { label: "Weight", value: "2.50 kg" },
     ];
 
+    const execute = (buttonIndex) => {
+        const cmd = {
+            0: alert.bind(null, "Opening Waze"),
+            1: alert.bind(null, "Opening Google Maps"),
+        };
+
+        if (cmd[buttonIndex] !== undefined) {
+            cmd[buttonIndex]();
+        }
+    };
+
+    const onMoreOptions = () => {
+        const options = ["Get Directions", "Cancel Appointment", "Cancel"];
+        const cancelButtonIndex = 2;
+        const destructiveButtonIndex = 1;
+
+        showActionSheetWithOptions({ options, cancelButtonIndex, destructiveButtonIndex }, (buttonIndex) => {
+            switch (buttonIndex) {
+                case 0:
+                    onGetDirections();
+                    break;
+                case 1:
+                    Alert.alert("Confirm Action", "Are you sure you want to cancel this appointment?", [
+                        { text: "Cancel", style: "cancel", onPress: () => null },
+                        { text: "Confirm", style: "destructive" },
+                    ]);
+                    break;
+            }
+        });
+    };
+
+    const onGetDirections = () => {
+        const options = ["Waze", "Google Maps", "Cancel"];
+        const cancelButtonIndex = 2;
+
+        showActionSheetWithOptions({ options, cancelButtonIndex }, (buttonIndex) => {
+            execute(buttonIndex);
+        });
+    };
+
     return (
         <Container>
             <TopBar
@@ -36,6 +78,7 @@ export default function AppointmentDetailsScreen({ navigation }) {
                 leftIcon="arrow-left"
                 leftIconProps={{ onPress: navigation.goBack }}
                 rightIcon="ellipsis-h"
+                rightIconProps={{ onPress: onMoreOptions }}
             />
             <Header contentStyle={styles.headerContent} style={styles.header}>
                 <Banner style={styles.banner} wrapperStyle={styles.bannerWrapper}>
@@ -54,6 +97,7 @@ export default function AppointmentDetailsScreen({ navigation }) {
                         icon="directions"
                         style={styles.directions}
                         weight="fas"
+                        onPress={onGetDirections}
                         iconProps={{ size: 20, color: CT.CTA_NEUTRAL }}
                         inverted
                     />
@@ -66,7 +110,7 @@ export default function AppointmentDetailsScreen({ navigation }) {
             </Layout>
         </Container>
     );
-}
+};
 
 const offset = 35;
 const styles = StyleSheet.create({
@@ -113,3 +157,6 @@ const styles = StyleSheet.create({
         ...CT.SHADOW_LG,
     },
 });
+
+const AppointmentDetailsScreen = connectActionSheet(AppointmentDetails);
+export default AppointmentDetailsScreen;
