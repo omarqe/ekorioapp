@@ -92,7 +92,6 @@ const _PetScreen = ({ navigation }) => {
         <Container>
             <TopBar
                 type={2}
-                leftIcon="arrow-left"
                 rightIcon="bell"
                 rightIconProps={{ onPress: () => alert("Opening notifications.."), dot: true }}
                 logoProps={{ onPress: () => alert("Moving up!") }}
