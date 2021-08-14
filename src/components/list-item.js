@@ -121,14 +121,14 @@ const styles = StyleSheet.create({
 
         padding: 3,
         borderRadius: 5,
-        backgroundColor: "rgba(0,0,0,.04)",
+        backgroundColor: "rgba(0,0,0,.05)",
     },
     tagIcon: {
         color: CT.BG_GRAY_300,
         marginRight: 3,
     },
     tagText: {
-        color: CT.BG_GRAY_500,
+        color: CT.BG_GRAY_600,
         fontSize: 12,
     },
 });
