@@ -31,7 +31,7 @@ const PetSwitch = connectActionSheet(({ style, onPress, onPressIn, onPressOut })
             <Icon icon="fas caret-down" size={18} color={pressed ? CT.BG_PURPLE_600 : CT.BG_PURPLE_500} />
             <View style={[{ ...styles.imageBase, ...style }, { opacity: pressed ? 0.8 : 1 }]}>
                 <View style={styles.imagePlaceholder}>
-                    <Image style={styles.image} source={require("../../../assets/pet-sample.png")} />
+                    <Image style={styles.image} defaultSource={require("../../../assets/pet-sample.png")} />
                 </View>
             </View>
         </Pressable>
