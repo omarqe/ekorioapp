@@ -19,7 +19,7 @@ import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sh
 
 import _times from "lodash/times";
 
-const Home = ({ route }) => {
+const Home = ({ navigation }) => {
     const { showActionSheetWithOptions } = useActionSheet();
     const healthData = {
         chart: [
@@ -76,11 +76,11 @@ const Home = ({ route }) => {
     ];
 
     const onOptions = () => {
-        const options = ["Reevaluate Health", "View Medical History", "Done"];
+        const options = ["Reevaluate Health", "View Health Records", "Done"];
         const cancelButtonIndex = 2;
 
         showActionSheetWithOptions({ options, cancelButtonIndex }, (buttonIndex) => {
-            cmd = [alert.bind(null, "Reevaluating health"), navigation.navigate("medical_history")];
+            const cmd = [alert.bind(null, "Reevaluating health"), navigation.navigate("health_records")];
             if (typeof cmd[buttonIndex] === "function") {
                 cmd[buttonIndex]();
             }
@@ -105,7 +105,7 @@ const Home = ({ route }) => {
 
                 <Body topRounded overlap>
                     <View style={styles.headingSection}>
-                        <Heading size={1} text="Health Stats" subtitle="Last evaluated 3 weeks ago" gapless />
+                        <Heading size={2} text="Health Stats" subtitle="Last evaluated 3 weeks ago" gapless />
                         <View style={styles.actionBtnContainer}>
                             <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={onOptions} inverted />
                         </View>
