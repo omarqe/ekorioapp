@@ -3,10 +3,10 @@ import CT from "../../const.js";
 
 import HealthDetails from "../../components/home/health-details.js";
 import Charts from "../../components/home/charts";
-import Pet from "../../components/home/pet";
 import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
+import Pet from "../../components/home/pet";
 
 import Heading from "../../components/heading";
 import TopBar from "../../components/topbar";
@@ -19,7 +19,7 @@ import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sh
 
 import _times from "lodash/times";
 
-const Home = ({ navigation }) => {
+const _PetScreen = ({ navigation }) => {
     const { showActionSheetWithOptions } = useActionSheet();
     const healthData = {
         chart: [
@@ -174,5 +174,5 @@ const styles = StyleSheet.create({
     },
 });
 
-const HomeScreen = connectActionSheet(Home);
-export default HomeScreen;
+const PetScreen = connectActionSheet(_PetScreen);
+export default PetScreen;

@@ -16,7 +16,7 @@ import PetIdentity from "../../components/pet-identity";
 import { View, Alert, StyleSheet } from "react-native";
 import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
 
-const AppointmentDetails = ({ navigation }) => {
+const _AppointmentDetailsScreen = ({ navigation }) => {
     const { showActionSheetWithOptions } = useActionSheet();
     const petData = [
         { label: "Name", value: "Cheshire" },
@@ -149,5 +149,5 @@ const styles = StyleSheet.create({
     },
 });
 
-const AppointmentDetailsScreen = connectActionSheet(AppointmentDetails);
+const AppointmentDetailsScreen = connectActionSheet(_AppointmentDetailsScreen);
 export default AppointmentDetailsScreen;

@@ -17,7 +17,7 @@ import HospitalIconActive from "../../assets/icons/hospital__active.svg";
 // import BellsIconActive from "../../assets/icons/bells__active.svg";
 
 // Navigation Stacks
-import HomeStacks from "./stacks-home";
+import HomeStacks from "./stacks-pet";
 import VeterinarStacks from "./stacks-veterinar";
 import AppointmentStacks from "./stacks-appointment";
 import AccountStacks from "./stacks-account";
