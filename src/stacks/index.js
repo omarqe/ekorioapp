@@ -17,7 +17,7 @@ import HospitalIconActive from "../../assets/icons/hospital__active.svg";
 // import BellsIconActive from "../../assets/icons/bells__active.svg";
 
 // Navigation Stacks
-import HomeStacks from "./stacks-pet";
+import PetStacks from "./stacks-pet";
 import VeterinarStacks from "./stacks-veterinar";
 import AppointmentStacks from "./stacks-appointment";
 import AccountStacks from "./stacks-account";
@@ -59,7 +59,7 @@ export default {
                 name: "home_stacks",
                 label: "My Pets",
                 icons: [SpaceCatIcon, SpaceCatIconActive],
-                component: HomeStacks,
+                component: PetStacks,
             },
             {
                 name: "veterinar_stacks",
