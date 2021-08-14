@@ -81,7 +81,10 @@ const _PetScreen = ({ navigation }) => {
         const cancelButtonIndex = 2;
 
         showActionSheetWithOptions({ options, cancelButtonIndex }, (buttonIndex) => {
-            const cmd = [alert.bind(null, "Reevaluating health"), navigation.navigate.bind(null, "pet__health-records")];
+            const cmd = [
+                navigation.navigate.bind(null, "pet__evaluate"),
+                navigation.navigate.bind(null, "pet__health-records"),
+            ];
             if (typeof cmd[buttonIndex] === "function") {
                 cmd[buttonIndex]();
             }

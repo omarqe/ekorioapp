@@ -10,9 +10,10 @@ import TopBar from "../../components/topbar";
 import Banner from "../../components/banner";
 import Heading from "../../components/heading";
 import Container from "../../components/container";
+import ButtonIcon from "../../components/button-icon";
 import PetIdentity from "../../components/pet/pet-identity";
 
-import { View, Alert, StyleSheet } from "react-native";
+import { View, Alert, Linking, StyleSheet } from "react-native";
 import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
 
 const _PetHealthDetailsScreen = ({ navigation }) => {
@@ -30,21 +31,16 @@ const _PetHealthDetailsScreen = ({ navigation }) => {
         { label: "Weight", value: "2.50 kg" },
     ];
 
-    const onGetDirections = () => {
-        const options = ["Waze", "Google Maps", "Cancel"];
-        const cancelButtonIndex = 2;
-
-        showActionSheetWithOptions({ options, cancelButtonIndex }, (buttonIndex) => {
-            const cmd = [alert.bind(null, "Opening Waze.."), alert.bind(null, "Opening Google Maps..")];
-            if (typeof cmd[buttonIndex] === "function") {
-                cmd[buttonIndex]();
-            }
-        });
-    };
+    const onCallVeterinar = () => Linking.openURL(`tel:+60 12-664 7006`);
 
     return (
         <Container>
-            <TopBar title="Health Details" leftIcon="arrow-left" leftIconProps={{ onPress: navigation.goBack }} />
+            <TopBar
+                title="Health Details"
+                leftIcon="arrow-left"
+                leftIconProps={{ onPress: navigation.goBack }}
+                rightIcon="ellipsis-h"
+            />
             <Header contentStyle={styles.headerContent} style={styles.header}>
                 <Banner style={styles.banner} wrapperStyle={styles.bannerWrapper}>
                     <View style={styles.bannerContent}>
@@ -58,6 +54,14 @@ const _PetHealthDetailsScreen = ({ navigation }) => {
                             gapless
                         />
                     </View>
+                    <ButtonIcon
+                        icon="phone"
+                        style={styles.directions}
+                        weight="fas"
+                        onPress={onCallVeterinar}
+                        iconProps={{ size: 20, color: CT.CTA_NEUTRAL }}
+                        inverted
+                    />
                 </Banner>
             </Header>
             <Layout gray>
