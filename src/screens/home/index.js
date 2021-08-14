@@ -109,7 +109,7 @@ const Home = ({ route }) => {
 
                 <Body topRounded overlap>
                     <View style={styles.headingSection}>
-                        <Heading text="Health Stats" subtitle="Last evaluated 3 weeks ago" />
+                        <Heading size={1} text="Health Stats" subtitle="Last evaluated 3 weeks ago" gapless />
                         <View style={styles.actionBtnContainer}>
                             <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={onMoreOptions} inverted />
                         </View>
@@ -123,7 +123,7 @@ const Home = ({ route }) => {
                 </Body>
 
                 <Body gray>
-                    <PetIdentity data={petData} />
+                    <PetIdentity data={petData} updatePet />
                 </Body>
             </Layout>
         </Container>

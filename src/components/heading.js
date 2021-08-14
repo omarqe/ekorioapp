@@ -10,8 +10,8 @@ const Heading = (props) => {
     const { size = 0, text, style, kicker, badge = null, subtitle, gapless = false } = props;
     const { textStyle: customTextStyle, kickerStyle: customKickerStyle, subtitleStyle: customSubtitleStyle } = props;
     const appendedProps = _omit(props, ["size", "text", "style", "subtitle"]);
-    const titleSizes = [20, 22, 24, 28, 32];
-    const subtitleSizes = [16, 16, 18, 20, 24];
+    const titleSizes = [16, 20, 24, 28, 32];
+    const subtitleSizes = [14, 16, 18, 20, 24];
 
     let baseStyle = { ...styles.base, ...style };
     let textStyle = { ...styles.text, fontSize: titleSizes[size], ...customTextStyle };

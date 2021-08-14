@@ -11,21 +11,34 @@ import _findLastIndex from "lodash/findLastIndex";
 LogBox.ignoreLogs(["VirtualizedLists should never be nested inside"]);
 
 export default function List(props) {
-    const { list = [], sections = [] } = props;
+    const { list = [], sections = [], padded = false, onPress } = props;
     const _props = _omit(props, ["list", "sections"]);
     const isSectioned = _isArray(sections) && sections.length > 0;
     const isListed = _isArray(list) && list.length > 0;
 
     const _renderSectionHeader = ({ section: { title } }) => <Text style={styles.name}>{title}</Text>;
     const _renderSectionFooter = ({ section: { note } }) => note && <Text style={styles.note}>{note}</Text>;
-    const _keyExtractor = ({ text, subtitle }) => text + subtitle;
-    const _renderItem = ({ item, index, section }) => (
-        <ListItem last={index === _findLastIndex(isSectioned ? section?.data : list)} {...item} />
-    );
+    const _keyExtractor = ({ text, subtitle }, index) => text + subtitle + index;
+    const _renderItem = ({ item, index, section }) => {
+        const _onPress = (index) => {
+            if (typeof onPress === "function") {
+                onPress(index);
+            }
+        };
+
+        return (
+            <ListItem
+                last={index === _findLastIndex(isSectioned ? section?.data : list)}
+                padded={padded}
+                onPress={_onPress.bind(null, index)}
+                {...item}
+            />
+        );
+    };
 
     if (isSectioned) {
         return (
-            <View>
+            <View style={styles.base}>
                 <SectionList
                     sections={sections}
                     renderItem={_renderItem}
@@ -40,7 +53,7 @@ export default function List(props) {
         );
     } else if (isListed) {
         return (
-            <View>
+            <View style={styles.base}>
                 <FlatList
                     data={list}
                     renderItem={_renderItem}
@@ -74,9 +87,14 @@ const styles = StyleSheet.create({
         paddingRight: CT.VIEW_PADDING_X,
         marginBottom: 15,
     },
+    base: {
+        flex: 1,
+    },
 });
 
 List.propTypes = {
+    padded: PropTypes.bool,
     list: PropTypes.arrayOf(PropTypes.object),
+    onPress: PropTypes.func,
     sections: PropTypes.arrayOf(PropTypes.object),
 };
