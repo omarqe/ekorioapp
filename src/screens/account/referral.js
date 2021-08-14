@@ -10,7 +10,7 @@ import Container from "../../components/container";
 
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function ReferralScreen({ navigation }) {
+export default function AccountReferralScreen({ navigation }) {
     const shareIcons = [
         { icon: "fab facebook", bgColor: "#1877F2" },
         { icon: "fab facebook-messenger", bgColor: "#0099FF" },

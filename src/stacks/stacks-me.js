@@ -1,19 +1,19 @@
 import _renderStacks from "../functions/renderStacks";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import MeScreen from "../screens/me";
-import AccountSettingsScreen from "../screens/me/account-settings";
-import AccountPasswordScreen from "../screens/me/account-password";
-import ReferralScreen from "../screens/me/referral";
+import AccountScreen from "../screens/account";
+import AccountSettingsScreen from "../screens/account/settings";
+import AccountPasswordScreen from "../screens/account/password";
+import AccountReferralScreen from "../screens/account/referral";
 
 const Stack = createStackNavigator();
 const MeStacks = () => {
     const options = { screenOptions: { headerShown: false } };
     const screens = [
-        { name: "me", component: MeScreen },
-        { name: "account_settings", component: AccountSettingsScreen },
-        { name: "account_password", component: AccountPasswordScreen },
-        { name: "referral", component: ReferralScreen },
+        { name: "account", component: AccountScreen },
+        { name: "account__settings", component: AccountSettingsScreen },
+        { name: "account__password", component: AccountPasswordScreen },
+        { name: "account__referral", component: AccountReferralScreen },
     ];
 
     return _renderStacks(Stack, screens, options);

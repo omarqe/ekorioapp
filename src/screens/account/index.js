@@ -13,7 +13,7 @@ import Container from "../../components/container";
 
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 
-const MeScreen = ({ navigation }) => {
+const AccountScreen = ({ navigation }) => {
     const go = (name) => navigation.navigate(name);
     const auth = useContext(Context.Auth);
     const sections = [
@@ -24,19 +24,19 @@ const MeScreen = ({ navigation }) => {
                 {
                     icon: "cog",
                     text: "Account Settings",
-                    onPress: go.bind(null, "account_settings"),
+                    onPress: go.bind(null, "account__settings"),
                     subtitle: "Update your account details",
                 },
                 {
                     icon: "key",
                     text: "Update Password",
-                    onPress: go.bind(null, "account_password"),
+                    onPress: go.bind(null, "account__password"),
                     subtitle: "Update your account password",
                 },
                 {
                     icon: "gift",
                     text: "Refer Friends",
-                    onPress: go.bind(null, "referral"),
+                    onPress: go.bind(null, "account__referral"),
                     subtitle: "Share Ekorio with your friends",
                 },
             ],
@@ -100,4 +100,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default MeScreen;
+export default AccountScreen;
