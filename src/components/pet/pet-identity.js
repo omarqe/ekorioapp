@@ -1,8 +1,8 @@
 import React from "react";
-import CT from "../const";
-import PetID from "./pet-id";
-import Button from "./button";
-import Heading from "./heading";
+import CT from "../../const";
+import PetID from "../pet-id";
+import Button from "../button";
+import Heading from "../heading";
 import PropTypes from "prop-types";
 import { View, StyleSheet } from "react-native";
 

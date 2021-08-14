@@ -7,7 +7,7 @@ import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
 
 import _isArray from "lodash/isArray";
 
-const HealthDetails = ({ data = [], onPress }) => {
+export default function HealthCategories({ data = [], onPress }) {
     const [pressedIndex, setPressedIndex] = useState(null);
     const _onPressOut = () => setPressedIndex(null);
     const _onPressIn = (index) => setPressedIndex(index);
@@ -60,7 +60,7 @@ const HealthDetails = ({ data = [], onPress }) => {
     }
 
     return null;
-};
+}
 
 const styles = StyleSheet.create({
     base: {
@@ -97,9 +97,7 @@ const styles = StyleSheet.create({
     },
 });
 
-HealthDetails.propTypes = {
+HealthCategories.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object).isRequired,
     onPress: PropTypes.func,
 };
-
-export default HealthDetails;

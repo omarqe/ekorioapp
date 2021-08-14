@@ -6,7 +6,7 @@ import { Text, View, Image, StyleSheet, Pressable } from "react-native";
 
 import _renderIf from "../../functions/renderIf";
 
-const Pet = ({ add, active = false, onPress, onPressIn, onPressOut }) => {
+export default function PetOrb({ add, active = false, onPress, onPressIn, onPressOut }) {
     const [pressed, setPressed] = useState(false);
     let data = { name: "Cheshire", imageSrc: require("../../../assets/pet-sample.png") };
     let nameStyle = styles.name;
@@ -46,9 +46,9 @@ const Pet = ({ add, active = false, onPress, onPressIn, onPressOut }) => {
             </View>
         </Pressable>
     );
-};
+}
 
-Pet.propTypes = {
+PetOrb.propTypes = {
     add: PropTypes.bool,
     data: PropTypes.object,
     active: PropTypes.bool,
@@ -97,5 +97,3 @@ const styles = StyleSheet.create({
         backgroundColor: CT.BG_PURPLE_800,
     },
 });
-
-export default Pet;

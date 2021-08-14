@@ -11,7 +11,7 @@ import Banner from "../../components/banner";
 import Heading from "../../components/heading";
 import Container from "../../components/container";
 import ButtonIcon from "../../components/button-icon";
-import PetIdentity from "../../components/pet-identity";
+import PetIdentity from "../../components/pet/pet-identity";
 
 import { View, Alert, StyleSheet } from "react-native";
 import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";

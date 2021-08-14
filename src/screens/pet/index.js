@@ -1,18 +1,19 @@
 import React from "react";
 import CT from "../../const.js";
 
-import HealthDetails from "../../components/home/health-details.js";
-import Charts from "../../components/home/charts";
 import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
-import Pet from "../../components/home/pet";
+
+import Pet from "../../components/pet/pet-orb";
+import PetIdentity from "../../components/pet/pet-identity";
+import HealthCharts from "../../components/pet/health-charts";
+import HealthCategories from "../../components/pet/health-categories";
 
 import Heading from "../../components/heading";
 import TopBar from "../../components/topbar";
 import Container from "../../components/container";
 import ButtonIcon from "../../components/button-icon";
-import PetIdentity from "../../components/pet-identity";
 
 import { View, StyleSheet } from "react-native";
 import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
@@ -111,10 +112,10 @@ const _PetScreen = ({ navigation }) => {
                         </View>
                     </View>
                     <View style={styles.section}>
-                        <Charts data={healthData?.chart} />
+                        <HealthCharts data={healthData?.chart} />
                     </View>
                     <View style={{ ...styles.section, marginBottom: 0 }}>
-                        <HealthDetails data={healthData?.details} />
+                        <HealthCategories data={healthData?.details} />
                     </View>
                 </Body>
 
