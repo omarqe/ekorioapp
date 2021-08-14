@@ -68,7 +68,7 @@ const PetHealthRecordsScreen = ({ navigation }) => {
     });
 
     const _onPressItem = (index) => {
-        navigation.navigate("appointment__details");
+        navigation.navigate("pet__health-details");
     };
 
     const _renderScene = SceneMap(_createSceneMap(state?.routes, _onPressItem, Scene));
