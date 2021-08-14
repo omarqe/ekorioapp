@@ -40,19 +40,19 @@ const AppointmentScreen = ({ navigation }) => {
                 data: [
                     {
                         text: "Friday, 13 August 2021",
-                        subtitle: "General health checkups",
+                        subtitle: "Petsville Animal Clinic, Cyberjaya",
                         badge: { text: "Checkup" },
                         tags: [
-                            { icon: "map-marker-alt", text: "Petsville Animal Clinic" },
+                            { icon: "clock", text: "3:00pm" },
                             { icon: "cat", text: "Cheshire" },
                         ],
                     },
                     {
                         text: "Friday, 13 August 2021",
-                        subtitle: "General health checkups",
+                        subtitle: "Petsville Animal Clinic, Cyberjaya",
                         badge: { text: "Checkup" },
                         tags: [
-                            { icon: "map-marker-alt", text: "Petsville Animal Clinic" },
+                            { icon: "clock", text: "3:00pm" },
                             { icon: "cat", text: "Cheshire" },
                         ],
                     },
@@ -64,10 +64,10 @@ const AppointmentScreen = ({ navigation }) => {
                 data: [
                     {
                         text: "Friday, 13 August 2021",
-                        subtitle: "Parents went back to hometown.",
+                        subtitle: "Catzonia, Petaling Jaya",
                         badge: { text: "Boarding" },
                         tags: [
-                            { icon: "map-marker-alt", text: "Catzonia Petaling Jaya" },
+                            { icon: "clock", text: "3:00pm" },
                             { icon: "cat", text: "Cheshire" },
                         ],
                     },
@@ -84,10 +84,10 @@ const AppointmentScreen = ({ navigation }) => {
                 data: [
                     {
                         text: "Friday, 13 August 2021",
-                        subtitle: "Regular grooming",
+                        subtitle: "Catzonia, Petaling Jaya",
                         badge: { text: "Grooming" },
                         tags: [
-                            { icon: "map-marker-alt", text: "Catzonia Petaling Jaya" },
+                            { icon: "clock", text: "3:00pm" },
                             { icon: "cat", text: "Cheshire" },
                         ],
                     },
