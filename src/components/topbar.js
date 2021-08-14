@@ -34,7 +34,7 @@ const TopBar = (props) => {
             const addedProps = _omit(props, ["right", "style"]);
             const addedStyle = { ...iconStyle, ...style };
 
-            return <ButtonIcon icon={icon} style={addedStyle} color={CT.BG_PURPLE_400} {...iconProps} {...addedProps} small />;
+            return <ButtonIcon icon={icon} style={addedStyle} color={CT.BG_PURPLE_400} {...addedProps} {...iconProps} small />;
         }
         return null;
     };
