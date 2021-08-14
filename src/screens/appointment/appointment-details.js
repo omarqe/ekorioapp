@@ -53,9 +53,9 @@ const AppointmentDetails = ({ navigation }) => {
                     onGetDirections();
                     break;
                 case 1:
-                    Alert.alert("Confirm Action", "Are you sure you want to cancel this appointment?", [
+                    Alert.alert("Are you sure?", "Are you sure you want to cancel this appointment?", [
                         { text: "Cancel", style: "cancel", onPress: () => null },
-                        { text: "Confirm", style: "destructive" },
+                        { text: "Confirm", style: "destructive", onPress: navigation.goBack },
                     ]);
                     break;
             }
