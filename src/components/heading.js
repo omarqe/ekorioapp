@@ -11,7 +11,7 @@ const Heading = (props) => {
     const { textStyle: customTextStyle, kickerStyle: customKickerStyle, subtitleStyle: customSubtitleStyle } = props;
     const appendedProps = _omit(props, ["size", "text", "style", "subtitle"]);
     const titleSizes = [16, 18, 22, 26, 30];
-    const subtitleSizes = [14, 16, 16, 20, 20];
+    const subtitleSizes = [14, 14, 16, 20, 20];
 
     let baseStyle = { ...styles.base, ...style };
     let textStyle = { ...styles.text, fontSize: titleSizes[size], ...customTextStyle };
