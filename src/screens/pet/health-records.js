@@ -8,6 +8,7 @@ import Tabs from "../../components/tabs";
 import List from "../../components/list";
 import Empty from "../../components/empty";
 import TopBar from "../../components/topbar";
+import PetSwitch from "../../components/pet/pet-switch";
 import Container from "../../components/container";
 
 import { StyleSheet } from "react-native";
@@ -40,10 +41,10 @@ const PetHealthRecordsScreen = ({ navigation }) => {
                 data: [
                     {
                         text: "Friday, 13 August 2021",
-                        subtitle: "Petsville Animal Clinic, Cyberjaya",
+                        subtitle: "Cheshire was infected by virus and needs ...",
                         badge: { text: "Checkup" },
                         tags: [
-                            { icon: "clock", text: "3:00pm" },
+                            { icon: "map-marker-alt", text: "Petsville Animal Clinic" },
                             { icon: "cat", text: "Cheshire" },
                         ],
                     },
@@ -81,7 +82,13 @@ const PetHealthRecordsScreen = ({ navigation }) => {
 
     return (
         <Container>
-            <TopBar type={1} title="Health Records" leftIcon="arrow-left" leftIconProps={{ onPress: navigation.goBack }} />
+            <TopBar
+                type={1}
+                title="Health Records"
+                leftIcon="arrow-left"
+                leftIconProps={{ onPress: navigation.goBack }}
+                rightComponent={<PetSwitch />}
+            />
             <TabView
                 renderScene={_renderScene}
                 renderTabBar={_renderTabBar}

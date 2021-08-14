@@ -64,7 +64,7 @@ const TopBar = (props) => {
             return (
                 <View style={topBarStyle}>
                     <View style={styles.content}>
-                        {leftIcon && (
+                        {(leftIcon || leftComponent) && (
                             <View style={styles.leftContent}>
                                 <SideComponent />
                             </View>
@@ -72,7 +72,7 @@ const TopBar = (props) => {
                         <View style={{ ...styles.midContent, flex: 8 }}>
                             <Text style={styles.largeTitle}>{title}</Text>
                         </View>
-                        {rightIcon && (
+                        {(rightIcon || rightComponent) && (
                             <View style={styles.rightContent}>
                                 <SideComponent right />
                             </View>
@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
     },
     content: {
         display: "flex",
+        alignItems: "center",
         flexDirection: "row",
     },
 
