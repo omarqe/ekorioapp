@@ -7,8 +7,8 @@ import _omit from "lodash/omit";
 
 const Badge = (props) => {
     let { style = {}, textStyle: labelStyle = {}, text, size = 1, xs = false, lg = false } = props;
-    let baseStyle = { ...styles.base, ...style };
-    let textStyle = { ...styles.text, ...labelStyle };
+    let baseStyle = styles.base;
+    let textStyle = styles.text;
 
     // Handle size shortcuts
     if (xs) size = 0;
@@ -31,8 +31,8 @@ const Badge = (props) => {
     }
 
     return (
-        <View style={baseStyle}>
-            <Text style={textStyle}>{text}</Text>
+        <View style={[baseStyle, style]}>
+            <Text style={[textStyle, labelStyle]}>{text}</Text>
         </View>
     );
 };
@@ -51,7 +51,7 @@ Badge.propTypes = {
     xs: PropTypes.bool,
     lg: PropTypes.bool,
     size: PropTypes.number,
-    text: PropTypes.string,
+    text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     style: PropTypes.object,
     textStyle: PropTypes.object,
 };

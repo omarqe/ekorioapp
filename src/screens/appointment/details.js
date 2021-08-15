@@ -19,7 +19,10 @@ export default function AppointmentDetailsScreen({ navigation }) {
     ];
 
     const topbar = { title: "Appointment Details", leftIcon: "arrow-left", leftIconProps: { onPress: navigation.goBack } };
-    const heading = { text: "Friday, 13 August 2021", subtitle: "Petsville Animal Clinic, Cyberjaya" };
+    const heading = {
+        text: "Fri, 13 August @ 3.00PM",
+        subtitle: "Petsville Animal Clinic, Cyberjaya",
+    };
     const options = {
         options: ["Call", "Send WhatsApp", "Cancel Appointment", "Cancel"],
         optionConfig: { cancelButtonIndex: 3, destructiveButtonIndex: 2 },

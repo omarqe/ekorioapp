@@ -5,6 +5,7 @@ import Header from "./layout/header";
 import Body from "./layout/body";
 import Layout from "./layout";
 
+import Icon from "./icon";
 import Badge from "./badge";
 import TopBar from "./topbar";
 import Banner from "./banner";
@@ -13,8 +14,10 @@ import Container from "./container";
 import ButtonIcon from "./button-icon";
 
 import PropTypes from "prop-types";
-import { View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { useActionSheet, connectActionSheet } from "@expo/react-native-action-sheet";
+
+import _omit from "lodash/omit";
 
 const DetailContainer = connectActionSheet((props) => {
     let { children, badgeText, topbar = {}, heading = {} } = props;
@@ -91,9 +94,15 @@ const DetailContainer = connectActionSheet((props) => {
                 <Banner style={styles.banner} wrapperStyle={styles.bannerWrapper}>
                     <View style={styles.bannerContent}>
                         <View style={styles.badgeContainer}>
-                            <Badge text={badgeText} xs />
+                            {badgeText && <Badge text={badgeText} style={{ marginRight: 5 }} xs />}
+                            {heading?.time && (
+                                <View style={styles.timeContent}>
+                                    <Icon icon="fas clock" size={12} style={styles.timeIcon} />
+                                    <Text style={styles.time}>{heading?.time}</Text>
+                                </View>
+                            )}
                         </View>
-                        <Heading size={1} gapless {...heading} />
+                        <Heading size={0} gapless {...heading} />
                     </View>
                     {bannerOptions?.length > 0 && (
                         <ButtonIcon
@@ -107,7 +116,7 @@ const DetailContainer = connectActionSheet((props) => {
                     )}
                 </Banner>
             </Header>
-            <Layout gray>
+            <Layout showsVerticalScrollIndicator={false} gray>
                 <Body style={styles.body} gray flex>
                     {children}
                 </Body>
@@ -127,6 +136,21 @@ const styles = StyleSheet.create({
     body: {
         marginTop: offset,
     },
+
+    timeContent: {
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "row",
+    },
+    time: {
+        color: CT.FONT_COLOR_LIGHT,
+        fontSize: 14,
+    },
+    timeIcon: {
+        color: CT.BG_GRAY_200,
+        marginRight: 3,
+    },
+
     header: {
         zIndex: 110,
         paddingBottom: 0,
@@ -135,8 +159,8 @@ const styles = StyleSheet.create({
     },
     headerContent: {
         paddingTop: 0,
-        paddingLeft: 18,
-        paddingRight: 18,
+        paddingLeft: 20,
+        paddingRight: 20,
     },
     banner: {
         display: "flex",
@@ -184,7 +208,7 @@ DetailContainer.propTypes = {
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     topbar: PropTypes.object.isRequired,
     heading: PropTypes.object.isRequired,
-    badgeText: PropTypes.string.isRequired,
+    badgeText: PropTypes.string,
 };
 
 export default DetailContainer;
