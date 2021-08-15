@@ -21,7 +21,7 @@ export default function PetHealthDetailsScreen({ navigation }) {
     ];
 
     const topbar = { title: "Health Details", leftIcon: "arrow-left", leftIconProps: { onPress: navigation.goBack } };
-    const heading = { text: "Fri, 13 August", subtitle: "Petsville Animal Clinic, Cyberjaya" };
+    const heading = { text: "Fri, 13 August 2021", subtitle: "Petsville Animal Clinic, Cyberjaya" };
     const options = {
         options: ["Call", "Send WhatsApp", "Cancel"],
         optionConfig: { cancelButtonIndex: 2 },
@@ -88,9 +88,6 @@ const styles = StyleSheet.create({
     medicine: {
         marginTop: 10,
         paddingVertical: 3,
-        // paddingLeft: 10,
-        // borderLeftWidth: 3,
-        // borderLeftColor: CT.BG_GRAY_100,
     },
     middot: {
         top: -2,
@@ -114,13 +111,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "flex-start",
     },
-    // medBadge: {
-    //     padding: 3,
-    //     paddingLeft: 3,
-    //     paddingRight: 3,
-    //     marginRight: 3,
-    //     backgroundColor: "rgba(0,0,0,0.05)",
-    // },
     medBadgeText: {
         color: CT.BG_GRAY_300,
         fontSize: 14,
