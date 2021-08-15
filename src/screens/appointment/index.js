@@ -96,9 +96,9 @@ const AppointmentScreen = ({ navigation }) => {
         ],
     });
 
-    const _onPressItem = (index) => {
-        navigation.navigate("appointment__details");
-    };
+    const _onIndexChange = (index) => setState({ ...state, index });
+    const _onPressItem = (index) => navigation.navigate("appointment__details");
+    const _onPressBookingAppointment = () => navigation.navigate("appointment__booking");
 
     const _renderScene = SceneMap(_createSceneMap(state?.routes, _onPressItem, Scene));
     const _renderTabBar = ({ navigationState: state }) => (
@@ -106,11 +106,15 @@ const AppointmentScreen = ({ navigation }) => {
             <Tabs tabs={state?.routes} active={state?.index} onPress={_onIndexChange} alwaysBounceHorizontal={false} />
         </Header>
     );
-    const _onIndexChange = (index) => setState({ ...state, index });
 
     return (
         <Container>
-            <TopBar type={1} title="Appointments" rightIcon="plus" rightIconProps={{ glow: true }} />
+            <TopBar
+                type={1}
+                title="Appointments"
+                rightIcon="plus"
+                rightIconProps={{ glow: true, onPress: _onPressBookingAppointment }}
+            />
             <TabView
                 renderScene={_renderScene}
                 renderTabBar={_renderTabBar}
