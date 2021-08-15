@@ -9,13 +9,7 @@ import { View, SafeAreaView, StyleSheet } from "react-native";
 
 export default function Modal({ title, kicker, subtitle, children, onClose = null, onToggle = null, shown = false }) {
     return (
-        <RNModal
-            style={styles.modal}
-            isVisible={shown}
-            animationIn="fadeInUp"
-            onBackdropPress={onClose ?? onToggle}
-            animationOutTiming={1000}
-        >
+        <RNModal style={styles.modal} isVisible={shown} animationIn="fadeInUp" onBackdropPress={onClose ?? onToggle}>
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.body}>
                     <View style={[styles.header, { alignItems: kicker || subtitle ? "flex-start" : "center" }]}>
