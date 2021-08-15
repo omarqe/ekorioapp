@@ -22,6 +22,7 @@ const DetailContainer = connectActionSheet((props) => {
     const { bannerOptions = [], bannerIcon, bannerIconColor, bannerOptionConfig = {}, bannerOptionCommands = [] } = props;
     const { showActionSheetWithOptions } = useActionSheet();
 
+    // List of predefined callbacks,
     const callbacks = {
         onGetDirections: () => {
             const options = ["Waze", "Google Maps", "Cancel"];
@@ -36,22 +37,21 @@ const DetailContainer = connectActionSheet((props) => {
         },
     };
 
+    /**
+     * Open the native ActionSheet.
+     *
+     * @param {string} x Determines the position of where this function is called. Can either be "top" or "banner".
+     * @since 0.1
+     */
     const onOptions = (x = "top") => {
         const option = {
-            top: {
-                config: { options, ...optionConfig },
-                commands: optionCommands,
-            },
-            banner: {
-                config: { options: bannerOptions, ...bannerOptionConfig },
-                commands: bannerOptionCommands,
-            },
+            top: { config: { options: options, ...optionConfig }, commands: optionCommands },
+            banner: { config: { options: bannerOptions, ...bannerOptionConfig }, commands: bannerOptionCommands },
         };
 
         showActionSheetWithOptions(option[x].config, (buttonIndex) => {
             const command = option[x].commands[buttonIndex];
             const typeofCommand = typeof command;
-
             switch (typeofCommand) {
                 case "function":
                     command();
@@ -65,11 +65,13 @@ const DetailContainer = connectActionSheet((props) => {
         });
     };
 
+    // Fire when the banner icon is pressed
     const onPressBannerIcon = () => {
         if (typeof bannerOptions === "string" && typeof callbacks[bannerOptions] === "function") {
             callbacks[bannerOptions]();
             return;
         }
+
         onOptions("banner");
     };
 
@@ -116,6 +118,12 @@ const DetailContainer = connectActionSheet((props) => {
 
 const offset = 35;
 const styles = StyleSheet.create({
+    id: {
+        color: CT.FONT_COLOR_LIGHT,
+        fontSize: 12,
+        fontWeight: "600",
+        marginLeft: 5,
+    },
     body: {
         marginTop: offset,
     },
@@ -142,7 +150,9 @@ const styles = StyleSheet.create({
     },
     badgeContainer: {
         display: "flex",
-        alignItems: "flex-start",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        flexDirection: "row",
         paddingBottom: 5,
     },
     directions: {
@@ -167,10 +177,11 @@ DetailContainer.propTypes = {
 
     bannerIcon: PropTypes.string,
     bannerIconColor: PropTypes.string,
-    bannerOptions: PropTypes.oneOf([PropTypes.array, PropTypes.string]),
+    bannerOptions: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
     bannerOptionConfig: PropTypes.object,
     bannerOptionCommands: PropTypes.array,
 
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     topbar: PropTypes.object.isRequired,
     heading: PropTypes.object.isRequired,
     badgeText: PropTypes.string.isRequired,
