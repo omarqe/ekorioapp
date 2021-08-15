@@ -92,6 +92,16 @@ export default {
             width: 0,
             height: 2,
         },
+        elevation: 5,
+    },
+    GLOW_PURPLE: {
+        shadowOpacity: 0.15,
+        shadowColor: "#ad9dbc",
+        shadowRadius: 10,
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
         elevation: 3,
     },
 };
