@@ -25,7 +25,13 @@ export default function Tabs(props) {
         };
 
         return (
-            <ScrollView style={styles.base} contentContainerStyle={styles.baseContent} horizontal {...appendedProps}>
+            <ScrollView
+                style={styles.base}
+                contentContainerStyle={styles.baseContent}
+                showsHorizontalScrollIndicator={false}
+                horizontal
+                {...appendedProps}
+            >
                 <View style={styles.content}>
                     {tabs.map((props, index) => {
                         const itemProps = _omit(props, ["text"]);
@@ -86,7 +92,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 15,
         marginHorizontal: 5,
-        paddingHorizontal: 18,
+        paddingHorizontal: 8,
         borderBottomWidth: 3,
         borderBottomColor: CT.BG_PURPLE_900,
     },

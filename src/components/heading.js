@@ -10,8 +10,8 @@ const Heading = (props) => {
     const { size = 0, text, style, kicker, badge = null, subtitle, gapless = false } = props;
     const { textStyle: customTextStyle, kickerStyle: customKickerStyle, subtitleStyle: customSubtitleStyle } = props;
     const appendedProps = _omit(props, ["size", "text", "style", "subtitle"]);
-    const titleSizes = [16, 18, 22, 26, 30];
-    const subtitleSizes = [14, 16, 16, 20, 20];
+    const titleSizes = [20, 22, 24, 26, 28];
+    const subtitleSizes = [16, 16, 18, 18, 20];
 
     let baseStyle = { ...styles.base, ...style };
     let textStyle = { ...styles.text, fontSize: titleSizes[size], ...customTextStyle };
@@ -48,7 +48,7 @@ Heading.propTypes = {
 
 const styles = StyleSheet.create({
     base: {
-        marginBottom: 5,
+        marginBottom: 10,
     },
     title: {
         display: "flex",
@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
     },
     subtitle: {
         color: CT.FONT_COLOR_LIGHT,
-        marginTop: 1,
         marginBottom: 2,
     },
 });

@@ -8,6 +8,7 @@ import _omit from "lodash/omit";
 
 const ButtonIcon = (props) => {
     let {
+        innerStyle: customInnerStyle = {},
         style = {},
         color = CT.BG_WHITE,
         icon,
@@ -21,7 +22,7 @@ const ButtonIcon = (props) => {
     } = props;
 
     let iconSize = small ? 20 : 22;
-    let innerStyle = { ...styles.inner };
+    let innerStyle = { ...styles.inner, ...customInnerStyle };
     let buttonStyle = { ...styles.base, ...style };
     let appendedProps = _omit(props, ["style", "color", "icon", "iconProps", "touchableStyle"]);
 
@@ -62,6 +63,7 @@ const ButtonIcon = (props) => {
 };
 
 ButtonIcon.propTypes = {
+    innerStyle: PropTypes.object,
     style: PropTypes.object,
     color: PropTypes.string,
     icon: PropTypes.string.isRequired,

@@ -53,7 +53,7 @@ export default {
     BORDER_FOCUS: "#96BAFF",
 
     FONT_COLOR: "#323f4b",
-    FONT_COLOR_LIGHT: "#7b8794",
+    FONT_COLOR_LIGHT: "#616e7c",
 
     VIEW_PADDING_X: 25,
     VIEW_PADDING_TOP: isIOS ? 10 : 40,
@@ -74,6 +74,16 @@ export default {
         },
         elevation: 0.5,
     },
+    SHADOW_MD: {
+        shadowOpacity: 0.08,
+        shadowColor: "#000000",
+        shadowRadius: 4,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        elevation: 3,
+    },
     SHADOW_LG: {
         shadowOpacity: 0.1,
         shadowColor: "#000000",
@@ -82,6 +92,6 @@ export default {
             width: 0,
             height: 2,
         },
-        elevation: 0.5,
+        elevation: 3,
     },
 };

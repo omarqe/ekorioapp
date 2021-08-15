@@ -14,7 +14,8 @@ import _startCase from "lodash/startCase";
 
 const lowRatio = CT.PIXELRATIO < 3;
 const columnw = lowRatio ? 90 : 100;
-const Charts = ({ data = [] }) => {
+
+export default function HealthCharts({ data = [] }) {
     const chartBg = CT.BG_WHITE;
     const chartIcons = {
         physical: ChartCatIcon,
@@ -77,7 +78,7 @@ const Charts = ({ data = [] }) => {
     }
 
     return "";
-};
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -134,8 +135,6 @@ const styles = StyleSheet.create({
     },
 });
 
-Charts.propTypes = {
+HealthCharts.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
 };
-
-export default Charts;
