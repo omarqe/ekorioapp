@@ -2,7 +2,7 @@ import _renderStacks from "../functions/renderStacks";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import AppointmentScreen from "../screens/appointment";
-import AppointmentDetailsScreen from "../screens/appointment/details";
+import AppointmentDetailsScreen from "../screens/appointment/appointment-details";
 
 const Stack = createStackNavigator();
 const VeterinarStacks = () => {

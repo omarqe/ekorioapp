@@ -1,6 +1,5 @@
 import React from "react";
 import CT from "../../const";
-import Icon from "../../components/icon";
 import PetIdentity from "../../components/pet/pet-identity";
 import DetailContainer from "../../components/detail-container";
 
@@ -69,8 +68,8 @@ const styles = StyleSheet.create({
         fontWeight: "700",
     },
     meridiem: {
-        color: CT.BG_GRAY_500,
-        fontSize: 18,
+        // color: CT.BG_GRAY_500,
+        fontSize: 16,
         fontWeight: "500",
     },
 });
