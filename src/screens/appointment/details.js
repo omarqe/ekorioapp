@@ -1,8 +1,10 @@
 import React from "react";
+import CT from "../../const";
+import Icon from "../../components/icon";
 import PetIdentity from "../../components/pet/pet-identity";
 import DetailContainer from "../../components/detail-container";
 
-import { Alert, Linking } from "react-native";
+import { Text, Alert, Linking, StyleSheet } from "react-native";
 
 export default function AppointmentDetailsScreen({ navigation }) {
     const petData = [
@@ -20,8 +22,15 @@ export default function AppointmentDetailsScreen({ navigation }) {
 
     const topbar = { title: "Appointment Details", leftIcon: "arrow-left", leftIconProps: { onPress: navigation.goBack } };
     const heading = {
-        text: "Fri, 13 August @ 3.00PM",
         subtitle: "Petsville Animal Clinic, Cyberjaya",
+        text: (
+            <Text>
+                Fri, 13 August{" "}
+                <Text style={styles.time}>
+                    <Text style={styles.at}>@</Text> 3.00<Text style={styles.meridiem}>pm</Text>
+                </Text>
+            </Text>
+        ),
     };
     const options = {
         options: ["Call", "Send WhatsApp", "Cancel Appointment", "Cancel"],
@@ -49,3 +58,19 @@ export default function AppointmentDetailsScreen({ navigation }) {
         </DetailContainer>
     );
 }
+
+const styles = StyleSheet.create({
+    at: {
+        color: CT.BG_GRAY_200,
+        fontSize: 18,
+    },
+    time: {
+        fontSize: 18,
+        fontWeight: "700",
+    },
+    meridiem: {
+        color: CT.BG_GRAY_500,
+        fontSize: 18,
+        fontWeight: "500",
+    },
+});
