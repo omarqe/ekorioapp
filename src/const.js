@@ -1,4 +1,4 @@
-import { Platform, PixelRatio } from "react-native";
+import { Dimensions, Platform, PixelRatio } from "react-native";
 
 const isIOS = Platform.OS === "ios";
 const isIpad = Platform.isPad;
@@ -8,6 +8,9 @@ export default {
     IS_IOS: isIOS,
     IS_IPAD: isIpad,
     IS_ANDROID: isAndroid,
+
+    SCREEN_WIDTH: Dimensions.get("window").width,
+    SCREEN_HEIGHT: Dimensions.get("window").height,
 
     IS_MDPI: PixelRatio.get() === 1,
     IS_HDPI: PixelRatio.get() === 1.5,
