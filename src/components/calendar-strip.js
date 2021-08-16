@@ -44,7 +44,7 @@ export default function CalendarStrip(props) {
     );
 }
 
-const calendarHeaderMargin = 20;
+const calendarHeaderMargin = 25;
 const styles = StyleSheet.create({
     base: {
         flex: 1,

@@ -40,6 +40,7 @@ export default function AppointmentBookingScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     headerContent: {
+        paddingTop: 0,
         paddingLeft: 15,
         paddingRight: 15,
     },
