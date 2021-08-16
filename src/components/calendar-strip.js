@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     chevrons: {
         width: 30,
         height: 30,
-        marginTop: 15,
+        marginTop: 25,
     },
     disabledDateName: {
         color: CT.BG_PURPLE_500,
