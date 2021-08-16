@@ -91,7 +91,7 @@ const DetailContainer = connectActionSheet((props) => {
         <Container>
             {topbar && <TopBar {...topbar} />}
             <Header contentStyle={styles.headerContent} style={styles.header}>
-                <Banner style={styles.banner} wrapperStyle={styles.bannerWrapper}>
+                <Banner style={styles.banner} contentStyle={styles.bannerContentContainer}>
                     <View style={styles.bannerContent}>
                         <View style={styles.badgeContainer}>
                             {badgeText && <Badge text={badgeText} style={{ marginRight: 5 }} xs />}
@@ -162,11 +162,11 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
     },
-    banner: {
+    bannerContentContainer: {
         display: "flex",
         flexDirection: "row",
     },
-    bannerWrapper: {
+    banner: {
         marginBottom: -offset,
     },
     bannerContent: {

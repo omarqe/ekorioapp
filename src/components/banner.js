@@ -3,10 +3,10 @@ import CT from "../const";
 import PropTypes from "prop-types";
 import { View, StyleSheet } from "react-native";
 
-export default function Banner({ style, wrapperStyle, children }) {
+export default function Banner({ style, contentStyle, children }) {
     return (
-        <View style={[styles.wrapper, wrapperStyle]}>
-            <View style={[styles.foreground, style]}>{children}</View>
+        <View style={[styles.wrapper, style]}>
+            <View style={[styles.foreground, contentStyle]}>{children}</View>
         </View>
     );
 }
@@ -35,5 +35,5 @@ const styles = StyleSheet.create({
 
 Banner.propTypes = {
     style: PropTypes.object,
-    wrapperStyle: PropTypes.object,
+    contentStyle: PropTypes.object,
 };
