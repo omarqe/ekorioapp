@@ -181,14 +181,14 @@ const styles = StyleSheet.create({
         fontWeight: "600",
     },
     kicker: {
-        color: CT.BG_PURPLE_300,
-        fontSize: 14,
+        color: CT.BG_PURPLE_400,
+        fontSize: 12,
         textAlign: "center",
         marginBottom: 2,
     },
     subtitle: {
-        color: CT.BG_PURPLE_300,
-        fontSize: 14,
+        color: CT.BG_PURPLE_400,
+        fontSize: 12,
         textAlign: "center",
         marginTop: 2,
     },

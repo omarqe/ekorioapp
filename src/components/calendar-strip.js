@@ -29,8 +29,11 @@ export default function CalendarStrip(props) {
                 calendarHeaderStyle={styles.calendarHeader}
                 disabledDateOpacity={0.5}
                 //
+                dayContainerStyle={styles.dayContainer}
                 dateNameStyle={[styles.dateName, dateNameStyle]}
                 dateNumberStyle={[styles.dateNumber, dateNumberStyle]}
+                weekendDateNameStyle={[styles.weekendDateName, dateNameStyle]}
+                weekendDateNumberStyle={[styles.weekendDateNumber, dateNameStyle]}
                 disabledDateNameStyle={[styles.disabledDateName, dateNameStyle]}
                 disabledDateNumberStyle={[styles.disabledDateNumber, dateNumberStyle]}
                 highlightDateNameStyle={[styles.highlightDateName, dateNameStyle]}
@@ -62,6 +65,17 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         marginBottom: calendarHeaderMargin,
     },
+    chevrons: {
+        width: 30,
+        height: 30,
+        marginTop: 25,
+    },
+    dayContainer: {
+        // width: 48,
+        // height: 48,
+        // borderRadius: 48,
+    },
+
     dateName: {
         color: CT.BG_PURPLE_400,
     },
@@ -69,10 +83,11 @@ const styles = StyleSheet.create({
         color: CT.BG_PURPLE_300,
         fontWeight: "700",
     },
-    chevrons: {
-        width: 30,
-        height: 30,
-        marginTop: 25,
+    weekendDateName: {
+        color: CT.BG_PURPLE_500,
+    },
+    weekendDateNumber: {
+        color: CT.BG_PURPLE_400,
     },
     disabledDateName: {
         color: CT.BG_PURPLE_500,
