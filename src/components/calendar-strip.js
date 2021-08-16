@@ -5,14 +5,21 @@ import RNCalendarStrip from "react-native-calendar-strip";
 import { View, StyleSheet } from "react-native";
 
 export default function CalendarStrip(props) {
+    const lowRes = CT.PIXELRATIO < 3 || CT.SCREEN_WIDTH < 400;
+    const text = [
+        { nameStyle: { fontSize: 11, marginTop: 2 }, numberStyle: { fontSize: 22, marginTop: 0, paddingTop: 0 } },
+        { nameStyle: { fontSize: 9, marginTop: 2 }, numberStyle: { fontSize: 18, marginTop: 0, paddingTop: 0 } },
+    ];
+
+    const dateNameStyle = text[lowRes ? 1 : 0].nameStyle;
+    const dateNumberStyle = text[lowRes ? 1 : 0].numberStyle;
+
     return (
         <View style={styles.base}>
             <RNCalendarStrip
                 scrollable
                 scrollerPaging
                 style={styles.calendar}
-                dateNumberStyle={styles.dateNumber}
-                dateNameStyle={styles.dateName}
                 iconContainer={styles.iconContainer}
                 iconLeft={require("../../assets/icons/chevron-left.png")}
                 iconLeftStyle={styles.chevrons}
@@ -20,17 +27,23 @@ export default function CalendarStrip(props) {
                 iconRightStyle={styles.chevrons}
                 calendarColor={CT.BG_PURPLE_900}
                 calendarHeaderStyle={styles.calendarHeader}
-                highlightDateNameStyle={styles.highlightDateName}
-                highlightDateNumberStyle={styles.highlightDateNumber}
+                disabledDateOpacity={0.5}
+                //
+                dateNameStyle={[styles.dateName, dateNameStyle]}
+                dateNumberStyle={[styles.dateNumber, dateNumberStyle]}
+                disabledDateNameStyle={[styles.disabledDateName, dateNameStyle]}
+                disabledDateNumberStyle={[styles.disabledDateNumber, dateNumberStyle]}
+                highlightDateNameStyle={[styles.highlightDateName, dateNameStyle]}
+                highlightDateNumberStyle={[styles.highlightDateNumber, dateNumberStyle]}
+                //
                 highlightDateContainerStyle={styles.highlightDateContainer}
+                daySelectionAnimation={{ type: "background", duration: 100 }}
                 {...props}
             />
         </View>
     );
 }
 
-const dateName = { fontSize: 11, marginTop: 2 };
-const dateNumber = { fontSize: 22, marginTop: 0, paddingTop: 0 };
 const calendarHeaderMargin = 20;
 const styles = StyleSheet.create({
     base: {
@@ -41,7 +54,7 @@ const styles = StyleSheet.create({
     },
     calendar: {
         paddingTop: 0,
-        paddingBottom: calendarHeaderMargin * 0.6,
+        paddingBottom: calendarHeaderMargin * 0.7,
     },
     calendarHeader: {
         color: CT.BG_PURPLE_400,
@@ -51,25 +64,27 @@ const styles = StyleSheet.create({
     },
     dateName: {
         color: CT.BG_PURPLE_400,
-        ...dateName,
     },
     dateNumber: {
         color: CT.BG_PURPLE_300,
         fontWeight: "700",
-        ...dateNumber,
     },
     chevrons: {
         width: 30,
         height: 30,
         marginTop: 15,
     },
+    disabledDateName: {
+        color: CT.BG_PURPLE_500,
+    },
+    disabledDateNumber: {
+        color: CT.BG_PURPLE_400,
+    },
     highlightDateName: {
         color: CT.BG_PURPLE_300,
-        ...dateName,
     },
     highlightDateNumber: {
         color: CT.BG_PURPLE_100,
-        ...dateNumber,
     },
     highlightDateContainer: {
         backgroundColor: CT.BG_PURPLE_700,

@@ -10,7 +10,7 @@ import _renderIf from "../functions/renderIf";
 
 const TopBar = (props) => {
     let topBarStyle = { ...styles.base, ...style };
-    let { type = 0, style = {}, kicker = null, title = null, subtitle = null, logoProps = {} } = props;
+    let { type = 0, style = {}, kicker = null, title = null, subtitle = null, logoProps = {}, disabled = false } = props;
     let { leftIcon, leftIconProps = {}, rightIcon, rightIconProps = {}, leftComponent, rightComponent } = props;
 
     let leftIconStyle = styles.leftIcon;
@@ -31,10 +31,11 @@ const TopBar = (props) => {
         if (component) {
             return component;
         } else if (icon) {
+            const color = disabled ? CT.BG_PURPLE_500 : CT.BG_PURPLE_400;
             const addedProps = _omit(props, ["right", "style"]);
             const addedStyle = { ...iconStyle, ...style };
 
-            return <ButtonIcon icon={icon} style={addedStyle} color={CT.BG_PURPLE_400} {...addedProps} {...iconProps} small />;
+            return <ButtonIcon icon={icon} color={color} style={addedStyle} {...addedProps} {...iconProps} small />;
         }
         return null;
     };
