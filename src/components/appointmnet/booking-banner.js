@@ -21,7 +21,7 @@ export default function BookingBanner({ data, offset, onPress }) {
                     <Heading
                         style={styles.heading}
                         textStyle={{ color: data?.text ? CT.BG_GRAY_800 : CT.BG_GRAY_200 }}
-                        kicker="Your veterinarian:"
+                        kicker="Your appointment at:"
                         text={data?.text ?? "Please select a vet.."}
                         gapless
                     />

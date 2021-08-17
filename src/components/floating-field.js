@@ -43,6 +43,7 @@ export default function FloatingField(props) {
     let baseStyle = { ...styles.base, ...style };
     if (focused) baseStyle = { ...baseStyle, borderColor: CT.BORDER_FOCUS };
     if (gapless) baseStyle = { ...baseStyle, marginBottom: 0 };
+    if (type === "textarea") baseStyle = { ...baseStyle, minHeight: 150 };
 
     // Handle input types
     let typeProps = {
@@ -53,6 +54,7 @@ export default function FloatingField(props) {
         email: { keyboardType: "email-address", autoCapitalize: "none", textContentType: "emailAddress" },
         number: { keyboardType: "number-pad" },
         password: { keyboardType: "visible-password", secureTextEntry: true, textContentType: "password" },
+        textarea: { multiline: true },
     };
     typeProps.phone = typeProps.tel;
     typeProps.username = typeProps.name;
