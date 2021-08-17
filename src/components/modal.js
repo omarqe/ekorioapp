@@ -7,19 +7,58 @@ import RNModal from "react-native-modal";
 import PropTypes from "prop-types";
 import { View, SafeAreaView, StyleSheet } from "react-native";
 
-export default function Modal({ title, kicker, subtitle, children, onClose = null, onToggle = null, shown = false }) {
+export default function Modal(props) {
+    const { title, kicker, subtitle, children } = props;
+    const { open = false, theme: themeColor = "white", onClose = null, onToggle = null } = props;
+
+    const purple = CT.BG_PURPLE_900;
+    const themes = {
+        purple: {
+            body: { backgroundColor: purple },
+            safeArea: { backgroundColor: purple },
+            headingText: { color: CT.BG_PURPLE_100 },
+            closeBtnInner: { backgroundColor: CT.BG_PURPLE_700 },
+            closeBtnIconColor: CT.BG_PURPLE_400,
+            backdropColor: CT.BG_PURPLE_X,
+            backdropOpacity: 0.6,
+        },
+        white: {
+            body: {},
+            safeArea: {},
+            headingText: {},
+            closeBtnInner: {},
+            closeBtnIconColor: null,
+            backdropColor: CT.BG_PURPLE_900,
+            backdropOpacity: 0.9,
+        },
+    };
+    const theme = themes[themeColor];
+    const backdrop = {
+        backdropColor: theme?.backdropColor,
+        backdropOpacity: theme?.backdropOpacity,
+        onBackdropPress: onClose ?? onToggle,
+    };
+
     return (
-        <RNModal style={styles.modal} isVisible={shown} animationIn="fadeInUp" onBackdropPress={onClose ?? onToggle}>
-            <SafeAreaView style={styles.safeArea}>
-                <View style={styles.body}>
+        <RNModal style={styles.modal} isVisible={open} animationIn="fadeInUp" {...backdrop}>
+            <SafeAreaView style={{ ...styles.safeArea, ...theme?.safeArea }}>
+                <View style={{ ...styles.body, ...theme?.body }}>
                     <View style={[styles.header, { alignItems: kicker || subtitle ? "flex-start" : "center" }]}>
-                        <Heading style={styles.heading} size={1} text={title} kicker={kicker} subtitle={subtitle} gapless />
+                        <Heading
+                            size={1}
+                            text={title}
+                            kicker={kicker}
+                            subtitle={subtitle}
+                            textStyle={theme?.headingText}
+                            style={styles.heading}
+                            gapless
+                        />
                         <ButtonIcon
                             onPress={onClose ?? onToggle}
                             icon="times"
                             style={styles.closeBtn}
-                            innerStyle={styles.closeBtnInner}
-                            iconProps={{ size: 16 }}
+                            innerStyle={{ ...styles.closeBtnInner, ...theme?.closeBtnInner }}
+                            iconProps={{ size: 16, color: theme?.closeBtnIconColor }}
                             inverted
                         />
                     </View>
@@ -79,10 +118,12 @@ const styles = StyleSheet.create({
 });
 
 Modal.propTypes = {
-    shown: PropTypes.bool,
     title: PropTypes.string,
     kicker: PropTypes.string,
     subtitle: PropTypes.string,
+
+    open: PropTypes.bool,
+    theme: PropTypes.oneOf(["white", "purple"]),
     onClose: PropTypes.func,
     onToggle: PropTypes.func,
 };
