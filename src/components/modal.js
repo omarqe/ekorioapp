@@ -35,7 +35,7 @@ export default function Modal(props) {
             body: { backgroundColor: purple },
             safeArea: { backgroundColor: style?.backgroundColor ?? purple },
             headerStyle: { paddingBottom: 25, backgroundColor: purple, marginTop: -2 },
-            headingText: { color: CT.BG_PURPLE_100 },
+            headingText: { color: CT.BG_WHITE },
             closeBtnInner: { backgroundColor: CT.BG_PURPLE_700 },
             closeBtnIconColor: CT.BG_PURPLE_400,
             backdropColor: CT.BG_PURPLE_900,
