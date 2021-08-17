@@ -74,12 +74,11 @@ export default function AppointmentBookingScreen({ navigation }) {
 
     const vet = veterinars[vetIndex];
     const bannerStyle = pressed ? { transform: [{ translateY: 2 }] } : {};
-    const bannerContentStyle = { ...styles.bannerContent, backgroundColor: pressed ? CT.BG_GRAY_50 : CT.BG_WHITE };
 
     return (
         <Container>
             <TopBar
-                title="Pick Date &amp; Time"
+                title="Book Appointment"
                 leftIcon="arrow-left"
                 leftIconProps={{ onPress: navigation.goBack }}
                 rightIcon={moment(date).isAfter(today) ? "undo" : null}
@@ -95,7 +94,7 @@ export default function AppointmentBookingScreen({ navigation }) {
                         onPressIn={setPressed.bind(null, true)}
                         onPressOut={setPressed.bind(null, false)}
                     >
-                        <Banner style={bannerStyle} contentStyle={bannerContentStyle}>
+                        <Banner style={bannerStyle} contentStyle={styles.bannerContent}>
                             <Heading
                                 style={styles.heading}
                                 kicker="Your veterinarian:"
@@ -112,7 +111,9 @@ export default function AppointmentBookingScreen({ navigation }) {
                         </Banner>
                     </Pressable>
                 </View>
-                <Body gray flex topRounded></Body>
+                <Body style={styles.body} gray flex topRounded>
+                    <Heading text="Appointment Time" />
+                </Body>
             </Layout>
 
             <Modal
@@ -134,8 +135,11 @@ export default function AppointmentBookingScreen({ navigation }) {
     );
 }
 
-const bannerHeight = 38;
+const offset = 38;
 const styles = StyleSheet.create({
+    body: {
+        paddingTop: offset + CT.VIEW_PADDING_X,
+    },
     searchResults: {
         maxHeight: CT.SCREEN_HEIGHT / 2,
         paddingBottom: 50,
@@ -178,7 +182,7 @@ const styles = StyleSheet.create({
     bannerContainer: {
         zIndex: 90,
         position: "relative",
-        marginBottom: -bannerHeight,
+        marginBottom: -offset,
         paddingTop: 20,
         paddingHorizontal: 15,
     },
