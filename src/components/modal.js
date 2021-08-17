@@ -12,7 +12,7 @@ import _omit from "lodash/omit";
 export default function Modal(props) {
     const { title, kicker, subtitle, children, headerChildren } = props;
     const { open = false, theme: themeColor = "white", onClose = null, onToggle = null } = props;
-    const { style = {}, headerStyle: customHeaderStyle = {}, safeAreaStyle = {} } = props;
+    const { style = {}, contentStyle = {}, headerStyle: customHeaderStyle = {}, safeAreaStyle = {} } = props;
 
     const _props = _omit(props, [
         "title",
@@ -90,7 +90,7 @@ export default function Modal(props) {
                         </View>
                         {headerChildren && <View style={styles.headerContent}>{headerChildren}</View>}
                     </View>
-                    <View style={styles.content}>{children}</View>
+                    <View style={[styles.content, contentStyle]}>{children}</View>
                 </View>
             </SafeAreaView>
         </RNModal>
@@ -162,5 +162,6 @@ Modal.propTypes = {
 
     style: PropTypes.object,
     headerStyle: PropTypes.object,
+    contentStyle: PropTypes.object,
     safeAreaStyle: PropTypes.object,
 };
