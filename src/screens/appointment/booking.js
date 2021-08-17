@@ -1,55 +1,30 @@
 import React, { useState } from "react";
 import CT from "../../const";
 
-import Body from "../../components/layout/body";
-import List from "../../components/list";
-import Input from "../../components/input";
-import Modal from "../../components/modal";
-import Banner from "../../components/banner";
-import Layout from "../../components/layout";
-import TopBar from "../../components/topbar";
 import Header from "../../components/layout/header";
+import Layout from "../../components/layout";
+import Body from "../../components/layout/body";
+import Modal from "../../components/appointmnet/booking-modal";
+import Banner from "../../components/appointmnet/booking-banner";
+
+import TopBar from "../../components/topbar";
 import Heading from "../../components/heading";
 import Container from "../../components/container";
-import ButtonIcon from "../../components/button-icon";
 import CalendarStrip from "../../components/calendar-strip";
 
-import { Text, View, StyleSheet, ScrollView, Pressable } from "react-native";
+import { StyleSheet } from "react-native";
 
 import moment from "moment";
 
 export default function AppointmentBookingScreen({ navigation }) {
     const today = moment().toDate();
-    const datesWhitelist = [{ start: moment(), end: moment().add(1, "month") }];
-    // const markedDates = [{ date: moment().add(1, "day"), dots: [{ color: CT.BG_YELLOW_500 }] }];
+    const whitelistDates = [{ start: moment(), end: moment().add(1, "month") }];
 
-    const [vetSearchModal, setVetSearchModal] = useState(false);
     const [date, setDate] = useState(today);
-    const [pressed, setPressed] = useState(false);
     const [vetIndex, setVetIndex] = useState(null);
+    const [vetPopup, setVetPopup] = useState(false);
 
-    const _onDateSelected = (date) => setDate(moment(date));
-    const _onSearchVetClose = () => setVetSearchModal(false);
-    const _onSearchVet = () => setVetSearchModal(true);
-    const _onResetDate = () => setDate(today);
-    const _onChooseVet = (index) => {
-        setVetIndex(index);
-        setVetSearchModal(false);
-    };
-
-    const ModalHeader = () => {
-        return (
-            <React.Fragment>
-                <View style={styles.address}>
-                    <Text style={styles.addressKicker}>Current location</Text>
-                    <Text style={styles.addressText}>161, Jalan Teknokrat 5, 63000 Cyberjaya, Selangor</Text>
-                </View>
-                <Input style={styles.searchInput} icon="search" placeholder="Search for veterinar..." />
-            </React.Fragment>
-        );
-    };
-
-    const veterinars = [
+    const data = [
         {
             text: "Petsville Animal Clinic, Cyberjaya",
             subtitle: "D-G-3A, Jalan Vita 1, Plaza Crystalville, Lingkaran Cyber",
@@ -72,65 +47,35 @@ export default function AppointmentBookingScreen({ navigation }) {
         },
     ];
 
-    const vet = veterinars[vetIndex];
-    const bannerStyle = pressed ? { transform: [{ translateY: 2 }] } : {};
+    const _onResetDate = () => setDate(today);
+    const _onSelectDate = (date) => setDate(moment(date));
+    const _onVetPopupOpen = () => setVetPopup(true);
+    const _onVetPopupClose = () => setVetPopup(false);
+    const _onChoose = (index) => {
+        setVetIndex(index);
+        setVetPopup(false);
+    };
 
     return (
         <Container>
             <TopBar
                 title="Book Appointment"
-                leftIcon="arrow-left"
                 leftIconProps={{ onPress: navigation.goBack }}
+                leftIcon="arrow-left"
                 rightIcon={moment(date).isAfter(today) ? "undo" : null}
                 rightIconProps={{ onPress: _onResetDate, disabled: !moment(date).isAfter(today) }}
             />
             <Layout gray withHeader>
                 <Header style={styles.header} contentStyle={styles.headerContent}>
-                    <CalendarStrip selectedDate={date} datesWhitelist={datesWhitelist} onDateSelected={_onDateSelected} />
+                    <CalendarStrip selectedDate={date} datesWhitelist={whitelistDates} onDateSelected={_onSelectDate} />
                 </Header>
-                <View style={styles.bannerContainer}>
-                    <Pressable
-                        onPress={_onSearchVet}
-                        onPressIn={setPressed.bind(null, true)}
-                        onPressOut={setPressed.bind(null, false)}
-                    >
-                        <Banner style={bannerStyle} contentStyle={styles.bannerContent}>
-                            <Heading
-                                style={styles.heading}
-                                kicker="Your veterinarian:"
-                                text={vet ? vet.text : "Please select a veterinar"}
-                                gapless
-                            />
-                            <ButtonIcon
-                                icon="map-marker-alt"
-                                weight="fas"
-                                iconProps={{ color: CT.CTA_NEGATIVE }}
-                                onPress={_onSearchVet}
-                                inverted
-                            />
-                        </Banner>
-                    </Pressable>
-                </View>
+                <Banner data={data[vetIndex]} offset={offset} onPress={_onVetPopupOpen} />
                 <Body style={styles.body} gray flex topRounded>
                     <Heading text="Appointment Time" />
                 </Body>
             </Layout>
 
-            <Modal
-                avoidKeyboard
-                onClose={_onSearchVetClose}
-                open={vetSearchModal}
-                title="Find Veterinar"
-                theme="purple"
-                style={styles.modal}
-                headerStyle={styles.modalHeader}
-                contentStyle={styles.modalContent}
-                headerChildren={<ModalHeader />}
-            >
-                <ScrollView style={styles.searchResults} onStartShouldSetResponder={() => true}>
-                    <List list={veterinars} onPress={_onChooseVet} padded />
-                </ScrollView>
-            </Modal>
+            <Modal data={data} open={vetPopup} onClose={_onVetPopupClose} onChoose={_onChoose} />
         </Container>
     );
 }
@@ -140,37 +85,6 @@ const styles = StyleSheet.create({
     body: {
         paddingTop: offset + CT.VIEW_PADDING_X,
     },
-    searchResults: {
-        maxHeight: CT.SCREEN_HEIGHT / 2,
-        paddingBottom: 50,
-    },
-    address: {
-        paddingBottom: 15,
-    },
-    addressKicker: {
-        color: CT.BG_PURPLE_400,
-        fontWeight: "500",
-        marginBottom: 3,
-    },
-    addressText: {
-        color: CT.BG_PURPLE_100,
-        fontSize: 16,
-        fontWeight: "600",
-    },
-
-    modal: {
-        backgroundColor: CT.BG_GRAY_50,
-    },
-    modalHeader: {
-        paddingBottom: 25,
-    },
-    modalContent: {
-        padding: 0,
-        paddingBottom: 0,
-    },
-    heading: {
-        marginRight: "auto",
-    },
     header: {
         paddingBottom: 0,
     },
@@ -178,18 +92,5 @@ const styles = StyleSheet.create({
         paddingTop: 0,
         paddingLeft: 15,
         paddingRight: 15,
-    },
-    bannerContainer: {
-        zIndex: 90,
-        position: "relative",
-        marginBottom: -offset,
-        paddingTop: 20,
-        paddingHorizontal: 15,
-    },
-    bannerContent: {
-        flexDirection: "row",
-    },
-    searchInput: {
-        borderWidth: 0,
     },
 });
