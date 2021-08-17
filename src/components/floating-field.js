@@ -43,7 +43,7 @@ export default function FloatingField(props) {
     let baseStyle = { ...styles.base, ...style };
     if (focused) baseStyle = { ...baseStyle, borderColor: CT.BORDER_FOCUS };
     if (gapless) baseStyle = { ...baseStyle, marginBottom: 0 };
-    if (type === "textarea") baseStyle = { ...baseStyle, minHeight: 150 };
+    if (type === "textarea") baseStyle = { ...baseStyle, minHeight: 120 };
 
     // Handle input types
     let typeProps = {
@@ -106,6 +106,7 @@ export default function FloatingField(props) {
                             style={styles.input}
                             onBlur={_onBlur}
                             onFocus={_onFocus}
+                            allowFontScaling={false}
                             placeholderTextColor={phColor}
                             {...typeProps[type]}
                             {...inputProps}
