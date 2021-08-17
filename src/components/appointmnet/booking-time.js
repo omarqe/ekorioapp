@@ -17,7 +17,7 @@ const Time = ({ times, width = 90, onSelect, hidden = [], unavailable = [], sele
 
         const isSelected = selected === time;
         const isUnavailable = unavailable.indexOf(time) > -1;
-        const shouldHaveFeedback = !isSelected && !isUnavailable;
+        const enabled = !isSelected && !isUnavailable;
 
         if (hidden.indexOf(time) > -1) {
             return null;
@@ -34,9 +34,9 @@ const Time = ({ times, width = 90, onSelect, hidden = [], unavailable = [], sele
             <Pressable
                 key={i}
                 style={itemStyle}
-                onPress={typeof onSelect === "function" ? onSelect.bind(null, time) : null}
-                onPressIn={shouldHaveFeedback ? setPressed.bind(null, time) : null}
-                onPressOut={shouldHaveFeedback ? setPressed.bind(null, null) : null}
+                onPress={typeof onSelect === "function" && !isUnavailable ? onSelect.bind(null, time) : null}
+                onPressIn={enabled ? setPressed.bind(null, time) : null}
+                onPressOut={enabled ? setPressed.bind(null, null) : null}
             >
                 <Text style={timeText}>{_numeral(time).format("00.00").replace(".", ":")}</Text>
                 <Text style={meridiemText}>{time < 12 ? "am" : "pm"}</Text>
