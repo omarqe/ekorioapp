@@ -83,7 +83,8 @@ export default function FloatingField(props) {
                             onValueChange={_onValueChange}
                             useNativeAndroidPickerStyle={false}
                             textInputProps={{
-                                style: { ...styles.input },
+                                style: styles.input,
+                                allowFontScaling: false,
                                 placeholder: placeholder,
                                 placeholderTextColor: phColor,
                                 ...inputProps,
@@ -153,7 +154,7 @@ const styles = StyleSheet.create({
     },
     input: {
         color: CT.FONT_COLOR,
-        fontSize: 18,
+        fontSize: 15,
         fontWeight: "600",
     },
     caret: {

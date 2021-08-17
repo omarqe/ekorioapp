@@ -58,6 +58,7 @@ const Input = (props) => {
                 style={{ ...styles.input, ...inputStyle }}
                 onBlur={_onBlur}
                 onFocus={_onFocus}
+                allowFontScaling={false}
                 placeholderTextColor={CT.BG_GRAY_300}
                 {...typeProps[type]}
                 {...appendedProps}
@@ -87,6 +88,7 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         padding: 15,
+        fontSize: 14,
         borderRadius: radius,
         backgroundColor: CT.BG_WHITE,
     },
