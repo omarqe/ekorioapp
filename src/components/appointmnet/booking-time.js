@@ -57,8 +57,8 @@ export default function BookingTime({ onSelect, hidden, selected, unavailable })
 
     return (
         <View onLayout={_onLayout}>
-            {slots.map(({ title, times }, key) => (
-                <View key={key} style={styles.group}>
+            {slots.map(({ title, times }, i) => (
+                <View key={i} style={{ marginBottom: i < slots.length - 1 ? 10 : 0 }}>
                     <Text style={styles.groupText}>{title}</Text>
                     <View style={styles.slots}>
                         <Time
@@ -77,9 +77,6 @@ export default function BookingTime({ onSelect, hidden, selected, unavailable })
 }
 
 const styles = StyleSheet.create({
-    group: {
-        marginBottom: 10,
-    },
     groupText: {
         color: CT.BG_GRAY_300,
         fontSize: 12,

@@ -20,9 +20,9 @@ export default function BookingBanner({ data, offset, onPress }) {
                 <Banner style={bannerStyle} contentStyle={styles.bannerContent}>
                     <Heading
                         style={styles.heading}
-                        textStyle={{ color: data?.text ? CT.BG_GRAY_800 : CT.BG_GRAY_500 }}
+                        textStyle={{ color: data?.text ? CT.BG_GRAY_800 : CT.BG_GRAY_200 }}
                         kicker="Your veterinarian:"
-                        text={data?.text ?? "Please select a veterinar"}
+                        text={data?.text ?? "Please select a vet.."}
                         gapless
                     />
                     <ButtonIcon
@@ -31,7 +31,7 @@ export default function BookingBanner({ data, offset, onPress }) {
                         onPress={onPress}
                         onPressIn={_onTogglePressed}
                         onPressOut={_onTogglePressed}
-                        iconProps={{ color: data?.text ? CT.CTA_NEGATIVE : CT.BG_PURPLE_200 }}
+                        iconProps={{ color: CT.CTA_NEGATIVE }}
                         inverted
                     />
                 </Banner>
