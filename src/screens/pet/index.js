@@ -93,12 +93,7 @@ const _PetScreen = ({ navigation }) => {
 
     return (
         <Container>
-            <TopBar
-                type={2}
-                rightIcon="bell"
-                rightIconProps={{ onPress: () => alert("Opening notifications.."), dot: true }}
-                logoProps={{ onPress: () => alert("Moving up!") }}
-            />
+            <TopBar type={2} rightIcon="plus" />
 
             <Layout gray withHeader>
                 <Header horizontal overlap>

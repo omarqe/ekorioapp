@@ -8,7 +8,7 @@ import _omit from "lodash/omit";
 
 export default function Pet(props) {
     const [pressed, setPressed] = useState(false);
-    const { name, image, size = 56, padding = 3, theme = "default", defaultSource = false, active, checked } = props;
+    const { name, image, size = 60, padding = 3, theme = "default", defaultSource = false, active, checked } = props;
 
     const width = size + padding * 2;
     const height = width;
