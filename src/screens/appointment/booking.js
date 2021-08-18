@@ -111,7 +111,7 @@ export default function AppointmentBookingScreen({ navigation }) {
                         <View style={styles.section}>
                             <Heading text="Choose a Pet" />
                             <View style={styles.pets}>
-                                <PetList checked={0} theme="light" />
+                                <PetList checked={3} theme="light" />
                             </View>
                         </View>
 

@@ -102,7 +102,7 @@ const _PetScreen = ({ navigation }) => {
 
             <Layout gray withHeader>
                 <Header horizontal overlap>
-                    <PetList margin={4} active={0} />
+                    <PetList margin={4} active={3} />
                 </Header>
 
                 <Body topRounded overlap>
