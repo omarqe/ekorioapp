@@ -9,7 +9,7 @@ import List from "../../components/list";
 import Modal from "../../components/modal";
 import Empty from "../../components/empty";
 import TopBar from "../../components/topbar";
-import PetOrb from "../../components/pet/pet-orb";
+import PetList from "../../components/pet/pet-list";
 import PetSwitch from "../../components/pet/pet-switch";
 import Container from "../../components/container";
 
@@ -102,8 +102,7 @@ const PetHealthRecordsScreen = ({ navigation }) => {
             />
             <Modal title="Choose Pet" open={petShown} onClose={_onClosePet}>
                 <View style={styles.petListContainer}>
-                    <PetOrb onPress={_onClosePet} switcher checked />
-                    <PetOrb onPress={_onClosePet} switcher />
+                    <PetList onPress={_onClosePet} theme="light" checked={0} />
                 </View>
             </Modal>
         </Container>

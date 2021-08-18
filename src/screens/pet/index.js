@@ -5,7 +5,7 @@ import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
 
-import Pet from "../../components/pet/pet-orb";
+import PetList from "../../components/pet/pet-list";
 import PetIdentity from "../../components/pet/pet-identity";
 import HealthCharts from "../../components/pet/health-charts";
 import HealthCategories from "../../components/pet/health-categories";
@@ -102,8 +102,7 @@ const _PetScreen = ({ navigation }) => {
 
             <Layout gray withHeader>
                 <Header horizontal overlap>
-                    <Pet active />
-                    <Pet add />
+                    <PetList margin={4} active={0} />
                 </Header>
 
                 <Body topRounded overlap>
