@@ -32,13 +32,16 @@ export default function Pet(props) {
     };
 
     // Alter the styles based on several conditions
-    if (pressed) baseStyle = { ...baseStyle, transform: [{ scale: 0.96 }] };
+    if (pressed) baseStyle = { ...baseStyle, transform: [{ scale: 0.97 }] };
     if (active) {
         baseStyle = { ...baseStyle, backgroundColor: CT.BG_YELLOW_500 };
         nameStyle = { ...nameStyle, color: CT.BG_YELLOW_600 };
     } else if (isLight) {
         baseStyle = { ...baseStyle, backgroundColor: CT.BG_GRAY_100 };
         nameStyle = { ...nameStyle, color: checked ? CT.BG_GRAY_800 : CT.BG_GRAY_400 };
+        if (CT.IS_IOS) {
+            baseStyle = { ...baseStyle, backgroundColor: CT.BG_WHITE, ...CT.SHADOW_MD, shadowOpacity: 0.09 };
+        }
     }
 
     return (
@@ -93,7 +96,9 @@ const styles = StyleSheet.create({
 Pet.propTypes = {
     name: PropTypes.string,
     size: PropTypes.number,
+    style: PropTypes.object,
     theme: PropTypes.oneOf(["default", "light"]),
+
     active: PropTypes.bool,
     checked: PropTypes.bool,
     padding: PropTypes.number,

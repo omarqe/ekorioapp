@@ -1,31 +1,38 @@
 import React from "react";
-import PetOrb from "./pet-orb";
+import Pet from "./";
 import PropTypes from "prop-types";
 import { View, FlatList, StyleSheet } from "react-native";
 
-export default function PetList({ checked, switcher }) {
+import _omit from "lodash/omit";
+export default function PetList(props) {
+    const { checked, onPress } = props;
+    const _props = _omit(props, ["checked", "add", "onPress", "onPressAdd"]);
     const data = [
         { id: 0, name: "Cheshire", image: require("../../../assets/pet-sample.png") },
-        { id: 1, name: "Cheshire", image: require("../../../assets/pet-sample.png") },
-        { id: 2, name: "Cheshire", image: require("../../../assets/pet-sample.png") },
-        { id: 3, name: "Cheshire", image: require("../../../assets/pet-sample.png") },
-        { id: 4, name: "Cheshire", image: require("../../../assets/pet-sample.png") },
-        { id: 5, name: "Cheshire", image: require("../../../assets/pet-sample.png") },
-        { id: 6, name: "Cheshire", image: require("../../../assets/pet-sample.png") },
-        { id: 7, name: "Cheshire", image: require("../../../assets/pet-sample.png") },
-        { id: 8, name: "Cheshire", image: require("../../../assets/pet-sample.png") },
+        { id: 1, name: "Chester", image: require("../../../assets/pet-sample.png") },
+        { id: 2, name: "Helios", image: require("../../../assets/pet-sample.png") },
+        { id: 3, name: "Agemon", image: require("../../../assets/pet-sample.png") },
+        { id: 4, name: "Momon", image: require("../../../assets/pet-sample.png") },
     ];
 
-    const _renderItem = ({ item }) => {
-        const { id } = item;
-        const isChecked = id === checked;
-        return <PetOrb checked={isChecked} switcher={switcher} />;
+    const _renderItem = ({ item, index }) => {
+        const { id, name } = item;
+        return (
+            <Pet
+                name={name}
+                style={{ marginHorizontal: 2 }}
+                checked={id === checked}
+                onPress={typeof onPress === "function" ? onPress.bind(null, index) : null}
+                {..._props}
+            />
+        );
     };
 
     return (
         <View style={styles.container}>
             <FlatList
                 data={data}
+                style={{ overflow: "visible" }}
                 renderItem={_renderItem}
                 keyExtractor={({ id }) => id.toString()}
                 contentContainerStyle={styles.base}
@@ -49,6 +56,8 @@ const styles = StyleSheet.create({
 });
 
 PetList.propTypes = {
+    add: PropTypes.bool,
+    data: PropTypes.arrayOf(PropTypes.object),
     checked: PropTypes.number,
-    switcher: PropTypes.bool,
+    onPressAdd: PropTypes.func,
 };
