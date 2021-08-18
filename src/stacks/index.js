@@ -11,13 +11,13 @@ import SpaceCatIcon from "../../assets/icons/space-cat.svg";
 import SpaceCatIconActive from "../../assets/icons/space-cat__active.svg";
 import CalendarIcon from "../../assets/icons/calendar.svg";
 import CalendarIconActive from "../../assets/icons/calendar__active.svg";
-// import HospitalIcon from "../../assets/icons/hospital.svg";
-// import HospitalIconActive from "../../assets/icons/hospital__active.svg";
 import BellsIcon from "../../assets/icons/bells.svg";
 import BellsIconActive from "../../assets/icons/bells__active.svg";
+// import HospitalIcon from "../../assets/icons/hospital.svg";
+// import HospitalIconActive from "../../assets/icons/hospital__active.svg";
 
 // Navigation Stacks
-import PetStacks from "./stacks-pet";
+import HomeStacks from "./stacks-home";
 import VeterinarStacks from "./stacks-veterinar";
 import AppointmentStacks from "./stacks-appointment";
 import AccountStacks from "./stacks-account";
@@ -59,7 +59,7 @@ export default {
                 name: "home_stacks",
                 label: "My Pets",
                 icons: [SpaceCatIcon, SpaceCatIconActive],
-                component: PetStacks,
+                component: HomeStacks,
             },
             // {
             //     name: "veterinar_stacks",
