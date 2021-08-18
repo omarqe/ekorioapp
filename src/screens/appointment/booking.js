@@ -10,7 +10,7 @@ import BookingBanner from "../../components/appointmnet/booking-banner";
 
 import TopBar from "../../components/topbar";
 import Button from "../../components/button";
-import PetOrb from "../../components/pet/pet-orb";
+import PetList from "../../components/pet/pet-list";
 import Heading from "../../components/heading";
 import Container from "../../components/container";
 import CalendarStrip from "../../components/calendar-strip";
@@ -111,13 +111,7 @@ export default function AppointmentBookingScreen({ navigation }) {
                         <View style={styles.section}>
                             <Heading text="Choose a Pet" />
                             <View style={styles.pets}>
-                                <PetOrb switcher checked />
-                                <PetOrb switcher />
-                                <PetOrb switcher />
-                                <PetOrb switcher />
-                                <PetOrb switcher />
-                                <PetOrb switcher />
-                                <PetOrb switcher />
+                                <PetList checked={0} switcher />
                             </View>
                         </View>
 
