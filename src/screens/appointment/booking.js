@@ -10,19 +10,21 @@ import BookingBanner from "../../components/appointmnet/booking-banner";
 
 import TopBar from "../../components/topbar";
 import Button from "../../components/button";
+import PetOrb from "../../components/pet/pet-orb";
 import Heading from "../../components/heading";
 import Container from "../../components/container";
 import CalendarStrip from "../../components/calendar-strip";
 import FloatingFields from "../../components/floating-fields";
 import KeyboardAvoiding from "../../components/keyboard-avoiding";
 
-import { View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 
-import moment from "moment";
+import _moment from "moment";
+import _numeral from "numeral";
 
 export default function AppointmentBookingScreen({ navigation }) {
-    const today = moment().toDate();
-    const whitelistDates = [{ start: moment(), end: moment().add(1, "month") }];
+    const today = _moment().toDate();
+    const whitelistDates = [{ start: _moment(), end: _moment().add(1, "month") }];
 
     const [date, setDate] = useState(today);
     const [time, setTime] = useState(null);
@@ -33,46 +35,34 @@ export default function AppointmentBookingScreen({ navigation }) {
         {
             text: "Petsville Animal Clinic, Cyberjaya",
             subtitle: "D-G-3A, Jalan Vita 1, Plaza Crystalville, Lingkaran Cyber",
-            badge: { text: "Checkup" },
         },
         {
             text: "Felycat Animal Clinic, Cyberjaya",
             subtitle: "Ground Floor G-75, Biz Avenue II, Lingkaran Cyber",
-            badge: { text: "Checkup" },
         },
         {
             text: "Petunia Animal Clinic, Puchong",
             subtitle: "GM-30A, Jalan Putra Perdana 5d/1, Taman Putra Perdana",
-            badge: { text: "Checkup" },
         },
         {
             text: "Bandar Puteri Vet Clinic, Puchong",
             subtitle: "16, Jalan Puteri 5/8, Bandar Puteri, 47100 Puchong",
-            badge: { text: "Checkup" },
         },
     ];
 
     const fields = [
-        [
-            {
-                type: "select",
-                label: "Choose Pet",
-                placeholder: "Please select",
-                options: [{ value: 1, label: "Cheshire" }],
-            },
-            {
-                type: "select",
-                label: "Service Type",
-                placeholder: "Please select",
-                options: [
-                    { value: "general", label: "Health Checkup" },
-                    { value: "grooming", label: "Grooming" },
-                    { value: "boarding", label: "Boarding" },
-                    { value: "dermatology", label: "Dermatology" },
-                    { value: "surgery", label: "Surgery" },
-                ],
-            },
-        ],
+        {
+            type: "select",
+            label: "Service Type",
+            placeholder: "Please select",
+            options: [
+                { value: "general", label: "Health Checkup" },
+                { value: "grooming", label: "Grooming" },
+                { value: "boarding", label: "Boarding" },
+                { value: "dermatology", label: "Dermatology" },
+                { value: "surgery", label: "Surgery" },
+            ],
+        },
         {
             type: "textarea",
             label: "Remarks",
@@ -81,7 +71,7 @@ export default function AppointmentBookingScreen({ navigation }) {
     ];
 
     const _onResetDate = () => setDate(today);
-    const _onSelectDate = (date) => setDate(moment(date));
+    const _onSelectDate = (date) => setDate(_moment(date));
     const _onSelectTime = (time) => setTime(time);
 
     const _onVetPopupOpen = () => setVetPopup(true);
@@ -98,17 +88,17 @@ export default function AppointmentBookingScreen({ navigation }) {
                     title="Book Appointment"
                     leftIconProps={{ onPress: navigation.goBack }}
                     leftIcon="arrow-left"
-                    rightIcon={moment(date).isAfter(today) ? "history" : null}
-                    rightIconProps={{ onPress: _onResetDate, disabled: !moment(date).isAfter(today) }}
+                    rightIcon={_moment(date).isAfter(today) ? "history" : null}
+                    rightIconProps={{ onPress: _onResetDate, disabled: !_moment(date).isAfter(today) }}
                 />
 
-                <Layout keyboardShouldPersistTaps="always" gray withHeader>
+                <Layout gray withHeader>
                     <Header style={styles.header} contentStyle={styles.headerContent}>
                         <CalendarStrip selectedDate={date} datesWhitelist={whitelistDates} onDateSelected={_onSelectDate} />
                     </Header>
                     <BookingBanner data={data[vetIndex]} offset={offset} onPress={_onVetPopupOpen} />
                     <Body style={styles.body} gray flex topRounded>
-                        <View style={styles.section}>
+                        <View style={[styles.section, { marginBottom: 30 }]}>
                             <Heading text="Appointment Time" />
                             <BookingTime
                                 onSelect={_onSelectTime}
@@ -119,11 +109,31 @@ export default function AppointmentBookingScreen({ navigation }) {
                         </View>
 
                         <View style={styles.section}>
-                            <Heading text="Service Details" />
-                            <FloatingFields fields={fields} />
+                            <Heading text="Choose a Pet" />
+                            <View style={styles.pets}>
+                                <PetOrb switcher checked />
+                                <PetOrb switcher />
+                                <PetOrb switcher />
+                                <PetOrb switcher />
+                                <PetOrb switcher />
+                                <PetOrb switcher />
+                                <PetOrb switcher />
+                            </View>
                         </View>
 
+                        <View style={[styles.section, { marginBottom: 10 }]}>
+                            <FloatingFields fields={fields} />
+                        </View>
                         <Button label="Book Appointment" />
+
+                        <Text style={styles.summary}>
+                            Your appointment will be set on{" "}
+                            <Text style={styles.sumHighlight}>{_moment(date).format("ddd, D MMMM, YYYY")}</Text>
+                            {" @ "}
+                            <Text style={styles.sumHighlight}>{_numeral(time).format("00.00").replace(".", ":")}</Text>
+                            {" at "}
+                            <Text style={styles.sumHighlight}>{data[vetIndex]?.text}.</Text>
+                        </Text>
                     </Body>
                 </Layout>
 
@@ -135,6 +145,11 @@ export default function AppointmentBookingScreen({ navigation }) {
 
 const offset = 38;
 const styles = StyleSheet.create({
+    pets: {
+        flexGrow: 1,
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
     body: {
         paddingTop: offset + CT.VIEW_PADDING_X,
     },
@@ -148,5 +163,17 @@ const styles = StyleSheet.create({
     },
     section: {
         marginBottom: 20,
+    },
+    summary: {
+        color: CT.BG_GRAY_300,
+        fontSize: 14,
+        marginTop: 10,
+        textAlign: "center",
+        lineHeight: 20,
+        paddingHorizontal: 20,
+    },
+    sumHighlight: {
+        color: CT.BG_GRAY_400,
+        fontWeight: "600",
     },
 });
