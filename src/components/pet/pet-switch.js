@@ -29,7 +29,13 @@ const PetSwitch = ({ onPress, onPressIn, onPressOut }) => {
     return (
         <Pressable style={styles.base} onPress={_onPress} onPressIn={_onPressIn} onPressOut={_onPressOut}>
             <Icon icon="fas caret-down" size={18} color={pressed ? CT.BG_PURPLE_600 : CT.BG_PURPLE_500} />
-            <Pet size={34} style={styles.petImage} image={require("../../../assets/pets/cat-04.png")} defaultSource />
+            <Pet
+                size={34}
+                style={styles.petImage}
+                image={require("../../../assets/pets/cat-04.png")}
+                onPress={_onPress}
+                defaultSource
+            />
         </Pressable>
     );
 };

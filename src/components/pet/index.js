@@ -25,7 +25,7 @@ export default function Pet(props) {
     let baseStyle = { padding, width, height, borderRadius: radius };
     let imageStyle = { width: size, height: size, borderRadius: radius - padding };
     let imageBaseStyle = { width: size, height: size, borderRadius: radius - padding };
-    let overlayStyle = { backgroundColor: isLight ? CT.BG_WHITE : CT.BG_PURPLE_900 };
+    let overlayStyle = { backgroundColor: isLight ? CT.BG_WHITE : CT.BG_PURPLE_900, opacity: isLight ? 0.7 : 0.4 };
     let iconBackdropStyle = {
         width: size * 0.32,
         height: size * 0.32,
