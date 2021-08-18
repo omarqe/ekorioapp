@@ -4,27 +4,29 @@ import PropTypes from "prop-types";
 import { View, FlatList, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
+import _sortBy from "lodash/sortBy";
 export default function PetList(props) {
     const { margin = 4, checked, active, onPress } = props;
     const _props = _omit(props, ["margin", "checked", "active", "add", "onPress", "onPressAdd"]);
-    const data = [
-        { id: 0, name: "Cheshire", image: require("../../../assets/pet-sample.png") },
-        { id: 1, name: "Chester", image: require("../../../assets/pet-sample.png") },
-        { id: 2, name: "Helios", image: require("../../../assets/pet-sample.png") },
-        { id: 3, name: "Agemon", image: require("../../../assets/pet-sample.png") },
-        { id: 4, name: "Momon", image: require("../../../assets/pet-sample.png") },
-        { id: 5, name: "Momon", image: require("../../../assets/pet-sample.png") },
-        { id: 6, name: "Momon", image: require("../../../assets/pet-sample.png") },
-        { id: 7, name: "Momon", image: require("../../../assets/pet-sample.png") },
-        { id: 8, name: "Momon", image: require("../../../assets/pet-sample.png") },
-        { id: 9, name: "Momon", image: require("../../../assets/pet-sample.png") },
-    ];
+    const data = _sortBy(
+        [
+            { id: 0, name: "Cleo", image: require("../../../assets/pets/cat-01.png") },
+            { id: 1, name: "Oleo", image: require("../../../assets/pets/cat-02.png") },
+            { id: 2, name: "Luna", image: require("../../../assets/pets/cat-03.png") },
+            { id: 3, name: "Cheshire", image: require("../../../assets/pets/cat-04.png") },
+            { id: 4, name: "Lucy", image: require("../../../assets/pets/cat-05.png") },
+            { id: 5, name: "Lily", image: require("../../../assets/pets/cat-06.png") },
+            { id: 6, name: "Ra", image: require("../../../assets/pets/cat-07.png") },
+        ],
+        "name"
+    );
 
     const _renderItem = ({ item, index }) => {
-        const { id, name } = item;
+        const { id, name, image } = item;
         return (
             <Pet
                 name={name}
+                image={image}
                 style={{ marginHorizontal: margin }}
                 active={id === active}
                 checked={id === checked}
