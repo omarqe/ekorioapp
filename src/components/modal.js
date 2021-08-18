@@ -7,23 +7,90 @@ import RNModal from "react-native-modal";
 import PropTypes from "prop-types";
 import { View, SafeAreaView, StyleSheet } from "react-native";
 
-export default function Modal({ title, kicker, subtitle, children, onClose = null, onToggle = null, shown = false }) {
+import _omit from "lodash/omit";
+
+export default function Modal(props) {
+    const { title, kicker, subtitle, children, headerChildren } = props;
+    const { open = false, theme: themeColor = "white", onClose = null, onToggle = null } = props;
+    const { style = {}, contentStyle = {}, headerStyle: customHeaderStyle = {}, safeAreaStyle = {} } = props;
+
+    const _props = _omit(props, [
+        "title",
+        "kicker",
+        "subtitle",
+        "children",
+        "headerChildren",
+        "open",
+        "theme",
+        "onClose",
+        "onToggle",
+        "style",
+        "headerStyle",
+        "safeAreaStyle",
+    ]);
+
+    const purple = CT.BG_PURPLE_800;
+    const themes = {
+        purple: {
+            body: { backgroundColor: purple },
+            safeArea: { backgroundColor: style?.backgroundColor ?? purple },
+            headerStyle: { paddingTop: 30, paddingBottom: 30, backgroundColor: purple, marginTop: -2 },
+            headingText: { color: CT.BG_WHITE },
+            closeBtnInner: { backgroundColor: CT.BG_PURPLE_500 },
+            closeBtnIconColor: CT.BG_PURPLE_300,
+            backdropColor: CT.BG_PURPLE_900,
+            backdropOpacity: 0.7,
+        },
+        white: {
+            body: {},
+            safeArea: { backgroundColor: style.backgroundColor ?? CT.BG_WHITE },
+            headerStyle: {},
+            headingText: {},
+            closeBtnInner: {},
+            closeBtnIconColor: null,
+            backdropColor: CT.BG_PURPLE_900,
+            backdropOpacity: 0.9,
+        },
+    };
+    const theme = themes[themeColor];
+    const backdrop = {
+        backdropColor: theme?.backdropColor,
+        backdropOpacity: theme?.backdropOpacity,
+        onBackdropPress: onClose ?? onToggle,
+    };
+
+    const headerStyle = {
+        ...theme.headerStyle,
+        ...customHeaderStyle,
+    };
+
     return (
-        <RNModal style={styles.modal} isVisible={shown} animationIn="fadeInUp" onBackdropPress={onClose ?? onToggle}>
-            <SafeAreaView style={styles.safeArea}>
-                <View style={styles.body}>
-                    <View style={[styles.header, { alignItems: kicker || subtitle ? "flex-start" : "center" }]}>
-                        <Heading style={styles.heading} size={1} text={title} kicker={kicker} subtitle={subtitle} gapless />
-                        <ButtonIcon
-                            onPress={onClose ?? onToggle}
-                            icon="times"
-                            style={styles.closeBtn}
-                            innerStyle={styles.closeBtnInner}
-                            iconProps={{ size: 16 }}
-                            inverted
-                        />
+        <RNModal style={styles.modal} isVisible={open} animationIn="fadeInUp" {...backdrop} {..._props}>
+            <SafeAreaView style={{ ...styles.safeArea, ...theme?.safeArea, ...safeAreaStyle }}>
+                <View style={{ ...styles.body, ...theme?.body, ...style }}>
+                    <View style={{ ...styles.header, ...headerStyle }}>
+                        <View style={styles.headerTitle}>
+                            <Heading
+                                size={1}
+                                text={title}
+                                kicker={kicker}
+                                subtitle={subtitle}
+                                textStyle={theme?.headingText}
+                                style={styles.heading}
+                                gapless
+                            />
+                            <ButtonIcon
+                                onPress={onClose ?? onToggle}
+                                icon="times"
+                                style={styles.closeBtn}
+                                innerStyle={{ ...styles.closeBtnInner, ...theme?.closeBtnInner }}
+                                iconProps={{ size: 16, color: theme?.closeBtnIconColor }}
+                                inverted
+                            />
+                        </View>
+                        {headerChildren && <View style={styles.headerContent}>{headerChildren}</View>}
                     </View>
-                    <View style={styles.content}>{children}</View>
+                    <View style={[styles.content, contentStyle]}>{children}</View>
                 </View>
             </SafeAreaView>
         </RNModal>
@@ -42,22 +109,26 @@ const styles = StyleSheet.create({
     },
     body: {
         position: "relative",
-        padding: 25,
         backgroundColor: CT.BG_WHITE,
         borderTopLeftRadius: CT.BODY_RADIUS,
         borderTopRightRadius: CT.BODY_RADIUS,
     },
     header: {
-        display: "flex",
         position: "relative",
-        alignItems: "flex-start",
-        marginBottom: 20,
-        flexDirection: "row",
+        padding: 25,
+        paddingBottom: 0,
+        borderTopLeftRadius: CT.BODY_RADIUS,
+        borderTopRightRadius: CT.BODY_RADIUS,
+    },
+    headerContent: {
+        paddingTop: 25,
     },
     heading: {
         marginRight: "auto",
     },
-    content: {},
+    content: {
+        padding: 25,
+    },
     closeBtn: {
         top: 0,
         right: 0,
@@ -79,10 +150,18 @@ const styles = StyleSheet.create({
 });
 
 Modal.propTypes = {
-    shown: PropTypes.bool,
     title: PropTypes.string,
     kicker: PropTypes.string,
     subtitle: PropTypes.string,
+    headerChildren: PropTypes.node,
+
+    open: PropTypes.bool,
+    theme: PropTypes.oneOf(["white", "purple"]),
     onClose: PropTypes.func,
     onToggle: PropTypes.func,
+
+    style: PropTypes.object,
+    headerStyle: PropTypes.object,
+    contentStyle: PropTypes.object,
+    safeAreaStyle: PropTypes.object,
 };

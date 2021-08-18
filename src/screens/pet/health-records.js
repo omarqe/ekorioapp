@@ -100,7 +100,7 @@ const PetHealthRecordsScreen = ({ navigation }) => {
                 onIndexChange={_onIndexChange}
                 navigationState={state}
             />
-            <Modal title="Choose Pet" shown={petShown} onClose={_onClosePet}>
+            <Modal title="Choose Pet" open={petShown} onClose={_onClosePet}>
                 <View style={styles.petListContainer}>
                     <PetOrb onPress={_onClosePet} switcher checked />
                     <PetOrb onPress={_onClosePet} switcher />

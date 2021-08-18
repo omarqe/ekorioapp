@@ -78,7 +78,7 @@ const padding = 3;
 const styles = StyleSheet.create({
     base: {
         width: size + padding * 2,
-        marginRight: 10,
+        marginHorizontal: 3,
     },
     imageBase: {
         display: "flex",

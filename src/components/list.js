@@ -12,7 +12,7 @@ LogBox.ignoreLogs(["VirtualizedLists should never be nested inside"]);
 
 export default function List(props) {
     const { list = [], sections = [], padded = false, onPress } = props;
-    const _props = _omit(props, ["list", "sections"]);
+    const _props = _omit(props, ["list", "sections", "padded", "onPress"]);
     const isSectioned = _isArray(sections) && sections.length > 0;
     const isListed = _isArray(list) && list.length > 0;
 

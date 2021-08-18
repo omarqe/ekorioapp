@@ -43,6 +43,7 @@ export default function FloatingField(props) {
     let baseStyle = { ...styles.base, ...style };
     if (focused) baseStyle = { ...baseStyle, borderColor: CT.BORDER_FOCUS };
     if (gapless) baseStyle = { ...baseStyle, marginBottom: 0 };
+    if (type === "textarea") baseStyle = { ...baseStyle, minHeight: 120 };
 
     // Handle input types
     let typeProps = {
@@ -53,6 +54,7 @@ export default function FloatingField(props) {
         email: { keyboardType: "email-address", autoCapitalize: "none", textContentType: "emailAddress" },
         number: { keyboardType: "number-pad" },
         password: { keyboardType: "visible-password", secureTextEntry: true, textContentType: "password" },
+        textarea: { multiline: true },
     };
     typeProps.phone = typeProps.tel;
     typeProps.username = typeProps.name;
@@ -81,7 +83,8 @@ export default function FloatingField(props) {
                             onValueChange={_onValueChange}
                             useNativeAndroidPickerStyle={false}
                             textInputProps={{
-                                style: { ...styles.input },
+                                style: styles.input,
+                                allowFontScaling: false,
                                 placeholder: placeholder,
                                 placeholderTextColor: phColor,
                                 ...inputProps,
@@ -104,6 +107,7 @@ export default function FloatingField(props) {
                             style={styles.input}
                             onBlur={_onBlur}
                             onFocus={_onFocus}
+                            allowFontScaling={false}
                             placeholderTextColor={phColor}
                             {...typeProps[type]}
                             {...inputProps}
@@ -150,7 +154,7 @@ const styles = StyleSheet.create({
     },
     input: {
         color: CT.FONT_COLOR,
-        fontSize: 18,
+        fontSize: 15,
         fontWeight: "600",
     },
     caret: {
