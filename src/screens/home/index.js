@@ -20,7 +20,7 @@ import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sh
 
 import _times from "lodash/times";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = connectActionSheet(({ navigation }) => {
     const { showActionSheetWithOptions } = useActionSheet();
     const healthData = {
         chart: [
@@ -121,7 +121,7 @@ const HomeScreen = ({ navigation }) => {
             </Layout>
         </Container>
     );
-};
+});
 
 const styles = StyleSheet.create({
     actionBtnContainer: {
@@ -171,5 +171,4 @@ const styles = StyleSheet.create({
     },
 });
 
-const PetScreen = connectActionSheet(HomeScreen);
-export default PetScreen;
+export default HomeScreen;
