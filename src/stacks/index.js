@@ -11,14 +11,15 @@ import SpaceCatIcon from "../../assets/icons/space-cat.svg";
 import SpaceCatIconActive from "../../assets/icons/space-cat__active.svg";
 import CalendarIcon from "../../assets/icons/calendar.svg";
 import CalendarIconActive from "../../assets/icons/calendar__active.svg";
-import BellsIcon from "../../assets/icons/bells.svg";
-import BellsIconActive from "../../assets/icons/bells__active.svg";
+import BellIcon from "../../assets/icons/bell.svg";
+import BellIconActive from "../../assets/icons/bell__active.svg";
 // import HospitalIcon from "../../assets/icons/hospital.svg";
 // import HospitalIconActive from "../../assets/icons/hospital__active.svg";
 
 // Navigation Stacks
 import HomeStacks from "./stacks-home";
-import VeterinarStacks from "./stacks-veterinar";
+import NotificationScreen from "../screens/home/notification";
+// import VeterinarStacks from "./stacks-veterinar";
 import AppointmentStacks from "./stacks-appointment";
 import AccountStacks from "./stacks-account";
 
@@ -68,16 +69,16 @@ export default {
             //     component: VeterinarStacks,
             // },
             {
-                name: "notification",
-                label: "Notifications",
-                icons: [BellsIcon, BellsIconActive],
-                component: VeterinarStacks,
-            },
-            {
                 name: "appointment_stacks",
                 label: "Appointments",
                 icons: [CalendarIcon, CalendarIconActive],
                 component: AppointmentStacks,
+            },
+            {
+                name: "notification",
+                label: "Notifications",
+                icons: [BellIcon, BellIconActive],
+                component: NotificationScreen,
             },
             {
                 name: "me_stacks",
@@ -138,7 +139,7 @@ const styles = StyleSheet.create({
         height: 25,
         position: "absolute",
         borderRadius: 25,
-        backgroundColor: CT.BG_PURPLE_100,
+        backgroundColor: CT.BG_PURPLE_50,
     },
     iconContainer: {
         display: "flex",
