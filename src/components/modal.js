@@ -47,7 +47,7 @@ export default function Modal(props) {
             headerStyle: {},
             headingText: {},
             closeBtnInner: {},
-            closeBtnIconColor: null,
+            closeBtnIconColor: CT.BG_GRAY_400,
             backdropColor: CT.BG_PURPLE_900,
             backdropOpacity: 0.9,
         },
