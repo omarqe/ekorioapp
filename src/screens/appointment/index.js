@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import CT from "../../const";
 
 import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
@@ -10,7 +11,7 @@ import Empty from "../../components/empty";
 import TopBar from "../../components/topbar";
 import Container from "../../components/container";
 
-import { StyleSheet } from "react-native";
+import { Text, StyleSheet } from "react-native";
 import { TabView, SceneMap } from "react-native-tab-view";
 
 import _renderIf from "../../functions/renderIf";
@@ -31,6 +32,13 @@ const Scene = ({ data, onPress }) => {
 };
 
 const AppointmentScreen = ({ navigation }) => {
+    const Time = () => (
+        <Text>
+            Fri, 13 Aug 2021 <Text style={{ color: CT.BG_GRAY_200 }}>@</Text> 3:00
+            <Text style={{ color: CT.BG_GRAY_500, fontSize: 12, fontWeight: "600" }}>pm</Text>
+        </Text>
+    );
+
     const [state, setState] = useState({
         index: 0,
         routes: [
@@ -39,20 +47,22 @@ const AppointmentScreen = ({ navigation }) => {
                 label: "General",
                 data: [
                     {
-                        text: "Friday, 13 August 2021",
+                        text: <Time />,
                         subtitle: "Petsville Animal Clinic, Cyberjaya",
-                        badge: { text: "Checkup" },
+                        badge: { text: "Pending" },
                         tags: [
-                            { icon: "clock", text: "3:00pm" },
+                            // { icon: "clock", text: "3:00pm" },
+                            { icon: "stethoscope", text: "Checkup" },
                             { icon: "cat", text: "Cheshire" },
                         ],
                     },
                     {
-                        text: "Friday, 13 August 2021",
+                        text: <Time />,
                         subtitle: "Petsville Animal Clinic, Cyberjaya",
-                        badge: { text: "Checkup" },
+                        badge: { text: "Confirmed" },
                         tags: [
-                            { icon: "clock", text: "3:00pm" },
+                            // { icon: "clock", text: "3:00pm" },
+                            { icon: "stethoscope", text: "Checkup" },
                             { icon: "cat", text: "Cheshire" },
                         ],
                     },
@@ -63,11 +73,22 @@ const AppointmentScreen = ({ navigation }) => {
                 label: "Boarding",
                 data: [
                     {
-                        text: "Friday, 13 August 2021",
+                        text: <Time />,
                         subtitle: "Catzonia, Petaling Jaya",
-                        badge: { text: "Boarding" },
+                        badge: { text: "Pending" },
                         tags: [
-                            { icon: "clock", text: "3:00pm" },
+                            // { icon: "clock", text: "3:00pm" },
+                            { icon: "magic", text: "Grooming" },
+                            { icon: "cat", text: "Cheshire" },
+                        ],
+                    },
+                    {
+                        text: <Time />,
+                        subtitle: "Catzonia, Petaling Jaya",
+                        badge: { text: "Pending" },
+                        tags: [
+                            // { icon: "clock", text: "3:00pm" },
+                            { icon: "concierge-bell", text: "Boarding" },
                             { icon: "cat", text: "Cheshire" },
                         ],
                     },
@@ -83,11 +104,12 @@ const AppointmentScreen = ({ navigation }) => {
                 label: "Others",
                 data: [
                     {
-                        text: "Friday, 13 August 2021",
+                        text: <Time />,
                         subtitle: "Catzonia, Petaling Jaya",
-                        badge: { text: "Grooming" },
+                        badge: { text: "Pending" },
                         tags: [
-                            { icon: "clock", text: "3:00pm" },
+                            // { icon: "clock", text: "3:00pm" },
+                            { icon: "stethoscope", text: "Service" },
                             { icon: "cat", text: "Cheshire" },
                         ],
                     },

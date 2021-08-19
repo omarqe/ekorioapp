@@ -138,7 +138,7 @@ ListItem.propTypes = {
     badge: PropTypes.object,
     tags: PropTypes.arrayOf(PropTypes.object),
     icon: PropTypes.string,
-    text: PropTypes.string.isRequired,
+    text: PropTypes.oneOfType([PropTypes.string, PropTypes.node, PropTypes.object]).isRequired,
     last: PropTypes.bool,
     subtitle: PropTypes.string,
     onPressIn: PropTypes.func,
