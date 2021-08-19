@@ -7,17 +7,13 @@ import _range from "lodash/range";
 import _numeral from "numeral";
 
 const Time = ({ times, width = 90, onSelect, hidden = [], unavailable = [], selected = 0 }) => {
-    const [pressed, setPressed] = useState(null);
-
     return times.map((time, i) => {
-        let isPressed = pressed === time;
-        let itemStyle = [styles.time, { width, backgroundColor: isPressed ? CT.BG_GRAY_50 : CT.BG_WHITE }];
+        let itemStyle = [styles.time, { width }];
         let timeText = styles.timeText;
         let meridiemText = styles.meridiemText;
 
         const isSelected = selected === time;
         const isUnavailable = unavailable.indexOf(time) > -1;
-        const enabled = !isSelected && !isUnavailable;
 
         if (hidden.indexOf(time) > -1) {
             return null;
@@ -34,9 +30,7 @@ const Time = ({ times, width = 90, onSelect, hidden = [], unavailable = [], sele
             <Pressable
                 key={i}
                 style={itemStyle}
-                onPress={typeof onSelect === "function" && !isUnavailable ? onSelect.bind(null, time) : null}
-                onPressIn={enabled ? setPressed.bind(null, time) : null}
-                onPressOut={enabled ? setPressed.bind(null, null) : null}
+                onPressIn={typeof onSelect === "function" && !isUnavailable ? onSelect.bind(null, time) : null}
             >
                 <Text style={timeText}>{_numeral(time).format("00.00").replace(".", ":")}</Text>
                 <Text style={meridiemText}>{time < 12 ? "am" : "pm"}</Text>
@@ -102,6 +96,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: CT.BG_GRAY_100,
         borderRadius: 10,
+        backgroundColor: CT.BG_WHITE,
 
         alignItems: "flex-end",
         flexDirection: "row",
