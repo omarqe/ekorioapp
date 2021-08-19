@@ -5,14 +5,26 @@ import PropTypes from "prop-types";
 import { Text, View, Image, Pressable, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
+import _renderIf from "../../functions/renderIf";
 
 export default function Pet(props) {
     const [pressed, setPressed] = useState(false);
-    const { name, image, size = 60, padding = 3, theme = "default", defaultSource = false, active, checked } = props;
+    const { name, image = null, theme = "default", defaultSource = false, active, checked } = props;
+    const { size = 60, padding = 3, borderRadius = null } = props;
+    const { phIcon = null, phIconProps } = props;
+
+    const {
+        nameStyle: _nameStyle,
+        baseStyle: _baseStyle,
+        imageStyle: _imageStyle,
+        imageBaseStyle: _imageBaseStyle,
+        overlayStyle: _overlayStyle,
+        iconBackdropStyle: _iconBackdropStyle,
+    } = props;
 
     const width = size + padding * 2;
     const height = width;
-    const radius = size * 0.35;
+    const radius = borderRadius ? borderRadius : size * 0.35;
     const isLight = theme === "light";
     const imageProps = defaultSource ? { defaultSource: image } : { source: image };
 
@@ -41,6 +53,7 @@ export default function Pet(props) {
     } else if (isLight) {
         baseStyle = { ...baseStyle, backgroundColor: CT.BG_GRAY_100 };
         nameStyle = { ...nameStyle, color: checked ? CT.BG_GRAY_800 : CT.BG_GRAY_400 };
+        imageBaseStyle = { ...imageBaseStyle, backgroundColor: CT.BG_GRAY_200 };
         if (CT.IS_IOS) {
             baseStyle = { ...baseStyle, backgroundColor: CT.BG_WHITE, ...CT.SHADOW_MD, shadowOpacity: 0.09 };
         }
@@ -48,19 +61,28 @@ export default function Pet(props) {
 
     return (
         <Pressable {..._omit(props, ["onPressIn", "onPressOut"])} {...pressable}>
-            <View style={[styles.base, baseStyle]}>
-                <View style={[styles.imageBase, imageBaseStyle]}>
-                    <Image style={[styles.image, imageStyle]} {...imageProps} />
+            <View style={[styles.base, baseStyle, _baseStyle]}>
+                <View style={[styles.imageBase, imageBaseStyle, _imageBaseStyle]}>
+                    {_renderIf(
+                        image,
+                        <Image style={[styles.image, imageStyle, _imageStyle]} {...imageProps} />,
+                        <Icon
+                            icon={phIcon ?? "fas paw"}
+                            size={size * 0.25}
+                            color={isLight ? CT.BG_GRAY_300 : CT.BG_PURPLE_500}
+                            {...phIconProps}
+                        />
+                    )}
                     {checked && (
                         <React.Fragment>
-                            <View style={[imageBaseStyle, styles.overlay, overlayStyle]} />
-                            <View style={[styles.iconBackdrop, iconBackdropStyle]} />
+                            <View style={[imageBaseStyle, styles.overlay, overlayStyle, _overlayStyle]} />
+                            <View style={[styles.iconBackdrop, iconBackdropStyle, _iconBackdropStyle]} />
                             <Icon icon="fas check-circle" size={size * 0.35} color={CT.BG_WHITE} style={styles.icon} />
                         </React.Fragment>
                     )}
                 </View>
             </View>
-            {name && <Text style={[styles.name, nameStyle]}>{name}</Text>}
+            {name && <Text style={[styles.name, nameStyle, _nameStyle]}>{name}</Text>}
         </Pressable>
     );
 }
@@ -100,10 +122,21 @@ Pet.propTypes = {
     size: PropTypes.number,
     style: PropTypes.object,
     theme: PropTypes.oneOf(["default", "light"]),
+    borderRadius: PropTypes.number,
 
     active: PropTypes.bool,
     checked: PropTypes.bool,
     padding: PropTypes.number,
     onPress: PropTypes.func,
     defaultSource: PropTypes.bool,
+
+    nameStyle: PropTypes.object,
+    baseStyle: PropTypes.object,
+    imageStyle: PropTypes.object,
+    imageBaseStyle: PropTypes.object,
+    overlayStyle: PropTypes.object,
+    iconBackdropStyle: PropTypes.object,
+
+    phIcon: PropTypes.string,
+    phIconProps: PropTypes.object,
 };
