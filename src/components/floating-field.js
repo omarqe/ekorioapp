@@ -164,12 +164,12 @@ const styles = StyleSheet.create({
         position: "absolute",
     },
     guide: {
-        color: CT.FONT_COLOR_LIGHT,
-        textAlign: "justify",
+        color: CT.BG_GRAY_400,
         fontSize: 12,
         marginTop: 3,
         paddingLeft: 2,
         paddingRight: 2,
+        lineHeight: 16,
     },
     strengthGuide: {
         flexDirection: "row",
