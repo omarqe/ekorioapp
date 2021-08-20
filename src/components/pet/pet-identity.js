@@ -8,16 +8,16 @@ import { View, StyleSheet } from "react-native";
 
 import _chunk from "lodash/chunk";
 
-const PetIdentity = ({ data, updatePet = false }) => {
+const PetIdentity = ({ data, button = null }) => {
     const chunks = _chunk(data, 2);
 
     return (
         <React.Fragment>
             <View style={styles.headingSection}>
                 <Heading text="Pet Identity" subtitle="Family since 20 June 2021" badge={{ text: "Cat" }} gapless />
-                {updatePet && (
+                {button && (
                     <View style={styles.actionBtnContainer}>
-                        <Button icon="far edit" label="Update Pet" color="white" small iconRight />
+                        <Button {...button} />
                     </View>
                 )}
             </View>
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 
 PetIdentity.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
-    updatePet: PropTypes.bool,
+    button: PropTypes.func,
 };
 
 export default PetIdentity;

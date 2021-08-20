@@ -18,7 +18,7 @@ import _capitalize from "lodash/capitalize";
 
 import { View, StyleSheet } from "react-native";
 
-export default function PetAddScreen({ navigation }) {
+export default function PetFormScreen({ navigation }) {
     const [petType, setPetType] = useState("cat");
     const fields = [
         { label: "Name", value: "Cheshire" },
