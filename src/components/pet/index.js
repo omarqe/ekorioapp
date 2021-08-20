@@ -9,7 +9,7 @@ import _renderIf from "../../functions/renderIf";
 
 export default function Pet(props) {
     const [pressed, setPressed] = useState(false);
-    const { name, image = null, theme = "default", defaultSource = false, active, checked } = props;
+    const { name, image = null, theme = "default", defaultSource = false, active, checked, deemphasized = false } = props;
     const { size = 60, padding = 3, borderRadius = null } = props;
     const { phIcon = null, phIconProps } = props;
 
@@ -59,6 +59,11 @@ export default function Pet(props) {
         if (CT.IS_IOS) {
             baseStyle = { ...baseStyle, backgroundColor: CT.BG_WHITE, ...CT.SHADOW_MD, shadowOpacity: 0.09 };
         }
+    }
+
+    // If deemphasized
+    if (deemphasized && !active) {
+        baseStyle = { ...baseStyle, opacity: 0.4 };
     }
 
     return (
@@ -132,6 +137,7 @@ Pet.propTypes = {
     padding: PropTypes.number,
     onPress: PropTypes.func,
     defaultSource: PropTypes.bool,
+    deemphasized: PropTypes.bool,
 
     nameStyle: PropTypes.object,
     baseStyle: PropTypes.object,

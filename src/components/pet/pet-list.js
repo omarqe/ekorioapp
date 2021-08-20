@@ -60,4 +60,5 @@ PetList.propTypes = {
     active: PropTypes.number,
     checked: PropTypes.number,
     onPress: PropTypes.func,
+    deemphasized: PropTypes.bool,
 };
