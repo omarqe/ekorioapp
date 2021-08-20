@@ -6,7 +6,7 @@ import { View, Text, StyleSheet } from "react-native";
 import _omit from "lodash/omit";
 
 const Badge = (props) => {
-    let { style = {}, textStyle: _textStyle = {} } = props;
+    let { style = {}, textStyle = {} } = props;
     let { text, size = 1, xs = false, lg = false, color = "default" } = props;
 
     // Handle size shortcuts
@@ -15,36 +15,26 @@ const Badge = (props) => {
 
     const sizes = [
         {
-            baseStyle: { padding: 4, paddingLeft: 5, paddingRight: 6, borderRadius: 6 },
-            textStyle: { fontSize: 12 },
+            base: { padding: 4, paddingLeft: 5, paddingRight: 6, borderRadius: 6 },
+            text: { fontSize: 12 },
         },
         {
-            baseStyle: { padding: 5, paddingLeft: 6, paddingRight: 6, borderRadius: 7 },
-            textStyle: { fontSize: 14 },
+            base: { padding: 5, paddingLeft: 6, paddingRight: 6, borderRadius: 7 },
+            text: { fontSize: 14 },
         },
         {
-            baseStyle: { padding: 6, paddingLeft: 7, paddingRight: 7, borderRadius: 8 },
-            textStyle: { fontSize: 16 },
+            base: { padding: 6, paddingLeft: 7, paddingRight: 7, borderRadius: 8 },
+            text: { fontSize: 16 },
         },
     ];
     const colors = {
-        default: { baseStyle: {}, textStyle: {} },
-        purple: {
-            baseStyle: { backgroundColor: CT.BG_PURPLE_500 },
-            textStyle: { color: CT.BG_PURPLE_100 },
-        },
-        yellow: {
-            baseStyle: { backgroundColor: CT.BG_YELLOW_500 },
-            textStyle: { color: CT.BG_YELLOW_900 },
-        },
+        purple: { base: { backgroundColor: CT.BG_PURPLE_500 }, text: { color: CT.BG_PURPLE_100 } },
+        yellow: { base: { backgroundColor: CT.BG_YELLOW_500 }, text: { color: CT.BG_YELLOW_900 } },
     };
 
-    const baseStyle = { ...styles.base, ...sizes[size]?.baseStyle, ...colors[color]?.baseStyle };
-    const textStyle = { ...styles.text, ...sizes[size]?.textStyle, ...colors[color]?.textStyle };
-
     return (
-        <View style={[baseStyle, style]}>
-            <Text style={[textStyle, _textStyle]}>{text}</Text>
+        <View style={[styles.base, sizes[size]?.base, colors[color]?.base, style]}>
+            <Text style={[styles.text, sizes[size]?.text, colors[color]?.text, textStyle]}>{text}</Text>
         </View>
     );
 };
