@@ -9,6 +9,7 @@ import TopBar from "../../components/topbar";
 import Heading from "../../components/heading";
 import Container from "../../components/container";
 import FloatingFields from "../../components/floating-fields";
+import KeyboardAvoiding from "../../components/keyboard-avoiding";
 
 import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
@@ -21,8 +22,12 @@ import { View, StyleSheet } from "react-native";
 export default function PetFormScreen({ navigation }) {
     const [petType, setPetType] = useState("cat");
     const fields = [
-        { label: "Name", value: "Cheshire" },
-        { label: "Microchip ID", placeholder: "" },
+        { label: "Name", placeholder: "Give your pet a name" },
+        {
+            label: "Microchip ID",
+            placeholder: "644689939779789",
+            guide: "This microchip ID is non-editable and may be verified by the admin.",
+        },
         [
             {
                 type: "select",
@@ -35,7 +40,9 @@ export default function PetFormScreen({ navigation }) {
             {
                 type: "select",
                 label: "Breed",
+                placeholder: "British Shorthair",
                 options: [
+                    { label: "", value: "" },
                     { label: "British Shorthair", value: "00001" },
                     { label: "Maine Coon", value: "00002" },
                 ],
@@ -43,50 +50,53 @@ export default function PetFormScreen({ navigation }) {
         ],
         [
             { label: "Birthday", placeholder: "01/01/2021" },
-            { label: "Weight (kg)", type: "number", value: "2.50" },
+            { label: "Weight (kg)", type: "number", placeholder: "0.00" },
         ],
         {
             type: "textarea",
             label: "Biography",
+            placeholder: "Tell us something about your pet..",
         },
     ];
 
     return (
-        <Container>
-            <TopBar
-                title="Add a Pet"
-                leftIcon="arrow-left"
-                leftIconProps={{ onPress: navigation.goBack }}
-                rightIcon="ellipsis-h"
-            />
-            <Layout gray withHeader>
-                <Header contentStyle={styles.headerContent} overlap>
-                    <Pet
-                        name="Cheshire"
-                        borderRadius={35}
-                        padding={5}
-                        size={130}
-                        image={require("../../../assets/pets/cat-04.png")}
-                        nameStyle={styles.petName}
-                        baseStyle={styles.petBase}
-                        imageBaseStyle={styles.petImageBase}
-                        phIconProps={{ color: CT.BG_PURPLE_200 }}
-                    />
-                    <Badge text="Breed: Maine Coon" style={styles.petBadge} color="purple" />
-                </Header>
-                <Body gray flex overlap topRounded>
-                    <View style={styles.section}>
-                        <Heading text="Pet Type" />
-                        <PetTypes types={["cat", "dog", "rabbit", "bird"]} active={petType} onPress={setPetType} />
-                    </View>
-                    <View style={[styles.section, { marginBottom: 15 }]}>
-                        <Heading text="Pet Details" />
-                        <FloatingFields fields={fields} />
-                    </View>
-                    <Button text="Add Pet" color="yellow" />
-                </Body>
-            </Layout>
-        </Container>
+        <KeyboardAvoiding>
+            <Container>
+                <TopBar
+                    title="Add a Pet"
+                    leftIcon="arrow-left"
+                    leftIconProps={{ onPress: navigation.goBack }}
+                    rightIcon="ellipsis-h"
+                />
+                <Layout gray withHeader>
+                    <Header contentStyle={styles.headerContent} overlap>
+                        <Pet
+                            name="Cheshire"
+                            borderRadius={35}
+                            padding={5}
+                            size={130}
+                            image={require("../../../assets/pets/cat-04.png")}
+                            nameStyle={styles.petName}
+                            baseStyle={styles.petBase}
+                            imageBaseStyle={styles.petImageBase}
+                            phIconProps={{ color: CT.BG_PURPLE_200 }}
+                        />
+                        <Badge text="Breed: Maine Coon" style={styles.petBadge} color="purple" />
+                    </Header>
+                    <Body gray flex overlap topRounded>
+                        <View style={styles.section}>
+                            <Heading text="Pet Type" />
+                            <PetTypes types={["cat", "dog", "rabbit", "bird"]} active={petType} onPress={setPetType} />
+                        </View>
+                        <View style={[styles.section, { marginBottom: 15 }]}>
+                            <Heading text="Pet Details" />
+                            <FloatingFields fields={fields} />
+                        </View>
+                        <Button text="Add Pet" color="yellow" />
+                    </Body>
+                </Layout>
+            </Container>
+        </KeyboardAvoiding>
     );
 }
 
