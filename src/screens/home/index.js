@@ -18,62 +18,29 @@ import ButtonIcon from "../../components/button-icon";
 import { View, StyleSheet } from "react-native";
 import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
 
-import pets from "../../../data/pets.json";
 import _find from "lodash/find";
 import _times from "lodash/times";
 import _first from "lodash/first";
+import _capitalize from "lodash/capitalize";
+
+import pets from "../../../data/pets.json";
+import health from "../../../data/health.json";
 
 const HomeScreen = connectActionSheet(({ navigation }) => {
     const go = (key) => navigation.navigate(key);
-    const [petID, setPetID] = useState(null);
+    const [data, setData] = useState(null);
+    const [healthData, setHealthData] = useState(null);
     const { showActionSheetWithOptions } = useActionSheet();
 
     useEffect(() => {
-        const first = _first(pets);
-        setPetID(first?.id);
-    }, []);
+        const data = _first(pets);
+        const id = data?.id;
+        const healthData = _find(health, { id });
 
-    const data = _find(pets, { id: petID });
-    const healthData = {
-        chart: [
-            {
-                id: "physical",
-                label: "Physical",
-                value: 0.25,
-                delta: 0.1,
-                indicator: "up",
-            },
-            {
-                id: "nutrition",
-                label: "Nutrition",
-                value: 0.55,
-                delta: 0.25,
-                indicator: "up",
-            },
-            {
-                id: "lifestyle",
-                label: "Lifestyle",
-                value: 0.8,
-                delta: 0.3,
-                indicator: "up",
-            },
-        ],
-        details: [
-            { id: 0, label: "Eyes", score: 9 },
-            { id: 0, label: "Ears", score: 10 },
-            { id: 0, label: "Teeth & Mouth", score: 6 },
-            { id: 0, label: "Skin & Coat", score: 6 },
-            { id: 0, label: "Fleas", score: 10 },
-            { id: 0, label: "Ticks", score: 10 },
-            { id: 0, label: "Heart", score: 9 },
-            { id: 0, label: "Heartworms", score: 9 },
-            { id: 0, label: "Breathing", score: 10 },
-            { id: 0, label: "Bones & Joints", score: 7 },
-            { id: 0, label: "Alertness & Balance", score: 7 },
-            { id: 0, label: "Urinary Tract", score: 9 },
-            { id: 0, label: "Cancer & Immune Function", score: 10 },
-        ],
-    };
+        setData(data);
+        setHealthData(healthData);
+    }, []);
+    console.log("healthData", healthData);
 
     const petData = [
         { label: "Name", value: data?.name },
@@ -84,11 +51,14 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         { label: "Birthday", value: data?.birthday },
         { label: "Age (Cat Year)", value: data?.agePet },
         { label: "Age (Human Year)", value: data?.ageHuman },
-        { label: "Gender", value: data?.gender },
+        { label: "Gender", value: _capitalize(data?.gender) },
         { label: "Weight", value: `${data?.weight} kg` },
     ];
 
-    const _onChangePet = (id) => setPetID(id);
+    const _onChangePet = (id) => {
+        setData(_find(pets, { id }));
+        setHealthData(_find(health, { id }));
+    };
     const _onOptions = () => {
         const options = ["Reevaluate Health", "View Health Records", "Done"];
         const cancelButtonIndex = 2;
@@ -106,7 +76,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
 
             <Layout gray withHeader>
                 <Header horizontal overlap>
-                    <PetList size={65} margin={4} active={petID} onPress={_onChangePet} />
+                    <PetList size={65} margin={4} active={data?.id} onPress={_onChangePet} />
                 </Header>
 
                 <Body topRounded overlap>
