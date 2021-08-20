@@ -17,17 +17,26 @@ const columnw = lowRatio ? 90 : 100;
 
 export default function HealthCharts({ data = [] }) {
     const chartBg = CT.BG_WHITE;
-    const chartIcons = {
-        physical: ChartCatIcon,
-        nutrition: ChartMeatIcon,
-        lifestyle: ChartThreadIcon,
+    const mappedData = {
+        physical: {
+            icon: ChartCatIcon,
+            label: "Physical",
+        },
+        nutrition: {
+            icon: ChartMeatIcon,
+            label: "Nutrition",
+        },
+        lifestyle: {
+            icon: ChartThreadIcon,
+            label: "Lifestyle",
+        },
     };
 
     if (_isArray(data) && data.length > 0) {
         return (
             <View style={styles.container}>
-                {data.map(({ id, value, label, indicator = "down", delta = 0.1 }, i) => {
-                    const ChartIcon = chartIcons[id];
+                {data.map(({ id, value, indicator = "down", delta = 0.1 }, i) => {
+                    const ChartIcon = mappedData[id]?.icon;
                     const vPer100 = (value * 100).toFixed(0);
                     const dPer100 = (delta * 100).toFixed(0);
 
@@ -65,7 +74,7 @@ export default function HealthCharts({ data = [] }) {
                                     {vPer100}
                                     <Text style={styles.chartValueSymbol}>%</Text>
                                 </Text>
-                                <Text style={styles.chartLabel}>{label}</Text>
+                                <Text style={styles.chartLabel}>{mappedData[id]?.label}</Text>
                                 <Text style={styles.chartDesc}>
                                     {_startCase(indicator)} {dPer100}% from last week
                                 </Text>
@@ -77,7 +86,7 @@ export default function HealthCharts({ data = [] }) {
         );
     }
 
-    return "";
+    return null;
 }
 
 const styles = StyleSheet.create({
