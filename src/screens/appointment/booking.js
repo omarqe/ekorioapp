@@ -115,10 +115,11 @@ export default function AppointmentBookingScreen({ navigation }) {
                             </View>
                         </View>
 
-                        <View style={[styles.section, { marginBottom: 10 }]}>
+                        <View style={[styles.section, { marginBottom: 15 }]}>
                             <FloatingFields fields={fields} />
                         </View>
-                        <Button label="Book Appointment" />
+
+                        <Button text="Book Appointment" color="yellow" />
 
                         <Text style={styles.summary}>
                             Your appointment will be set on{" "}

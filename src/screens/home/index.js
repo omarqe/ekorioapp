@@ -91,7 +91,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
 
     return (
         <Container>
-            <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: go.bind(null, "pet__home") }} />
+            <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: go.bind(null, "pet__form") }} />
 
             <Layout gray withHeader>
                 <Header horizontal overlap>
@@ -117,11 +117,10 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
                     <PetIdentity
                         data={petData}
                         button={{
-                            icon: "edit",
-                            label: "Update Pet",
-                            small: true,
-                            color: "white",
+                            icon: "far edit",
+                            text: "Update Pet",
                             onPress: go.bind(null, "pet__form"),
+                            iconRight: true,
                         }}
                     />
                 </Body>

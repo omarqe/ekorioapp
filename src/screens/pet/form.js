@@ -79,11 +79,11 @@ export default function PetFormScreen({ navigation }) {
                         <Heading text="Pet Type" />
                         <PetTypes types={["cat", "dog", "rabbit", "bird"]} active={petType} onPress={setPetType} />
                     </View>
-                    <View style={styles.section}>
+                    <View style={[styles.section, { marginBottom: 15 }]}>
                         <Heading text="Pet Details" />
                         <FloatingFields fields={fields} />
                     </View>
-                    <Button label="Add Pet" />
+                    <Button text="Add Pet" color="yellow" />
                 </Body>
             </Layout>
         </Container>

@@ -81,7 +81,7 @@ export default function AccountSettingsScreen({ navigation }) {
                                 <FloatingFields fields={fields} />
                             </View>
                         ))}
-                        <Button label="Update Account" onPress={navigation.goBack} />
+                        <Button text="Update Account" color="yellow" onPress={navigation.goBack} />
                     </Body>
                 </Layout>
             </Container>
