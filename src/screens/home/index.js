@@ -21,6 +21,7 @@ import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sh
 import _times from "lodash/times";
 
 const HomeScreen = connectActionSheet(({ navigation }) => {
+    const go = (key) => navigation.navigate(key);
     const { showActionSheetWithOptions } = useActionSheet();
     const healthData = {
         chart: [
@@ -81,10 +82,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         const cancelButtonIndex = 2;
 
         showActionSheetWithOptions({ options, cancelButtonIndex }, (buttonIndex) => {
-            const cmd = [
-                navigation.navigate.bind(null, "pet__evaluate"),
-                navigation.navigate.bind(null, "pet__health-records"),
-            ];
+            const cmd = [go.bind(null, "pet__evaluate"), go.bind(null, "pet__health-records")];
             if (typeof cmd[buttonIndex] === "function") {
                 cmd[buttonIndex]();
             }
@@ -93,7 +91,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
 
     return (
         <Container>
-            <TopBar type={2} rightIcon="plus" />
+            <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: go.bind(null, "pet__form") }} />
 
             <Layout gray withHeader>
                 <Header horizontal overlap>
@@ -102,7 +100,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
 
                 <Body topRounded overlap>
                     <View style={styles.headingSection}>
-                        <Heading text="Health Stats" subtitle="Last evaluated 3 weeks ago" gapless />
+                        <Heading text="Cheshire's Health" subtitle="Last evaluated 3 weeks ago" gapless />
                         <View style={styles.actionBtnContainer}>
                             <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={onOptions} inverted />
                         </View>
@@ -116,7 +114,15 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
                 </Body>
 
                 <Body gray>
-                    <PetIdentity data={petData} updatePet />
+                    <PetIdentity
+                        data={petData}
+                        button={{
+                            icon: "far edit",
+                            text: "Update Pet",
+                            onPress: go.bind(null, "pet__form"),
+                            iconRight: true,
+                        }}
+                    />
                 </Body>
             </Layout>
         </Container>
