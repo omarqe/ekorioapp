@@ -106,7 +106,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
 
             <Layout gray withHeader>
                 <Header horizontal overlap>
-                    <PetList margin={4} active={petID} onPress={_onChangePet} />
+                    <PetList margin={4} active={petID} onPress={_onChangePet} deemphasized />
                 </Header>
 
                 <Body topRounded overlap>
