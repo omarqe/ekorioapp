@@ -26,7 +26,9 @@ export default function Pet(props) {
     const height = width;
     const radius = borderRadius ? borderRadius : size * 0.35;
     const isLight = theme === "light";
-    const imageProps = defaultSource ? { defaultSource: image } : { source: image };
+
+    const imageURL = typeof image === "string" ? { uri: image } : image;
+    const imageProps = defaultSource ? { defaultSource: imageURL } : { source: imageURL };
 
     const pressable = {
         onPressIn: setPressed.bind(null, true),
@@ -65,7 +67,7 @@ export default function Pet(props) {
                 <View style={[styles.imageBase, imageBaseStyle, _imageBaseStyle]}>
                     {_renderIf(
                         image,
-                        <Image style={[styles.image, imageStyle, _imageStyle]} {...imageProps} />,
+                        <Image style={[styles.image, imageStyle, _imageStyle]} resizeMode="cover" {...imageProps} />,
                         <Icon
                             icon={phIcon ?? "fas paw"}
                             size={size * 0.25}
@@ -122,6 +124,7 @@ Pet.propTypes = {
     size: PropTypes.number,
     style: PropTypes.object,
     theme: PropTypes.oneOf(["default", "light"]),
+    image: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     borderRadius: PropTypes.number,
 
     active: PropTypes.bool,
