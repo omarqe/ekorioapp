@@ -17,7 +17,7 @@ const PetIdentity = ({ data, button = null }) => {
                 <Heading text="Pet Identity" subtitle="Family since 20 June 2021" badge={{ text: "Cat" }} gapless />
                 {button && (
                     <View style={styles.actionBtnContainer}>
-                        <Button {...button} />
+                        <Button small {...button} />
                     </View>
                 )}
             </View>
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 
 PetIdentity.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
-    button: PropTypes.func,
+    button: PropTypes.object,
 };
 
 export default PetIdentity;
