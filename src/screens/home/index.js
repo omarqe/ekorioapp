@@ -40,13 +40,12 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         setData(data);
         setHealthData(healthData);
     }, []);
-    console.log("healthData", healthData);
 
-    const petData = [
+    const displayData = [
         { label: "Name", value: data?.name },
         { label: "Microchip ID", value: data?.microchipID, verified: data?.microchipVerified },
-        { label: "Parent's Name", value: "Eve Harrison" },
-        { label: "Colors", value: ["#3E4C59", "#9AA5B1"] },
+        // { label: "Parent's Name", value: "Eve Harrison" },
+        // { label: "Colors", value: ["#3E4C59", "#9AA5B1"] },
         { label: "Breed", value: data?.breedName },
         { label: "Birthday", value: data?.birthday },
         { label: "Age (Cat Year)", value: data?.agePet },
@@ -96,7 +95,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
 
                 <Body gray>
                     <PetIdentity
-                        data={petData}
+                        data={displayData}
                         button={{
                             icon: "far edit",
                             text: "Update Pet",
