@@ -7,7 +7,7 @@ import { View, Text, StyleSheet } from "react-native";
 import _isArray from "lodash/isArray";
 import _renderIf from "../functions/renderIf";
 
-const PetID = ({ label, value, style, labelStyle, valueStyle, verified = false }) => {
+const PetID = ({ label, value, style, verified = false, labelStyle, valueStyle }) => {
     const valueIsArray = _isArray(value);
 
     let colors = [];
@@ -73,10 +73,10 @@ const styles = StyleSheet.create({
 });
 
 PetID.propTypes = {
-    verified: PropTypes.bool,
-    label: PropTypes.string.isRequired,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
+    label: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
     style: PropTypes.object,
+    verified: PropTypes.bool,
     labelStyle: PropTypes.object,
     valueStyle: PropTypes.object,
 };
