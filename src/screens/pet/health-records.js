@@ -102,7 +102,7 @@ const PetHealthRecordsScreen = ({ navigation }) => {
             />
             <Modal title="Choose Pet" open={petShown} onClose={_onClosePet}>
                 <View style={styles.petListContainer}>
-                    <PetList onPress={_onClosePet} theme="light" checked={3} />
+                    <PetList onPress={_onClosePet} theme="light" checked={1} />
                 </View>
             </Modal>
         </Container>
