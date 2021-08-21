@@ -44,8 +44,8 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
     const displayData = [
         { label: "Name", value: data?.name },
         { label: "Microchip ID", value: data?.microchipID, verified: data?.microchipVerified },
-        // { label: "Parent's Name", value: "Eve Harrison" },
-        // { label: "Colors", value: ["#3E4C59", "#9AA5B1"] },
+        { label: "Parent's Name", value: "Eve Harrison" },
+        { label: "Colors", value: ["#3E4C59", "#9AA5B1"] },
         { label: "Breed", value: data?.breedName },
         { label: "Birthday", value: data?.birthday },
         { label: "Age (Cat Year)", value: data?.agePet },
@@ -89,7 +89,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
                         <HealthCharts data={healthData?.chart} />
                     </View>
                     <View style={{ ...styles.section, marginBottom: 0 }}>
-                        <HealthCategories data={healthData?.details} />
+                        <HealthCategories data={healthData?.categories} />
                     </View>
                 </Body>
 
