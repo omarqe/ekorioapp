@@ -11,13 +11,25 @@ import { View, Text, Pressable, TextInput, StyleSheet } from "react-native";
 import _omit from "lodash/omit";
 import _find from "lodash/find";
 import _times from "lodash/times";
+import _sortBy from "lodash/sortBy";
 import _renderIf from "../functions/renderIf";
 export default function FloatingField(props) {
     const [picker, setPicker] = useState(false);
     const [focused, setFocused] = useState(false);
+    const [ccPicker, setCCPicker] = useState(false);
 
     let { disabled = false, gapless = false, strengthGuide = false, useNativePicker = false } = props;
     let { name, value, type = null, label, guide, style = {}, onBlur, onFocus, onChange } = props;
+    let { nameCC, callingCode = CT.DEFAULT_CALLING_CODE } = props; // Only works with type == phone or tel.
+
+    // Generate calling code options
+    const countryByCC = require("country-json/src/country-by-calling-code.json");
+    const callingCodes = _sortBy(
+        countryByCC.map(({ country, calling_code }) => {
+            return { value: calling_code, label: `${country} (+${calling_code})` };
+        }),
+        "label"
+    );
 
     const phColor = disabled ? CT.BG_GRAY_100 : CT.BG_GRAY_200;
     const isSelect = type === "select";
@@ -61,9 +73,14 @@ export default function FloatingField(props) {
         }
     };
     const _onValueChange = (value) => {
+        if (!disabled && typeof onChange === "function") {
+            onChange(value, name);
+        }
+    };
+    const _onCallingCodeChange = (value) => {
         if (!disabled) {
-            if (typeof onChange === "function") {
-                onChange(value, name);
+            if (!disabled && typeof onChange === "function") {
+                onChange(value, nameCC);
             }
         }
     };
@@ -156,19 +173,38 @@ export default function FloatingField(props) {
                 <View>
                     <Pressable style={[baseStyle, disabledStyle]} onPress={_onPressFocusInput}>
                         <Text style={[styles.label, disabledLabelStyle]}>{label}</Text>
-                        <TextInput
-                            ref={inputRef}
-                            value={value}
-                            style={styles.input}
-                            onBlur={_onBlur}
-                            onFocus={_onFocus}
-                            editable={!disabled}
-                            onChangeText={_onValueChange}
-                            allowFontScaling={false}
-                            placeholderTextColor={phColor}
-                            {...typeProps[type]}
-                            {...inputProps}
-                        />
+                        <View style={styles.inputContainer}>
+                            {_renderIf(
+                                ["tel", "phone"].indexOf(type) > -1,
+                                <Pressable style={styles.callingCodes} onPress={setCCPicker.bind(null, true)}>
+                                    <Text style={styles.input} allowFontScaling={false}>
+                                        +{callingCode}
+                                    </Text>
+                                    <Icon icon="caret-down" style={styles.callingCodesCaret} />
+                                    <ModalPicker
+                                        selectedValue={callingCode}
+                                        open={ccPicker}
+                                        label="Calling Codes"
+                                        options={callingCodes}
+                                        onClose={setCCPicker.bind(null, false)}
+                                        onValueChange={_onCallingCodeChange}
+                                    />
+                                </Pressable>
+                            )}
+                            <TextInput
+                                ref={inputRef}
+                                value={value}
+                                style={styles.input}
+                                onBlur={_onBlur}
+                                onFocus={_onFocus}
+                                editable={!disabled}
+                                onChangeText={_onValueChange}
+                                allowFontScaling={false}
+                                placeholderTextColor={phColor}
+                                {...typeProps[type]}
+                                {...inputProps}
+                            />
+                        </View>
                     </Pressable>
                     <FieldGuide type={type} guide={guide} disabled={disabled} strengthGuide={strengthGuide} />
                 </View>
@@ -214,8 +250,20 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: "600",
     },
-    inputMimic: {
-        fontSize: 18,
+    inputContainer: {
+        flex: 1,
+        alignItems: "center",
+        flexDirection: "row",
+    },
+    callingCodes: {
+        alignItems: "center",
+        marginRight: 5,
+        flexDirection: "row",
+    },
+    callingCodesCaret: {
+        top: 0,
+        color: CT.BG_GRAY_200,
+        marginLeft: 1,
     },
     caret: {
         top: "60%",
@@ -256,6 +304,8 @@ const styles = StyleSheet.create({
 });
 
 FloatingField.propTypes = {
+    callingCode: PropTypes.number,
+    nameCC: PropTypes.string,
     name: PropTypes.string,
     type: PropTypes.oneOf(CT.INPUT_TYPES),
     label: PropTypes.string,

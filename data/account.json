@@ -3,7 +3,7 @@
     "name": "Eve Harrison",
     "email": "eve@email.com",
     "password": 123456,
-    "cc": "+60",
+    "callingCode": 60,
     "phone": "175178252",
     "gender": "female",
     "birthday": "01/01/1999",

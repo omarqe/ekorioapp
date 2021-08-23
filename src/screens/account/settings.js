@@ -31,7 +31,15 @@ export default function AccountSettingsScreen({ navigation }) {
             fields: [
                 { name: "name", type: "name", label: "Full Name", value: data?.name, placeholder: "John Doe" },
                 { name: "email", type: "email", label: "Email Address", value: data?.email, placeholder: "you@email.com" },
-                { name: "phone", type: "phone", label: "Phone Number", value: data?.phone, placeholder: "+60123456789" },
+                {
+                    nameCC: "callingCode",
+                    name: "phone",
+                    type: "phone",
+                    label: "Phone Number",
+                    value: data?.phone,
+                    callingCode: data?.callingCode,
+                    placeholder: "123456789",
+                },
                 [
                     {
                         name: "gender",
