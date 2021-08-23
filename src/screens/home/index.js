@@ -25,6 +25,7 @@ import _capitalize from "lodash/capitalize";
 
 import pets from "../../../data/pets.json";
 import health from "../../../data/health.json";
+import petTypes from "../../../data/pet-types.json";
 
 const HomeScreen = connectActionSheet(({ navigation }) => {
     const go = (key, options = {}) => navigation.navigate(key, options);
@@ -46,7 +47,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         { label: "Microchip ID", value: data?.microchipID, verified: data?.microchipVerified },
         { label: "Parent's Name", value: "Eve Harrison" },
         { label: "Colors", value: ["#3E4C59", "#9AA5B1"] },
-        { label: "Breed", value: data?.breedName },
+        { label: "Breed", value: _find(_find(petTypes, { id: data?.type })?.breeds, { value: data?.breedID })?.label },
         { label: "Birthday", value: data?.birthday },
         { label: "Age (Cat Year)", value: data?.agePet },
         { label: "Age (Human Year)", value: data?.ageHuman },
