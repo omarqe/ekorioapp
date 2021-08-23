@@ -19,7 +19,7 @@ export default function FloatingField(props) {
     let { disabled = false, gapless = false, strengthGuide = false, useNativePicker = false } = props;
     let { name, value, type = null, label, guide, style = {}, onBlur, onFocus, onChange } = props;
 
-    const phColor = CT.BG_GRAY_100;
+    const phColor = disabled ? CT.BG_GRAY_100 : CT.BG_GRAY_200;
     const isSelect = type === "select";
     const inputRef = useRef(null);
     const inputProps = _omit(props, [
@@ -100,7 +100,7 @@ export default function FloatingField(props) {
     switch (type) {
         case "select":
             const { options = [], placeholder } = props;
-            const textColor = { color: value ? CT.FONT_COLOR : CT.BG_GRAY_100 };
+            const textColor = { color: value ? CT.FONT_COLOR : phColor };
             const valueLabel = _find(options, { value })?.label;
 
             return (
