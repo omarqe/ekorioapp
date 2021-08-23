@@ -247,6 +247,7 @@ FloatingField.propTypes = {
     options: PropTypes.array,
     gapless: PropTypes.bool,
     onChange: PropTypes.func,
+    disabled: PropTypes.bool,
     strengthGuide: PropTypes.bool,
     useNativePicker: PropTypes.bool,
 };
