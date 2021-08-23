@@ -8,8 +8,6 @@ import _isArray from "lodash/isArray";
 
 export default function Template({ fields = [], onChange }) {
     if (_isArray(fields) && fields.length > 0) {
-        let rowStyle = styles.row;
-
         return (
             <View style={styles.grid}>
                 {fields.map((props, i) => {

@@ -17,12 +17,22 @@ export default function FloatingField(props) {
     const [focused, setFocused] = useState(false);
 
     const { disabled = false, gapless = false, strengthGuide = false, useNativePicker = false } = props;
-    const { type = null, label, guide, style = {}, onBlur, onFocus } = props;
+    const { name, type = null, label, guide, style = {}, onBlur, onFocus, onChange } = props;
 
     const phColor = CT.BG_GRAY_100;
     const isSelect = type === "select";
     const inputRef = useRef(null);
-    const inputProps = _omit(props, ["type", "label", "style", "onBlur", "onFocus", "gapless", "strengthGuide"]);
+    const inputProps = _omit(props, [
+        "strengthGuide",
+        "gapless",
+        "type",
+        "label",
+        "style",
+        "onBlur",
+        "onFocus",
+        "onChange",
+        "onChangeText",
+    ]);
 
     // Negates guide if strengthGuide is true
     if (strengthGuide && guide) guide = false;
@@ -43,6 +53,11 @@ export default function FloatingField(props) {
     const _onBlur = () => {
         setFocused(false);
         if (typeof onBlur === "function") onBlur();
+    };
+    const _onValueChange = (value) => {
+        if (typeof onChange === "function") {
+            onChange(value, name);
+        }
     };
 
     // Handle styles
@@ -67,15 +82,9 @@ export default function FloatingField(props) {
 
     switch (type) {
         case "select":
-            const { value, options = [], onChange, placeholder } = props;
+            const { value, options = [], placeholder } = props;
             const textColor = { color: value ? CT.FONT_COLOR : CT.BG_GRAY_100 };
             const valueLabel = _find(options, { value })?.label;
-
-            const _onValueChange = (value, index) => {
-                if (typeof onChange === "function") {
-                    onChange(value, index);
-                }
-            };
 
             return (
                 <View>
@@ -132,6 +141,7 @@ export default function FloatingField(props) {
                             onBlur={_onBlur}
                             onFocus={_onFocus}
                             editable={!disabled}
+                            onChangeText={_onValueChange}
                             allowFontScaling={false}
                             placeholderTextColor={phColor}
                             {...typeProps[type]}
@@ -224,6 +234,7 @@ const styles = StyleSheet.create({
 });
 
 FloatingField.propTypes = {
+    name: PropTypes.string,
     type: PropTypes.oneOf(CT.INPUT_TYPES),
     label: PropTypes.string,
     style: PropTypes.object,
