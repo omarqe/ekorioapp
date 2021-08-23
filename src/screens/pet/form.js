@@ -22,18 +22,23 @@ import { View, StyleSheet } from "react-native";
 
 export default function PetFormScreen({ navigation, route }) {
     const [data, setData] = useState(null);
+    const [formType, setFormType] = useState("add");
+    const isUpdate = formType === "update";
     const _onChange = (value, name) => setData({ ...data, [name]: value });
     const _onChangePetType = (type) => setData({ ...data, type });
 
     let petTypes = ["cat", "dog", "rabbit", "bird"];
     let disabledPetTypes = [];
-    if (data?.type) {
+    if (isUpdate) {
         disabledPetTypes = _clone(petTypes);
         disabledPetTypes.splice(petTypes.indexOf(data?.type), 1);
     }
 
     useEffect(() => {
-        if (route?.params) setData(route?.params);
+        if (route?.params) {
+            setData(route?.params);
+            setFormType("update");
+        }
     }, []);
 
     const fields = [
@@ -86,7 +91,7 @@ export default function PetFormScreen({ navigation, route }) {
         <KeyboardAvoiding>
             <Container>
                 <TopBar
-                    title={data ? "Update Pet" : "Add Pet"}
+                    title={isUpdate ? "Update Pet" : "Add Pet"}
                     leftIcon="arrow-left"
                     leftIconProps={{ onPress: navigation.goBack }}
                     rightIcon="ellipsis-h"
