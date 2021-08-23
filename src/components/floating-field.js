@@ -16,8 +16,8 @@ export default function FloatingField(props) {
     const [picker, setPicker] = useState(false);
     const [focused, setFocused] = useState(false);
 
-    const { disabled = false, gapless = false, strengthGuide = false, useNativePicker = false } = props;
-    const { name, type = null, label, guide, style = {}, onBlur, onFocus, onChange } = props;
+    let { disabled = false, gapless = false, strengthGuide = false, useNativePicker = false } = props;
+    let { name, value, type = null, label, guide, style = {}, onBlur, onFocus, onChange } = props;
 
     const phColor = CT.BG_GRAY_100;
     const isSelect = type === "select";
@@ -25,6 +25,7 @@ export default function FloatingField(props) {
     const inputProps = _omit(props, [
         "strengthGuide",
         "gapless",
+        "value",
         "type",
         "label",
         "style",
@@ -60,6 +61,9 @@ export default function FloatingField(props) {
         }
     };
 
+    // Correct value type
+    if (typeof value === "number") value = value.toString();
+
     // Handle styles
     let baseStyle = { ...styles.base, ...style };
     if (focused) baseStyle = { ...baseStyle, borderColor: CT.BORDER_FOCUS };
@@ -82,7 +86,7 @@ export default function FloatingField(props) {
 
     switch (type) {
         case "select":
-            const { value, options = [], placeholder } = props;
+            const { options = [], placeholder } = props;
             const textColor = { color: value ? CT.FONT_COLOR : CT.BG_GRAY_100 };
             const valueLabel = _find(options, { value })?.label;
 
@@ -137,6 +141,7 @@ export default function FloatingField(props) {
                         <Text style={styles.label}>{label}</Text>
                         <TextInput
                             ref={inputRef}
+                            value={value}
                             style={styles.input}
                             onBlur={_onBlur}
                             onFocus={_onFocus}
