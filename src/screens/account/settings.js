@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import Button from "../../components/button";
 import Heading from "../../components/heading";
@@ -10,53 +10,98 @@ import TopBar from "../../components/topbar";
 import Container from "../../components/container";
 import KeyboardAvoiding from "../../components/keyboard-avoiding";
 
+import account from "../../../data/account.json";
+
 import { View, StyleSheet } from "react-native";
 
 export default function AccountSettingsScreen({ navigation }) {
+    const [data, setData] = useState(null);
+    const { address } = data ?? {};
+    const _onChange = (value, name) => setData({ ...data, [name]: value });
+    const _onChangeAddress = (value, name) => setData({ ...data, address: { ...data?.address, [name]: value } });
+
+    useEffect(() => {
+        setData(account);
+    }, []);
+
     const fieldGroups = [
         {
             heading: "Personal Details",
+            onChange: _onChange,
             fields: [
-                { type: "name", label: "Full Name", placeholder: "Eve Harrison", defaultValue: "Eve Harrison" },
-                { type: "email", label: "Email Address", placeholder: "eve@email.com", defaultValue: "eve@email.com" },
-                { type: "phone", label: "Phone Number", placeholder: "+60123456789", defaultValue: "+60123456789" },
+                { name: "name", type: "name", label: "Full Name", value: data?.name, placeholder: "John Doe" },
+                { name: "email", type: "email", label: "Email Address", value: data?.email, placeholder: "you@email.com" },
+                { name: "phone", type: "phone", label: "Phone Number", value: data?.phone, placeholder: "+60123456789" },
                 [
                     {
+                        name: "gender",
                         type: "select",
                         label: "Gender",
+                        value: data?.gender,
                         placeholder: "Please select",
                         options: [
                             { label: "Male", value: "male" },
                             { label: "Female", value: "female" },
                         ],
                     },
-                    { type: "text", label: "Birthday", placeholder: "01/01/1970", defaultValue: "01/01/1970" },
+                    {
+                        name: "birthday",
+                        label: "Birthday",
+                        value: data?.birthday,
+                        placeholder: "01/01/1970",
+                    },
                 ],
             ],
         },
         {
             heading: "Address",
+            onChange: _onChangeAddress,
             description: "Your home address is used to find nearby veterinars.",
             fields: [
-                { label: "Address Line 1", placeholder: "Unit, street name, etc.", defaultValue: "1D, Jalan Teknokrat 5" },
-                { label: "Address Line 2 (Optional)", placeholder: "Apartment, suites, etc." },
+                {
+                    name: "street1",
+                    label: "Address Line 1",
+                    value: address?.street1,
+                    placeholder: "Unit, street name, etc.",
+                },
+                {
+                    name: "street2",
+                    label: "Address Line 2 (Optional)",
+                    value: address?.street2,
+                    placeholder: "Apartment, suites, etc.",
+                },
                 [
-                    { type: "number", label: "Postcode", placeholder: "63000", maxLength: 5, defaultValue: "63000" },
-                    { label: "City", placeholder: "Cyberjaya", defaultValue: "Cyberjaya" },
+                    {
+                        name: "postcode",
+                        type: "number",
+                        label: "Postcode",
+                        value: address?.postcode,
+                        placeholder: "63000",
+                        maxLength: 5,
+                    },
+                    {
+                        name: "city",
+                        type: "city",
+                        label: "City",
+                        value: address?.city,
+                        placeholder: "Cyberjaya",
+                    },
                 ],
                 [
                     {
+                        name: "state",
                         type: "select",
                         label: "State",
+                        value: address?.state,
                         placeholder: "Selangor",
-                        defaultValue: "Selangor",
                         options: [{ label: "Selangor", value: "selangor" }],
                     },
                     {
+                        name: "country",
                         type: "select",
                         label: "Country",
+                        value: address?.country,
                         placeholder: "Malaysia",
-                        defaultValue: "Malaysia",
                         options: [{ label: "Malaysia", value: "malaysia" }],
                     },
                 ],
@@ -75,10 +120,10 @@ export default function AccountSettingsScreen({ navigation }) {
                 />
                 <Layout alwaysBounceVertical={false} keyboardShouldPersistTaps="always" gray withHeader>
                     <Body gray flex topRounded>
-                        {fieldGroups.map(({ heading, description, fields }, i) => (
+                        {fieldGroups.map(({ heading, onChange, description, fields }, i) => (
                             <View key={i} style={{ marginBottom: 25 }}>
                                 <Heading text={heading} subtitle={description} />
-                                <FloatingFields fields={fields} />
+                                <FloatingFields fields={fields} onChange={onChange} />
                             </View>
                         ))}
                         <Button text="Update Account" color="yellow" onPress={navigation.goBack} />

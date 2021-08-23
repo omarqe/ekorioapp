@@ -1,0 +1,18 @@
+{
+    "id": 1,
+    "name": "Eve Harrison",
+    "email": "eve@email.com",
+    "password": 123456,
+    "cc": "+60",
+    "phone": "175178252",
+    "gender": "female",
+    "birthday": "01/01/1999",
+    "address": {
+        "street1": "1D, Jalan Teknokrat 5",
+        "street2": "",
+        "postcode": 63000,
+        "city": "Cyberjaya",
+        "state": "selangor",
+        "country": "malaysia"
+    }
+}
