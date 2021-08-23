@@ -34,6 +34,12 @@ const AccountScreen = ({ navigation }) => {
                     subtitle: "Update your account password",
                 },
                 {
+                    icon: "files-medical",
+                    text: "Health Records",
+                    onPress: go.bind(null, "pet__health-records"),
+                    subtitle: "View your pets' health records",
+                },
+                {
                     icon: "gift",
                     text: "Refer Friends",
                     onPress: go.bind(null, "account__referral"),
