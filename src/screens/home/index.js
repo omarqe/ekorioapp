@@ -65,7 +65,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
             const cmd = [
                 go.bind(null, "pet__form", data),
                 go.bind(null, "pet__evaluate"),
-                go.bind(null, "pet__health-records"),
+                go.bind(null, "pet__health-records", { petID: data?.id }),
             ];
             if (typeof cmd[buttonIndex] === "function") {
                 cmd[buttonIndex]();

@@ -34,7 +34,7 @@ const Scene = ({ data, onPress }) => {
     );
 };
 
-const PetHealthRecordsScreen = ({ navigation }) => {
+const PetHealthRecordsScreen = ({ navigation, route }) => {
     const [petID, setPetID] = useState(null);
     const [state, setState] = useState({
         index: 0,
@@ -74,8 +74,7 @@ const PetHealthRecordsScreen = ({ navigation }) => {
 
     // Initialisation
     useEffect(() => {
-        const first = _first(pets);
-        setPetID(first?.id);
+        setPetID(route?.params?.petID ? route?.params?.petID : _first(pets)?.id);
     }, []);
 
     const _onIndexChange = (index) => setState({ ...state, index });
