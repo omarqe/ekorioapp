@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 });
 
 PetType.propTypes = {
-    type: PropTypes.oneOf(["cat", "dog", "rabbit", "bird"]),
+    type: PropTypes.string,
     style: PropTypes.object,
     active: PropTypes.bool,
 };
