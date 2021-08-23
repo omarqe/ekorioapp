@@ -59,10 +59,14 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         setHealthData(_find(health, { id }));
     };
     const _onOptions = () => {
-        const options = ["Reevaluate Health", "View Health Records", "Done"];
-        const cancelButtonIndex = 2;
+        const options = ["Update Pet", "Reevaluate Health", "View Health Records", "Done"];
+        const cancelButtonIndex = 3;
         showActionSheetWithOptions({ options, cancelButtonIndex }, (buttonIndex) => {
-            const cmd = [go.bind(null, "pet__evaluate"), go.bind(null, "pet__health-records")];
+            const cmd = [
+                go.bind(null, "pet__form", data),
+                go.bind(null, "pet__evaluate"),
+                go.bind(null, "pet__health-records"),
+            ];
             if (typeof cmd[buttonIndex] === "function") {
                 cmd[buttonIndex]();
             }
