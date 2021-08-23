@@ -100,8 +100,8 @@ export default function FloatingField(props) {
     switch (type) {
         case "select":
             const { options = [], placeholder } = props;
-            const textColor = { color: value ? CT.FONT_COLOR : phColor };
             const valueLabel = _find(options, { value })?.label;
+            const textColor = { color: valueLabel ? CT.FONT_COLOR : phColor };
 
             return (
                 <View>
