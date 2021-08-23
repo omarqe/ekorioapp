@@ -35,7 +35,7 @@ export default function PetFormScreen({ navigation, route }) {
 
     // Callbacks
     const _onChange = (value, name) => setData({ ...data, [name]: value });
-    const _onChangePetType = (type) => setData({ ...data, type, breedID: null });
+    const _onChangePetType = (type) => setData({ ...data, type, breedID: "00000" });
 
     // Pet types
     let breeds = _find(petTypesData, { id: data?.type })?.breeds;
@@ -89,6 +89,7 @@ export default function PetFormScreen({ navigation, route }) {
                 type: "select",
                 label: "Breed",
                 value: data?.breedID,
+                defaultValue: "00000",
                 options: [..._sortBy(breeds, "label"), { label: "Others", value: "00000" }],
             },
         ],
