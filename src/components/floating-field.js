@@ -42,7 +42,7 @@ export default function FloatingField(props) {
     const _onPressFocusInput = () => {
         if (disabled) return;
         if (isSelect) {
-            useNativePicker ? inputRef?.current?.togglePicker(true) : setPicker(true);
+            useNativePicker && CT.IS_IOS ? inputRef?.current?.togglePicker(true) : setPicker(true);
             return;
         }
 
