@@ -81,7 +81,6 @@ export default function AccountSettingsScreen({ navigation }) {
                     },
                     {
                         name: "city",
-                        type: "city",
                         label: "City",
                         value: address?.city,
                         placeholder: "Cyberjaya",
