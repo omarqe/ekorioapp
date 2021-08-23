@@ -15,6 +15,7 @@ import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
 
+import _find from "lodash/find";
 import _clone from "lodash/clone";
 import _capitalize from "lodash/capitalize";
 
@@ -24,9 +25,19 @@ export default function PetFormScreen({ navigation, route }) {
     const [data, setData] = useState(null);
     const [formType, setFormType] = useState("add");
     const isUpdate = formType === "update";
+    const disabled = !data?.type;
+    const breeds = [
+        { label: "British Shorthair", value: "00001" },
+        { label: "Maine Coon", value: "00002" },
+        { label: "Persian", value: "00003" },
+        { label: "Others", value: "00000" },
+    ];
+
+    // Callbacks
     const _onChange = (value, name) => setData({ ...data, [name]: value });
     const _onChangePetType = (type) => setData({ ...data, type });
 
+    // Pet types
     let petTypes = ["cat", "dog", "rabbit", "bird"];
     let disabledPetTypes = [];
     if (isUpdate) {
@@ -34,6 +45,10 @@ export default function PetFormScreen({ navigation, route }) {
         disabledPetTypes.splice(petTypes.indexOf(data?.type), 1);
     }
 
+    // Breed name
+    const breedName = _find(breeds, { value: data?.breedID })?.label ?? "Others";
+
+    // Initialize
     useEffect(() => {
         if (route?.params) {
             setData(route?.params);
@@ -66,12 +81,7 @@ export default function PetFormScreen({ navigation, route }) {
                 type: "select",
                 label: "Breed",
                 value: data?.breedID,
-                options: [
-                    { label: "British Shorthair", value: "00001" },
-                    { label: "Maine Coon", value: "00002" },
-                    { label: "Persian", value: "00003" },
-                    { label: "Others", value: "00000" },
-                ],
+                options: breeds,
             },
         ],
         [
@@ -109,7 +119,7 @@ export default function PetFormScreen({ navigation, route }) {
                             imageBaseStyle={styles.petImageBase}
                             phIconProps={{ color: CT.BG_PURPLE_200 }}
                         />
-                        <Badge text={`Breed: ${data?.breedName ?? "Others"}`} style={styles.petBadge} color="purple" />
+                        <Badge text={`Breed: ${breedName}`} style={styles.petBadge} color="purple" />
                     </Header>
                     <Body gray flex overlap topRounded>
                         <View style={styles.section}>
@@ -122,8 +132,8 @@ export default function PetFormScreen({ navigation, route }) {
                             />
                         </View>
                         <View style={[styles.section, { marginBottom: 15 }]}>
-                            <Heading text="Pet Details" />
-                            <FloatingFields fields={fields} onChange={_onChange} />
+                            <Heading text="Pet Details" disabled={disabled} />
+                            <FloatingFields fields={fields} onChange={_onChange} disabled={disabled} />
                         </View>
                         <Button text="Add Pet" color="yellow" />
                     </Body>
@@ -135,7 +145,7 @@ export default function PetFormScreen({ navigation, route }) {
 
 const styles = StyleSheet.create({
     section: {
-        marginBottom: 20,
+        marginBottom: 30,
     },
     headerContent: {
         alignItems: "center",
