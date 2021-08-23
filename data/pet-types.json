@@ -32,8 +32,9 @@
             { "label": "Balinese", "value": "00026" },
             { "label": "European Shorthair", "value": "00027" },
             { "label": "American Curl", "value": "00028" },
-            { "label": "British Longhair", "value": "00029" },
-            { "label": "Thai", "value": "00030" }
+            { "label": "American Shorthair", "value": "00029" },
+            { "label": "British Longhair", "value": "00030" },
+            { "label": "Thai", "value": "00031" }
         ]
     },
     {
