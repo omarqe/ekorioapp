@@ -25,7 +25,7 @@ const Heading = (props) => {
         <View style={baseStyle} {...appendedProps}>
             {kicker && <Text style={kickerStyle}>{kicker}</Text>}
             <View style={styles.title}>
-                <Text style={[textStyle, { color: disabled ? CT.BG_GRAY_300 : CT.FONT_COLOR }]}>{text}</Text>
+                <Text style={[textStyle, { color: disabled ? CT.BG_GRAY_300 : textStyle?.color }]}>{text}</Text>
                 {badge && <Badge xs={size < 2} {...badge} />}
             </View>
             {subtitle && <Text style={subtitleStyle}>{subtitle}</Text>}
