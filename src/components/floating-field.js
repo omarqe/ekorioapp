@@ -69,13 +69,13 @@ export default function FloatingField(props) {
         case "select":
             const { value, options = [], onChange, placeholder } = props;
             const textColor = { color: value ? CT.FONT_COLOR : CT.BG_GRAY_100 };
+            const valueLabel = _find(options, { value })?.label;
+
             const _onValueChange = (value, index) => {
                 if (typeof onChange === "function") {
                     onChange(value, index);
                 }
             };
-
-            const valueLabel = _find(options, { value })?.label;
 
             return (
                 <View>
@@ -230,6 +230,7 @@ FloatingField.propTypes = {
     guide: PropTypes.any,
     options: PropTypes.array,
     gapless: PropTypes.bool,
+    onChange: PropTypes.func,
     strengthGuide: PropTypes.bool,
     useNativePicker: PropTypes.bool,
 };

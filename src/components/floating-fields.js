@@ -6,7 +6,7 @@ import { View, StyleSheet } from "react-native";
 import _get from "lodash/get";
 import _isArray from "lodash/isArray";
 
-export default function Template({ fields = [] }) {
+export default function Template({ fields = [], onChange }) {
     if (_isArray(fields) && fields.length > 0) {
         let rowStyle = styles.row;
 
@@ -25,11 +25,11 @@ export default function Template({ fields = [] }) {
                         return (
                             <View key={i} style={rowStyle}>
                                 <View style={styles.column}>
-                                    <FloatingField gapless {...firstField} />
+                                    <FloatingField gapless onChange={onChange} {...firstField} />
                                 </View>
                                 {secondField && (
                                     <View style={styles.column}>
-                                        <FloatingField gapless {...secondField} />
+                                        <FloatingField gapless onChange={onChange} {...secondField} />
                                     </View>
                                 )}
                             </View>
@@ -39,7 +39,7 @@ export default function Template({ fields = [] }) {
                     return (
                         <View key={i} style={rowStyle}>
                             <View style={styles.column}>
-                                <FloatingField gapless {...props} />
+                                <FloatingField gapless onChange={onChange} {...props} />
                             </View>
                         </View>
                     );
@@ -70,4 +70,5 @@ const styles = StyleSheet.create({
 
 Template.propTypes = {
     fields: PropTypes.array,
+    onChange: PropTypes.func,
 };
