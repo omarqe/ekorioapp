@@ -101,7 +101,7 @@ export default function FloatingField(props) {
         case "select":
             const { options = [], placeholder } = props;
             const valueLabel = _find(options, { value })?.label;
-            const textColor = { color: valueLabel ? CT.FONT_COLOR : phColor };
+            const textColor = { color: !valueLabel || disabled ? phColor : CT.FONT_COLOR };
 
             return (
                 <View>

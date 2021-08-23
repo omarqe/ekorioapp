@@ -25,6 +25,7 @@ export default function PetTypes({ types = [], active, onPress, disabled = [] })
             renderItem={_renderItem}
             keyExtractor={_keyExtractor}
             alwaysBounceHorizontal={false}
+            showsHorizontalScrollIndicator={false}
             horizontal
         />
     );
