@@ -40,6 +40,7 @@ export default function FloatingField(props) {
 
     // Handle UX feedbacks
     const _onPressFocusInput = () => {
+        if (disabled) return;
         if (isSelect) {
             useNativePicker ? inputRef?.current?.togglePicker(true) : setPicker(true);
             return;
@@ -48,16 +49,22 @@ export default function FloatingField(props) {
         inputRef?.current?.focus();
     };
     const _onFocus = () => {
-        setFocused(true);
-        if (typeof onFocus === "function") onFocus();
+        if (!disabled) {
+            setFocused(true);
+            if (typeof onFocus === "function") onFocus();
+        }
     };
     const _onBlur = () => {
-        setFocused(false);
-        if (typeof onBlur === "function") onBlur();
+        if (!disabled) {
+            setFocused(false);
+            if (typeof onBlur === "function") onBlur();
+        }
     };
     const _onValueChange = (value) => {
-        if (typeof onChange === "function") {
-            onChange(value, name);
+        if (!disabled) {
+            if (typeof onChange === "function") {
+                onChange(value, name);
+            }
         }
     };
 
@@ -66,9 +73,15 @@ export default function FloatingField(props) {
 
     // Handle styles
     let baseStyle = { ...styles.base, ...style };
+    let disabledStyle = {};
+    let disabledLabelStyle = {};
     if (focused) baseStyle = { ...baseStyle, borderColor: CT.BORDER_FOCUS };
     if (gapless) baseStyle = { ...baseStyle, marginBottom: 0 };
     if (type === "textarea") baseStyle = { ...baseStyle, minHeight: 120 };
+    if (disabled) {
+        disabledStyle = { shadowOpacity: 0, opacity: 0.7 };
+        disabledLabelStyle = { color: CT.BG_GRAY_300 };
+    }
 
     // Handle input types
     let typeProps = {
@@ -92,8 +105,8 @@ export default function FloatingField(props) {
 
             return (
                 <View>
-                    <Pressable style={baseStyle} onPress={_onPressFocusInput}>
-                        <Text style={styles.label}>{label}</Text>
+                    <Pressable style={[baseStyle, disabledStyle]} onPress={_onPressFocusInput}>
+                        <Text style={[styles.label, disabledLabelStyle]}>{label}</Text>
                         {_renderIf(
                             useNativePicker,
                             <RNPicker
@@ -137,8 +150,8 @@ export default function FloatingField(props) {
         default:
             return (
                 <View>
-                    <Pressable style={baseStyle} onPress={_onPressFocusInput}>
-                        <Text style={styles.label}>{label}</Text>
+                    <Pressable style={[baseStyle, disabledStyle]} onPress={_onPressFocusInput}>
+                        <Text style={[styles.label, disabledLabelStyle]}>{label}</Text>
                         <TextInput
                             ref={inputRef}
                             value={value}
@@ -153,15 +166,15 @@ export default function FloatingField(props) {
                             {...inputProps}
                         />
                     </Pressable>
-                    <FieldGuide type={type} guide={guide} strengthGuide={strengthGuide} />
+                    <FieldGuide type={type} guide={guide} disabled={disabled} strengthGuide={strengthGuide} />
                 </View>
             );
     }
 }
 
-const FieldGuide = ({ type, guide, strengthGuide }) => (
+const FieldGuide = ({ type, guide, disabled, strengthGuide }) => (
     <React.Fragment>
-        {guide && <Text style={styles.guide}>{guide}</Text>}
+        {guide && <Text style={[styles.guide, { color: disabled ? CT.BG_GRAY_200 : CT.BG_GRAY_400 }]}>{guide}</Text>}
         {type === "password" && strengthGuide && (
             <View style={styles.guide}>
                 <View style={styles.strengthGuide}>
