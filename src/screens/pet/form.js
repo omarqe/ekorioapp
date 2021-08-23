@@ -15,30 +15,31 @@ import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
 
+import _map from "lodash/map";
 import _find from "lodash/find";
 import _clone from "lodash/clone";
+import _sortBy from "lodash/sortBy";
 import _capitalize from "lodash/capitalize";
+
+import petTypesData from "../../../data/pet-types.json";
 
 import { View, StyleSheet } from "react-native";
 
 export default function PetFormScreen({ navigation, route }) {
     const [data, setData] = useState(null);
     const [formType, setFormType] = useState("add");
-    const isUpdate = formType === "update";
+
     const disabled = !data?.type;
-    const breeds = [
-        { label: "British Shorthair", value: "00001" },
-        { label: "Maine Coon", value: "00002" },
-        { label: "Persian", value: "00003" },
-        { label: "Others", value: "00000" },
-    ];
+    const isUpdate = formType === "update";
+    const pageTitle = isUpdate ? "Update Pet" : "Add Pet";
 
     // Callbacks
     const _onChange = (value, name) => setData({ ...data, [name]: value });
-    const _onChangePetType = (type) => setData({ ...data, type });
+    const _onChangePetType = (type) => setData({ ...data, type, breedID: null });
 
     // Pet types
-    let petTypes = ["cat", "dog", "rabbit", "bird"];
+    let breeds = _find(petTypesData, { id: data?.type })?.breeds;
+    let petTypes = _map(petTypesData, "id");
     let disabledPetTypes = [];
     if (isUpdate) {
         disabledPetTypes = _clone(petTypes);
@@ -53,11 +54,18 @@ export default function PetFormScreen({ navigation, route }) {
         if (route?.params) {
             setData(route?.params);
             setFormType("update");
+            return;
         }
+        setData({ ...data, breedID: "00000" });
     }, []);
 
     const fields = [
-        { label: "Name", name: "name", value: data?.name, placeholder: "Give your pet a name" },
+        {
+            label: "Name",
+            name: "name",
+            value: data?.name,
+            placeholder: "Give your pet a name",
+        },
         {
             name: "microchipID",
             label: "Microchip ID",
@@ -81,7 +89,7 @@ export default function PetFormScreen({ navigation, route }) {
                 type: "select",
                 label: "Breed",
                 value: data?.breedID,
-                options: breeds,
+                options: [..._sortBy(breeds, "label"), { label: "Others", value: "00000" }],
             },
         ],
         [
@@ -101,7 +109,7 @@ export default function PetFormScreen({ navigation, route }) {
         <KeyboardAvoiding>
             <Container>
                 <TopBar
-                    title={isUpdate ? "Update Pet" : "Add Pet"}
+                    title={pageTitle}
                     leftIcon="arrow-left"
                     leftIconProps={{ onPress: navigation.goBack }}
                     rightIcon="ellipsis-h"
@@ -123,7 +131,7 @@ export default function PetFormScreen({ navigation, route }) {
                     </Header>
                     <Body gray flex overlap topRounded>
                         <View style={styles.section}>
-                            <Heading text="Pet Type" />
+                            <Heading text={isUpdate ? "Species" : "Choose Species"} />
                             <PetTypes
                                 types={petTypes}
                                 active={data?.type}
@@ -135,7 +143,7 @@ export default function PetFormScreen({ navigation, route }) {
                             <Heading text="Pet Details" disabled={disabled} />
                             <FloatingFields fields={fields} onChange={_onChange} disabled={disabled} />
                         </View>
-                        <Button text="Add Pet" color="yellow" />
+                        <Button text={pageTitle} color="yellow" disabled={disabled} />
                     </Body>
                 </Layout>
             </Container>
