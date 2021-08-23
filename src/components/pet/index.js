@@ -35,7 +35,7 @@ export default function Pet(props) {
         onPressOut: setPressed.bind(null, false),
     };
 
-    let nameStyle = {};
+    let nameStyle = { width };
     let baseStyle = { padding, width, height, borderRadius: radius };
     let imageStyle = { width: size, height: size, borderRadius: radius - padding };
     let imageBaseStyle = { width: size, height: size, borderRadius: radius - padding };
@@ -89,7 +89,11 @@ export default function Pet(props) {
                     )}
                 </View>
             </View>
-            {name && <Text style={[styles.name, nameStyle, _nameStyle]}>{name}</Text>}
+            {name && (
+                <Text style={[styles.name, nameStyle, _nameStyle]} numberOfLines={1}>
+                    {name}
+                </Text>
+            )}
         </Pressable>
     );
 }
@@ -110,6 +114,7 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         textAlign: "center",
         paddingTop: 5,
+        paddingHorizontal: 3,
     },
     icon: {
         position: "absolute",

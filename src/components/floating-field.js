@@ -102,11 +102,17 @@ export default function FloatingField(props) {
             const { options = [], placeholder } = props;
             const valueLabel = _find(options, { value })?.label;
             const textColor = { color: !valueLabel || disabled ? phColor : CT.FONT_COLOR };
+            const textRightPadding = { paddingRight: 20 };
+            const valueProps = {
+                style: [styles.input, textColor, textRightPadding],
+                numberOfLines: 1,
+                allowFontScaling: false,
+            };
 
             return (
                 <View>
                     <Pressable style={[baseStyle, disabledStyle]} onPress={_onPressFocusInput}>
-                        <Text style={[styles.label, disabledLabelStyle]}>{label}</Text>
+                        <Text style={[styles.label, disabledLabelStyle, textRightPadding]}>{label}</Text>
                         {_renderIf(
                             useNativePicker,
                             <RNPicker
@@ -127,9 +133,7 @@ export default function FloatingField(props) {
                                 }}
                             />,
                             <React.Fragment>
-                                <Text style={[styles.input, textColor]} allowFontScaling={false}>
-                                    {valueLabel ?? placeholder ?? "Please select"}
-                                </Text>
+                                <Text {...valueProps}>{valueLabel ?? placeholder ?? "Please select"}</Text>
                                 <ModalPicker
                                     selectedValue={value}
                                     open={picker}
