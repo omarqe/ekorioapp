@@ -27,7 +27,7 @@ import pets from "../../../data/pets.json";
 import health from "../../../data/health.json";
 
 const HomeScreen = connectActionSheet(({ navigation }) => {
-    const go = (key) => navigation.navigate(key);
+    const go = (key, options = {}) => navigation.navigate(key, options);
     const [data, setData] = useState(null);
     const [healthData, setHealthData] = useState(null);
     const { showActionSheetWithOptions } = useActionSheet();
@@ -71,7 +71,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
 
     return (
         <Container>
-            <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: go.bind(null, "pet__form") }} />
+            <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: go.bind(null, "pet__form", null) }} />
 
             <Layout gray withHeader>
                 <Header horizontal overlap>
@@ -99,7 +99,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
                         button={{
                             icon: "far edit",
                             text: "Update Pet",
-                            onPress: go.bind(null, "pet__form"),
+                            onPress: go.bind(null, "pet__form", data),
                             iconRight: true,
                         }}
                     />
