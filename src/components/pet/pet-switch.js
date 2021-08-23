@@ -1,12 +1,22 @@
 import React, { useState } from "react";
 import CT from "../../const";
-import Pet from "../pet";
-import Icon from "../icon";
-import PropTypes from "prop-types";
-import { Pressable, StyleSheet } from "react-native";
 
-const PetSwitch = ({ onPress, onPressIn, onPressOut }) => {
+import Pet from "./";
+import Icon from "../icon";
+import Modal from "../modal";
+import PetList from "./pet-list";
+import PropTypes from "prop-types";
+
+import { View, Pressable, StyleSheet } from "react-native";
+
+import _find from "lodash/find";
+
+const PetSwitch = ({ pets = [], checked, onSwitch, onPressIn, onPressOut }) => {
+    const [open, setOpen] = useState(false);
     const [pressed, setPressed] = useState(false);
+
+    const _onOpen = () => setOpen(true);
+    const _onClose = () => setOpen(false);
     const _onPressIn = () => {
         setPressed(true);
         if (typeof onPressIn === "function") {
@@ -19,18 +29,28 @@ const PetSwitch = ({ onPress, onPressIn, onPressOut }) => {
             onPressOut();
         }
     };
-    const _onPress = (index) => {
-        // ... do something here
-        if (typeof onPress === "function") {
-            onPress(index);
+    const _onSwitch = (id, index) => {
+        setOpen(false);
+        if (typeof onSwitch === "function") {
+            onSwitch(id, index);
         }
     };
 
+    const currentPet = _find(pets, { id: checked });
+
     return (
-        <Pressable style={styles.base} onPress={_onPress} onPressIn={_onPressIn} onPressOut={_onPressOut}>
-            <Icon icon="fas caret-down" size={18} color={pressed ? CT.BG_PURPLE_600 : CT.BG_PURPLE_500} />
-            <Pet size={34} style={styles.petImage} image="https://img.omvr.io/ekorio/pets/cat-04.png" onPress={_onPress} />
-        </Pressable>
+        <React.Fragment>
+            <Pressable style={styles.base} onPress={_onOpen} onPressIn={_onPressIn} onPressOut={_onPressOut}>
+                <Icon icon="fas caret-down" size={18} color={pressed ? CT.BG_PURPLE_600 : CT.BG_PURPLE_500} />
+                <Pet size={34} style={styles.petImage} image={currentPet?.imageURL} onPress={_onOpen} />
+            </Pressable>
+
+            <Modal title="Choose Pet" open={open} onClose={_onClose}>
+                <View style={styles.petListContainer}>
+                    <PetList data={pets} onPress={_onSwitch} theme="light" checked={checked} />
+                </View>
+            </Modal>
+        </React.Fragment>
     );
 };
 
@@ -46,11 +66,17 @@ const styles = StyleSheet.create({
         borderRadius: radius,
         flexDirection: "row",
     },
+    petListContainer: {
+        display: "flex",
+        flexDirection: "row",
+    },
 });
 
 PetSwitch.propTypes = {
     style: PropTypes.object,
-    onPress: PropTypes.func,
+    pets: PropTypes.arrayOf(PropTypes.object),
+    checked: PropTypes.number,
+    onSwitch: PropTypes.func,
     onPressIn: PropTypes.func,
     onPressOut: PropTypes.func,
 };
