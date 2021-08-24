@@ -29,7 +29,7 @@
                     {
                         "id": 0,
                         "label": "Eyes",
-                        "score": 8,
+                        "score": 7,
                         "explanation": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a ultricies diam. Sed libero dolor, suscipit dapibus faucibus in, efficitur facilisis sapien. Etiam maximus lacus vitae quam ultricies gravida. Fusce at pharetra mi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nam id gravida ipsum. Fusce scelerisque gravida nisl sit amet dictum. Sed in consectetur leo, ac aliquam nisl. Sed vel aliquet lacus, sit amet sagittis tellus.",
                         "factors": [
                             { "id": 0, "important": true, "value": "Redness or squinting of eyes" },
