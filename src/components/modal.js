@@ -10,7 +10,7 @@ import { View, SafeAreaView, StyleSheet } from "react-native";
 import _omit from "lodash/omit";
 
 export default function Modal(props) {
-    const { title, kicker, subtitle, children, headerChildren } = props;
+    const { title, kicker, badge, subtitle, children, headerChildren, headingSize = 1 } = props;
     const { open = false, theme: themeColor = "white", onClose = null, onToggle = null } = props;
     const { style = {}, contentStyle = {}, headerStyle: customHeaderStyle = {}, safeAreaStyle = {} } = props;
 
@@ -78,8 +78,9 @@ export default function Modal(props) {
                     <View style={{ ...styles.header, ...headerStyle }}>
                         <View style={styles.headerTitle}>
                             <Heading
-                                size={1}
+                                size={headingSize}
                                 text={title}
+                                badge={badge}
                                 kicker={kicker}
                                 subtitle={subtitle}
                                 textStyle={theme?.headingText}
@@ -157,10 +158,12 @@ const styles = StyleSheet.create({
 });
 
 Modal.propTypes = {
+    badge: PropTypes.object,
     title: PropTypes.string,
     kicker: PropTypes.string,
     subtitle: PropTypes.string,
     headerChildren: PropTypes.node,
+    headingSize: PropTypes.number,
 
     open: PropTypes.bool,
     theme: PropTypes.oneOf(["white", "purple"]),
