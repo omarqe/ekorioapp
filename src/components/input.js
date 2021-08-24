@@ -2,22 +2,52 @@ import React, { useState, useContext } from "react";
 import CT from "../const.js";
 import Icon from "./icon";
 import Context from "./context";
+import ModalPicker from "./modal-picker";
 import PropTypes from "prop-types";
-import { View, Pressable, TextInput, StyleSheet } from "react-native";
+
+import { countries } from "countries-list";
+import { View, Text, Image, Pressable, TextInput, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
+import _find from "lodash/find";
+import _sortBy from "lodash/sortBy";
+import _renderIf from "../functions/renderIf";
+import _lowerCase from "lodash/lowerCase";
 
 const Input = (props) => {
     const [focused, setFocused] = useState(false);
-    const { icon, iconProps = {}, type = null, style = {}, onFocus, onBlur, inputStyle = {} } = props;
+    const [ccPicker, setCCPicker] = useState(false);
+    const { name, icon, iconProps = {}, type = null, style = {}, onChange, onFocus, onBlur, inputStyle = {} } = props;
+    const { nameCC, callingCode = CT.DEFAULT_CALLING_CODE } = props; // Only works with type == phone or tel.
+
     const appendedProps = _omit(props, ["type", "style", "onFocus", "inputStyle"]);
     const ctx = useContext(Context.Fields);
     const inputRef = ctx?.ref;
 
+    // Generate calling code options
+    const callingCodes = Object.keys(countries).map((key) => {
+        if (countries.hasOwnProperty(key)) {
+            const { phone, name } = countries[key];
+            return { value: parseInt(phone), label: `${name} (+${phone})`, abbrv: key };
+        }
+    });
+    const countryAbbrv = _lowerCase(_find(callingCodes, { value: callingCode })?.abbrv);
+    const countryFlag = { uri: `https://countryflags.io/${countryAbbrv}/flat/64.png` };
+
     const _onPressFocusInput = () => {
         if (inputRef?.current) {
-            inputRef?.current.focos();
+            inputRef?.current.focus();
             _onFocus();
+        }
+    };
+    const _onValueChange = (value) => {
+        if (typeof onChange === "function") {
+            onChange(value, name);
+        }
+    };
+    const _onCallingCodeChange = (value) => {
+        if (typeof onChange === "function") {
+            onChange(value, nameCC);
         }
     };
 
@@ -53,11 +83,32 @@ const Input = (props) => {
 
     return (
         <Pressable style={inputBaseStyle} onPress={_onPressFocusInput}>
+            {_renderIf(
+                ["tel", "phone"].indexOf(type) > -1, // Calling Code Picker
+                <Pressable style={styles.callingCodes} onPress={setCCPicker.bind(null, true)}>
+                    <View style={styles.countryFlagContainer}>
+                        <Image source={countryFlag} style={styles.countryFlag} />
+                    </View>
+                    <Text style={[styles.input, { color: CT.BG_GRAY_500 }]} allowFontScaling={false}>
+                        +{callingCode}
+                    </Text>
+                    <Icon icon="caret-down" style={styles.callingCodesCaret} />
+                    <ModalPicker
+                        selectedValue={callingCode}
+                        open={ccPicker}
+                        label="Calling Codes"
+                        options={_sortBy(callingCodes, "value")}
+                        onClose={setCCPicker.bind(null, false)}
+                        onValueChange={_onCallingCodeChange}
+                    />
+                </Pressable>
+            )}
             <TextInput
                 ref={ctx?.ref}
                 style={{ ...styles.input, ...inputStyle }}
                 onBlur={_onBlur}
                 onFocus={_onFocus}
+                onChangeText={_onValueChange}
                 allowFontScaling={false}
                 placeholderTextColor={CT.BG_GRAY_300}
                 {...typeProps[type]}
@@ -73,8 +124,12 @@ const Input = (props) => {
 };
 
 Input.propTypes = {
+    callingCode: PropTypes.number,
+    nameCC: PropTypes.string,
+    name: PropTypes.string,
     icon: PropTypes.string,
     iconProps: PropTypes.object,
+    onChange: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
     type: PropTypes.oneOf(CT.INPUT_TYPES),
@@ -86,13 +141,12 @@ Input.propTypes = {
 const radius = 6;
 const styles = StyleSheet.create({
     input: {
-        flex: 1,
-        padding: 15,
         fontSize: 14,
         borderRadius: radius,
         backgroundColor: CT.BG_WHITE,
     },
     inputBase: {
+        padding: 15,
         fontSize: 16,
         alignItems: "center",
         borderWidth: 1,
@@ -104,6 +158,34 @@ const styles = StyleSheet.create({
     },
     iconContainer: {
         paddingRight: 12,
+    },
+    inputContainer: {
+        flex: 1,
+        alignItems: "center",
+        flexDirection: "row",
+    },
+
+    countryFlag: {
+        width: 21,
+        height: 15,
+        borderRadius: 5,
+    },
+    countryFlagContainer: {
+        width: 21,
+        height: 15,
+        marginRight: 5,
+        borderRadius: 5,
+        ...CT.SHADOW_sm,
+    },
+    callingCodes: {
+        marginRight: 5,
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    callingCodesCaret: {
+        top: 0,
+        color: CT.BG_GRAY_200,
+        marginLeft: 1,
     },
 });
 

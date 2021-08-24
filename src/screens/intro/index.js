@@ -15,7 +15,12 @@ export default function IntroScreen({ navigation: nav }) {
             </View>
 
             <View style={styles.ctaContainer}>
-                <Button label="Create a Free Account" style={{ marginBottom: 5 }} onPress={() => nav.navigate("signup")} />
+                <Button
+                    text="Create a Free Account"
+                    style={{ marginBottom: 5 }}
+                    color="yellow"
+                    onPress={() => nav.navigate("signup")}
+                />
                 <TouchableOpacity onPress={() => nav.navigate("signin")}>
                     <Text style={styles.signInHint}>
                         Already a member? <Text style={styles.signInEmphasis}>Sign in.</Text>

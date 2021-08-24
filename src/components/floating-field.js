@@ -6,7 +6,7 @@ import RNPicker from "react-native-picker-select";
 import PropTypes from "prop-types";
 import ModalPicker from "./modal-picker";
 
-import { countries, getEmojiFlag } from "countries-list";
+import { countries } from "countries-list";
 import { View, Text, Image, Pressable, TextInput, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
@@ -81,10 +81,8 @@ export default function FloatingField(props) {
         }
     };
     const _onCallingCodeChange = (value) => {
-        if (!disabled) {
-            if (!disabled && typeof onChange === "function") {
-                onChange(value, nameCC);
-            }
+        if (!disabled && typeof onChange === "function") {
+            onChange(value, nameCC);
         }
     };
 
