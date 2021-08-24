@@ -74,6 +74,7 @@ const AccountScreen = ({ navigation }) => {
                         subtitle="Member since 2 weeks ago"
                         textStyle={styles.headerText}
                         subtitleStyle={styles.headerSub}
+                        gapless
                     />
                 </Header>
                 <Body gray flex expanded>
