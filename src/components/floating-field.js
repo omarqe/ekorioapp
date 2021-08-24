@@ -25,15 +25,12 @@ export default function FloatingField(props) {
     let { nameCC, callingCode = CT.DEFAULT_CALLING_CODE } = props; // Only works with type == phone or tel.
 
     // Generate calling code options
-    const callingCodes = _sortBy(
-        Object.keys(countries).map((key) => {
-            if (countries.hasOwnProperty(key)) {
-                const { phone, name } = countries[key];
-                return { value: parseInt(phone), label: `${name} (+${phone})`, abbrv: key };
-            }
-        }),
-        "label"
-    );
+    const callingCodes = Object.keys(countries).map((key) => {
+        if (countries.hasOwnProperty(key)) {
+            const { phone, name } = countries[key];
+            return { value: parseInt(phone), label: `${name} (+${phone})`, abbrv: key };
+        }
+    });
     const countryAbbrv = _lowerCase(_find(callingCodes, { value: callingCode })?.abbrv);
     const countryFlag = { uri: `https://countryflags.io/${countryAbbrv}/flat/64.png` };
 
@@ -194,7 +191,7 @@ export default function FloatingField(props) {
                                         selectedValue={callingCode}
                                         open={ccPicker}
                                         label="Calling Codes"
-                                        options={callingCodes}
+                                        options={_sortBy(callingCodes, "value")}
                                         onClose={setCCPicker.bind(null, false)}
                                         onValueChange={_onCallingCodeChange}
                                     />
