@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import CT from "../../const.js";
 import PropTypes from "prop-types";
 
@@ -7,8 +7,9 @@ import ChartMeatIcon from "../../../assets/icons/chart__meat.svg";
 import ChartThreadIcon from "../../../assets/icons/chart__thread.svg";
 
 import { ProgressChart } from "react-native-chart-kit";
-import { View, Text, StyleSheet } from "react-native";
+import { Easing, Animated, View, Text, StyleSheet } from "react-native";
 
+import _fill from "lodash/fill";
 import _isArray from "lodash/isArray";
 import _startCase from "lodash/startCase";
 
@@ -16,6 +17,27 @@ const lowRatio = CT.PIXELRATIO < 3;
 const columnw = lowRatio ? 90 : 100;
 
 export default function HealthCharts({ data = [] }) {
+    const [anim1, setAnim1] = useState(0);
+    const [anim2, setAnim2] = useState(0);
+    const [anim3, setAnim3] = useState(0);
+    const animation1 = useRef(new Animated.Value(anim1)).current;
+    const animation2 = useRef(new Animated.Value(anim2)).current;
+    const animation3 = useRef(new Animated.Value(anim3)).current;
+
+    const animate = (animval, value, onChange, easing = Easing.quad) => {
+        const duration = 250;
+        const useNativeDriver = false;
+        Animated.timing(animval, { toValue: value, easing, duration, useNativeDriver }).start();
+        animval.addListener(({ value }) => onChange(value));
+    };
+
+    useEffect(() => {
+        animate(animation1, data[0]?.value, setAnim1);
+        animate(animation2, data[1]?.value, setAnim2);
+        animate(animation3, data[2]?.value, setAnim3);
+    }, [data]);
+
+    const values = [anim1, anim2, anim3];
     const chartBg = CT.BG_WHITE;
     const mappedData = {
         physical: {
@@ -35,8 +57,9 @@ export default function HealthCharts({ data = [] }) {
     if (_isArray(data) && data.length > 0) {
         return (
             <View style={styles.container}>
-                {data.map(({ id, value, indicator = "down", delta = 0.1 }, i) => {
+                {data.map(({ id, indicator = "down", delta = 0.1 }, i) => {
                     const ChartIcon = mappedData[id]?.icon;
+                    const value = values[i];
                     const vPer100 = (value * 100).toFixed(0);
                     const dPer100 = (delta * 100).toFixed(0);
 
