@@ -2,7 +2,8 @@ import React, { useRef, useState } from "react";
 import CT from "../const";
 
 import Icon from "./icon";
-import RNPicker from "react-native-picker-select";
+// import RNPicker from "react-native-picker-select";
+import { Picker } from "@react-native-picker/picker";
 import PropTypes from "prop-types";
 import ModalPicker from "./modal-picker";
 
@@ -56,9 +57,11 @@ export default function FloatingField(props) {
 
     // Handle UX feedbacks
     const _onPressFocusInput = () => {
+        console.log("select");
         if (disabled) return;
         if (isSelect) {
-            useNativePicker && CT.IS_IOS ? inputRef?.current?.togglePicker(true) : setPicker(true);
+            console.log("isSelect", typeof inputRef?.current?.focus);
+            useNativePicker || !CT.IS_IOS ? inputRef?.current?.focus() : setPicker(true);
             return;
         }
 
@@ -110,7 +113,7 @@ export default function FloatingField(props) {
         name: { autoCapitalize: "words", textContentType: type },
         email: { keyboardType: "email-address", autoCapitalize: "none", textContentType: "emailAddress" },
         number: { keyboardType: "number-pad" },
-        password: { keyboardType: "visible-password", secureTextEntry: true, textContentType: "password" },
+        password: { secureTextEntry: true, textContentType: "password", multiline: false },
         textarea: { multiline: true },
     };
     typeProps.phone = typeProps.tel;
@@ -122,8 +125,9 @@ export default function FloatingField(props) {
             const valueLabel = _find(options, { value })?.label;
             const textColor = { color: !valueLabel || disabled ? phColor : CT.FONT_COLOR };
             const textRightPadding = { paddingRight: 20 };
+            const pickerProps = { ref: inputRef, selectedValue: value, onValueChange: _onValueChange, style: styles.picker };
             const valueProps = {
-                style: [styles.input, textColor, textRightPadding],
+                style: [styles.input, textColor, textRightPadding, { top: CT.IS_ANDROID ? -3 : 0 }],
                 numberOfLines: 1,
                 allowFontScaling: false,
             };
@@ -132,39 +136,25 @@ export default function FloatingField(props) {
                 <View>
                     <Pressable style={[baseStyle, disabledStyle]} onPress={_onPressFocusInput}>
                         <Text style={[styles.label, disabledLabelStyle, textRightPadding]}>{label}</Text>
+                        <Text {...valueProps}>{valueLabel ?? placeholder ?? "Please select"}</Text>
                         {_renderIf(
-                            useNativePicker || !CT.IS_IOS,
-                            <RNPicker
-                                ref={inputRef}
-                                items={options}
-                                value={value}
-                                onOpen={CT.IS_IOS ? _onFocus : null}
-                                onClose={CT.IS_IOS ? _onBlur : null}
-                                placeholder={{}}
+                            CT.IS_ANDROID,
+                            <Picker {...pickerProps}>
+                                {options.map(({ label, value }, i) => (
+                                    <Picker.Item key={i} label={label} value={value} />
+                                ))}
+                            </Picker>,
+                            <ModalPicker
+                                selectedValue={value}
+                                open={picker}
+                                label={label}
+                                options={options}
+                                onClose={setPicker.bind(null, false)}
                                 onValueChange={_onValueChange}
-                                useNativeAndroidPickerStyle={false}
-                                textInputProps={{
-                                    style: styles.input,
-                                    allowFontScaling: false,
-                                    placeholder: placeholder,
-                                    placeholderTextColor: phColor,
-                                    ...inputProps,
-                                }}
-                            />,
-                            <React.Fragment>
-                                <Text {...valueProps}>{valueLabel ?? placeholder ?? "Please select"}</Text>
-                                <ModalPicker
-                                    selectedValue={value}
-                                    open={picker}
-                                    label={label}
-                                    options={options}
-                                    onClose={setPicker.bind(null, false)}
-                                    onValueChange={_onValueChange}
-                                />
-                            </React.Fragment>
+                            />
                         )}
 
-                        {CT.IS_IOS && <Icon icon="caret-down" style={styles.caret} />}
+                        <Icon icon="caret-down" style={styles.caret} />
                     </Pressable>
                     <FieldGuide type={type} guide={guide} strengthGuide={strengthGuide} />
                 </View>
@@ -254,6 +244,7 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         color: CT.FONT_COLOR,
+        height: 18,
         fontSize: 15,
         fontWeight: "600",
     },
@@ -325,6 +316,8 @@ const styles = StyleSheet.create({
     },
     picker: {
         position: "absolute",
+        opacity: 0,
+        backgroundColor: CT.BG_WHITE,
     },
 });
 

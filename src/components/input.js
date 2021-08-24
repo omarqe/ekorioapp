@@ -72,12 +72,14 @@ const Input = (props) => {
     }
 
     let typeProps = {
+        text: {},
         tel: { keyboardType: "phone-pad", textContentType: "telephoneNumber" },
         url: { keyboardType: "url", textContentType: "URL" },
         name: { autoCapitalize: "words", textContentType: type },
         email: { keyboardType: "email-address", autoCapitalize: "none", textContentType: "emailAddress" },
         number: { keyboardType: "number-pad" },
-        password: { keyboardType: "visible-password", secureTextEntry: true, textContentType: "password" },
+        password: { secureTextEntry: true, textContentType: "password", multiline: false },
+        textarea: { multiline: true },
     };
     typeProps.phone = typeProps.tel;
     typeProps.username = typeProps.name;
@@ -142,6 +144,7 @@ Input.propTypes = {
 const radius = 6;
 const styles = StyleSheet.create({
     input: {
+        height: 18,
         fontSize: 14,
         borderRadius: radius,
         backgroundColor: CT.BG_WHITE,
