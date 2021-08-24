@@ -21,81 +21,81 @@
             {
                 "id": 2,
                 "type": 2,
-                "question": "",
+                "question": "Considering {petname} activities, about how often does {genderPronoun} get exercise?",
                 "options": [
-                    { "id": 10, "value": "" },
-                    { "id": 11, "value": "" },
-                    { "id": 12, "value": "" },
-                    { "id": 13, "value": "" },
-                    { "id": 14, "value": "" },
-                    { "id": 15, "value": "" }
+                    { "id": 10, "value": "Daily" },
+                    { "id": 11, "value": "A few times a week" },
+                    { "id": 12, "value": "A few times a month" },
+                    { "id": 13, "value": "Rarely" },
+                    { "id": 14, "value": "Never" }
+                    
                 ]
             },
             {
                 "id": 3,
                 "type": 1,
-                "question": "",
+                "question": "Do you use a product to protect {petname} against these common parasites?",
                 "options": [
-                    { "id": 16, "value": "" },
-                    { "id": 17, "value": "" },
-                    { "id": 18, "value": "" },
-                    { "id": 19, "value": "" }
+                    { "id": 15, "value": "Heartworms" },
+                    { "id": 16, "value": "Fleas" },
+                    { "id": 17, "value": "Ticks" },
+                    { "id": 18, "value": "Intestinal Worms" }
                 ]
             },
             {
                 "id": 4,
                 "type": 2,
-                "question": "",
+                "question": "Do you travel or plan to travel with {petname} outside of your local community?",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 19, "value": "Yes" },
+                    { "id": 20, "value": "No" }
                 ]
             },
             {
                 "id": 5,
                 "type": 2,
-                "question": "",
+                "question": "When riding in a car or other form of transportation, {petname}:",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 21, "value": "Sleeps/enjoys the ride" },
+                    { "id": 22, "value": "Shows unusual behaviour: meows/howls excessively, pants, drools, vomits or soils (urine or stool)" }
                 ]
             },
             {
                 "id": 6,
                 "type": 1,
-                "question": "",
+                "question": "{petname} has exposure to:",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 23, "value": "Small pets (ferrets,birds,reptiles,etc.), livestock or horses" },
+                    { "id": 24, "value": "Wildlife (deer, raccoons, rodents, etc.)" },
+                    { "id": 25, "value": "People who care for other cats" }
+    
                 ]
             },
             {
                 "id": 7,
                 "type": 2,
-                "question": "",
+                "question": "Is {petname} ever around people with weakened immune systems (children <5 years of age, seniors, pregnant women, people on high doses of steroid, organ transplant patients, or patients with cancer, diebetes,chronic disease, or HIV//AIDS)?",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 26, "value": "Yes/Maybe" },
+                    { "id": 27, "value": "No" }
                 ]
             },
             {
                 "id": 8,
                 "type": 1,
-                "question": "",
+                 "question": "Does {petname} do any of the following?",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 28, "value": "Unwanted begging or pestering for food" },
+                    { "id": 29, "value": "Stealing food (from garbage, counters, tables)" },
+                    { "id": 30, "value": "Playing with ribbon, string or floss" },
+                    { "id": 31, "value": "Damaging household or outdoor items by chewing or scratching" },
+                    { "id": 32, "value": "Execessive vocalizing (meowing, howling)" },
+                    { "id": 33, "value": "Negatively reacting to noise (thunder, fireworks)" },
+                    { "id": 34, "value": "Hissing, growling,scratching, biting or attacking other animals" },
+                    { "id": 35, "value": "Hissing, growling,scratching, biting or attacking people" },
+                    { "id": 36, "value": "Resists getting into a carrier for transporting" },
+                    { "id": 37, "value": "Trying to escape outdoors" },
+                    { "id": 38, "value": "(Other behaviour comments)" }
                 ]
             }
         ]
@@ -106,201 +106,199 @@
             {
                 "id": 9,
                 "type": 2,
-                "question": "",
+                "question": "Have you noticed any recent change in {petname} weight?",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 39, "value": "No change in weight" },
+                    { "id": 40, "value": "Increased weight" },
+                    { "id": 41, "value": "Decreased weight" },
+                    { "id": 42, "value": "Unsure if change in weight" }
                 ]
             },
             {
                 "id": 10,
                 "type": 2,
-                "question": "",
+                "question": "Any recent change in appetite for {petname}?",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 43, "value": "No change in appetite" },
+                    { "id": 44, "value": "Increased appetite" },
+                    { "id": 45, "value": "Decreased appetite" },
+                    { "id": 46, "value": "Unsure about appetite" }
                 ]
             },
             {
                 "id": 11,
                 "type": 1,
-                "question": "",
+                "question": "What type of food(s) does {petname} eat?",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 47, "value": "Dry food" },
+                    { "id": 48, "value": "Semi-moist food (dry mixed with water or broth, puch, roll)" },
+                    { "id": 49, "value": "Wet food (canned)" },
+                    { "id": 50, "value": "People food or table scraps" },
+                    { "id": 51, "value": "Raw meat diet" },
+                    { "id": 52, "value": "Vegetarian or Vegan diet" },
+                    { "id": 53, "value": "Grain-free diet" },
+                    { "id": 54, "value": "Special diet for a medical condition" },
+                    { "id": 55, "value": "Homemade diet" },
+                    { "id": 56, "value": "Dog food" },
+                    { "id": 57, "value": "Pet treats" },
+                    { "id": 58, "value": "Wildlife (birds, rodents, reptiles, bugs" }
                 ]
             },
             {
                 "id": 12,
                 "type": 2,
-                "question": "",
+                "question": "Using graphic below,select the cat shape that best describes {petname}:",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 59, "value": "Very thin waist; Ribs, back and hip bones visible or easily felt" },
+                    { "id": 60, "value": "Thin waist; Ribs, back or hip bones visible or easily felt" },
+                    { "id": 61, "value": "Waist slimmer than chest; Ribs, back and hip bones can be felt with slight pressure" },
+                    { "id": 62, "value": "Waist same size as chest; Ribs, back and hip bones hard to feel" },
+                    { "id": 63, "value": "Waist larger than chest; Ribs, back and hip bones not felt; Neck and legs thick" }
                 ]
             },
             {
                 "id": 13,
                 "type": 1,
-                "question": "",
+                "question": "Has {petname} recently had any of the following?",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 64, "value": "Formed but soft or liquid stools (diarrhea)" },
+                    { "id": 65, "value": "Blood in the stool" },
+                    { "id": 66, "value": "Dark stool (almost black or tar-like in appearance)" },
+                    { "id": 67, "value": "Mucus in the stool" },
+                    { "id": 68, "value": "Excessive gas" },
+                    { "id": 69, "value": "Passing stool more often than usual" },
+                    { "id": 70, "value": "Stool accidents outside the litter box" },
+                    { "id": 71, "value": "Straining or taking a long time to pass stool" },
+                    { "id": 72, "value": "Fur/hair or unusual objects in stool" },
+                    { "id": 73, "value": "Stool concerns but unsure which cat" },
+                    { "id": 74, "value": "(Other observations or comments)" }
                 ]
             },
             {
                 "id": 14,
                 "type": 1,
-                "question": "",
+                "question": "Have you recently noticed {petname}:",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 75, "value": "Drinking more water than usual" },
+                    { "id": 76, "value": "Urinating larger amounts or more often than usual" },
+                    { "id": 77, "value": "Having urine accidents outside the litter box" },
+                    { "id": 78, "value": "Straining or taking a long time to urinate" },
+                    { "id": 79, "value": "Passing bloody or discolored urine" },
+                    { "id": 80, "value": "Having strong urine odor" },
+                    { "id": 81, "value": "Urine concerns but unsure which cat" },
+                    { "id": 82, "value": "(Other observations or comments" }
                 ]
             },
             {
                 "id": 15,
                 "type": 1,
-                "question": "",
+                "question": "Have you recently noticed any of the following with {petname}'s eyes?",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 83, "value": "Redness or squinting of eyes" },
+                    { "id": 84, "value": "Tearing, discharge, crusting or darkened fur around the eyes" },
+                    { "id": 85, "value": "Scratching, rubbing or hair loss around the eyes" },
+                    { "id": 86, "value": "Cloudiness of eyes" },
+                    { "id": 87, "value": "(Other eye observations)" }
                 ]
             },
             {
                 "id": 16,
                 "type": 1,
-                "question": "",
+                "question": "Have you recently noticed any of the following with {petname}'s ears?",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 88, "value": "Smelly or dirty ears (brown, black or other \"gunk\" present)" },
+                    { "id": 89, "value": "Sores, scabs, crusts, swellings or small bumps on ears" },
+                    { "id": 90, "value": "Frequent head shaking, scratching or rubbing at ears" },
+                    { "id": 91, "value": "Overly sensitive ears when massanging or petting" },
+                    { "id": 92, "value": "(Other ear observations)" }
                 ]
             },
             {
                 "id": 17,
                 "type": 1,
-                "question": "",
+                "question": "Have you recently noticed any of the following with {petname}'s mouth?",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 93, "value": "Bad breath" },
+                    { "id": 94, "value": "Plaque, tartar or discolored teeth (tan, yellow, brown)" },
+                    { "id": 95, "value": "Loose, broken or newly missing teeth" },
+                    { "id": 96, "value": "Sores in or around the mouth or tongue" },
+                    { "id": 97, "value": "Pawing at the mouth" },
+                    { "id": 98, "value": "Increased drooling or staining around the mouth" },
+                    { "id": 99, "value": "Changes in eating or chewing habits (eats more slowly, drops food)" },
+                    { "id": 100, "value": "Blood left on toys/treats after chewing" },
+                    { "id": 101, "value": "Other teeth or mouth observations" }
                 ]
             },
             {
                 "id": 18,
                 "type": 1,
-                "question": "",
+                "question": "Thinking about {petname}'s skin and coat, have you noticed:",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 102, "value": "Swellings or lumps (whether old or new)" },
+                    { "id": 103, "value": "Sores, scabs, crusts or white, flaky material like dandruff" },
+                    { "id": 104, "value": "Fleas or flea dirt (flea dirt looks like tiny coffee grounds on the skin)" },
+                    { "id": 105, "value": "One or more ticks" },
+                    { "id": 106, "value": "More frequent grooming (at body or paws)" },
+                    { "id": 107, "value": "Red or black discolored areas, thickened or leathery skin" },
+                    { "id": 108, "value": "Fur/hair that is wet,greasy,stained,matted or missing in patches" },
+                    { "id": 109, "value": "Bad odour" },
+                    { "id": 110, "value": "Overly sensitive when petting" },
+                    { "id": 111, "value": "(Other skin or coat observations)" }
                 ]
             },
             {
                 "id": 19,
                 "type": 1,
-                "question": "",
+                "question": "Have you noticed {petname}:",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 112, "value": "Stiff or slower when moving, jumping , standing up or using stairs" },
+                    { "id": 113, "value": "Favoring a paw or limping" },
+                    { "id": 114, "value": "Upset when picked up or held a certain way" },
+                    { "id": 115, "value": "Unsteady when standing or moving" },
+                    { "id": 116, "value": "Weak or tired" },
+                    { "id": 117, "value": "(Other observatios or comments" }
                 ]
             },
             {
                 "id": 20,
                 "type": 1,
-                "question": "",
+                "question": "Has {petname} recently shown any of the following?",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 118, "value": "Hiding or sleeping more" },
+                    { "id": 119, "value": "Less likely to come when called" },
+                    { "id": 120, "value": "Less interaction with people or other animals" },
+                    { "id": 121, "value": "Bumping into things" },
+                    { "id": 122, "value": "Trouble finding you" },
+                    { "id": 123, "value": "Fainting or collapsing" },
+                    { "id": 124, "value": "Seizures" },
+                    { "id": 125, "value": "Trembling or shivering" },
+                    { "id": 126, "value": "Confusion, staring blankly or odd behaviours" },
+                    { "id": 127, "value": "Unusual circling, head tilt or repetitive movements" },
+                    { "id": 128, "value": "(Other observations or comments)" }
                 ]
             },
             {
                 "id": 21,
                 "type": 1,
-                "question": "",
+                "question": "Has {petname} had any of the following lately?",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 129, "value": "Discharge from the nose (yellow, white, green or red)" },
+                    { "id": 130, "value": "Panting" },
+                    { "id": 131, "value": "Persistent coughing or hacking" },
+                    { "id": 132, "value": "Fits of sneezing,snorting or trying to catch breath" },
+                    { "id": 133, "value": "Gagging or retching (nothing comes up)" },
+                    { "id": 134, "value": "Vomitting" },
+                    { "id": 135, "value": "Heaving up hair or hairballs" },
+                    { "id": 136, "value": "Other observations or comments" }
                 ]
             },
             {
                 "id": 22,
                 "type": 2,
-                "question": "",
+                "question": "Is there any other information about {petname} you would like to capture in the report?",
                 "options": [
-                    { "id": 0, "value": "" },
-                    { "id": 0, "value": "" }
+                    { "id": 137, "value": "Yes" },
+                    { "id": 138, "value": "No" }
                 ]
             }
         ]
