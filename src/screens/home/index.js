@@ -5,6 +5,7 @@ import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
 
+import Modal from "../../components/modal";
 import PetList from "../../components/pet/pet-list";
 import PetIdentity from "../../components/pet/pet-identity";
 import HealthCharts from "../../components/pet/health-charts";
@@ -42,6 +43,8 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         setHealthData(healthData);
     }, []);
 
+    const healthChartsData = healthData?.chart;
+    const healthCategoriesData = _find(healthData?.categories, { current: true })?.data;
     const displayData = [
         { label: "Name", value: data?.name },
         { label: "Microchip ID", value: data?.microchipID, verified: data?.microchipVerified },
@@ -91,10 +94,10 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
                         </View>
                     </View>
                     <View style={styles.section}>
-                        <HealthCharts data={healthData?.chart} />
+                        <HealthCharts data={healthChartsData} />
                     </View>
                     <View style={{ ...styles.section, marginBottom: 0 }}>
-                        <HealthCategories data={healthData?.categories} />
+                        <HealthCategories data={healthCategoriesData} />
                     </View>
                 </Body>
 
