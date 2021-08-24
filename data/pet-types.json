@@ -16,7 +16,6 @@
             { "label": "Norwegian Forest", "value": "00011" },
             { "label": "Siberian", "value": "00012" },
             { "label": "Russian Blue", "value": "00013" },
-            { "label": "Turkish Angora", "value": "00014" },
             { "label": "Himalayan", "value": "00014" },
             { "label": "Bombay", "value": "00015" },
             { "label": "Birman", "value": "00016" },
@@ -34,7 +33,8 @@
             { "label": "American Curl", "value": "00028" },
             { "label": "American Shorthair", "value": "00029" },
             { "label": "British Longhair", "value": "00030" },
-            { "label": "Thai", "value": "00031" }
+            { "label": "Thai", "value": "00031" },
+            { "label": "Turkish Angora", "value": "00032" }
         ]
     },
     {
