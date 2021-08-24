@@ -172,11 +172,12 @@ export default function FloatingField(props) {
             );
 
         default:
+            const alignItems = type === "textarea" ? "flex-start" : "center";
             return (
                 <View>
                     <Pressable style={[baseStyle, disabledStyle]} onPress={_onPressFocusInput}>
                         <Text style={[styles.label, disabledLabelStyle]}>{label}</Text>
-                        <View style={styles.inputContainer}>
+                        <View style={[styles.inputContainer, { alignItems }]}>
                             {_renderIf(
                                 ["tel", "phone"].indexOf(type) > -1, // Calling Code Picker
                                 <Pressable style={styles.callingCodes} onPress={setCCPicker.bind(null, true)}>
@@ -258,7 +259,6 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         flex: 1,
-        alignItems: "center",
         flexDirection: "row",
     },
 
