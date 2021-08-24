@@ -25,7 +25,7 @@ export default function HealthCharts({ data = [] }) {
     const animation3 = useRef(new Animated.Value(anim3)).current;
 
     const animate = (animval, value, onChange, easing = Easing.quad) => {
-        const duration = 250;
+        const duration = CT.DEFAULT_ANIMATION_TIMING;
         const useNativeDriver = false;
         Animated.timing(animval, { toValue: value, easing, duration, useNativeDriver }).start();
         animval.addListener(({ value }) => onChange(value));
