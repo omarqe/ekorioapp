@@ -182,7 +182,7 @@ export default function FloatingField(props) {
                                     <View style={styles.countryFlagContainer}>
                                         <Image source={countryFlag} style={styles.countryFlag} />
                                     </View>
-                                    <Text style={styles.input} allowFontScaling={false}>
+                                    <Text style={styles.callingCode} allowFontScaling={false}>
                                         +{callingCode}
                                     </Text>
                                     <Icon icon="caret-down" style={styles.callingCodesCaret} />
@@ -251,6 +251,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     input: {
+        flex: 1,
         color: CT.FONT_COLOR,
         fontSize: 15,
         fontWeight: "600",
@@ -271,6 +272,11 @@ const styles = StyleSheet.create({
         marginRight: 5,
         borderRadius: 5,
         ...CT.SHADOW_sm,
+    },
+    callingCode: {
+        color: CT.FONT_COLOR,
+        fontSize: 15,
+        fontWeight: "600",
     },
     callingCodes: {
         alignItems: "center",
