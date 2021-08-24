@@ -22,7 +22,7 @@ export default {
     INPUT_TYPES: ["text", "name", "select", "username", "password", "email", "tel", "phone", "number", "url", "textarea"],
 
     DEFAULT_CALLING_CODE: 60, // Malaysia (+60)
-    DEFAULT_ANIMATION_TIMING: 300, // Used in dashboard charts
+    DEFAULT_ANIMATION_TIMING: 200, // Used in dashboard charts
 
     BG_BLACK: "#000000",
     BG_WHITE: "#FFFFFF",
