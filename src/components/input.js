@@ -10,6 +10,7 @@ import { View, Text, Image, Pressable, TextInput, StyleSheet } from "react-nativ
 
 import _omit from "lodash/omit";
 import _find from "lodash/find";
+import _uniqBy from "lodash/uniqBy";
 import _sortBy from "lodash/sortBy";
 import _renderIf from "../functions/renderIf";
 import _lowerCase from "lodash/lowerCase";
@@ -97,7 +98,7 @@ const Input = (props) => {
                         selectedValue={callingCode}
                         open={ccPicker}
                         label="Calling Codes"
-                        options={_sortBy(callingCodes, "value")}
+                        options={_uniqBy(_sortBy(callingCodes, "label"), "label")}
                         onClose={setCCPicker.bind(null, false)}
                         onValueChange={_onCallingCodeChange}
                     />

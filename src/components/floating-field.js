@@ -12,6 +12,7 @@ import { View, Text, Image, Pressable, TextInput, StyleSheet } from "react-nativ
 import _omit from "lodash/omit";
 import _find from "lodash/find";
 import _times from "lodash/times";
+import _uniqBy from "lodash/uniqBy";
 import _sortBy from "lodash/sortBy";
 import _lowerCase from "lodash/lowerCase";
 import _renderIf from "../functions/renderIf";
@@ -132,7 +133,7 @@ export default function FloatingField(props) {
                     <Pressable style={[baseStyle, disabledStyle]} onPress={_onPressFocusInput}>
                         <Text style={[styles.label, disabledLabelStyle, textRightPadding]}>{label}</Text>
                         {_renderIf(
-                            useNativePicker,
+                            useNativePicker || !CT.IS_IOS,
                             <RNPicker
                                 ref={inputRef}
                                 items={options}
@@ -190,7 +191,7 @@ export default function FloatingField(props) {
                                         selectedValue={callingCode}
                                         open={ccPicker}
                                         label="Calling Codes"
-                                        options={_sortBy(callingCodes, "value")}
+                                        options={_uniqBy(_sortBy(callingCodes, "label"), "value")}
                                         onClose={setCCPicker.bind(null, false)}
                                         onValueChange={_onCallingCodeChange}
                                     />
