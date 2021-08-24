@@ -10,15 +10,43 @@ import TopBar from "../../components/topbar";
 import Container from "../../components/container";
 import KeyboardAvoiding from "../../components/keyboard-avoiding";
 
-import account from "../../../data/account.json";
-
+import { countries } from "countries-list";
 import { View, StyleSheet } from "react-native";
+
+import account from "../../../data/account.json";
+import _sortBy from "lodash/sortBy";
+import _lowerCase from "lodash/lowerCase";
 
 export default function AccountSettingsScreen({ navigation }) {
     const [data, setData] = useState(null);
     const { address } = data ?? {};
     const _onChange = (value, name) => setData({ ...data, [name]: value });
     const _onChangeAddress = (value, name) => setData({ ...data, address: { ...data?.address, [name]: value } });
+
+    const countryOptions = Object.keys(countries).map((key) => {
+        if (countries.hasOwnProperty(key)) {
+            const { name } = countries[key];
+            return { value: _lowerCase(key), label: name };
+        }
+    });
+    const stateOptions = [
+        { value: "kedah", label: "Kedah" },
+        { value: "penang", label: "Penang" },
+        { value: "terengganu", label: "Terengganu" },
+        { value: "johor", label: "Johor" },
+        { value: "perlis", label: "Perlis" },
+        { value: "kelantan", label: "Kelantan" },
+        { value: "melaka", label: "Melaka" },
+        { value: "n_sembilan", label: "N. Sembilan" },
+        { value: "perak", label: "Perak" },
+        { value: "pahang", label: "Pahang" },
+        { value: "selangor", label: "Selangor" },
+        { value: "sabah", label: "Sabah" },
+        { value: "sarawak", label: "Sarawak" },
+        { value: "wpkl", label: "Kuala Lumpur" },
+        { value: "wpl", label: "Labuan" },
+        { value: "wpp", label: "Putrajaya" },
+    ];
 
     useEffect(() => {
         setData(account);
@@ -97,11 +125,11 @@ export default function AccountSettingsScreen({ navigation }) {
                 [
                     {
                         name: "state",
-                        type: "select",
+                        type: address?.country === "my" ? "select" : "text",
                         label: "State",
                         value: address?.state,
                         placeholder: "Selangor",
-                        options: [{ label: "Selangor", value: "selangor" }],
+                        options: _sortBy(stateOptions, "label"),
                     },
                     {
                         name: "country",
@@ -109,7 +137,7 @@ export default function AccountSettingsScreen({ navigation }) {
                         label: "Country",
                         value: address?.country,
                         placeholder: "Malaysia",
-                        options: [{ label: "Malaysia", value: "malaysia" }],
+                        options: _sortBy(countryOptions, "label"),
                     },
                 ],
             ],
