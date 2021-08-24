@@ -132,7 +132,7 @@ export default function PetFormScreen({ navigation, route }) {
                     </Header>
                     <Body gray flex overlap topRounded>
                         <View style={styles.section}>
-                            <Heading text={isUpdate ? "Species" : "Choose Species"} />
+                            <Heading text={isUpdate ? "Pet Species" : "Choose Species"} />
                             <PetTypes
                                 types={petTypes}
                                 active={data?.type}
