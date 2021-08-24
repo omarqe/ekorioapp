@@ -88,6 +88,8 @@ export default {
             },
         ];
 
+        const lowRes = CT.PIXELRATIO < 3;
+        const shadowSize = lowRes ? 23 : 25;
         const screenOptions = ({ route }) => ({
             headerShown: false,
             tabBarStyle,
@@ -96,8 +98,8 @@ export default {
                 const Icon = _find(tabs, ["name", route?.name]).icons[focused ? 1 : 0];
                 return (
                     <View style={styles.iconContainer}>
-                        {focused && <View style={styles.iconShadow} />}
-                        <Icon />
+                        {focused && <View style={[styles.iconShadow, { width: shadowSize, height: shadowSize }]} />}
+                        <Icon height={lowRes ? 22 : 24} />
                     </View>
                 );
             },
