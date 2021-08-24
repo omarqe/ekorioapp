@@ -6,12 +6,14 @@ import RNPicker from "react-native-picker-select";
 import PropTypes from "prop-types";
 import ModalPicker from "./modal-picker";
 
-import { View, Text, Pressable, TextInput, StyleSheet } from "react-native";
+import { countries, getEmojiFlag } from "countries-list";
+import { View, Text, Image, Pressable, TextInput, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
 import _find from "lodash/find";
 import _times from "lodash/times";
 import _sortBy from "lodash/sortBy";
+import _lowerCase from "lodash/lowerCase";
 import _renderIf from "../functions/renderIf";
 export default function FloatingField(props) {
     const [picker, setPicker] = useState(false);
@@ -23,13 +25,17 @@ export default function FloatingField(props) {
     let { nameCC, callingCode = CT.DEFAULT_CALLING_CODE } = props; // Only works with type == phone or tel.
 
     // Generate calling code options
-    const countryByCC = require("country-json/src/country-by-calling-code.json");
     const callingCodes = _sortBy(
-        countryByCC.map(({ country, calling_code }) => {
-            return { value: calling_code, label: `${country} (+${calling_code})` };
+        Object.keys(countries).map((key) => {
+            if (countries.hasOwnProperty(key)) {
+                const { phone, name } = countries[key];
+                return { value: parseInt(phone), label: `${name} (+${phone})`, abbrv: key };
+            }
         }),
         "label"
     );
+    const countryAbbrv = _lowerCase(_find(callingCodes, { value: callingCode })?.abbrv);
+    const countryFlag = { uri: `https://countryflags.io/${countryAbbrv}/flat/64.png` };
 
     const phColor = disabled ? CT.BG_GRAY_100 : CT.BG_GRAY_200;
     const isSelect = type === "select";
@@ -175,8 +181,11 @@ export default function FloatingField(props) {
                         <Text style={[styles.label, disabledLabelStyle]}>{label}</Text>
                         <View style={styles.inputContainer}>
                             {_renderIf(
-                                ["tel", "phone"].indexOf(type) > -1,
+                                ["tel", "phone"].indexOf(type) > -1, // Calling Code Picker
                                 <Pressable style={styles.callingCodes} onPress={setCCPicker.bind(null, true)}>
+                                    <View style={styles.countryFlagContainer}>
+                                        <Image source={countryFlag} style={styles.countryFlag} />
+                                    </View>
                                     <Text style={styles.input} allowFontScaling={false}>
                                         +{callingCode}
                                     </Text>
@@ -255,6 +264,19 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flexDirection: "row",
     },
+
+    countryFlag: {
+        width: 21,
+        height: 15,
+        borderRadius: 5,
+    },
+    countryFlagContainer: {
+        width: 21,
+        height: 15,
+        marginRight: 5,
+        borderRadius: 5,
+        ...CT.SHADOW_sm,
+    },
     callingCodes: {
         alignItems: "center",
         marginRight: 5,
@@ -265,6 +287,7 @@ const styles = StyleSheet.create({
         color: CT.BG_GRAY_200,
         marginLeft: 1,
     },
+
     caret: {
         top: "60%",
         right: 10,
