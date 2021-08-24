@@ -1,0 +1,308 @@
+[
+    {
+        "type": "lifestyle",
+        "questions": [
+            {
+                "id": 1,
+                "type": 1,
+                "question": "Which activities does {petname} do?",
+                "options": [
+                    { "id": 1, "value": "Spending time outdoor unsupervised" },
+                    { "id": 2, "value": "Spending time outdoor supervised or on a leash" },
+                    { "id": 3, "value": "Socializing with cats from outside of your home" },
+                    { "id": 4, "value": "Visiting a groomer" },
+                    { "id": 5, "value": "Boarding" },
+                    { "id": 6, "value": "Helping people as a therapy or assistance {pettype}" },
+                    { "id": 7, "value": "Living with dogs" },
+                    { "id": 8, "value": "Living with cats that go outdoors" },
+                    { "id": 9, "value": "Living with cats that stay indoors" }
+                ]
+            },
+            {
+                "id": 2,
+                "type": 2,
+                "question": "",
+                "options": [
+                    { "id": 10, "value": "" },
+                    { "id": 11, "value": "" },
+                    { "id": 12, "value": "" },
+                    { "id": 13, "value": "" },
+                    { "id": 14, "value": "" },
+                    { "id": 15, "value": "" }
+                ]
+            },
+            {
+                "id": 3,
+                "type": 1,
+                "question": "",
+                "options": [
+                    { "id": 16, "value": "" },
+                    { "id": 17, "value": "" },
+                    { "id": 18, "value": "" },
+                    { "id": 19, "value": "" }
+                ]
+            },
+            {
+                "id": 4,
+                "type": 2,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            },
+            {
+                "id": 5,
+                "type": 2,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            },
+            {
+                "id": 6,
+                "type": 1,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            },
+            {
+                "id": 7,
+                "type": 2,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            },
+            {
+                "id": 8,
+                "type": 1,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            }
+        ]
+    },
+    {
+        "type": "nutrition",
+        "questions": [
+            {
+                "id": 9,
+                "type": 2,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            },
+            {
+                "id": 10,
+                "type": 2,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            },
+            {
+                "id": 11,
+                "type": 1,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            },
+            {
+                "id": 12,
+                "type": 2,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            },
+            {
+                "id": 13,
+                "type": 1,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            },
+            {
+                "id": 14,
+                "type": 1,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            },
+            {
+                "id": 15,
+                "type": 1,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            },
+            {
+                "id": 16,
+                "type": 1,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            },
+            {
+                "id": 17,
+                "type": 1,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            },
+            {
+                "id": 18,
+                "type": 1,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            },
+            {
+                "id": 19,
+                "type": 1,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            },
+            {
+                "id": 20,
+                "type": 1,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            },
+            {
+                "id": 21,
+                "type": 1,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            },
+            {
+                "id": 22,
+                "type": 2,
+                "question": "",
+                "options": [
+                    { "id": 0, "value": "" },
+                    { "id": 0, "value": "" }
+                ]
+            }
+        ]
+    }
+]
