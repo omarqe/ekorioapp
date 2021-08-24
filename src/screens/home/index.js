@@ -25,9 +25,10 @@ import _capitalize from "lodash/capitalize";
 
 import pets from "../../../data/pets.json";
 import health from "../../../data/health.json";
+import petTypes from "../../../data/pet-types.json";
 
 const HomeScreen = connectActionSheet(({ navigation }) => {
-    const go = (key) => navigation.navigate(key);
+    const go = (key, options = {}) => navigation.navigate(key, options);
     const [data, setData] = useState(null);
     const [healthData, setHealthData] = useState(null);
     const { showActionSheetWithOptions } = useActionSheet();
@@ -46,7 +47,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         { label: "Microchip ID", value: data?.microchipID, verified: data?.microchipVerified },
         { label: "Parent's Name", value: "Eve Harrison" },
         { label: "Colors", value: ["#3E4C59", "#9AA5B1"] },
-        { label: "Breed", value: data?.breedName },
+        { label: "Breed", value: _find(_find(petTypes, { id: data?.type })?.breeds, { value: data?.breedID })?.label },
         { label: "Birthday", value: data?.birthday },
         { label: "Age (Cat Year)", value: data?.agePet },
         { label: "Age (Human Year)", value: data?.ageHuman },
@@ -59,10 +60,14 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         setHealthData(_find(health, { id }));
     };
     const _onOptions = () => {
-        const options = ["Reevaluate Health", "View Health Records", "Done"];
-        const cancelButtonIndex = 2;
+        const options = ["Update Pet", "Reevaluate Health", "View Health Records", "Done"];
+        const cancelButtonIndex = 3;
         showActionSheetWithOptions({ options, cancelButtonIndex }, (buttonIndex) => {
-            const cmd = [go.bind(null, "pet__evaluate"), go.bind(null, "pet__health-records")];
+            const cmd = [
+                go.bind(null, "pet__form", data),
+                go.bind(null, "pet__evaluate"),
+                go.bind(null, "pet__health-records", { petID: data?.id }),
+            ];
             if (typeof cmd[buttonIndex] === "function") {
                 cmd[buttonIndex]();
             }
@@ -71,7 +76,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
 
     return (
         <Container>
-            <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: go.bind(null, "pet__form") }} />
+            <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: go.bind(null, "pet__form", null) }} />
 
             <Layout gray withHeader>
                 <Header horizontal overlap>
@@ -99,7 +104,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
                         button={{
                             icon: "far edit",
                             text: "Update Pet",
-                            onPress: go.bind(null, "pet__form"),
+                            onPress: go.bind(null, "pet__form", data),
                             iconRight: true,
                         }}
                     />

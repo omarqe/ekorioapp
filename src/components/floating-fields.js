@@ -4,12 +4,14 @@ import FloatingField from "./floating-field";
 import { View, StyleSheet } from "react-native";
 
 import _get from "lodash/get";
+import _omit from "lodash/omit";
 import _isArray from "lodash/isArray";
 
-export default function Template({ fields = [] }) {
-    if (_isArray(fields) && fields.length > 0) {
-        let rowStyle = styles.row;
+export default function FloatingFields(props) {
+    const { fields = [] } = props;
+    const generalProps = _omit(props, ["fields"]);
 
+    if (_isArray(fields) && fields.length > 0) {
         return (
             <View style={styles.grid}>
                 {fields.map((props, i) => {
@@ -25,11 +27,11 @@ export default function Template({ fields = [] }) {
                         return (
                             <View key={i} style={rowStyle}>
                                 <View style={styles.column}>
-                                    <FloatingField gapless {...firstField} />
+                                    <FloatingField gapless {...generalProps} {...firstField} />
                                 </View>
                                 {secondField && (
                                     <View style={styles.column}>
-                                        <FloatingField gapless {...secondField} />
+                                        <FloatingField gapless {...generalProps} {...secondField} />
                                     </View>
                                 )}
                             </View>
@@ -39,7 +41,7 @@ export default function Template({ fields = [] }) {
                     return (
                         <View key={i} style={rowStyle}>
                             <View style={styles.column}>
-                                <FloatingField gapless {...props} />
+                                <FloatingField gapless {...generalProps} {...props} />
                             </View>
                         </View>
                     );
@@ -68,6 +70,8 @@ const styles = StyleSheet.create({
     },
 });
 
-Template.propTypes = {
+FloatingFields.propTypes = {
     fields: PropTypes.array,
+    disabled: PropTypes.bool,
+    onChange: PropTypes.func,
 };

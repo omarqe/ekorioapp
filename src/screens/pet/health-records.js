@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
@@ -6,16 +6,17 @@ import Header from "../../components/layout/header";
 
 import Tabs from "../../components/tabs";
 import List from "../../components/list";
-import Modal from "../../components/modal";
 import Empty from "../../components/empty";
 import TopBar from "../../components/topbar";
-import PetList from "../../components/pet/pet-list";
 import PetSwitch from "../../components/pet/pet-switch";
 import Container from "../../components/container";
 
-import { View, StyleSheet } from "react-native";
+import pets from "../../../data/pets.json";
+
+import { StyleSheet } from "react-native";
 import { TabView, SceneMap } from "react-native-tab-view";
 
+import _first from "lodash/first";
 import _renderIf from "../../functions/renderIf";
 import _createSceneMap from "../../functions/createSceneMap";
 
@@ -33,8 +34,8 @@ const Scene = ({ data, onPress }) => {
     );
 };
 
-const PetHealthRecordsScreen = ({ navigation }) => {
-    const [petShown, setPetShown] = useState(false);
+const PetHealthRecordsScreen = ({ navigation, route }) => {
+    const [petID, setPetID] = useState(null);
     const [state, setState] = useState({
         index: 0,
         routes: [
@@ -71,19 +72,22 @@ const PetHealthRecordsScreen = ({ navigation }) => {
         ],
     });
 
-    const _onPressItem = (index) => {
-        navigation.navigate("pet__health-details");
-    };
+    // Initialisation
+    useEffect(() => {
+        setPetID(route?.params?.petID ? route?.params?.petID : _first(pets)?.id);
+    }, []);
+
+    const _onIndexChange = (index) => setState({ ...state, index });
+    const _onPressItem = (index) => navigation.navigate("pet__health-details");
     const _renderScene = SceneMap(_createSceneMap(state?.routes, _onPressItem, Scene));
     const _renderTabBar = ({ navigationState: state }) => (
         <Header style={styles.header}>
             <Tabs tabs={state?.routes} active={state?.index} onPress={_onIndexChange} alwaysBounceHorizontal={false} />
         </Header>
     );
-    const _onIndexChange = (index) => setState({ ...state, index });
-
-    const _onOpenPet = () => setPetShown(true);
-    const _onClosePet = () => setPetShown(false);
+    const _onSwitch = (id, index) => {
+        setPetID(id);
+    };
 
     return (
         <Container>
@@ -92,7 +96,7 @@ const PetHealthRecordsScreen = ({ navigation }) => {
                 title="Health Records"
                 leftIcon="arrow-left"
                 leftIconProps={{ onPress: navigation.goBack }}
-                rightComponent={<PetSwitch onPress={_onOpenPet} />}
+                rightComponent={<PetSwitch pets={pets} checked={petID} onSwitch={_onSwitch} />}
             />
             <TabView
                 renderScene={_renderScene}
@@ -100,11 +104,6 @@ const PetHealthRecordsScreen = ({ navigation }) => {
                 onIndexChange={_onIndexChange}
                 navigationState={state}
             />
-            <Modal title="Choose Pet" open={petShown} onClose={_onClosePet}>
-                <View style={styles.petListContainer}>
-                    <PetList onPress={_onClosePet} theme="light" checked={1} />
-                </View>
-            </Modal>
         </Container>
     );
 };

@@ -7,7 +7,7 @@ import { View, Text, StyleSheet } from "react-native";
 import _omit from "lodash/omit";
 
 const Heading = (props) => {
-    const { size = 0, text, style, kicker, badge = null, subtitle, gapless = false } = props;
+    const { size = 0, text, style, kicker, badge = null, subtitle, gapless = false, disabled = false } = props;
     const { textStyle: customTextStyle, kickerStyle: customKickerStyle, subtitleStyle: customSubtitleStyle } = props;
     const appendedProps = _omit(props, ["size", "text", "style", "subtitle"]);
     const titleSizes = [20, 22, 24, 26, 28];
@@ -25,7 +25,7 @@ const Heading = (props) => {
         <View style={baseStyle} {...appendedProps}>
             {kicker && <Text style={kickerStyle}>{kicker}</Text>}
             <View style={styles.title}>
-                <Text style={textStyle}>{text}</Text>
+                <Text style={[textStyle, { color: disabled ? CT.BG_GRAY_300 : textStyle?.color }]}>{text}</Text>
                 {badge && <Badge xs={size < 2} {...badge} />}
             </View>
             {subtitle && <Text style={subtitleStyle}>{subtitle}</Text>}
@@ -34,6 +34,7 @@ const Heading = (props) => {
 };
 
 Heading.propTypes = {
+    disabled: PropTypes.bool,
     gapless: PropTypes.bool,
     style: PropTypes.object,
     size: PropTypes.oneOf([0, 1, 2, 3, 4]),

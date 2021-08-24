@@ -7,9 +7,9 @@ import pets from "../../../data/pets.json";
 import _omit from "lodash/omit";
 import _sortBy from "lodash/sortBy";
 export default function PetList(props) {
-    const { margin = 4, checked, active, onPress } = props;
+    const { data = null, margin = 4, checked, active, onPress } = props;
     const _props = _omit(props, ["margin", "checked", "active", "add", "onPress", "onPressAdd"]);
-    const data = _sortBy(pets, "name");
+    const petsData = _sortBy(data ?? pets, "name");
 
     const _renderItem = ({ item, index }) => {
         const { id, name, imageURL } = item;
@@ -29,7 +29,7 @@ export default function PetList(props) {
     return (
         <View style={[styles.container, { marginLeft: -margin }]}>
             <FlatList
-                data={data}
+                data={petsData}
                 style={{ overflow: "visible" }}
                 renderItem={_renderItem}
                 keyExtractor={({ id }) => id.toString()}

@@ -98,6 +98,6 @@ const styles = StyleSheet.create({
 });
 
 HealthCategories.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.object).isRequired,
+    data: PropTypes.arrayOf(PropTypes.object),
     onPress: PropTypes.func,
 };

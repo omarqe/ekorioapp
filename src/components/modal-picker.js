@@ -21,7 +21,7 @@ export default function ModalPicker(props) {
     };
 
     return (
-        <Modal style={styles.modal} isVisible={open} {...backdrop}>
+        <Modal style={styles.modal} isVisible={open} useNativeDriverForBackdrop {...backdrop}>
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.header}>
                     <Heading size={1} text={label ?? "Please select"} />

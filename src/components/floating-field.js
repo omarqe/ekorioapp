@@ -6,50 +6,102 @@ import RNPicker from "react-native-picker-select";
 import PropTypes from "prop-types";
 import ModalPicker from "./modal-picker";
 
-import { View, Text, Pressable, TextInput, StyleSheet } from "react-native";
+import { countries, getEmojiFlag } from "countries-list";
+import { View, Text, Image, Pressable, TextInput, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
 import _find from "lodash/find";
 import _times from "lodash/times";
+import _sortBy from "lodash/sortBy";
+import _lowerCase from "lodash/lowerCase";
 import _renderIf from "../functions/renderIf";
 export default function FloatingField(props) {
     const [picker, setPicker] = useState(false);
     const [focused, setFocused] = useState(false);
+    const [ccPicker, setCCPicker] = useState(false);
 
-    const { disabled = false, gapless = false, strengthGuide = false, useNativePicker = false } = props;
-    const { type = null, label, guide, style = {}, onBlur, onFocus } = props;
+    let { disabled = false, gapless = false, strengthGuide = false, useNativePicker = false } = props;
+    let { name, value, type = null, label, guide, style = {}, onBlur, onFocus, onChange } = props;
+    let { nameCC, callingCode = CT.DEFAULT_CALLING_CODE } = props; // Only works with type == phone or tel.
 
-    const phColor = CT.BG_GRAY_100;
+    // Generate calling code options
+    const callingCodes = Object.keys(countries).map((key) => {
+        if (countries.hasOwnProperty(key)) {
+            const { phone, name } = countries[key];
+            return { value: parseInt(phone), label: `${name} (+${phone})`, abbrv: key };
+        }
+    });
+    const countryAbbrv = _lowerCase(_find(callingCodes, { value: callingCode })?.abbrv);
+    const countryFlag = { uri: `https://countryflags.io/${countryAbbrv}/flat/64.png` };
+
+    const phColor = disabled ? CT.BG_GRAY_100 : CT.BG_GRAY_200;
     const isSelect = type === "select";
     const inputRef = useRef(null);
-    const inputProps = _omit(props, ["type", "label", "style", "onBlur", "onFocus", "gapless", "strengthGuide"]);
+    const inputProps = _omit(props, [
+        "strengthGuide",
+        "gapless",
+        "value",
+        "type",
+        "label",
+        "style",
+        "onBlur",
+        "onFocus",
+        "onChange",
+        "onChangeText",
+    ]);
 
     // Negates guide if strengthGuide is true
     if (strengthGuide && guide) guide = false;
 
     // Handle UX feedbacks
     const _onPressFocusInput = () => {
+        if (disabled) return;
         if (isSelect) {
-            useNativePicker ? inputRef?.current?.togglePicker(true) : setPicker(true);
+            useNativePicker && CT.IS_IOS ? inputRef?.current?.togglePicker(true) : setPicker(true);
             return;
         }
 
         inputRef?.current?.focus();
     };
     const _onFocus = () => {
-        setFocused(true);
-        if (typeof onFocus === "function") onFocus();
+        if (!disabled) {
+            setFocused(true);
+            if (typeof onFocus === "function") onFocus();
+        }
     };
     const _onBlur = () => {
-        setFocused(false);
-        if (typeof onBlur === "function") onBlur();
+        if (!disabled) {
+            setFocused(false);
+            if (typeof onBlur === "function") onBlur();
+        }
     };
+    const _onValueChange = (value) => {
+        if (!disabled && typeof onChange === "function") {
+            onChange(value, name);
+        }
+    };
+    const _onCallingCodeChange = (value) => {
+        if (!disabled) {
+            if (!disabled && typeof onChange === "function") {
+                onChange(value, nameCC);
+            }
+        }
+    };
+
+    // Correct value type
+    if (typeof value === "number") value = value.toString();
 
     // Handle styles
     let baseStyle = { ...styles.base, ...style };
+    let disabledStyle = {};
+    let disabledLabelStyle = {};
     if (focused) baseStyle = { ...baseStyle, borderColor: CT.BORDER_FOCUS };
     if (gapless) baseStyle = { ...baseStyle, marginBottom: 0 };
     if (type === "textarea") baseStyle = { ...baseStyle, minHeight: 120 };
+    if (disabled) {
+        disabledStyle = { shadowOpacity: 0, opacity: 0.7 };
+        disabledLabelStyle = { color: CT.BG_GRAY_300 };
+    }
 
     // Handle input types
     let typeProps = {
@@ -67,20 +119,20 @@ export default function FloatingField(props) {
 
     switch (type) {
         case "select":
-            const { value, options = [], onChange, placeholder } = props;
-            const textColor = { color: value ? CT.FONT_COLOR : CT.BG_GRAY_100 };
-            const _onValueChange = (value, index) => {
-                if (typeof onChange === "function") {
-                    onChange(value, index);
-                }
-            };
-
+            const { options = [], placeholder } = props;
             const valueLabel = _find(options, { value })?.label;
+            const textColor = { color: !valueLabel || disabled ? phColor : CT.FONT_COLOR };
+            const textRightPadding = { paddingRight: 20 };
+            const valueProps = {
+                style: [styles.input, textColor, textRightPadding],
+                numberOfLines: 1,
+                allowFontScaling: false,
+            };
 
             return (
                 <View>
-                    <Pressable style={baseStyle} onPress={_onPressFocusInput}>
-                        <Text style={styles.label}>{label}</Text>
+                    <Pressable style={[baseStyle, disabledStyle]} onPress={_onPressFocusInput}>
+                        <Text style={[styles.label, disabledLabelStyle, textRightPadding]}>{label}</Text>
                         {_renderIf(
                             useNativePicker,
                             <RNPicker
@@ -101,9 +153,7 @@ export default function FloatingField(props) {
                                 }}
                             />,
                             <React.Fragment>
-                                <Text style={[styles.input, textColor]} allowFontScaling={false}>
-                                    {valueLabel ?? placeholder ?? "Please select"}
-                                </Text>
+                                <Text {...valueProps}>{valueLabel ?? placeholder ?? "Please select"}</Text>
                                 <ModalPicker
                                     selectedValue={value}
                                     open={picker}
@@ -122,31 +172,56 @@ export default function FloatingField(props) {
             );
 
         default:
+            const alignItems = type === "textarea" ? "flex-start" : "center";
             return (
                 <View>
-                    <Pressable style={baseStyle} onPress={_onPressFocusInput}>
-                        <Text style={styles.label}>{label}</Text>
-                        <TextInput
-                            ref={inputRef}
-                            style={styles.input}
-                            onBlur={_onBlur}
-                            onFocus={_onFocus}
-                            editable={!disabled}
-                            allowFontScaling={false}
-                            placeholderTextColor={phColor}
-                            {...typeProps[type]}
-                            {...inputProps}
-                        />
+                    <Pressable style={[baseStyle, disabledStyle]} onPress={_onPressFocusInput}>
+                        <Text style={[styles.label, disabledLabelStyle]}>{label}</Text>
+                        <View style={[styles.inputContainer, { alignItems }]}>
+                            {_renderIf(
+                                ["tel", "phone"].indexOf(type) > -1, // Calling Code Picker
+                                <Pressable style={styles.callingCodes} onPress={setCCPicker.bind(null, true)}>
+                                    <View style={styles.countryFlagContainer}>
+                                        <Image source={countryFlag} style={styles.countryFlag} />
+                                    </View>
+                                    <Text style={styles.input} allowFontScaling={false}>
+                                        +{callingCode}
+                                    </Text>
+                                    <Icon icon="caret-down" style={styles.callingCodesCaret} />
+                                    <ModalPicker
+                                        selectedValue={callingCode}
+                                        open={ccPicker}
+                                        label="Calling Codes"
+                                        options={_sortBy(callingCodes, "value")}
+                                        onClose={setCCPicker.bind(null, false)}
+                                        onValueChange={_onCallingCodeChange}
+                                    />
+                                </Pressable>
+                            )}
+                            <TextInput
+                                ref={inputRef}
+                                value={value}
+                                style={styles.input}
+                                onBlur={_onBlur}
+                                onFocus={_onFocus}
+                                editable={!disabled}
+                                onChangeText={_onValueChange}
+                                allowFontScaling={false}
+                                placeholderTextColor={phColor}
+                                {...typeProps[type]}
+                                {...inputProps}
+                            />
+                        </View>
                     </Pressable>
-                    <FieldGuide type={type} guide={guide} strengthGuide={strengthGuide} />
+                    <FieldGuide type={type} guide={guide} disabled={disabled} strengthGuide={strengthGuide} />
                 </View>
             );
     }
 }
 
-const FieldGuide = ({ type, guide, strengthGuide }) => (
+const FieldGuide = ({ type, guide, disabled, strengthGuide }) => (
     <React.Fragment>
-        {guide && <Text style={styles.guide}>{guide}</Text>}
+        {guide && <Text style={[styles.guide, { color: disabled ? CT.BG_GRAY_200 : CT.BG_GRAY_400 }]}>{guide}</Text>}
         {type === "password" && strengthGuide && (
             <View style={styles.guide}>
                 <View style={styles.strengthGuide}>
@@ -182,9 +257,34 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: "600",
     },
-    inputMimic: {
-        fontSize: 18,
+    inputContainer: {
+        flex: 1,
+        flexDirection: "row",
     },
+
+    countryFlag: {
+        width: 21,
+        height: 15,
+        borderRadius: 5,
+    },
+    countryFlagContainer: {
+        width: 21,
+        height: 15,
+        marginRight: 5,
+        borderRadius: 5,
+        ...CT.SHADOW_sm,
+    },
+    callingCodes: {
+        alignItems: "center",
+        marginRight: 5,
+        flexDirection: "row",
+    },
+    callingCodesCaret: {
+        top: 0,
+        color: CT.BG_GRAY_200,
+        marginLeft: 1,
+    },
+
     caret: {
         top: "60%",
         right: 10,
@@ -224,12 +324,17 @@ const styles = StyleSheet.create({
 });
 
 FloatingField.propTypes = {
+    callingCode: PropTypes.number,
+    nameCC: PropTypes.string,
+    name: PropTypes.string,
     type: PropTypes.oneOf(CT.INPUT_TYPES),
     label: PropTypes.string,
     style: PropTypes.object,
     guide: PropTypes.any,
     options: PropTypes.array,
     gapless: PropTypes.bool,
+    onChange: PropTypes.func,
+    disabled: PropTypes.bool,
     strengthGuide: PropTypes.bool,
     useNativePicker: PropTypes.bool,
 };

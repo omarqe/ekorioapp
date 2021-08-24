@@ -65,7 +65,14 @@ export default function Modal(props) {
     };
 
     return (
-        <RNModal style={styles.modal} isVisible={open} animationIn="fadeInUp" {...backdrop} {..._props}>
+        <RNModal
+            style={styles.modal}
+            isVisible={open}
+            animationIn="fadeInUp"
+            useNativeDriverForBackdrop
+            {...backdrop}
+            {..._props}
+        >
             <SafeAreaView style={{ ...styles.safeArea, ...theme?.safeArea, ...safeAreaStyle }}>
                 <View style={{ ...styles.body, ...theme?.body, ...style }}>
                     <View style={{ ...styles.header, ...headerStyle }}>

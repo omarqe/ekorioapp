@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CT from "../../const";
 
 import PetTypes from "../../components/pet/pet-types";
@@ -15,45 +15,92 @@ import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
 
+import _map from "lodash/map";
+import _find from "lodash/find";
+import _clone from "lodash/clone";
+import _sortBy from "lodash/sortBy";
 import _capitalize from "lodash/capitalize";
+
+import petTypesData from "../../../data/pet-types.json";
 
 import { View, StyleSheet } from "react-native";
 
-export default function PetFormScreen({ navigation }) {
-    const [petType, setPetType] = useState("cat");
+export default function PetFormScreen({ navigation, route }) {
+    const [data, setData] = useState(null);
+    const [formType, setFormType] = useState("add");
+
+    const disabled = !data?.type;
+    const isUpdate = formType === "update";
+    const pageTitle = isUpdate ? "Update Pet" : "Add Pet";
+
+    // Callbacks
+    const _onChange = (value, name) => setData({ ...data, [name]: value });
+    const _onChangePetType = (type) => setData({ ...data, type, breedID: "00000" });
+
+    // Pet types
+    let breeds = _find(petTypesData, { id: data?.type })?.breeds;
+    let petTypes = _map(petTypesData, "id");
+    let disabledPetTypes = [];
+    if (isUpdate) {
+        disabledPetTypes = _clone(petTypes);
+        disabledPetTypes.splice(petTypes.indexOf(data?.type), 1);
+    }
+
+    // Breed name
+    const breedName = _find(breeds, { value: data?.breedID })?.label ?? "Others";
+
+    // Initialize
+    useEffect(() => {
+        if (route?.params) {
+            setData(route?.params);
+            setFormType("update");
+            return;
+        }
+        setData({ ...data, breedID: "00000" });
+    }, []);
+
     const fields = [
-        { label: "Name", placeholder: "Give your pet a name" },
         {
+            label: "Name",
+            name: "name",
+            value: data?.name,
+            placeholder: "Give your pet a name",
+        },
+        {
+            name: "microchipID",
             label: "Microchip ID",
-            placeholder: "644689939779789",
+            value: data?.microchipID,
             guide: "This microchip ID is non-editable and may be verified by the admin.",
+            placeholder: "000000000000000",
         },
         [
             {
+                name: "gender",
                 type: "select",
                 label: "Gender",
+                value: data?.gender,
                 options: [
                     { label: "Male", value: "male" },
                     { label: "Female", value: "female" },
                 ],
             },
             {
+                name: "breedID",
                 type: "select",
                 label: "Breed",
-                placeholder: "British Shorthair",
-                options: [
-                    { label: "", value: "" },
-                    { label: "British Shorthair", value: "00001" },
-                    { label: "Maine Coon", value: "00002" },
-                ],
+                value: data?.breedID,
+                defaultValue: "00000",
+                options: [..._sortBy(breeds, "label"), { label: "Others", value: "00000" }],
             },
         ],
         [
-            { label: "Birthday", placeholder: "01/01/2021" },
-            { label: "Weight (kg)", type: "number", placeholder: "0.00" },
+            { name: "birthday", value: data?.birthday, label: "Birthday", placeholder: "01/01/2021" },
+            { name: "weight", value: data?.weight, label: "Weight (kg)", type: "number", placeholder: "0.00" },
         ],
         {
+            name: "bio",
             type: "textarea",
+            value: data?.bio,
             label: "Biography",
             placeholder: "Tell us something about your pet..",
         },
@@ -63,7 +110,7 @@ export default function PetFormScreen({ navigation }) {
         <KeyboardAvoiding>
             <Container>
                 <TopBar
-                    title="Add a Pet"
+                    title={pageTitle}
                     leftIcon="arrow-left"
                     leftIconProps={{ onPress: navigation.goBack }}
                     rightIcon="ellipsis-h"
@@ -71,28 +118,33 @@ export default function PetFormScreen({ navigation }) {
                 <Layout gray withHeader>
                     <Header contentStyle={styles.headerContent} overlap>
                         <Pet
-                            name="Cheshire"
+                            name={data?.name ?? "Pet Name"}
                             borderRadius={35}
                             padding={5}
                             size={130}
-                            image={require("../../../assets/pets/cat-04.png")}
+                            image={data?.imageURL}
                             nameStyle={styles.petName}
                             baseStyle={styles.petBase}
                             imageBaseStyle={styles.petImageBase}
                             phIconProps={{ color: CT.BG_PURPLE_200 }}
                         />
-                        <Badge text="Breed: Maine Coon" style={styles.petBadge} color="purple" />
+                        <Badge text={`Breed: ${breedName}`} style={styles.petBadge} color="purple" />
                     </Header>
                     <Body gray flex overlap topRounded>
                         <View style={styles.section}>
-                            <Heading text="Pet Type" />
-                            <PetTypes types={["cat", "dog", "rabbit", "bird"]} active={petType} onPress={setPetType} />
+                            <Heading text={isUpdate ? "Pet Species" : "Choose Species"} />
+                            <PetTypes
+                                types={petTypes}
+                                active={data?.type}
+                                onPress={_onChangePetType}
+                                disabled={disabledPetTypes}
+                            />
                         </View>
                         <View style={[styles.section, { marginBottom: 15 }]}>
-                            <Heading text="Pet Details" />
-                            <FloatingFields fields={fields} />
+                            <Heading text="Pet Details" disabled={disabled} />
+                            <FloatingFields fields={fields} onChange={_onChange} disabled={disabled} />
                         </View>
-                        <Button text="Add Pet" color="yellow" />
+                        <Button text={pageTitle} color="yellow" disabled={disabled} />
                     </Body>
                 </Layout>
             </Container>
@@ -102,7 +154,7 @@ export default function PetFormScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     section: {
-        marginBottom: 20,
+        marginBottom: 30,
     },
     headerContent: {
         alignItems: "center",
