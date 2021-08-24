@@ -22,11 +22,50 @@
             }
         ],
         "categories": [
-            { "id": 0, "label": "Eyes", "score": 9 },
-            { "id": 0, "label": "Ears", "score": 10 },
-            { "id": 0, "label": "Teeth & Mouth", "score": 6 },
-            { "id": 0, "label": "Skin & Coat", "score": 6 },
-            { "id": 0, "label": "Fleas", "score": 10 }
+            {
+                "createdAt": "",
+                "current": true,
+                "data": [
+                    {
+                        "id": 0,
+                        "label": "Eyes",
+                        "score": 8,
+                        "explanation": "Lorem ipsum dolor sit amet",
+                        "factors": [
+                            { "id": 0, "important": true, "value": "Redness or squinting of eyes" },
+                            { "id": 0, "important": true, "value": "Scratching, rubbing or hair loss around the eyes" },
+                            { "id": 0, "important": false, "value": "Cloudiness of eyes" },
+                            { "id": 0, "important": false, "value": "Trouble finding you" },
+                            { "id": 0, "important": false, "value": "Bumping into things" }
+                        ]
+                    },
+                    {
+                        "id": 1,
+                        "label": "Ears",
+                        "score": 4,
+                        "explanation": "Lorem ipsum dolor sit amet",
+                        "factors": [
+                            { "id": 0, "important": true, "value": "Frequent head shaking, scratching or rubbing at ears" },
+                            { "id": 0, "important": false, "value": "Spending time outdoors supervised" },
+                            { "id": 0, "important": false, "value": "Excessive vocalizing (meowing, howling)" },
+                            { "id": 0, "important": false, "value": "Living with cats that go outdoors" },
+                            { "id": 0, "important": false, "value": "Overly sensitive ears, when massaging or petting" },
+                            { "id": 0, "important": false, "value": "Unusual circling, head tilt or repetitive movements" }
+                        ]
+                    },
+                    {
+                        "id": 2,
+                        "label": "Teeth & Mouth",
+                        "score": 8,
+                        "explanation": "Lorem ipsum dolor sit amet.",
+                        "factors": [
+                            { "id": 0, "important": true, "value": "More frequent grooming (at body or paws)" },
+                            { "id": 0, "important": false, "value": "Swellings or lumps (whether old or new)" },
+                            { "id": 0, "important": false, "value": "Bad odour" }
+                        ]
+                    }
+                ]
+            }
         ]
     },
     {
@@ -52,11 +91,15 @@
             }
         ],
         "categories": [
-            { "id": 0, "label": "Eyes", "score": 8 },
-            { "id": 0, "label": "Ears", "score": 9 },
-            { "id": 0, "label": "Teeth & Mouth", "score": 7 },
-            { "id": 0, "label": "Skin & Coat", "score": 7 },
-            { "id": 0, "label": "Fleas", "score": 8 }
+            {
+                "createdAt": "",
+                "current": true,
+                "data": [
+                    { "id": 0, "label": "Eyes", "score": 9 },
+                    { "id": 0, "label": "Ears", "score": 10 },
+                    { "id": 0, "label": "Teeth & Mouth", "score": 6 }
+                ]
+            }
         ]
     },
     {
@@ -82,11 +125,15 @@
             }
         ],
         "categories": [
-            { "id": 0, "label": "Eyes", "score": 8 },
-            { "id": 0, "label": "Ears", "score": 9 },
-            { "id": 0, "label": "Teeth & Mouth", "score": 9 },
-            { "id": 0, "label": "Skin & Coat", "score": 7 },
-            { "id": 0, "label": "Fleas", "score": 9 }
+            {
+                "createdAt": "",
+                "current": true,
+                "data": [
+                    { "id": 0, "label": "Eyes", "score": 9 },
+                    { "id": 0, "label": "Ears", "score": 10 },
+                    { "id": 0, "label": "Teeth & Mouth", "score": 6 }
+                ]
+            }
         ]
     },
     {
@@ -112,11 +159,15 @@
             }
         ],
         "categories": [
-            { "id": 0, "label": "Eyes", "score": 9 },
-            { "id": 0, "label": "Ears", "score": 9 },
-            { "id": 0, "label": "Teeth & Mouth", "score": 5 },
-            { "id": 0, "label": "Skin & Coat", "score": 7 },
-            { "id": 0, "label": "Fleas", "score": 8 }
+            {
+                "createdAt": "",
+                "current": true,
+                "data": [
+                    { "id": 0, "label": "Eyes", "score": 9 },
+                    { "id": 0, "label": "Ears", "score": 10 },
+                    { "id": 0, "label": "Teeth & Mouth", "score": 6 }
+                ]
+            }
         ]
     },
     {
@@ -142,11 +193,15 @@
             }
         ],
         "categories": [
-            { "id": 0, "label": "Eyes", "score": 10 },
-            { "id": 0, "label": "Ears", "score": 10 },
-            { "id": 0, "label": "Teeth & Mouth", "score": 8 },
-            { "id": 0, "label": "Skin & Coat", "score": 8 },
-            { "id": 0, "label": "Fleas", "score": 9 }
+            {
+                "createdAt": "",
+                "current": true,
+                "data": [
+                    { "id": 0, "label": "Eyes", "score": 9 },
+                    { "id": 0, "label": "Ears", "score": 10 },
+                    { "id": 0, "label": "Teeth & Mouth", "score": 6 }
+                ]
+            }
         ]
     },
     {
@@ -172,11 +227,15 @@
             }
         ],
         "categories": [
-            { "id": 0, "label": "Eyes", "score": 7 },
-            { "id": 0, "label": "Ears", "score": 8 },
-            { "id": 0, "label": "Teeth & Mouth", "score": 6 },
-            { "id": 0, "label": "Skin & Coat", "score": 5 },
-            { "id": 0, "label": "Fleas", "score": 7 }
+            {
+                "createdAt": "",
+                "current": true,
+                "data": [
+                    { "id": 0, "label": "Eyes", "score": 9 },
+                    { "id": 0, "label": "Ears", "score": 10 },
+                    { "id": 0, "label": "Teeth & Mouth", "score": 6 }
+                ]
+            }
         ]
     },
     {
@@ -202,11 +261,15 @@
             }
         ],
         "categories": [
-            { "id": 0, "label": "Eyes", "score": 9 },
-            { "id": 0, "label": "Ears", "score": 10 },
-            { "id": 0, "label": "Teeth & Mouth", "score": 9 },
-            { "id": 0, "label": "Skin & Coat", "score": 9 },
-            { "id": 0, "label": "Fleas", "score": 8 }
+            {
+                "createdAt": "",
+                "current": true,
+                "data": [
+                    { "id": 0, "label": "Eyes", "score": 9 },
+                    { "id": 0, "label": "Ears", "score": 10 },
+                    { "id": 0, "label": "Teeth & Mouth", "score": 6 }
+                ]
+            }
         ]
     }
 ]
