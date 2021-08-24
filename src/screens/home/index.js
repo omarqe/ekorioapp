@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CT from "../../const.js";
 
 import Body from "../../components/layout/body";
@@ -18,69 +18,49 @@ import ButtonIcon from "../../components/button-icon";
 import { View, StyleSheet } from "react-native";
 import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
 
+import _find from "lodash/find";
 import _times from "lodash/times";
+import _first from "lodash/first";
+import _capitalize from "lodash/capitalize";
+
+import pets from "../../../data/pets.json";
+import health from "../../../data/health.json";
 
 const HomeScreen = connectActionSheet(({ navigation }) => {
     const go = (key) => navigation.navigate(key);
+    const [data, setData] = useState(null);
+    const [healthData, setHealthData] = useState(null);
     const { showActionSheetWithOptions } = useActionSheet();
-    const healthData = {
-        chart: [
-            {
-                id: "physical",
-                label: "Physical",
-                value: 0.25,
-                delta: 0.1,
-                indicator: "up",
-            },
-            {
-                id: "nutrition",
-                label: "Nutrition",
-                value: 0.55,
-                delta: 0.25,
-                indicator: "up",
-            },
-            {
-                id: "lifestyle",
-                label: "Lifestyle",
-                value: 0.8,
-                delta: 0.3,
-                indicator: "up",
-            },
-        ],
-        details: [
-            { id: 0, label: "Eyes", score: 9 },
-            { id: 0, label: "Ears", score: 10 },
-            { id: 0, label: "Teeth & Mouth", score: 6 },
-            { id: 0, label: "Skin & Coat", score: 6 },
-            { id: 0, label: "Fleas", score: 10 },
-            { id: 0, label: "Ticks", score: 10 },
-            { id: 0, label: "Heart", score: 9 },
-            { id: 0, label: "Heartworms", score: 9 },
-            { id: 0, label: "Breathing", score: 10 },
-            { id: 0, label: "Bones & Joints", score: 7 },
-            { id: 0, label: "Alertness & Balance", score: 7 },
-            { id: 0, label: "Urinary Tract", score: 9 },
-            { id: 0, label: "Cancer & Immune Function", score: 10 },
-        ],
-    };
 
-    const petData = [
-        { label: "Name", value: "Cheshire" },
-        { label: "Microchip ID", value: "0028031030021", verified: true },
+    useEffect(() => {
+        const data = _first(pets);
+        const id = data?.id;
+        const healthData = _find(health, { id });
+
+        setData(data);
+        setHealthData(healthData);
+    }, []);
+
+    const displayData = [
+        { label: "Name", value: data?.name },
+        { label: "Microchip ID", value: data?.microchipID, verified: data?.microchipVerified },
         { label: "Parent's Name", value: "Eve Harrison" },
         { label: "Colors", value: ["#3E4C59", "#9AA5B1"] },
-        { label: "Breed", value: "British Shorthair" },
-        { label: "Birthday", value: "Jan 1, 2021" },
-        { label: "Age (Cat Year)", value: "7 months" },
-        { label: "Age (Human Year)", value: "11 years" },
-        { label: "Gender", value: "Male" },
-        { label: "Weight", value: "2.50 kg" },
+        { label: "Breed", value: data?.breedName },
+        { label: "Birthday", value: data?.birthday },
+        { label: "Age (Cat Year)", value: data?.agePet },
+        { label: "Age (Human Year)", value: data?.ageHuman },
+        { label: "Gender", value: _capitalize(data?.gender) },
+        { label: "Weight", value: `${data?.weight} kg` },
     ];
 
-    const onOptions = () => {
+    const _onChangePet = (id) => {
+        setData(_find(pets, { id }));
+        setHealthData(_find(health, { id }));
+    };
+    const _onOptions = () => {
         const options = ["Reevaluate Health", "View Health Records", "Done"];
         const cancelButtonIndex = 2;
-
         showActionSheetWithOptions({ options, cancelButtonIndex }, (buttonIndex) => {
             const cmd = [go.bind(null, "pet__evaluate"), go.bind(null, "pet__health-records")];
             if (typeof cmd[buttonIndex] === "function") {
@@ -95,27 +75,27 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
 
             <Layout gray withHeader>
                 <Header horizontal overlap>
-                    <PetList margin={4} active={3} />
+                    <PetList size={65} margin={4} active={data?.id} onPress={_onChangePet} />
                 </Header>
 
                 <Body topRounded overlap>
                     <View style={styles.headingSection}>
-                        <Heading text="Cheshire's Health" subtitle="Last evaluated 3 weeks ago" gapless />
+                        <Heading text={`${data?.name}'s Health`} subtitle="Last evaluated 3 weeks ago" gapless />
                         <View style={styles.actionBtnContainer}>
-                            <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={onOptions} inverted />
+                            <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={_onOptions} inverted />
                         </View>
                     </View>
                     <View style={styles.section}>
                         <HealthCharts data={healthData?.chart} />
                     </View>
                     <View style={{ ...styles.section, marginBottom: 0 }}>
-                        <HealthCategories data={healthData?.details} />
+                        <HealthCategories data={healthData?.categories} />
                     </View>
                 </Body>
 
                 <Body gray>
                     <PetIdentity
-                        data={petData}
+                        data={displayData}
                         button={{
                             icon: "far edit",
                             text: "Update Pet",

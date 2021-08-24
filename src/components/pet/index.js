@@ -9,7 +9,7 @@ import _renderIf from "../../functions/renderIf";
 
 export default function Pet(props) {
     const [pressed, setPressed] = useState(false);
-    const { name, image = null, theme = "default", defaultSource = false, active, checked } = props;
+    const { name, image = null, theme = "default", defaultSource = false, active, checked, deemphasized = false } = props;
     const { size = 60, padding = 3, borderRadius = null } = props;
     const { phIcon = null, phIconProps } = props;
 
@@ -26,7 +26,9 @@ export default function Pet(props) {
     const height = width;
     const radius = borderRadius ? borderRadius : size * 0.35;
     const isLight = theme === "light";
-    const imageProps = defaultSource ? { defaultSource: image } : { source: image };
+
+    const imageURL = typeof image === "string" ? { uri: image } : image;
+    const imageProps = defaultSource ? { defaultSource: imageURL } : { source: imageURL };
 
     const pressable = {
         onPressIn: setPressed.bind(null, true),
@@ -59,13 +61,18 @@ export default function Pet(props) {
         }
     }
 
+    // If deemphasized
+    if (deemphasized && !active) {
+        baseStyle = { ...baseStyle, opacity: 0.4 };
+    }
+
     return (
         <Pressable {..._omit(props, ["onPressIn", "onPressOut"])} {...pressable}>
             <View style={[styles.base, baseStyle, _baseStyle]}>
                 <View style={[styles.imageBase, imageBaseStyle, _imageBaseStyle]}>
                     {_renderIf(
                         image,
-                        <Image style={[styles.image, imageStyle, _imageStyle]} {...imageProps} />,
+                        <Image style={[styles.image, imageStyle, _imageStyle]} resizeMode="cover" {...imageProps} />,
                         <Icon
                             icon={phIcon ?? "fas paw"}
                             size={size * 0.25}
@@ -98,7 +105,7 @@ const styles = StyleSheet.create({
         backgroundColor: CT.BG_PURPLE_800,
     },
     name: {
-        color: CT.BG_PURPLE_400,
+        color: CT.BG_PURPLE_300,
         fontSize: 12,
         fontWeight: "600",
         textAlign: "center",
@@ -122,6 +129,7 @@ Pet.propTypes = {
     size: PropTypes.number,
     style: PropTypes.object,
     theme: PropTypes.oneOf(["default", "light"]),
+    image: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     borderRadius: PropTypes.number,
 
     active: PropTypes.bool,
@@ -129,6 +137,7 @@ Pet.propTypes = {
     padding: PropTypes.number,
     onPress: PropTypes.func,
     defaultSource: PropTypes.bool,
+    deemphasized: PropTypes.bool,
 
     nameStyle: PropTypes.object,
     baseStyle: PropTypes.object,

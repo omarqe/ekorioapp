@@ -20,25 +20,35 @@ const Button = (props) => {
         ],
     };
 
+    // Handle variants
     variant.label = { color: _get(colors, `label[${color}]`, colors.label.default) };
     variant.small = {};
     variant.base = { backgroundColor: _get(colors, `base[${pressed}][${color}]`, colors.base[pressed].default) };
-
     if (color !== "default") variant.base.borderColor = variant.base.backgroundColor;
     if (small) {
         variant.small.base = { padding: CT.PIXELRATIO < 3 ? 8 : 10, borderRadius: 8 };
         variant.small.label = { fontSize: 14, textTransform: "none" };
     }
 
-    const iconSize = small ? 14 : 16;
-    const iconColor = _get(colors, `icon[${color}]`, colors.icon.default);
+    // Handle style
+    const baseStyle = [styles.base, variant?.base, variant?.small?.base, style];
+    const labelStyle = [styles.label, variant?.label, variant?.small?.label];
+    const ButtonIcon = ({ position = "left" }) => {
+        const size = small ? 14 : 16;
+        const color = _get(colors, `icon[${color}]`, colors.icon.default);
+        const iconProps = { icon, size, color, style: position === "left" ? styles.iconLeft : styles.iconRight };
+
+        if (icon && !iconRight && position === "left") return <Icon {...iconProps} />;
+        else if (icon && iconRight && position === "right") return <Icon {...iconProps} />;
+        else return null;
+    };
 
     return (
-        <Pressable onPress={null} onPressIn={setPressed.bind(null, 1)} onPressOut={setPressed.bind(null, 0)}>
-            <View style={[styles.base, variant?.base, variant?.small?.base]}>
-                {icon && !iconRight && <Icon icon={icon} size={iconSize} color={iconColor} style={styles.iconLeft} />}
-                <Text style={[styles.label, variant?.label, variant?.small?.label]}>{text}</Text>
-                {icon && iconRight && <Icon icon={icon} size={iconSize} color={iconColor} style={styles.iconRight} />}
+        <Pressable onPress={onPress} onPressIn={setPressed.bind(null, 1)} onPressOut={setPressed.bind(null, 0)}>
+            <View style={baseStyle}>
+                <ButtonIcon position="left" />
+                <Text style={labelStyle}>{text}</Text>
+                <ButtonIcon position="right" />
             </View>
         </Pressable>
     );
