@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import CT from "../../const.js";
+import Text from "../text";
 import Context from "../context";
 import ButtonIcon from "../button-icon";
 import PropTypes from "prop-types";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 const LoginHeader = ({ title, subtitle, keyboardShown }) => {
     const { navigation, swapTitle } = useContext(Context.Login);

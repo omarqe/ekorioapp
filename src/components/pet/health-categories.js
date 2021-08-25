@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import CT from "../../const";
 
 import Icon from "../icon";
+import Text from "../text";
 import Badge from "../badge";
 import Modal from "../modal";
 import Heading from "../heading";
 import PropTypes from "prop-types";
 
-import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 
 import _find from "lodash/find";
 import _isArray from "lodash/isArray";

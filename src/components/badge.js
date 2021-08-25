@@ -1,7 +1,8 @@
 import React from "react";
 import CT from "../const";
+import Text from "./text";
 import PropTypes from "prop-types";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
 

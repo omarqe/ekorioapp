@@ -1,9 +1,10 @@
 import React from "react";
 import CT from "../../const";
+import Text from "../../components/text";
 import PetIdentity from "../../components/pet/pet-identity";
 import DetailContainer from "../../components/detail-container";
 
-import { Text, Alert, Linking, StyleSheet } from "react-native";
+import { Alert, Linking, StyleSheet } from "react-native";
 
 export default function AppointmentDetailsScreen({ navigation }) {
     const petData = [

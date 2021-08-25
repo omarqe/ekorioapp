@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import CT from "../const.js";
+import Text from "./text";
 import Input from "./input";
 import Context from "./context";
 import PropTypes from "prop-types";
-import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 
 import _omit from "lodash/omit";
 

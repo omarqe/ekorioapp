@@ -1,8 +1,9 @@
 import React from "react";
 import CT from "../const";
+import Text from "./text";
 import Icon from "./icon";
 import PropTypes from "prop-types";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 import _isArray from "lodash/isArray";
 import _renderIf from "../functions/renderIf";

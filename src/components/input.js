@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
 import CT from "../const.js";
 import Icon from "./icon";
+import Text from "./text";
 import Context from "./context";
 import ModalPicker from "./modal-picker";
 import PropTypes from "prop-types";
 
 import { countries } from "countries-list";
-import { View, Text, Image, Pressable, TextInput, StyleSheet } from "react-native";
+import { View, Image, Pressable, TextInput, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
 import _find from "lodash/find";

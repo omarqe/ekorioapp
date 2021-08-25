@@ -1,8 +1,9 @@
 import React from "react";
 import CT from "../const";
+import Text from "./text";
 import ListItem from "./list-item";
 import PropTypes from "prop-types";
-import { View, Text, LogBox, FlatList, SectionList, StyleSheet } from "react-native";
+import { View, LogBox, FlatList, SectionList, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
 import _isArray from "lodash/isArray";

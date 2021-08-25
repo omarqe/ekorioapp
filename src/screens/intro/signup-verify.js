@@ -1,11 +1,12 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import CT from "../../const.js";
+import Text from "../../components/text";
 import Context from "../../components/context";
 import OTPIcon from "../../../assets/arts/otp-icon.svg";
 import Container from "../../components/container";
 import ButtonIcon from "../../components/button-icon";
 import KeyboardAvoiding from "../../components/keyboard-avoiding";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { View, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 
 import _times from "lodash/times";
 

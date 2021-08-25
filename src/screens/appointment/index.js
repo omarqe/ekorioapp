@@ -6,12 +6,13 @@ import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
 
 import Tabs from "../../components/tabs";
+import Text from "../../components/text";
 import List from "../../components/list";
 import Empty from "../../components/empty";
 import TopBar from "../../components/topbar";
 import Container from "../../components/container";
 
-import { Text, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { TabView, SceneMap } from "react-native-tab-view";
 
 import _renderIf from "../../functions/renderIf";

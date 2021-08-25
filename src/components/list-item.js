@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import CT from "../const";
+
 import Icon from "./icon";
+import Text from "./text";
 import Badge from "./badge";
 import PropTypes from "prop-types";
-import { Text, View, Pressable, StyleSheet } from "react-native";
+import { View, Pressable, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
 export default function ListItem(props) {

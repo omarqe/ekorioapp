@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import CT from "../const";
+import Text from "./text";
 import PropTypes from "prop-types";
-import { Text, View, ScrollView, Pressable, StyleSheet } from "react-native";
+import { View, ScrollView, Pressable, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
 

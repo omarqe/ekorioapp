@@ -1,9 +1,10 @@
 import React from "react";
 import CT from "../const.js";
+import Text from "./text";
 import Logo from "../../assets/logo.svg";
 import ButtonIcon from "../components/button-icon";
 import PropTypes from "prop-types";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
 import _renderIf from "../functions/renderIf";

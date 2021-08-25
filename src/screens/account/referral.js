@@ -4,11 +4,12 @@ import Icon from "../../components/icon";
 import Heading from "../../components/heading";
 
 import Body from "../../components/layout/body";
+import Text from "../../components/text";
 import Layout from "../../components/layout";
 import TopBar from "../../components/topbar";
 import Container from "../../components/container";
 
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function AccountReferralScreen({ navigation }) {
     const shareIcons = [

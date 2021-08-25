@@ -1,10 +1,11 @@
 import React from "react";
 import CT from "../../const.js";
+import Text from "../../components/text";
 import Button from "../../components/button";
 import StarsBackdrop from "../../components/intro/stars-backdrop";
 import Container from "../../components/container";
 import IntroArt from "../../../assets/arts/intro-screen.svg";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function IntroScreen({ navigation: nav }) {
     return (

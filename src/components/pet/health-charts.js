@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import CT from "../../const.js";
+import Text from "../text";
 import PropTypes from "prop-types";
 
 import ChartCatIcon from "../../../assets/icons/chart__cat.svg";
@@ -7,7 +8,7 @@ import ChartMeatIcon from "../../../assets/icons/chart__meat.svg";
 import ChartThreadIcon from "../../../assets/icons/chart__thread.svg";
 
 import { ProgressChart } from "react-native-chart-kit";
-import { Easing, Animated, View, Text, StyleSheet } from "react-native";
+import { Easing, Animated, View, StyleSheet } from "react-native";
 
 import _fill from "lodash/fill";
 import _isArray from "lodash/isArray";
@@ -93,9 +94,11 @@ export default function HealthCharts({ data = [] }) {
                             </View>
 
                             <View style={styles.chartOverview}>
-                                <Text style={styles.chartValueLg}>
+                                <Text style={styles.chartValueLg} weight="700">
                                     {vPer100}
-                                    <Text style={styles.chartValueSymbol}>%</Text>
+                                    <Text style={styles.chartValueSymbol} weight="600" mf>
+                                        %
+                                    </Text>
                                 </Text>
                                 <Text style={styles.chartLabel}>{mappedData[id]?.label}</Text>
                                 <Text style={styles.chartDesc}>

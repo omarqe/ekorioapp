@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import CT from "../../const";
+import Text from "../text";
 import Icon from "../icon";
 import PropTypes from "prop-types";
-import { Text, View, Image, Pressable, StyleSheet } from "react-native";
+import { View, Image, Pressable, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
 import _renderIf from "../../functions/renderIf";

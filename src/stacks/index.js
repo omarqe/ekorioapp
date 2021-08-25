@@ -1,6 +1,7 @@
 import React from "react";
 import CT from "../const";
-import { View, Text, StyleSheet } from "react-native";
+import Text from "../components/text";
+import { View, StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 

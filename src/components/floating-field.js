@@ -2,13 +2,13 @@ import React, { useRef, useState } from "react";
 import CT from "../const";
 
 import Icon from "./icon";
-// import RNPicker from "react-native-picker-select";
-import { Picker } from "@react-native-picker/picker";
+import Text from "./text";
 import PropTypes from "prop-types";
 import ModalPicker from "./modal-picker";
 
+import { Picker } from "@react-native-picker/picker";
+import { View, Image, Pressable, TextInput, StyleSheet } from "react-native";
 import { countries } from "countries-list";
-import { View, Text, Image, Pressable, TextInput, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
 import _find from "lodash/find";

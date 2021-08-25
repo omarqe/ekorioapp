@@ -1,6 +1,7 @@
 import React from "react";
 import CT from "../../const";
 import Icon from "../icon";
+import Text from "../text";
 import PropTypes from "prop-types";
 
 import Cat from "../../../assets/pet-types/cat.svg";
@@ -9,7 +10,7 @@ import Bird from "../../../assets/pet-types/bird.svg";
 import Rabbit from "../../../assets/pet-types/rabbit.svg";
 import Turtle from "../../../assets/pet-types/turtle.svg";
 
-import { Text, View, Pressable, StyleSheet } from "react-native";
+import { View, Pressable, StyleSheet } from "react-native";
 export default function PetType(props) {
     let { type, style = {}, active, onPress: _onPress, disabled = false } = props;
 

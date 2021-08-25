@@ -8,6 +8,7 @@ import BookingTime from "../../components/appointmnet/booking-time";
 import BookingModal from "../../components/appointmnet/booking-modal";
 import BookingBanner from "../../components/appointmnet/booking-banner";
 
+import Text from "../../components/text";
 import TopBar from "../../components/topbar";
 import Button from "../../components/button";
 import PetList from "../../components/pet/pet-list";
@@ -17,7 +18,7 @@ import CalendarStrip from "../../components/calendar-strip";
 import FloatingFields from "../../components/floating-fields";
 import KeyboardAvoiding from "../../components/keyboard-avoiding";
 
-import { Text, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 import _moment from "moment";
 import _numeral from "numeral";
