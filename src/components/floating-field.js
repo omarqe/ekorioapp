@@ -49,6 +49,7 @@ export default function FloatingField({
     });
     const countryAbbrv = _lowerCase(_find(callingCodes, { value: callingCode })?.abbrv);
     const countryFlag = { uri: `https://countryflags.io/${countryAbbrv}/flat/64.png` };
+    const sortedCallingCodes = _uniqBy(_sortBy(callingCodes, "label"), "value");
 
     const phColor = disabled ? CT.BG_GRAY_100 : CT.BG_GRAY_100;
     const isSelect = type === "select";
@@ -180,7 +181,7 @@ export default function FloatingField({
                                         selectedValue={callingCode}
                                         open={ccPicker}
                                         label="Calling Codes"
-                                        options={_uniqBy(_sortBy(callingCodes, "label"), "value")}
+                                        options={sortedCallingCodes}
                                         onClose={setCCPicker.bind(null, false)}
                                         onValueChange={_onCallingCodeChange}
                                     />
@@ -189,7 +190,7 @@ export default function FloatingField({
                             <TextInput
                                 ref={inputRef}
                                 value={value}
-                                style={styles.input}
+                                style={[styles.input, type === "textarea" ? { height: "auto" } : null]}
                                 onBlur={_onBlur}
                                 onFocus={_onFocus}
                                 editable={!disabled}
@@ -244,9 +245,10 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         color: CT.FONT_COLOR,
-        height: 18,
+        height: CT.PIXELRATIO < 3 ? 20 : 18,
         fontSize: 15,
         fontWeight: "600",
+        fontFamily: CT.IS_ANDROID ? "Inter_600SemiBold" : null,
     },
     inputContainer: {
         flex: 1,
@@ -256,7 +258,6 @@ const styles = StyleSheet.create({
     countryFlag: {
         width: 21,
         height: 15,
-        borderRadius: 5,
     },
     countryFlagContainer: {
         width: 21,
