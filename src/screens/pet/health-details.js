@@ -1,10 +1,11 @@
 import React from "react";
 import CT from "../../const";
+import Text from "../../components/text";
 import Heading from "../../components/heading";
 import PetIdentity from "../../components/pet/pet-identity";
 import DetailContainer from "../../components/detail-container";
 
-import { Text, View, Linking, StyleSheet } from "react-native";
+import { View, Linking, StyleSheet } from "react-native";
 
 export default function PetHealthDetailsScreen({ navigation }) {
     const petData = [

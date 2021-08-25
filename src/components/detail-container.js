@@ -6,6 +6,7 @@ import Body from "./layout/body";
 import Layout from "./layout";
 
 import Icon from "./icon";
+import Text from "./text";
 import Badge from "./badge";
 import TopBar from "./topbar";
 import Banner from "./banner";
@@ -14,10 +15,8 @@ import Container from "./container";
 import ButtonIcon from "./button-icon";
 
 import PropTypes from "prop-types";
-import { Text, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useActionSheet, connectActionSheet } from "@expo/react-native-action-sheet";
-
-import _omit from "lodash/omit";
 
 const DetailContainer = connectActionSheet((props) => {
     let { children, badgeText, topbar = {}, heading = {} } = props;

@@ -6,12 +6,13 @@ import Heading from "../../components/heading";
 import FloatingFields from "../../components/floating-fields";
 
 import Body from "../../components/layout/body";
+import Text from "../../components/text";
 import Layout from "../../components/layout";
 import TopBar from "../../components/topbar";
 import Container from "../../components/container";
 import KeyboardAvoiding from "../../components/keyboard-avoiding";
 
-import { Text, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 export default function AccountPasswordScreen({ navigation }) {
     const fieldGroups = [

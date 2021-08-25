@@ -6,12 +6,13 @@ import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
 
+import Text from "../../components/text";
 import List from "../../components/list";
 import TopBar from "../../components/topbar";
 import Heading from "../../components/heading";
 import Container from "../../components/container";
 
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
 const AccountScreen = ({ navigation }) => {
     const go = (name) => navigation.navigate(name);

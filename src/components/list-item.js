@@ -1,26 +1,23 @@
 import React, { useState } from "react";
 import CT from "../const";
+
 import Icon from "./icon";
+import Text from "./text";
 import Badge from "./badge";
 import PropTypes from "prop-types";
-import { Text, View, Pressable, StyleSheet } from "react-native";
-
-import _omit from "lodash/omit";
-export default function ListItem(props) {
-    const { padded = false, tags, badge, last, icon, text, subtitle, onPressIn, onPressOut } = props;
-    const appendedProps = _omit(props, [
-        "padded",
-        "badge",
-        "style",
-        "tags",
-        "last",
-        "icon",
-        "text",
-        "subtitle",
-        "onPressIn",
-        "onPressOut",
-    ]);
-
+import { View, Pressable, StyleSheet } from "react-native";
+export default function ListItem({
+    padded = false,
+    tags,
+    badge,
+    last,
+    icon,
+    text,
+    subtitle,
+    onPressIn,
+    onPressOut,
+    ...restProps
+}) {
     const [pressed, setPressed] = useState(false);
     const _onPressIn = () => {
         setPressed(true);
@@ -42,7 +39,7 @@ export default function ListItem(props) {
     if (pressed) baseStyle = { ...baseStyle, backgroundColor: CT.BG_GRAY_50 };
 
     return (
-        <Pressable style={baseStyle} onPressIn={_onPressIn} onPressOut={_onPressOut} {...appendedProps}>
+        <Pressable style={baseStyle} onPressIn={_onPressIn} onPressOut={_onPressOut} {...restProps}>
             {icon && (
                 <View style={styles.iconContainer}>
                     <Icon icon={`fal ${icon}`} size={20} color={CT.BG_GRAY_300} />

@@ -1,18 +1,16 @@
 import React from "react";
 import CT from "../const";
+import Text from "./text";
 import ListItem from "./list-item";
 import PropTypes from "prop-types";
-import { View, Text, LogBox, FlatList, SectionList, StyleSheet } from "react-native";
+import { View, LogBox, FlatList, SectionList, StyleSheet } from "react-native";
 
-import _omit from "lodash/omit";
 import _isArray from "lodash/isArray";
 import _findLastIndex from "lodash/findLastIndex";
 
 LogBox.ignoreLogs(["VirtualizedLists should never be nested inside"]);
 
-export default function List(props) {
-    const { list = [], sections = [], padded = false, onPress } = props;
-    const _props = _omit(props, ["list", "sections", "padded", "onPress"]);
+export default function List({ list = [], sections = [], padded = false, onPress, ...restProps }) {
     const isSectioned = _isArray(sections) && sections.length > 0;
     const isListed = _isArray(list) && list.length > 0;
 
@@ -47,7 +45,7 @@ export default function List(props) {
                     renderSectionFooter={_renderSectionFooter}
                     scrollEnabled={false}
                     bounces={false}
-                    {..._props}
+                    {...restProps}
                 />
             </View>
         );
@@ -60,7 +58,7 @@ export default function List(props) {
                     keyExtractor={_keyExtractor}
                     scrollEnabled={false}
                     bounces={false}
-                    {..._props}
+                    {...restProps}
                 />
             </View>
         );

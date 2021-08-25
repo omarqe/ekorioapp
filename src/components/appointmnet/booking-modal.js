@@ -1,12 +1,13 @@
 import React from "react";
 import CT from "../../const";
 
+import Text from "../text";
 import List from "../list";
 import Input from "../input";
 import Modal from "../modal";
 import PropTypes from "prop-types";
 
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet } from "react-native";
 
 export default function BookingModal({ data, open = false, onClose, onChoose }) {
     const ModalHeader = () => {

@@ -4,27 +4,23 @@ import Icon from "./icon";
 import PropTypes from "prop-types";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 
-import _omit from "lodash/omit";
-
-const ButtonIcon = (props) => {
-    let {
-        innerStyle: customInnerStyle = {},
-        style = {},
-        color = CT.BG_WHITE,
-        icon,
-        weight = "far",
-        dot = false,
-        glow = false,
-        small = false,
-        disabled = false,
-        inverted = false,
-        iconProps = {},
-    } = props;
-
+const ButtonIcon = ({
+    innerStyle: customInnerStyle = {},
+    style = {},
+    color = CT.BG_WHITE,
+    icon,
+    weight = "far",
+    dot = false,
+    glow = false,
+    small = false,
+    disabled = false,
+    inverted = false,
+    iconProps = {},
+    ...restProps
+}) => {
     let iconSize = small ? 20 : 22;
     let innerStyle = { ...styles.inner, ...customInnerStyle };
     let buttonStyle = { ...styles.base, ...style };
-    let appendedProps = _omit(props, ["style", "color", "icon", "iconProps", "touchableStyle"]);
 
     if (inverted) color = CT.BG_GRAY_600;
     if (disabled) buttonStyle = { ...buttonStyle, opacity: 0.5 };
@@ -53,7 +49,7 @@ const ButtonIcon = (props) => {
     }
 
     return (
-        <TouchableOpacity style={buttonStyle} {...appendedProps}>
+        <TouchableOpacity style={buttonStyle} {...restProps}>
             <View style={innerStyle}>
                 {glow && dot && <View style={styles.dot} />}
                 <Icon icon={[glow ? "fas" : weight, icon]} color={color} size={iconSize} {...iconProps} />
