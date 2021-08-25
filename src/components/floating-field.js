@@ -59,10 +59,8 @@ export default function FloatingField({
 
     // Handle UX feedbacks
     const _onPressFocusInput = () => {
-        console.log("select");
         if (disabled) return;
         if (isSelect) {
-            console.log("isSelect", typeof inputRef?.current?.focus);
             useNativePicker || !CT.IS_IOS ? inputRef?.current?.focus() : setPicker(true);
             return;
         }
