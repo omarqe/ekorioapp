@@ -9,13 +9,16 @@ export default function Text({ style, ...restProps }) {
         const s = StyleSheet.flatten(style);
         const w = parseInt(s?.fontWeight ?? 400);
         const fonts = { 400: "Inter_400Regular", 500: "Inter_500Medium", 600: "Inter_600SemiBold", 700: "Inter_700Bold" };
-        const fontFamily = fonts[w] !== undefined ? fonts[w] : fonts[400];
 
-        textStyle = { ...textStyle, fontFamily };
+        textStyle = { fontFamily: fonts[w] !== undefined ? fonts[w] : fonts[400] };
     }
 
-    return <RNText style={[textStyle, style]} {...restProps} />;
+    return <RNText style={[styles.text, textStyle, style]} {...restProps} />;
 }
+
+const styles = {
+    text: { color: CT.FONT_COLOR },
+};
 
 Text.propTypes = {
     style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
