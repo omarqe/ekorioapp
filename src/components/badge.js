@@ -4,8 +4,6 @@ import Text from "./text";
 import PropTypes from "prop-types";
 import { View, StyleSheet } from "react-native";
 
-import _omit from "lodash/omit";
-
 const Badge = (props) => {
     let { style = {}, textStyle = {} } = props;
     let { text, size = 1, xs = false, lg = false, color = "default" } = props;

@@ -9,11 +9,7 @@ import PropTypes from "prop-types";
 import { Picker } from "@react-native-picker/picker";
 import { View, SafeAreaView, StyleSheet } from "react-native";
 
-import _omit from "lodash/omit";
-
-export default function ModalPicker(props) {
-    const { open = false, label, options = [], onClose, selectedValue } = props;
-    const pickerProps = _omit(props, ["open", "label", "options", "onClose"]);
+export default function ModalPicker({ open = false, label, options = [], onClose, ...restProps }) {
     const backdrop = {
         backdropColor: CT.BG_PURPLE_900,
         backdropOpacity: 0.9,
@@ -35,7 +31,7 @@ export default function ModalPicker(props) {
                     />
                 </View>
                 <View style={styles.picker}>
-                    <Picker {...pickerProps}>
+                    <Picker {...restProps}>
                         {options.map(({ value, label }, i) => (
                             <Picker.Item key={value + i} label={label} value={value} />
                         ))}

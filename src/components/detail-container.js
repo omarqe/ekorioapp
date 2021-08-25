@@ -18,8 +18,6 @@ import PropTypes from "prop-types";
 import { View, StyleSheet } from "react-native";
 import { useActionSheet, connectActionSheet } from "@expo/react-native-action-sheet";
 
-import _omit from "lodash/omit";
-
 const DetailContainer = connectActionSheet((props) => {
     let { children, badgeText, topbar = {}, heading = {} } = props;
     const { options = [], optionConfig = {}, optionCommands = [] } = props;

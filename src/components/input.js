@@ -9,20 +9,28 @@ import PropTypes from "prop-types";
 import { countries } from "countries-list";
 import { View, Image, Pressable, TextInput, StyleSheet } from "react-native";
 
-import _omit from "lodash/omit";
 import _find from "lodash/find";
 import _uniqBy from "lodash/uniqBy";
 import _sortBy from "lodash/sortBy";
 import _renderIf from "../functions/renderIf";
 import _lowerCase from "lodash/lowerCase";
 
-const Input = (props) => {
+const Input = ({
+    name,
+    icon,
+    iconProps = {},
+    type = null,
+    style = {},
+    onChange,
+    onFocus,
+    onBlur,
+    inputStyle = {},
+    nameCC,
+    callingCode = CT.DEFAULT_CALLING_CODE,
+    ...restProps
+}) => {
     const [focused, setFocused] = useState(false);
     const [ccPicker, setCCPicker] = useState(false);
-    const { name, icon, iconProps = {}, type = null, style = {}, onChange, onFocus, onBlur, inputStyle = {} } = props;
-    const { nameCC, callingCode = CT.DEFAULT_CALLING_CODE } = props; // Only works with type == phone or tel.
-
-    const appendedProps = _omit(props, ["type", "style", "onFocus", "inputStyle"]);
     const ctx = useContext(Context.Fields);
     const inputRef = ctx?.ref;
 
@@ -93,7 +101,7 @@ const Input = (props) => {
                     <View style={styles.countryFlagContainer}>
                         <Image source={countryFlag} style={styles.countryFlag} />
                     </View>
-                    <Text style={[styles.input, { color: CT.BG_GRAY_500 }]} allowFontScaling={false}>
+                    <Text style={[styles.input, { flex: 0, color: CT.BG_GRAY_500 }]} allowFontScaling={false}>
                         +{callingCode}
                     </Text>
                     <Icon icon="caret-down" style={styles.callingCodesCaret} />
@@ -116,7 +124,7 @@ const Input = (props) => {
                 allowFontScaling={false}
                 placeholderTextColor={CT.BG_GRAY_300}
                 {...typeProps[type]}
-                {...appendedProps}
+                {...restProps}
             />
             {icon && (
                 <View style={styles.iconContainer}>
@@ -145,6 +153,7 @@ Input.propTypes = {
 const radius = 6;
 const styles = StyleSheet.create({
     input: {
+        flex: 1,
         height: 18,
         fontSize: 14,
         borderRadius: radius,

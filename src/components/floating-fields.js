@@ -4,13 +4,9 @@ import FloatingField from "./floating-field";
 import { View, StyleSheet } from "react-native";
 
 import _get from "lodash/get";
-import _omit from "lodash/omit";
 import _isArray from "lodash/isArray";
 
-export default function FloatingFields(props) {
-    const { fields = [] } = props;
-    const generalProps = _omit(props, ["fields"]);
-
+export default function FloatingFields({ fields = [], ...restProps }) {
     if (_isArray(fields) && fields.length > 0) {
         return (
             <View style={styles.grid}>
@@ -27,11 +23,11 @@ export default function FloatingFields(props) {
                         return (
                             <View key={i} style={rowStyle}>
                                 <View style={styles.column}>
-                                    <FloatingField gapless {...generalProps} {...firstField} />
+                                    <FloatingField gapless {...restProps} {...firstField} />
                                 </View>
                                 {secondField && (
                                     <View style={styles.column}>
-                                        <FloatingField gapless {...generalProps} {...secondField} />
+                                        <FloatingField gapless {...restProps} {...secondField} />
                                     </View>
                                 )}
                             </View>
@@ -41,7 +37,7 @@ export default function FloatingFields(props) {
                     return (
                         <View key={i} style={rowStyle}>
                             <View style={styles.column}>
-                                <FloatingField gapless {...generalProps} {...props} />
+                                <FloatingField gapless {...restProps} {...props} />
                             </View>
                         </View>
                     );

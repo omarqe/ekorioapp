@@ -6,12 +6,8 @@ import Context from "./context";
 import PropTypes from "prop-types";
 import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 
-import _omit from "lodash/omit";
-
-const Field = (props) => {
-    const { type, label = "Input Label", last = false } = props;
+const Field = ({ type, label = "Input Label", last = false, ...restProps }) => {
     const context = useContext(Context.Fields);
-    const appendedProps = _omit(props, ["type", "label", "last"]);
     const onPressShouldFocus = () => {
         const { ref } = context;
         if (ref !== undefined) {
@@ -23,7 +19,7 @@ const Field = (props) => {
         <TouchableWithoutFeedback onPress={onPressShouldFocus}>
             <View style={{ paddingBottom: last ? 0 : CT.FIELD_BOTTOM_SPACING }}>
                 <Text style={styles.label}>{label}</Text>
-                <Input type={type} {...appendedProps} />
+                <Input type={type} {...restProps} />
             </View>
         </TouchableWithoutFeedback>
     );

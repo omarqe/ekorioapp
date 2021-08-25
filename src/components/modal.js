@@ -6,29 +6,24 @@ import ButtonIcon from "./button-icon";
 import RNModal from "react-native-modal";
 import PropTypes from "prop-types";
 import { View, SafeAreaView, StyleSheet } from "react-native";
-
-import _omit from "lodash/omit";
-
-export default function Modal(props) {
-    const { title, kicker, badge, subtitle, children, headerChildren, headingSize = 1 } = props;
-    const { open = false, theme: themeColor = "white", onClose = null, onToggle = null } = props;
-    const { style = {}, contentStyle = {}, headerStyle: customHeaderStyle = {}, safeAreaStyle = {} } = props;
-
-    const _props = _omit(props, [
-        "title",
-        "kicker",
-        "subtitle",
-        "children",
-        "headerChildren",
-        "open",
-        "theme",
-        "onClose",
-        "onToggle",
-        "style",
-        "headerStyle",
-        "safeAreaStyle",
-    ]);
-
+export default function Modal({
+    title,
+    kicker,
+    badge,
+    subtitle,
+    children,
+    headerChildren,
+    headingSize = 1,
+    open = false,
+    onClose = null,
+    onToggle = null,
+    style = {},
+    contentStyle = {},
+    safeAreaStyle = {},
+    theme: themeColor = "white",
+    headerStyle: customHeaderStyle = {},
+    ...restProps
+}) {
     const purple = CT.BG_PURPLE_800;
     const themes = {
         purple: {
@@ -71,7 +66,7 @@ export default function Modal(props) {
             animationIn="fadeInUp"
             useNativeDriverForBackdrop
             {...backdrop}
-            {..._props}
+            {...restProps}
         >
             <SafeAreaView style={{ ...styles.safeArea, ...theme?.safeArea, ...safeAreaStyle }}>
                 <View style={{ ...styles.body, ...theme?.body, ...style }}>

@@ -4,12 +4,7 @@ import Text from "./text";
 import PropTypes from "prop-types";
 import { View, ScrollView, Pressable, StyleSheet } from "react-native";
 
-import _omit from "lodash/omit";
-
-export default function Tabs(props) {
-    const { tabs = [], active = 0, onPress, onPressIn, onPressOut } = props;
-    const appendedProps = _omit(props, ["tab", "active", "onPress", "onPressIn", "onPressOut"]);
-
+export default function Tabs({ tabs = [], active = 0, onPress, onPressIn, onPressOut, ...restProps }) {
     if (tabs?.length > 0) {
         const [pressedIndex, setPressedIndex] = useState(null);
         const _onPressIn = (index) => {
@@ -31,11 +26,10 @@ export default function Tabs(props) {
                 contentContainerStyle={styles.baseContent}
                 showsHorizontalScrollIndicator={false}
                 horizontal
-                {...appendedProps}
+                {...restProps}
             >
                 <View style={styles.content}>
-                    {tabs.map((props, index) => {
-                        const itemProps = _omit(props, ["text"]);
+                    {tabs.map(({ label, ...restProps }, index) => {
                         let textStyle = styles.text;
                         let itemStyle = {
                             ...styles.item,
@@ -57,9 +51,9 @@ export default function Tabs(props) {
                                 onPress={onPress.bind(null, index)}
                                 onPressIn={_onPressIn}
                                 onPressOut={_onPressOut}
-                                {...itemProps}
+                                {...restProps}
                             >
-                                <Text style={textStyle}>{props?.label}</Text>
+                                <Text style={textStyle}>{label}</Text>
                             </Pressable>
                         );
                     })}

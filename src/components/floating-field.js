@@ -10,21 +10,35 @@ import { Picker } from "@react-native-picker/picker";
 import { View, Image, Pressable, TextInput, StyleSheet } from "react-native";
 import { countries } from "countries-list";
 
-import _omit from "lodash/omit";
 import _find from "lodash/find";
 import _times from "lodash/times";
 import _uniqBy from "lodash/uniqBy";
 import _sortBy from "lodash/sortBy";
 import _lowerCase from "lodash/lowerCase";
 import _renderIf from "../functions/renderIf";
-export default function FloatingField(props) {
+export default function FloatingField({
+    disabled = false,
+    gapless = false,
+    strengthGuide = false,
+    useNativePicker = false,
+    name,
+    value,
+    type = null,
+    label,
+    guide,
+    style = {},
+    onBlur,
+    onFocus,
+    onChange,
+    options = [],
+    placeholder,
+    nameCC, // Only works for type=select
+    callingCode = CT.DEFAULT_CALLING_CODE, // Only works for type=select
+    ...restProps
+}) {
     const [picker, setPicker] = useState(false);
     const [focused, setFocused] = useState(false);
     const [ccPicker, setCCPicker] = useState(false);
-
-    let { disabled = false, gapless = false, strengthGuide = false, useNativePicker = false } = props;
-    let { name, value, type = null, label, guide, style = {}, onBlur, onFocus, onChange } = props;
-    let { nameCC, callingCode = CT.DEFAULT_CALLING_CODE } = props; // Only works with type == phone or tel.
 
     // Generate calling code options
     const callingCodes = Object.keys(countries).map((key) => {
@@ -36,21 +50,9 @@ export default function FloatingField(props) {
     const countryAbbrv = _lowerCase(_find(callingCodes, { value: callingCode })?.abbrv);
     const countryFlag = { uri: `https://countryflags.io/${countryAbbrv}/flat/64.png` };
 
-    const phColor = disabled ? CT.BG_GRAY_100 : CT.BG_GRAY_200;
+    const phColor = disabled ? CT.BG_GRAY_100 : CT.BG_GRAY_100;
     const isSelect = type === "select";
     const inputRef = useRef(null);
-    const inputProps = _omit(props, [
-        "strengthGuide",
-        "gapless",
-        "value",
-        "type",
-        "label",
-        "style",
-        "onBlur",
-        "onFocus",
-        "onChange",
-        "onChangeText",
-    ]);
 
     // Negates guide if strengthGuide is true
     if (strengthGuide && guide) guide = false;
@@ -121,7 +123,6 @@ export default function FloatingField(props) {
 
     switch (type) {
         case "select":
-            const { options = [], placeholder } = props;
             const valueLabel = _find(options, { value })?.label;
             const textColor = { color: !valueLabel || disabled ? phColor : CT.FONT_COLOR };
             const textRightPadding = { paddingRight: 20 };
@@ -194,11 +195,12 @@ export default function FloatingField(props) {
                                 onBlur={_onBlur}
                                 onFocus={_onFocus}
                                 editable={!disabled}
+                                placeholder={placeholder}
                                 onChangeText={_onValueChange}
                                 allowFontScaling={false}
                                 placeholderTextColor={phColor}
                                 {...typeProps[type]}
-                                {...inputProps}
+                                {...restProps}
                             />
                         </View>
                     </Pressable>

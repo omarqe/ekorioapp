@@ -4,13 +4,8 @@ import PropTypes from "prop-types";
 import { View, FlatList, StyleSheet } from "react-native";
 
 import pets from "../../../data/pets.json";
-import _omit from "lodash/omit";
 import _sortBy from "lodash/sortBy";
-export default function PetList(props) {
-    const { data = null, margin = 4, checked, active, onPress } = props;
-    const _props = _omit(props, ["margin", "checked", "active", "add", "onPress", "onPressAdd"]);
-    const petsData = _sortBy(data ?? pets, "name");
-
+export default function PetList({ data = null, margin = 4, checked, active, onPress, ...restProps }) {
     const _renderItem = ({ item, index }) => {
         const { id, name, imageURL } = item;
         return (
@@ -21,7 +16,7 @@ export default function PetList(props) {
                 active={id === active}
                 checked={id === checked}
                 onPress={typeof onPress === "function" ? onPress.bind(null, id, index) : null}
-                {..._props}
+                {...restProps}
             />
         );
     };
@@ -29,7 +24,7 @@ export default function PetList(props) {
     return (
         <View style={[styles.container, { marginLeft: -margin }]}>
             <FlatList
-                data={petsData}
+                data={_sortBy(data ?? pets, "name")}
                 style={{ overflow: "visible" }}
                 renderItem={_renderItem}
                 keyExtractor={({ id }) => id.toString()}
