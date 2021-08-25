@@ -26,7 +26,6 @@ export default function HealthCategories({ data = [] }) {
     const _onPressIn = (index) => setPressedIndex(index);
     const _onClose = () => setOpenID(null);
     const _onPress = (id) => {
-        console.log(_find(data, { id }));
         if (_find(data, { id })) {
             setOpenID(id);
         }
