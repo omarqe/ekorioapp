@@ -10,7 +10,7 @@ import _get from "lodash/get";
 const Button = (props) => {
     let variant = {};
     const [pressed, setPressed] = useState(0);
-    const { text, style, small = false, disabled = false, color = "default", onPress, icon, iconRight } = props;
+    const { text, style, textStyle, small = false, disabled = false, color = "default", onPress, icon, iconRight } = props;
 
     const colors = {
         label: { default: CT.FONT_COLOR, yellow: CT.BG_YELLOW_800, purple: CT.BG_PURPLE_50 },
@@ -53,7 +53,7 @@ const Button = (props) => {
         >
             <View style={[baseStyle, { opacity: disabled ? 0.4 : 1 }]}>
                 <ButtonIcon color={color} position="left" />
-                <Text style={labelStyle}>{text}</Text>
+                <Text style={[labelStyle, textStyle]}>{text}</Text>
                 <ButtonIcon color={color} position="right" />
             </View>
         </Pressable>
@@ -90,13 +90,14 @@ const styles = StyleSheet.create({
 });
 
 Button.propTypes = {
+    onPress: PropTypes.func,
     iconRight: PropTypes.bool,
     icon: PropTypes.string,
     text: PropTypes.string,
     small: PropTypes.bool,
-    style: PropTypes.object,
     color: PropTypes.oneOf(["default", "yellow", "purple"]),
-    onPress: PropTypes.func,
+    style: PropTypes.object,
+    textStyle: PropTypes.object,
 };
 
 export default Button;
