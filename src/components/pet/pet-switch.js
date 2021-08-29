@@ -11,11 +11,11 @@ import { View, Pressable, StyleSheet } from "react-native";
 
 import _find from "lodash/find";
 
-const PetSwitch = ({ pets = [], checked, onSwitch, onPressIn, onPressOut }) => {
+const PetSwitch = ({ pets = [], checked, onSwitch, onPressIn, onPressOut, supressed = false }) => {
     const [open, setOpen] = useState(false);
     const [pressed, setPressed] = useState(false);
 
-    const _onOpen = () => setOpen(true);
+    const _onOpen = () => setOpen(!supressed && true);
     const _onClose = () => setOpen(false);
     const _onPressIn = () => {
         setPressed(true);
@@ -41,7 +41,7 @@ const PetSwitch = ({ pets = [], checked, onSwitch, onPressIn, onPressOut }) => {
     return (
         <React.Fragment>
             <Pressable style={styles.base} onPress={_onOpen} onPressIn={_onPressIn} onPressOut={_onPressOut}>
-                <Icon icon="fas caret-down" size={18} color={pressed ? CT.BG_PURPLE_600 : CT.BG_PURPLE_500} />
+                {!supressed && <Icon icon="fas caret-down" size={18} color={pressed ? CT.BG_PURPLE_600 : CT.BG_PURPLE_500} />}
                 <Pet size={34} style={styles.petImage} image={currentPet?.imageURL} onPress={_onOpen} />
             </Pressable>
 

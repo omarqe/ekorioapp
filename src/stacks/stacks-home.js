@@ -6,6 +6,7 @@ import NotificationScreen from "../screens/home/notification";
 import PetFormScreen from "../screens/pet/form";
 import PetHealthRecordsScreen from "../screens/pet/health-records";
 import PetHealthDetailsScreen from "../screens/pet/health-details";
+import PetHealthSurveyScreen from "../screens/pet/health-survey";
 
 const Stack = createStackNavigator();
 const PetStacks = () => {
@@ -15,6 +16,7 @@ const PetStacks = () => {
         { name: "notification", component: NotificationScreen },
         { name: "pet__health-records", component: PetHealthRecordsScreen },
         { name: "pet__health-details", component: PetHealthDetailsScreen },
+        { name: "pet__health-survey", component: PetHealthSurveyScreen },
         { name: "pet__form", component: PetFormScreen },
     ];
 

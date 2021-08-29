@@ -10,11 +10,11 @@ import _get from "lodash/get";
 const Button = (props) => {
     let variant = {};
     const [pressed, setPressed] = useState(0);
-    const { text, style, small = false, disabled = false, color = "default", onPress, icon, iconRight } = props;
+    const { text, style, textStyle, small = false, disabled = false, color = "default", onPress, icon, iconRight } = props;
 
     const colors = {
         label: { default: CT.FONT_COLOR, yellow: CT.BG_YELLOW_800, purple: CT.BG_PURPLE_50 },
-        icon: { default: CT.BG_GRAY_200, yellow: CT.BG_YELLOW_700, purple: CT.BG_PURPLE_300 },
+        icon: { default: CT.BG_GRAY_200, yellow: CT.BG_YELLOW_700, purple: CT.BG_PURPLE_400 },
         base: [
             { default: CT.BG_WHITE, yellow: CT.BG_YELLOW_500, purple: CT.BG_PURPLE_500 }, // pressed=0
             { default: CT.BG_GRAY_50, yellow: CT.BG_YELLOW_600, purple: CT.BG_PURPLE_600 }, // pressed=1
@@ -34,9 +34,9 @@ const Button = (props) => {
     // Handle style
     const baseStyle = [styles.base, variant?.base, variant?.small?.base, style];
     const labelStyle = [styles.label, variant?.label, variant?.small?.label];
-    const ButtonIcon = ({ position = "left" }) => {
+    const ButtonIcon = ({ color: btnColor, position = "left" }) => {
         const size = small ? 14 : 16;
-        const color = _get(colors, `icon[${color}]`, colors.icon.default);
+        const color = _get(colors, `icon[${btnColor}]`, colors.icon.default);
         const iconProps = { icon, size, color, style: position === "left" ? styles.iconLeft : styles.iconRight };
 
         if (icon && !iconRight && position === "left") return <Icon {...iconProps} />;
@@ -52,9 +52,9 @@ const Button = (props) => {
             onPressOut={!disabled ? setPressed.bind(null, 0) : null}
         >
             <View style={[baseStyle, { opacity: disabled ? 0.4 : 1 }]}>
-                <ButtonIcon position="left" />
-                <Text style={labelStyle}>{text}</Text>
-                <ButtonIcon position="right" />
+                <ButtonIcon color={color} position="left" />
+                <Text style={[labelStyle, textStyle]}>{text}</Text>
+                <ButtonIcon color={color} position="right" />
             </View>
         </Pressable>
     );
@@ -90,13 +90,14 @@ const styles = StyleSheet.create({
 });
 
 Button.propTypes = {
+    onPress: PropTypes.func,
     iconRight: PropTypes.bool,
     icon: PropTypes.string,
     text: PropTypes.string,
     small: PropTypes.bool,
-    style: PropTypes.object,
     color: PropTypes.oneOf(["default", "yellow", "purple"]),
-    onPress: PropTypes.func,
+    style: PropTypes.object,
+    textStyle: PropTypes.object,
 };
 
 export default Button;
