@@ -1,134 +1,121 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CT from "../../const.js";
 
-import HealthDetails from "../../components/home/health-details.js";
-import Charts from "../../components/home/charts";
-import Pet from "../../components/home/pet";
 import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
+
+import Modal from "../../components/modal";
+import PetList from "../../components/pet/pet-list";
+import PetIdentity from "../../components/pet/pet-identity";
+import HealthCharts from "../../components/pet/health-charts";
+import HealthCategories from "../../components/pet/health-categories";
 
 import Heading from "../../components/heading";
 import TopBar from "../../components/topbar";
 import Container from "../../components/container";
 import ButtonIcon from "../../components/button-icon";
-import PetIdentity from "../../components/pet-identity";
 
 import { View, StyleSheet } from "react-native";
 import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
 
+import _find from "lodash/find";
 import _times from "lodash/times";
+import _first from "lodash/first";
+import _capitalize from "lodash/capitalize";
 
-const Home = ({ route }) => {
+import pets from "../../../data/pets.json";
+import health from "../../../data/health.json";
+import petTypes from "../../../data/pet-types.json";
+
+const HomeScreen = connectActionSheet(({ navigation }) => {
+    const go = (key, options = {}) => navigation.navigate(key, options);
+    const [data, setData] = useState(null);
+    const [healthData, setHealthData] = useState(null);
     const { showActionSheetWithOptions } = useActionSheet();
-    const healthData = {
-        chart: [
-            {
-                id: "physical",
-                label: "Physical",
-                value: 0.25,
-                delta: 0.1,
-                indicator: "up",
-            },
-            {
-                id: "nutrition",
-                label: "Nutrition",
-                value: 0.55,
-                delta: 0.25,
-                indicator: "up",
-            },
-            {
-                id: "lifestyle",
-                label: "Lifestyle",
-                value: 0.8,
-                delta: 0.3,
-                indicator: "up",
-            },
-        ],
-        details: [
-            { id: 0, label: "Eyes", score: 9 },
-            { id: 0, label: "Ears", score: 10 },
-            { id: 0, label: "Teeth & Mouth", score: 6 },
-            { id: 0, label: "Skin & Coat", score: 6 },
-            { id: 0, label: "Fleas", score: 10 },
-            { id: 0, label: "Ticks", score: 10 },
-            { id: 0, label: "Heart", score: 9 },
-            { id: 0, label: "Heartworms", score: 9 },
-            { id: 0, label: "Breathing", score: 10 },
-            { id: 0, label: "Bones & Joints", score: 7 },
-            { id: 0, label: "Alertness & Balance", score: 7 },
-            { id: 0, label: "Urinary Tract", score: 9 },
-            { id: 0, label: "Cancer & Immune Function", score: 10 },
-        ],
-    };
 
-    const petData = [
-        { label: "Name", value: "Cheshire" },
-        { label: "Microchip ID", value: "0028031030021", verified: true },
+    useEffect(() => {
+        const data = _first(pets);
+        const id = data?.id;
+        const healthData = _find(health, { id });
+
+        setData(data);
+        setHealthData(healthData);
+    }, []);
+
+    const healthChartsData = healthData?.chart;
+    const healthCategoriesData = _find(healthData?.categories, { current: true })?.data;
+    const displayData = [
+        { label: "Name", value: data?.name },
+        { label: "Microchip ID", value: data?.microchipID, verified: data?.microchipVerified },
         { label: "Parent's Name", value: "Eve Harrison" },
         { label: "Colors", value: ["#3E4C59", "#9AA5B1"] },
-        { label: "Breed", value: "British Shorthair" },
-        { label: "Birthday", value: "Jan 1, 2021" },
-        { label: "Age (Cat Year)", value: "7 months" },
-        { label: "Age (Human Year)", value: "11 years" },
-        { label: "Gender", value: "Male" },
-        { label: "Weight", value: "2.50 kg" },
+        { label: "Breed", value: _find(_find(petTypes, { id: data?.type })?.breeds, { value: data?.breedID })?.label },
+        { label: "Birthday", value: data?.birthday },
+        { label: "Age (Cat Year)", value: data?.agePet },
+        { label: "Age (Human Year)", value: data?.ageHuman },
+        { label: "Gender", value: _capitalize(data?.gender) },
+        { label: "Weight", value: `${data?.weight} kg` },
     ];
 
-    const onMoreOptions = () => {
-        const options = ["Reevaluate Health", "View Medical History", "Done"];
-        const cancelButtonIndex = 2;
-
+    const _onChangePet = (id) => {
+        setData(_find(pets, { id }));
+        setHealthData(_find(health, { id }));
+    };
+    const _onOptions = () => {
+        const options = ["Update Pet", "Reevaluate Health", "View Health Records", "Done"];
+        const cancelButtonIndex = 3;
         showActionSheetWithOptions({ options, cancelButtonIndex }, (buttonIndex) => {
-            switch (buttonIndex) {
-                case 0:
-                    alert("Reevaluate health!");
-                    break;
-                case 1:
-                    alert("Viewing medical history");
-                    break;
+            const cmd = [
+                go.bind(null, "pet__form", data),
+                go.bind(null, "pet__health-survey", { petID: data?.id }),
+                go.bind(null, "pet__health-records", { petID: data?.id }),
+            ];
+            if (typeof cmd[buttonIndex] === "function") {
+                cmd[buttonIndex]();
             }
         });
     };
 
     return (
         <Container>
-            <TopBar
-                type={2}
-                leftIcon="arrow-left"
-                rightIcon="bell"
-                rightIconProps={{ onPress: () => alert("Opening notifications.."), dot: true }}
-                logoProps={{ onPress: () => alert("Moving up!") }}
-            />
+            <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: go.bind(null, "pet__form", null) }} />
 
             <Layout gray withHeader>
                 <Header horizontal overlap>
-                    <Pet active />
-                    <Pet add />
+                    <PetList size={65} margin={4} active={data?.id} onPress={_onChangePet} />
                 </Header>
 
                 <Body topRounded overlap>
                     <View style={styles.headingSection}>
-                        <Heading text="Health Stats" subtitle="Last evaluated 3 weeks ago" />
+                        <Heading text={`${data?.name}'s Health`} subtitle="Last evaluated 3 weeks ago" gapless />
                         <View style={styles.actionBtnContainer}>
-                            <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={onMoreOptions} inverted />
+                            <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={_onOptions} inverted />
                         </View>
                     </View>
                     <View style={styles.section}>
-                        <Charts data={healthData?.chart} />
+                        <HealthCharts data={healthChartsData} />
                     </View>
                     <View style={{ ...styles.section, marginBottom: 0 }}>
-                        <HealthDetails data={healthData?.details} />
+                        <HealthCategories data={healthCategoriesData} />
                     </View>
                 </Body>
 
                 <Body gray>
-                    <PetIdentity data={petData} />
+                    <PetIdentity
+                        data={displayData}
+                        button={{
+                            icon: "far edit",
+                            text: "Update Pet",
+                            onPress: go.bind(null, "pet__form", data),
+                            iconRight: true,
+                        }}
+                    />
                 </Body>
             </Layout>
         </Container>
     );
-};
+});
 
 const styles = StyleSheet.create({
     actionBtnContainer: {
@@ -178,5 +165,4 @@ const styles = StyleSheet.create({
     },
 });
 
-const HomeScreen = connectActionSheet(Home);
 export default HomeScreen;

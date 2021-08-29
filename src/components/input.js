@@ -1,92 +1,205 @@
 import React, { useState, useContext } from "react";
 import CT from "../const.js";
-import PropTypes from "prop-types";
+import Icon from "./icon";
+import Text from "./text";
 import Context from "./context";
-import { View, TextInput, StyleSheet } from "react-native";
+import ModalPicker from "./modal-picker";
+import PropTypes from "prop-types";
 
-import _omit from "lodash/omit";
+import { countries } from "countries-list";
+import { View, Image, Pressable, TextInput, StyleSheet } from "react-native";
 
-const Input = (props) => {
-    const [isFocused, setIsFocused] = useState(false);
-    const { type = null, style = {}, onFocus, onBlur, inputStyle = {} } = props;
-    const appendedProps = _omit(props, ["type", "style", "onFocus", "inputStyle"]);
+import _find from "lodash/find";
+import _uniqBy from "lodash/uniqBy";
+import _sortBy from "lodash/sortBy";
+import _renderIf from "../functions/renderIf";
+import _lowerCase from "lodash/lowerCase";
+
+const Input = ({
+    name,
+    icon,
+    iconProps = {},
+    type = null,
+    style = {},
+    onChange,
+    onFocus,
+    onBlur,
+    inputStyle = {},
+    nameCC,
+    callingCode = CT.DEFAULT_CALLING_CODE,
+    ...restProps
+}) => {
+    const [focused, setFocused] = useState(false);
+    const [ccPicker, setCCPicker] = useState(false);
     const ctx = useContext(Context.Fields);
+    const inputRef = ctx?.ref;
+
+    // Generate calling code options
+    const callingCodes = Object.keys(countries).map((key) => {
+        if (countries.hasOwnProperty(key)) {
+            const { phone, name } = countries[key];
+            return { value: parseInt(phone), label: `${name} (+${phone})`, abbrv: key };
+        }
+    });
+    const countryAbbrv = _lowerCase(_find(callingCodes, { value: callingCode })?.abbrv);
+    const countryFlag = { uri: `https://countryflags.io/${countryAbbrv}/flat/64.png` };
+
+    const _onPressFocusInput = () => {
+        if (inputRef?.current) {
+            inputRef?.current.focus();
+            _onFocus();
+        }
+    };
+    const _onValueChange = (value) => {
+        if (typeof onChange === "function") {
+            onChange(value, name);
+        }
+    };
+    const _onCallingCodeChange = (value) => {
+        if (typeof onChange === "function") {
+            onChange(value, nameCC);
+        }
+    };
 
     // Hook onFocus() and onBlur() callbacks
     const _onFocus = () => {
-        setIsFocused(true);
+        setFocused(true);
         if (typeof onFocus === "function") {
             onFocus();
         }
     };
     const _onBlur = () => {
-        setIsFocused(false);
+        setFocused(false);
         if (typeof onBlur === "function") {
             onBlur();
         }
     };
 
     let inputBaseStyle = { ...styles.inputBase, ...style };
-    if (isFocused) {
+    if (focused) {
         inputBaseStyle = { ...inputBaseStyle, borderColor: CT.BORDER_FOCUS };
     }
 
-    let preparedProps = {};
-    switch (type) {
-        case "name":
-        case "username":
-            preparedProps = { autoCapitalize: "words", textContentType: type };
-            break;
-        case "password":
-            preparedProps = { keyboardType: "visible-password", secureTextEntry: true, textContentType: "password" };
-            break;
-        case "email":
-            preparedProps = { keyboardType: "email-address", autoCapitalize: "none", textContentType: "emailAddress" };
-            break;
-        case "tel":
-        case "phone":
-            preparedProps = { keyboardType: "phone-pad", textContentType: "telephoneNumber" };
-            break;
-        case "number":
-            preparedProps = { keyboardType: "number-pad" };
-            break;
-        case "url":
-            preparedProps = { keyboardType: "url", textContentType: "URL" };
-            break;
-    }
+    let typeProps = {
+        text: {},
+        tel: { keyboardType: "phone-pad", textContentType: "telephoneNumber" },
+        url: { keyboardType: "url", textContentType: "URL" },
+        name: { autoCapitalize: "words", textContentType: type },
+        email: { keyboardType: "email-address", autoCapitalize: "none", textContentType: "emailAddress" },
+        number: { keyboardType: "number-pad" },
+        password: { secureTextEntry: true, textContentType: "password", multiline: false },
+        textarea: { multiline: true },
+    };
+    typeProps.phone = typeProps.tel;
+    typeProps.username = typeProps.name;
 
     return (
-        <View style={inputBaseStyle}>
+        <Pressable style={inputBaseStyle} onPress={_onPressFocusInput}>
+            {_renderIf(
+                ["tel", "phone"].indexOf(type) > -1, // Calling Code Picker
+                <Pressable style={styles.callingCodes} onPress={setCCPicker.bind(null, true)}>
+                    <View style={styles.countryFlagContainer}>
+                        <Image source={countryFlag} style={styles.countryFlag} />
+                    </View>
+                    <Text style={[styles.input, { flex: 0, color: CT.BG_GRAY_500 }]} allowFontScaling={false}>
+                        +{callingCode}
+                    </Text>
+                    <Icon icon="caret-down" style={styles.callingCodesCaret} />
+                    <ModalPicker
+                        selectedValue={callingCode}
+                        open={ccPicker}
+                        label="Calling Codes"
+                        options={_uniqBy(_sortBy(callingCodes, "label"), "label")}
+                        onClose={setCCPicker.bind(null, false)}
+                        onValueChange={_onCallingCodeChange}
+                    />
+                </Pressable>
+            )}
             <TextInput
                 ref={ctx?.ref}
-                style={inputStyle}
+                style={{ ...styles.input, ...inputStyle }}
                 onBlur={_onBlur}
                 onFocus={_onFocus}
-                {...preparedProps}
-                {...appendedProps}
+                onChangeText={_onValueChange}
+                allowFontScaling={false}
+                placeholderTextColor={CT.BG_GRAY_300}
+                {...typeProps[type]}
+                {...restProps}
             />
-        </View>
+            {icon && (
+                <View style={styles.iconContainer}>
+                    <Icon icon={icon} color={CT.BG_GRAY_600} {...iconProps} />
+                </View>
+            )}
+        </Pressable>
     );
 };
 
 Input.propTypes = {
+    callingCode: PropTypes.number,
+    nameCC: PropTypes.string,
+    name: PropTypes.string,
+    icon: PropTypes.string,
+    iconProps: PropTypes.object,
+    onChange: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
-    type: PropTypes.oneOf(["name", "username", "password", "email", "tel", "phone", "number", "url"]),
+    type: PropTypes.oneOf(CT.INPUT_TYPES),
     style: PropTypes.object,
     inputStyle: PropTypes.object,
     placeholder: PropTypes.string,
 };
 
+const radius = 6;
 const styles = StyleSheet.create({
+    input: {
+        flex: 1,
+        height: 18,
+        fontSize: 14,
+        borderRadius: radius,
+        backgroundColor: CT.BG_WHITE,
+    },
     inputBase: {
         padding: 15,
         fontSize: 16,
+        alignItems: "center",
         borderWidth: 1,
         borderColor: CT.BG_GRAY_100,
-        borderRadius: 6,
+        borderRadius: radius,
+        flexDirection: "row",
         backgroundColor: CT.BG_WHITE,
         ...CT.SHADOW_SM,
+    },
+    iconContainer: {
+        paddingRight: 12,
+    },
+    inputContainer: {
+        flex: 1,
+        alignItems: "center",
+        flexDirection: "row",
+    },
+
+    countryFlag: {
+        width: 21,
+        height: 15,
+        borderRadius: 5,
+    },
+    countryFlagContainer: {
+        width: 21,
+        height: 15,
+        marginRight: 5,
+        borderRadius: 5,
+        ...CT.SHADOW_sm,
+    },
+    callingCodes: {
+        marginRight: 5,
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    callingCodesCaret: {
+        top: 0,
+        color: CT.BG_GRAY_200,
+        marginLeft: 1,
     },
 });
 

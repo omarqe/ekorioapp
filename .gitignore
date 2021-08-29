@@ -1,6 +1,4 @@
-node_modules/
 .expo/
-npm-debug.*
 *.jks
 *.p8
 *.p12
@@ -9,6 +7,10 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+node_modules/
+npm-debug.*
+src/screens/template.js
+src/components/template.js
 
 # macOS
 .DS_Store

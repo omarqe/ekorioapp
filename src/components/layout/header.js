@@ -3,15 +3,9 @@ import CT from "../../const.js";
 import PropTypes from "prop-types";
 import { View, ScrollView, StyleSheet } from "react-native";
 
-import _omit from "lodash/omit";
 import _renderIf from "../../functions/renderIf";
 
-const Header = (props) => {
-    let { children, overlap = false, horizontal = false, contentStyle: cStyle = {}, contentProps = {} } = props;
-    let appendedProps = _omit(props, ["children", "contentStyle"]);
-    let contentStyle = { ...styles.content, ...cStyle };
-    let baseStyle = styles.base;
-
+const Header = ({ children, overlap = false, horizontal = false, style, contentStyle, contentProps, ...restProps }) => {
     if (horizontal) {
         contentProps = {
             horizontal: true,
@@ -20,18 +14,14 @@ const Header = (props) => {
         };
     }
 
-    if (overlap) {
-        baseStyle = { ...baseStyle, paddingBottom: 50 };
-    }
-
     return (
-        <View style={baseStyle} {...appendedProps}>
+        <View style={[styles.base, overlap ? { paddingBottom: 50 } : null, style]} {...restProps}>
             {_renderIf(
                 horizontal,
-                <ScrollView contentContainerStyle={contentStyle} {...contentProps}>
+                <ScrollView contentContainerStyle={[styles.content, contentStyle]} {...contentProps}>
                     {children}
                 </ScrollView>,
-                <View style={contentStyle} {...contentProps}>
+                <View style={[styles.content, contentStyle]} {...contentProps}>
                     {children}
                 </View>
             )}
@@ -41,6 +31,8 @@ const Header = (props) => {
 
 Header.propTypes = {
     type: PropTypes.oneOf([0, 1, 2, 3]),
+    style: PropTypes.object,
+    overlap: PropTypes.bool,
     horizontal: PropTypes.bool,
     contentStyle: PropTypes.object,
     contentProps: PropTypes.object,

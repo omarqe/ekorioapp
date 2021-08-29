@@ -1,16 +1,18 @@
 import React from "react";
 import CT from "../const.js";
+import Text from "./text";
 import Logo from "../../assets/logo.svg";
 import ButtonIcon from "../components/button-icon";
 import PropTypes from "prop-types";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
+import _renderIf from "../functions/renderIf";
 
 const TopBar = (props) => {
     let topBarStyle = { ...styles.base, ...style };
-    let { type = 0, style = {}, title = null, subtitle = null, logoProps = {} } = props;
-    let { leftIcon, leftIconProps = {}, rightIcon, rightIconProps = {} } = props;
+    let { type = 0, style = {}, kicker = null, title = null, subtitle = null, logoProps = {}, disabled = false } = props;
+    let { leftIcon, leftIconProps = {}, rightIcon, rightIconProps = {}, leftComponent, rightComponent } = props;
 
     let leftIconStyle = styles.leftIcon;
     let rightIconStyle = styles.rightIcon;
@@ -19,6 +21,26 @@ const TopBar = (props) => {
     if (leftIconProps.glow === true) leftIconStyle = { ...leftIconStyle, marginRight: 0 };
     if (rightIconProps.glow === true) rightIconStyle = { ...rightIconStyle, marginRight: 0 };
 
+    const SideComponent = (props) => {
+        const { right = false, style = {} } = props;
+
+        const icon = !right ? leftIcon : rightIcon;
+        const iconStyle = !right ? leftIconStyle : rightIconStyle;
+        const iconProps = !right ? leftIconProps : rightIconProps;
+        const component = !right ? leftComponent : rightComponent;
+
+        if (component) {
+            return component;
+        } else if (icon) {
+            const color = disabled ? CT.BG_PURPLE_500 : CT.BG_PURPLE_400;
+            const addedProps = _omit(props, ["right", "style"]);
+            const addedStyle = { ...iconStyle, ...style };
+
+            return <ButtonIcon icon={icon} color={color} style={addedStyle} {...addedProps} {...iconProps} small />;
+        }
+        return null;
+    };
+
     switch (type) {
         case 0:
         default:
@@ -26,30 +48,15 @@ const TopBar = (props) => {
                 <View style={topBarStyle}>
                     <View style={styles.content}>
                         <View style={styles.leftContent}>
-                            {leftIcon && (
-                                <ButtonIcon
-                                    icon={leftIcon}
-                                    style={leftIconStyle}
-                                    color={CT.BG_PURPLE_400}
-                                    {...leftIconProps}
-                                    small
-                                />
-                            )}
+                            <SideComponent />
                         </View>
                         <View style={styles.midContent}>
-                            <Text style={styles.title}>{title}</Text>
+                            {kicker && <Text style={styles.kicker}>{kicker}</Text>}
+                            <Text style={[styles.title, { fontSize: kicker || subtitle ? 16 : 18 }]}>{title}</Text>
                             {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
                         </View>
                         <View style={styles.rightContent}>
-                            {rightIcon && (
-                                <ButtonIcon
-                                    icon={rightIcon}
-                                    style={rightIconStyle}
-                                    color={CT.BG_PURPLE_400}
-                                    {...rightIconProps}
-                                    small
-                                />
-                            )}
+                            <SideComponent right />
                         </View>
                     </View>
                 </View>
@@ -59,29 +66,17 @@ const TopBar = (props) => {
             return (
                 <View style={topBarStyle}>
                     <View style={styles.content}>
-                        {leftIcon && (
+                        {(leftIcon || leftComponent) && (
                             <View style={styles.leftContent}>
-                                <ButtonIcon
-                                    icon={leftIcon}
-                                    style={leftIconStyle}
-                                    color={CT.BG_PURPLE_400}
-                                    {...leftIconProps}
-                                    small
-                                />
+                                <SideComponent />
                             </View>
                         )}
                         <View style={{ ...styles.midContent, flex: 8 }}>
                             <Text style={styles.largeTitle}>{title}</Text>
                         </View>
-                        {rightIcon && (
+                        {(rightIcon || rightComponent) && (
                             <View style={styles.rightContent}>
-                                <ButtonIcon
-                                    icon={rightIcon}
-                                    style={rightIconStyle}
-                                    color={CT.BG_PURPLE_400}
-                                    {...rightIconProps}
-                                    small
-                                />
+                                <SideComponent right />
                             </View>
                         )}
                     </View>
@@ -98,14 +93,7 @@ const TopBar = (props) => {
                             <Logo {...logoProps} />
                         </View>
                         <View style={styles.rightContent}>
-                            {rightIcon && (
-                                <ButtonIcon
-                                    glow
-                                    icon={rightIcon}
-                                    style={{ ...rightIconStyle, marginRight: 0 }}
-                                    {...rightIconProps}
-                                />
-                            )}
+                            <SideComponent style={{ ...rightIconStyle, marginRight: 0 }} glow right />
                         </View>
                     </View>
                 </View>
@@ -116,29 +104,13 @@ const TopBar = (props) => {
                 <View style={topBarStyle}>
                     <View style={styles.content}>
                         <View style={styles.leftContent}>
-                            {leftIcon && (
-                                <ButtonIcon
-                                    icon={leftIcon}
-                                    style={leftIconStyle}
-                                    color={CT.BG_PURPLE_400}
-                                    {...leftIconProps}
-                                    small
-                                />
-                            )}
+                            <SideComponent />
                         </View>
                         <View style={{ ...styles.midContent, alignItems: "center" }}>
                             <Logo {...logoProps} />
                         </View>
                         <View style={styles.rightContent}>
-                            {rightIcon && (
-                                <ButtonIcon
-                                    icon={rightIcon}
-                                    style={rightIconStyle}
-                                    color={CT.BG_PURPLE_400}
-                                    {...rightIconProps}
-                                    small
-                                />
-                            )}
+                            <SideComponent right />
                         </View>
                     </View>
                 </View>
@@ -150,12 +122,17 @@ TopBar.propTypes = {
     type: PropTypes.oneOf([0, 1, 2, 3]),
     style: PropTypes.object,
     title: PropTypes.string,
+    kicker: PropTypes.string,
     subtitle: PropTypes.string,
+    logoProps: PropTypes.object,
+
     leftIcon: PropTypes.string,
     rightIcon: PropTypes.string,
-    logoProps: PropTypes.object,
     leftIconProps: PropTypes.object,
     rightIconProps: PropTypes.object,
+
+    leftComponent: PropTypes.oneOfType([PropTypes.object, PropTypes.func, PropTypes.node]),
+    rightComponent: PropTypes.oneOfType([PropTypes.object, PropTypes.func, PropTypes.node]),
 };
 
 const contentCommonStyle = { flex: 1, height: 40, display: "flex", justifyContent: "center" };
@@ -172,6 +149,7 @@ const styles = StyleSheet.create({
     },
     content: {
         display: "flex",
+        alignItems: "center",
         flexDirection: "row",
     },
 
@@ -202,13 +180,18 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: 18,
         fontWeight: "600",
-        paddingTop: 2,
     },
-    subtitle: {
-        color: CT.BG_PURPLE_300,
+    kicker: {
+        color: CT.BG_PURPLE_400,
         fontSize: 12,
         textAlign: "center",
-        marginTop: 1,
+        marginBottom: 2,
+    },
+    subtitle: {
+        color: CT.BG_PURPLE_400,
+        fontSize: 12,
+        textAlign: "center",
+        marginTop: 2,
     },
     largeTitle: {
         color: CT.BG_WHITE,

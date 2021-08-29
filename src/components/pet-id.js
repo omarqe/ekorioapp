@@ -1,13 +1,14 @@
 import React from "react";
 import CT from "../const";
+import Text from "./text";
 import Icon from "./icon";
 import PropTypes from "prop-types";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 import _isArray from "lodash/isArray";
 import _renderIf from "../functions/renderIf";
 
-const PetID = ({ label, value, style, labelStyle, valueStyle, verified = false }) => {
+const PetID = ({ label, value, style, verified = false, labelStyle, valueStyle }) => {
     const valueIsArray = _isArray(value);
 
     let colors = [];
@@ -37,12 +38,12 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     label: {
-        color: CT.BG_GRAY_400,
+        color: CT.FONT_COLOR_LIGHT,
         fontSize: 14,
         fontWeight: "500",
     },
     value: {
-        color: CT.BG_GRAY_700,
+        color: CT.FONT_COLOR,
         position: "relative",
         fontSize: 18,
         fontWeight: "700",
@@ -73,10 +74,10 @@ const styles = StyleSheet.create({
 });
 
 PetID.propTypes = {
-    verified: PropTypes.bool,
-    label: PropTypes.string.isRequired,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
+    label: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
     style: PropTypes.object,
+    verified: PropTypes.bool,
     labelStyle: PropTypes.object,
     valueStyle: PropTypes.object,
 };

@@ -1,4 +1,4 @@
-import { Platform, PixelRatio } from "react-native";
+import { Dimensions, Platform, PixelRatio } from "react-native";
 
 const isIOS = Platform.OS === "ios";
 const isIpad = Platform.isPad;
@@ -9,12 +9,20 @@ export default {
     IS_IPAD: isIpad,
     IS_ANDROID: isAndroid,
 
+    SCREEN_WIDTH: Dimensions.get("window").width,
+    SCREEN_HEIGHT: Dimensions.get("window").height,
+
     IS_MDPI: PixelRatio.get() === 1,
     IS_HDPI: PixelRatio.get() === 1.5,
     IS_XHDPI: PixelRatio.get() === 2,
     IS_2XHDPI: PixelRatio.get() === 3,
     IS_3XHDPI: PixelRatio.get() === 3.5,
     PIXELRATIO: PixelRatio.get(),
+
+    INPUT_TYPES: ["text", "name", "select", "username", "password", "email", "tel", "phone", "number", "url", "textarea"],
+
+    DEFAULT_CALLING_CODE: 60, // Malaysia (+60)
+    DEFAULT_ANIMATION_TIMING: 200, // Used in dashboard charts
 
     BG_BLACK: "#000000",
     BG_WHITE: "#FFFFFF",
@@ -50,6 +58,9 @@ export default {
     CTA_NEUTRAL: "#2c84ff",
     BORDER_FOCUS: "#96BAFF",
 
+    FONT_COLOR: "#323f4b",
+    FONT_COLOR_LIGHT: "#616e7c",
+
     VIEW_PADDING_X: 25,
     VIEW_PADDING_TOP: isIOS ? 10 : 40,
 
@@ -68,5 +79,35 @@ export default {
             height: 1,
         },
         elevation: 0.5,
+    },
+    SHADOW_MD: {
+        shadowOpacity: 0.08,
+        shadowColor: "#000000",
+        shadowRadius: 4,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        elevation: 3,
+    },
+    SHADOW_LG: {
+        shadowOpacity: 0.1,
+        shadowColor: "#000000",
+        shadowRadius: 8,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        elevation: 5,
+    },
+    GLOW_PURPLE: {
+        shadowOpacity: 0.15,
+        shadowColor: "#ad9dbc",
+        shadowRadius: 10,
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        elevation: 3,
     },
 };

@@ -1,97 +1,103 @@
-import React from "react";
+import React, { useState } from "react";
 import CT from "../const.js";
 import Icon from "./icon";
+import Text from "./text";
 import PropTypes from "prop-types";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Pressable, StyleSheet } from "react-native";
 
-import _omit from "lodash/omit";
+import _get from "lodash/get";
 
 const Button = (props) => {
-    const { label, small = false, color = "yellow", style, touchableStyle } = props;
-    const appendedProps = _omit(props, [
-        "label",
-        "small",
-        "color",
-        "style",
-        "icon",
-        "iconProps",
-        "iconRight",
-        "touchableStyle",
-    ]);
+    let variant = {};
+    const [pressed, setPressed] = useState(0);
+    const { text, style, textStyle, small = false, disabled = false, color = "default", onPress, icon, iconRight } = props;
 
-    let labelStyle = styles.label;
-    let buttonStyle = { ...styles.buttonStyle, ...style };
-    let buttonTouchStyle = { ...styles.touchable };
+    const colors = {
+        label: { default: CT.FONT_COLOR, yellow: CT.BG_YELLOW_800, purple: CT.BG_PURPLE_50 },
+        icon: { default: CT.BG_GRAY_200, yellow: CT.BG_YELLOW_700, purple: CT.BG_PURPLE_400 },
+        base: [
+            { default: CT.BG_WHITE, yellow: CT.BG_YELLOW_500, purple: CT.BG_PURPLE_500 }, // pressed=0
+            { default: CT.BG_GRAY_50, yellow: CT.BG_YELLOW_600, purple: CT.BG_PURPLE_600 }, // pressed=1
+        ],
+    };
 
+    // Handle variants
+    variant.label = { color: _get(colors, `label[${color}]`, colors.label.default) };
+    variant.small = {};
+    variant.base = { backgroundColor: _get(colors, `base[${pressed}][${color}]`, colors.base[pressed].default) };
+    if (color !== "default") variant.base.borderColor = variant.base.backgroundColor;
     if (small) {
-        labelStyle = { ...labelStyle, fontSize: 14, textTransform: "none" };
-        buttonTouchStyle = { ...buttonTouchStyle, padding: CT.PIXELRATIO < 3 ? 8 : 10 };
+        variant.small.base = { padding: CT.PIXELRATIO < 3 ? 8 : 10, borderRadius: 8 };
+        variant.small.label = { fontSize: 14, textTransform: "none" };
     }
 
-    switch (color) {
-        case "white": {
-            labelStyle = { ...labelStyle, color: CT.BG_GRAY_700 };
-            buttonStyle = { ...buttonStyle, borderColor: CT.BG_GRAY_100, backgroundColor: CT.BG_GRAY_50 };
-            buttonTouchStyle = { ...buttonTouchStyle, backgroundColor: CT.BG_WHITE };
-        }
-    }
+    // Handle style
+    const baseStyle = [styles.base, variant?.base, variant?.small?.base, style];
+    const labelStyle = [styles.label, variant?.label, variant?.small?.label];
+    const ButtonIcon = ({ color: btnColor, position = "left" }) => {
+        const size = small ? 14 : 16;
+        const color = _get(colors, `icon[${btnColor}]`, colors.icon.default);
+        const iconProps = { icon, size, color, style: position === "left" ? styles.iconLeft : styles.iconRight };
 
-    // Give margin to icon
-    let iconColor = CT.BG_GRAY_300;
-    const { icon, iconProps = {}, iconRight = false } = props;
-    iconProps.style = { ...iconProps?.style, marginTop: -2, marginLeft: iconRight ? 5 : 0, marginRight: !iconRight ? 5 : 0 };
+        if (icon && !iconRight && position === "left") return <Icon {...iconProps} />;
+        else if (icon && iconRight && position === "right") return <Icon {...iconProps} />;
+        else return null;
+    };
 
     return (
-        <View style={buttonStyle}>
-            <TouchableOpacity
-                style={{ ...buttonTouchStyle, ...touchableStyle }}
-                activeOpacity={CT.ACTIVE_OPACITY}
-                {...appendedProps}
-            >
-                {icon && !iconRight && <Icon icon={icon} color={iconColor} {...iconProps} />}
-                <Text style={labelStyle}>{label}</Text>
-                {icon && iconRight && <Icon icon={icon} color={iconColor} {...iconProps} />}
-            </TouchableOpacity>
-        </View>
+        <Pressable
+            disabled={disabled}
+            onPress={!disabled ? onPress : null}
+            onPressIn={!disabled ? setPressed.bind(null, 1) : null}
+            onPressOut={!disabled ? setPressed.bind(null, 0) : null}
+        >
+            <View style={[baseStyle, { opacity: disabled ? 0.4 : 1 }]}>
+                <ButtonIcon color={color} position="left" />
+                <Text style={[labelStyle, textStyle]}>{text}</Text>
+                <ButtonIcon color={color} position="right" />
+            </View>
+        </Pressable>
     );
 };
 
-const radius = 8;
 const styles = StyleSheet.create({
-    buttonStyle: {
+    base: {
         ...CT.SHADOW_SM,
-        borderWidth: 1,
-        borderColor: CT.BG_YELLOW_500,
-        borderRadius: radius,
-        backgroundColor: CT.BG_YELLOW_600,
-    },
-    touchable: {
-        padding: 15,
-        display: "flex",
+        padding: 14,
         alignItems: "center",
         flexDirection: "row",
         justifyContent: "center",
-        borderRadius: radius,
-        backgroundColor: CT.BG_YELLOW_500,
+        backgroundColor: CT.BG_WHITE,
+        borderColor: CT.BG_GRAY_100,
+        borderWidth: 1,
+        borderRadius: 10,
     },
     label: {
-        color: CT.BG_YELLOW_900,
+        color: CT.FONT_COLOR,
         fontSize: 16,
         fontWeight: "700",
         textTransform: "uppercase",
         textAlign: "center",
     },
+    iconLeft: {
+        top: -1,
+        marginRight: 5,
+    },
+    iconRight: {
+        top: -1,
+        marginLeft: 5,
+    },
 });
 
 Button.propTypes = {
+    onPress: PropTypes.func,
     iconRight: PropTypes.bool,
-    iconProps: PropTypes.object,
     icon: PropTypes.string,
     text: PropTypes.string,
     small: PropTypes.bool,
+    color: PropTypes.oneOf(["default", "yellow", "purple"]),
     style: PropTypes.object,
-    color: PropTypes.oneOf(["yellow", "white"]),
-    onPress: PropTypes.func,
+    textStyle: PropTypes.object,
 };
 
 export default Button;

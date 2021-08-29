@@ -21,7 +21,7 @@ const LoginBody = ({ label, fields = [] }) => {
                 <View style={styles.content}>
                     <Fields fields={fields} grouping={grouping} />
                 </View>
-                <Button label={label} onPress={onSubmit} />
+                <Button text={label} color="yellow" onPress={onSubmit} />
             </View>
         </View>
     );

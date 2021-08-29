@@ -1,26 +1,28 @@
 import React from "react";
 import CT from "../const";
-import { View, Text, StyleSheet } from "react-native";
+import Text from "../components/text";
+import { View, StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 // Menu Icons
-import MeIcon from "../../assets/icons/user-circle.svg";
-import MeIconActive from "../../assets/icons/user-circle__active.svg";
+import AccountIcon from "../../assets/icons/user-circle.svg";
+import AccountIconActive from "../../assets/icons/user-circle__active.svg";
 import SpaceCatIcon from "../../assets/icons/space-cat.svg";
 import SpaceCatIconActive from "../../assets/icons/space-cat__active.svg";
 import CalendarIcon from "../../assets/icons/calendar.svg";
 import CalendarIconActive from "../../assets/icons/calendar__active.svg";
-import HospitalIcon from "../../assets/icons/hospital.svg";
-import HospitalIconActive from "../../assets/icons/hospital__active.svg";
-// import BellsIcon from "../../assets/icons/bells.svg";
-// import BellsIconActive from "../../assets/icons/bells__active.svg";
+import BellIcon from "../../assets/icons/bell.svg";
+import BellIconActive from "../../assets/icons/bell__active.svg";
+// import HospitalIcon from "../../assets/icons/hospital.svg";
+// import HospitalIconActive from "../../assets/icons/hospital__active.svg";
 
 // Navigation Stacks
 import HomeStacks from "./stacks-home";
-import VeterinarStacks from "./stacks-veterinar";
+import NotificationScreen from "../screens/home/notification";
+// import VeterinarStacks from "./stacks-veterinar";
 import AppointmentStacks from "./stacks-appointment";
-import MeStacks from "./stacks-me";
+import AccountStacks from "./stacks-account";
 
 // Intro Screens
 import IntroScreen from "../screens/intro";
@@ -61,12 +63,12 @@ export default {
                 icons: [SpaceCatIcon, SpaceCatIconActive],
                 component: HomeStacks,
             },
-            {
-                name: "veterinar_stacks",
-                label: "Find Vets",
-                icons: [HospitalIcon, HospitalIconActive],
-                component: VeterinarStacks,
-            },
+            // {
+            //     name: "veterinar_stacks",
+            //     label: "Find Vets",
+            //     icons: [HospitalIcon, HospitalIconActive],
+            //     component: VeterinarStacks,
+            // },
             {
                 name: "appointment_stacks",
                 label: "Appointments",
@@ -74,13 +76,21 @@ export default {
                 component: AppointmentStacks,
             },
             {
+                name: "notification",
+                label: "Notifications",
+                icons: [BellIcon, BellIconActive],
+                component: NotificationScreen,
+            },
+            {
                 name: "me_stacks",
                 label: "Me",
-                icons: [MeIcon, MeIconActive],
-                component: MeStacks,
+                icons: [AccountIcon, AccountIconActive],
+                component: AccountStacks,
             },
         ];
 
+        const lowRes = CT.PIXELRATIO < 3;
+        const shadowSize = lowRes ? 23 : 25;
         const screenOptions = ({ route }) => ({
             headerShown: false,
             tabBarStyle,
@@ -89,8 +99,8 @@ export default {
                 const Icon = _find(tabs, ["name", route?.name]).icons[focused ? 1 : 0];
                 return (
                     <View style={styles.iconContainer}>
-                        {focused && <View style={styles.iconShadow} />}
-                        <Icon />
+                        {focused && <View style={[styles.iconShadow, { width: shadowSize, height: shadowSize }]} />}
+                        <Icon height={lowRes ? 22 : 24} />
                     </View>
                 );
             },
@@ -132,7 +142,7 @@ const styles = StyleSheet.create({
         height: 25,
         position: "absolute",
         borderRadius: 25,
-        backgroundColor: CT.BG_PURPLE_100,
+        backgroundColor: CT.BG_PURPLE_50,
     },
     iconContainer: {
         display: "flex",

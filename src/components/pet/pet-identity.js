@@ -1,23 +1,25 @@
 import React from "react";
-import CT from "../const";
-import PetID from "./pet-id";
-import Button from "./button";
-import Heading from "./heading";
+import CT from "../../const";
+import PetID from "../pet-id";
+import Button from "../button";
+import Heading from "../heading";
 import PropTypes from "prop-types";
 import { View, StyleSheet } from "react-native";
 
 import _chunk from "lodash/chunk";
 
-const PetIdentity = ({ data }) => {
+const PetIdentity = ({ data, button = null }) => {
     const chunks = _chunk(data, 2);
 
     return (
         <React.Fragment>
             <View style={styles.headingSection}>
-                <Heading text="Pet Identity" subtitle="Family since 20 June 2021" badge={{ text: "Cat" }} />
-                <View style={styles.actionBtnContainer}>
-                    <Button icon="far edit" label="Update Pet" color="white" small iconRight />
-                </View>
+                <Heading text="Pet Identity" subtitle="Family since 20 June 2021" badge={{ text: "Cat" }} gapless />
+                {button && (
+                    <View style={styles.actionBtnContainer}>
+                        <Button small {...button} />
+                    </View>
+                )}
             </View>
 
             {chunks.map((items, i) => (
@@ -49,13 +51,14 @@ const styles = StyleSheet.create({
     headingSection: {
         display: "flex",
         alignItems: "center",
-        marginBottom: 30,
+        marginBottom: 20,
         flexDirection: "row",
     },
 });
 
 PetIdentity.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
+    button: PropTypes.object,
 };
 
 export default PetIdentity;
