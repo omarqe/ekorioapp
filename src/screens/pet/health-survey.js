@@ -18,7 +18,7 @@ import pets from "../../../data/pets.json";
 
 import { View, StyleSheet } from "react-native";
 
-export default function PetHealthEvaluationScreen({ navigation }) {
+export default function PetHealthSurveyScreen({ navigation }) {
     return (
         <Container style={{ backgroundColor: CT.BG_PURPLE_900 }}>
             <TopBar
@@ -159,7 +159,6 @@ const styles = StyleSheet.create({
 
     body: {
         paddingTop: 10,
-        paddingBottom: 0,
     },
     headerContent: {
         flexDirection: "column",
