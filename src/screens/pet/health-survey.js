@@ -1,24 +1,71 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CT from "../../const";
 
 import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
 
-import Icon from "../../components/icon";
-import Text from "../../components/text";
 import Button from "../../components/button";
 import TopBar from "../../components/topbar";
 import Heading from "../../components/heading";
 import PetSwitch from "../../components/pet/pet-switch";
 import Container from "../../components/container";
+import SurveyQuestion from "../../components/pet/survey-question";
 import ProgressBarSurvey from "../../components/progressbar-survey";
-
-import pets from "../../../data/pets.json";
 
 import { View, StyleSheet } from "react-native";
 
-export default function PetHealthSurveyScreen({ navigation }) {
+import pets from "../../../data/pets.json";
+import survey from "../../../data/survey/survey.json";
+
+import _get from "lodash/get";
+import _find from "lodash/find";
+import _findIndex from "lodash/findIndex";
+import _clone from "lodash/clone";
+
+export default function PetHealthSurveyScreen({ navigation, route }) {
+    const [answers, setAnswers] = useState([]);
+    const [sIndex, setSIndex] = useState(0); // Section Index
+    const [qIndex, setQIndex] = useState(0); // Question ID
+    const section = _get(survey, `[${sIndex}]`, {});
+    const q = _get(section?.questions, `[${qIndex}]`);
+    const qID = q?.id;
+    const pet = _find(pets, { id: route?.params?.petID });
+    const answer = _find(answers, { id: qID });
+
+    useEffect(() => {
+        if (_findIndex(answers, { id: qID }) < 0) {
+            // When answer is not yet in the state, let's create one
+            setAnswers([
+                ...answers,
+                {
+                    id: qID, // <- questionID
+                    values: [], // <- an array of optionID
+                },
+            ]);
+        }
+    }, [sIndex, qIndex]);
+
+    // Handle what happens when toggling options
+    const _onCheckOption = (optionID, checked) => {
+        let clonedAnswers = _clone(answers);
+        const ansIndex = _findIndex(clonedAnswers, { id: qID });
+        const answer = clonedAnswers[ansIndex];
+        const values = answer?.values ?? [];
+        const valueIndex = values.indexOf(optionID);
+
+        if (q?.type === 1) {
+            if (valueIndex > -1 && !checked) values.splice(valueIndex, 1);
+            else if (valueIndex < 0 && checked) values.push(optionID);
+        } else {
+            values.splice(0, values?.length);
+            values.push(optionID);
+        }
+
+        clonedAnswers[ansIndex] = { ...answer, values };
+        setAnswers(clonedAnswers);
+    };
+
     return (
         <Container style={{ backgroundColor: CT.BG_PURPLE_900 }}>
             <TopBar
@@ -41,63 +88,7 @@ export default function PetHealthSurveyScreen({ navigation }) {
             <Layout base="purple">
                 <Body base="purple" style={styles.body} flex>
                     <View style={styles.card}>
-                        <Heading
-                            gapless
-                            kicker="Choose all that apply"
-                            text="Have you recently noticed any of the following with Cheshire?"
-                            textStyle={styles.questionText}
-                        />
-                        <View style={styles.options}>
-                            <View style={styles.option}>
-                                <View style={[styles.checkbox, styles.checkboxChecked]}>
-                                    <Icon icon="fas check" size={12} color={CT.BG_WHITE} />
-                                </View>
-                                <Text style={[styles.optionText, styles.optionTextChecked]}>
-                                    Spending time outdoors unsupervised.
-                                </Text>
-                            </View>
-                            <View style={styles.option}>
-                                <View style={[styles.checkbox, styles.checkboxChecked]}>
-                                    <Icon icon="fas check" size={12} color={CT.BG_WHITE} />
-                                </View>
-                                <Text style={[styles.optionText, styles.optionTextChecked]}>
-                                    Spending time outdoors supervised or on a leash.
-                                </Text>
-                            </View>
-                            <View style={[styles.option]}>
-                                <View style={[styles.checkbox]} />
-                                <Text style={styles.optionText}>Socializing with cats outside your home.</Text>
-                            </View>
-                            <View style={[styles.option]}>
-                                <View style={[styles.checkbox]} />
-                                <Text style={styles.optionText}>Visiting a groomer.</Text>
-                            </View>
-                            <View style={[styles.option]}>
-                                <View style={[styles.checkbox]} />
-                                <Text style={styles.optionText}>Boarding.</Text>
-                            </View>
-                            <View style={[styles.option]}>
-                                <View style={[styles.checkbox]} />
-                                <Text style={styles.optionText}>Helping people as a therapy or assistance cat.</Text>
-                            </View>
-                            <View style={[styles.option]}>
-                                <View style={[styles.checkbox]} />
-                                <Text style={styles.optionText}>Living with dogs.</Text>
-                            </View>
-                            <View style={[styles.option]}>
-                                <View style={[styles.checkbox]} />
-                                <Text style={styles.optionText}>Living with cats that go outdoors.</Text>
-                            </View>
-                            <View style={[styles.option]}>
-                                <View style={[styles.checkbox]} />
-                                <Text style={styles.optionText}>Living with cats that stay outdoors.</Text>
-                            </View>
-                            <View style={[styles.option]}>
-                                <View style={[styles.checkbox]} />
-                                <Text style={styles.optionText}>Other activities.</Text>
-                            </View>
-                        </View>
-
+                        <SurveyQuestion {...q} pet={pet} onPress={_onCheckOption} values={answer?.values} />
                         <View style={styles.buttonContainer}>
                             <Button
                                 text="Previous"
@@ -124,45 +115,11 @@ const styles = StyleSheet.create({
         backgroundColor: CT.BG_WHITE,
         ...CT.SHADOW_LG,
     },
-
-    questionText: {
-        lineHeight: 28,
-    },
-    options: {
-        paddingTop: 15,
-    },
-    option: {
-        alignItems: "center",
-        flexDirection: "row",
-        paddingVertical: 10,
-    },
-    optionText: {
-        color: CT.FONT_COLOR_LIGHT,
-        fontSize: 16,
-        fontWeight: "500",
-    },
-    optionTextChecked: {
-        color: CT.FONT_COLOR,
-    },
-    checkbox: {
-        width: 22,
-        height: 22,
-        marginRight: 10,
-        borderRadius: 22,
-        backgroundColor: CT.BG_GRAY_100,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    checkboxChecked: {
-        backgroundColor: CT.CTA_POSITIVE,
-    },
-
     body: {
         paddingTop: 10,
     },
     headerContent: {
         flexDirection: "column",
-        // paddingBottom: 10,
     },
     heading: {
         width: "100%",
@@ -173,15 +130,6 @@ const styles = StyleSheet.create({
     },
     headingKicker: {
         color: CT.BG_PURPLE_400,
-    },
-
-    footer: {
-        right: 25,
-        bottom: 25,
-        position: "absolute",
-        alignItems: "flex-end",
-        justifyContent: "flex-end",
-        flexDirection: "row",
     },
     button: {
         padding: 12,
