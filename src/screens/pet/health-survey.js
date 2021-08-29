@@ -18,33 +18,46 @@ import { View, StyleSheet } from "react-native";
 import pets from "../../../data/pets.json";
 import survey from "../../../data/survey/survey.json";
 
+import _flatten from "lodash/flatten";
+import _clone from "lodash/clone";
 import _get from "lodash/get";
 import _find from "lodash/find";
 import _findIndex from "lodash/findIndex";
-import _clone from "lodash/clone";
+import _upperFirst from "lodash/upperFirst";
 
 export default function PetHealthSurveyScreen({ navigation, route }) {
-    const [answers, setAnswers] = useState([]);
-    const [sIndex, setSIndex] = useState(0); // Section Index
-    const [qIndex, setQIndex] = useState(0); // Question ID
-    const section = _get(survey, `[${sIndex}]`, {});
-    const q = _get(section?.questions, `[${qIndex}]`);
-    const qID = q?.id;
     const pet = _find(pets, { id: route?.params?.petID });
+    const [qIndex, setQIndex] = useState(0);
+    const [answers, setAnswers] = useState([]);
+
+    // Flatten all questions and calculate total and current question's number
+    const questions = _flatten(survey.map(({ questions }) => questions));
+    const questionTh = qIndex + 1;
+    const total = questions?.length;
+
+    // Get question data
+    const q = _get(questions, `[${qIndex}]`);
+    const qID = q?.id;
+    const required = q?.required;
     const answer = _find(answers, { id: qID });
+    const disabled = required && answer?.values?.length < 1;
+
+    // Get section data based on question ID
+    const section = _find(survey, (o) => _findIndex(o?.questions, { id: qID }) > -1);
+    const sectionTh = _findIndex(survey, { type: section?.type }) + 1;
+    const isFinal = sectionTh === survey?.length;
+    const sectionIndicator = isFinal ? "Finishing Up" : `Section ${sectionTh}`;
 
     useEffect(() => {
         if (_findIndex(answers, { id: qID }) < 0) {
             // When answer is not yet in the state, let's create one
-            setAnswers([
-                ...answers,
-                {
-                    id: qID, // <- questionID
-                    values: [], // <- an array of optionID
-                },
-            ]);
+            setAnswers([...answers, { id: qID, values: [] }]);
         }
-    }, [sIndex, qIndex]);
+    }, [qIndex]);
+
+    // Handle what happens when pressing next
+    const _onNext = () => (qIndex < total - 1 ? setQIndex(qIndex + 1) : null);
+    const _onPrev = () => (qIndex > 0 ? setQIndex(qIndex - 1) : null);
 
     // Handle what happens when toggling options
     const _onCheckOption = (optionID, checked) => {
@@ -77,27 +90,39 @@ export default function PetHealthSurveyScreen({ navigation, route }) {
             <Header contentStyle={styles.headerContent}>
                 <Heading
                     size={1}
-                    text="Section 1: Lifestyle"
-                    kicker="Question 1 of 22"
+                    text={`${sectionIndicator}: ${_upperFirst(section?.type)}`}
+                    kicker={`Question ${questionTh} of ${total}`}
                     style={styles.heading}
                     textStyle={styles.headingText}
                     kickerStyle={styles.headingKicker}
                 />
-                <ProgressBarSurvey n={1} total={22} />
+                <ProgressBarSurvey n={questionTh} total={total} />
             </Header>
             <Layout base="purple">
                 <Body base="purple" style={styles.body} flex>
                     <View style={styles.card}>
                         <SurveyQuestion {...q} pet={pet} onPress={_onCheckOption} values={answer?.values} />
                         <View style={styles.buttonContainer}>
+                            {qIndex > 0 && (
+                                <Button
+                                    small
+                                    text="Previous"
+                                    icon="chevron-left"
+                                    style={styles.buttonPrev}
+                                    onPress={_onPrev}
+                                    textStyle={styles.buttonPrevText}
+                                />
+                            )}
                             <Button
-                                text="Previous"
-                                icon="chevron-left"
-                                style={styles.buttonPrev}
-                                textStyle={styles.buttonPrevText}
                                 small
+                                iconRight
+                                text={isFinal ? "Get Reports" : "Next Question"}
+                                icon="arrow-right"
+                                color="purple"
+                                style={styles.button}
+                                onPress={_onNext}
+                                disabled={disabled}
                             />
-                            <Button text="Next Question" icon="arrow-right" color="purple" style={styles.button} iconRight />
                         </View>
                     </View>
                 </Body>

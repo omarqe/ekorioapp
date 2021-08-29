@@ -19,6 +19,11 @@ export default function SurveyQuestion({ pet, type = 1, options, question, value
         }
     });
 
+    // Gender pronouns
+    identity["{genderPronoun}"] = pet?.gender === "male" ? "he" : "she";
+    identity["{genderPronoun2}"] = pet?.gender === "male" ? "him" : "her";
+    identity["{genderPronoun3}"] = pet?.gender === "male" ? "his" : "her";
+
     // Convert checked value(s) to array
     if (!_isArray(values)) values = [values];
 
@@ -35,7 +40,7 @@ export default function SurveyQuestion({ pet, type = 1, options, question, value
 
     return (
         <React.Fragment>
-            <Heading kicker={kicker} text={questionText} style={styles.questionText} />
+            <Heading kicker={kicker} text={questionText} textStyle={styles.questionText} />
             <FlatList data={options} keyExtractor={_keyExtractor} renderItem={_renderItem} scrollEnabled={false} />
         </React.Fragment>
     );
