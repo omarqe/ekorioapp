@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     },
     label: {
         color: CT.FONT_COLOR,
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: "700",
         textTransform: "uppercase",
         textAlign: "center",

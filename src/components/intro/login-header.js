@@ -53,11 +53,12 @@ const styles = StyleSheet.create({
     },
     topHeadingTitle: {
         color: CT.BG_WHITE,
-        fontSize: 20,
+        fontSize: 16,
         fontWeight: "600",
     },
     topHeadingSubtitle: {
         color: CT.BG_PURPLE_300,
+        fontSize: 12,
     },
     header: {
         flex: 1,
@@ -67,13 +68,13 @@ const styles = StyleSheet.create({
     },
     headingTitle: {
         color: CT.BG_WHITE,
-        fontSize: 28,
+        fontSize: 24,
         fontWeight: "700",
         paddingBottom: 2,
     },
     headingSubtitle: {
         color: CT.BG_PURPLE_300,
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: "500",
     },
 });
