@@ -162,14 +162,31 @@
                 "required": false,
                 "question": "Using graphic below,select the cat shape that best describes {name}:",
                 "options": [
-                    { "id": 59, "value": "Very thin waist; Ribs, back and hip bones visible or easily felt" },
-                    { "id": 60, "value": "Thin waist; Ribs, back or hip bones visible or easily felt" },
+                    {
+                        "id": 59,
+                        "image": "not_null",
+                        "value": "Very thin waist; Ribs, back and hip bones visible or easily felt"
+                    },
+                    {
+                        "id": 60,
+                        "image": "not_null",
+                        "value": "Thin waist; Ribs, back or hip bones visible or easily felt"
+                    },
                     {
                         "id": 61,
+                        "image": "not_null",
                         "value": "Waist slimmer than chest; Ribs, back and hip bones can be felt with slight pressure"
                     },
-                    { "id": 62, "value": "Waist same size as chest; Ribs, back and hip bones hard to feel" },
-                    { "id": 63, "value": "Waist larger than chest; Ribs, back and hip bones not felt; Neck and legs thick" }
+                    {
+                        "id": 62,
+                        "image": "not_null",
+                        "value": "Waist same size as chest; Ribs, back and hip bones hard to feel"
+                    },
+                    {
+                        "id": 63,
+                        "image": "not_null",
+                        "value": "Waist larger than chest; Ribs, back and hip bones not felt; Neck and legs thick"
+                    }
                 ]
             }
         ]

@@ -64,7 +64,7 @@ export default function SurveyQuestion({ pet, type = 1, options, question, value
     );
 }
 
-const Option = ({ id: optionID, type, value, re, width, identity, checked = false, onPress }) => {
+const Option = ({ id: optionID, type, value, image = null, re, width, identity, checked = false, onPress }) => {
     const [pressed, setPressed] = useState(false);
 
     const isRadio = type === 2;
@@ -86,14 +86,14 @@ const Option = ({ id: optionID, type, value, re, width, identity, checked = fals
     };
 
     return (
-        <Pressable
-            style={styles.option}
-            onPress={_onPress}
-            onPressIn={setPressed.bind(null, true)}
-            onPressOut={setPressed.bind(null, false)}
-        >
-            <View style={checkboxStyle}>{checked && <Icon icon={`fas ${icon}`} size={12} color={CT.BG_WHITE} />}</View>
-            <Text style={[styles.optionText, checked ? styles.optionTextChecked : null, optionTextWidth]}>{optionText}</Text>
+        <Pressable onPress={_onPress} onPressIn={setPressed.bind(null, true)} onPressOut={setPressed.bind(null, false)}>
+            {image && <View style={styles.image} />}
+            <View style={styles.option}>
+                <View style={checkboxStyle}>{checked && <Icon icon={`fas ${icon}`} size={12} color={CT.BG_WHITE} />}</View>
+                <Text style={[styles.optionText, checked ? styles.optionTextChecked : null, optionTextWidth]}>
+                    {optionText}
+                </Text>
+            </View>
         </Pressable>
     );
 };
@@ -114,6 +114,13 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         flexDirection: "row",
         paddingVertical: SMALL_SCREEN ? 8 : 10,
+    },
+    image: {
+        width: "100%",
+        height: 150,
+        marginTop: 20,
+        borderRadius: 5,
+        backgroundColor: CT.BG_GRAY_50,
     },
     optionText: {
         color: CT.BG_GRAY_400,
