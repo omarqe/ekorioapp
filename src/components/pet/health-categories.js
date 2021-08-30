@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
     },
     label: {
         color: CT.FONT_COLOR,
+        fontSize: 12,
         fontWeight: "700",
     },
     badgeContainer: {

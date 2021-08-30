@@ -20,8 +20,8 @@ const Heading = ({
     subtitleStyle: customSubtitleStyle,
     ...restProps
 }) => {
-    const titleSizes = [20, 22, 24, 26, 28];
-    const subtitleSizes = [16, 16, 18, 18, 20];
+    const titleSizes = [16, 18, 20, 22, 24];
+    const subtitleSizes = [13, 14, 15, 16, 17];
 
     let baseStyle = { ...styles.base, ...style };
     let textStyle = { ...styles.text, fontSize: titleSizes[size], ...customTextStyle };

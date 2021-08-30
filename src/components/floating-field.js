@@ -226,6 +226,7 @@ const FieldGuide = ({ type, guide, disabled, strengthGuide }) => (
     </React.Fragment>
 );
 
+const LOWRES = CT.PIXELRATIO < 3;
 const styles = StyleSheet.create({
     base: {
         ...CT.SHADOW_SM,
@@ -239,14 +240,14 @@ const styles = StyleSheet.create({
     },
     label: {
         color: CT.FONT_COLOR_LIGHT,
-        fontSize: 14,
+        fontSize: 12,
         marginBottom: 5,
     },
     input: {
         flex: 1,
         color: CT.FONT_COLOR,
-        height: CT.PIXELRATIO < 3 ? 20 : 18,
-        fontSize: 15,
+        height: LOWRES ? 20 : 18,
+        fontSize: LOWRES ? 16 : 15,
         fontWeight: "600",
         fontFamily: CT.IS_ANDROID ? "Inter_600SemiBold" : null,
     },
