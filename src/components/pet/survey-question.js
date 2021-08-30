@@ -12,6 +12,9 @@ import _replace from "lodash/replace";
 import _isArray from "lodash/isArray";
 
 export default function SurveyQuestion({ pet, type = 1, options, question, values, onPress }) {
+    const [contentWidth, setContentWidth] = useState(0);
+    const _onContentLayout = (e) => setContentWidth(e?.nativeEvent?.layout?.width);
+
     let identity = {};
     Object.keys(pet).map((key) => {
         if (pet.hasOwnProperty(key)) {
@@ -35,35 +38,50 @@ export default function SurveyQuestion({ pet, type = 1, options, question, value
     // Options renderer
     const _keyExtractor = ({ item }, index) => `${item?.id}_${index}`.toString();
     const _renderItem = ({ item }) => (
-        <Option re={re} type={type} onPress={onPress} checked={values.indexOf(item?.id) > -1} identity={identity} {...item} />
+        <Option
+            re={re}
+            type={type}
+            width={contentWidth}
+            onPress={onPress}
+            checked={values.indexOf(item?.id) > -1}
+            identity={identity}
+            {...item}
+        />
     );
 
     return (
-        <React.Fragment>
+        <View onLayout={_onContentLayout}>
             <Heading kicker={kicker} text={questionText} textStyle={styles.questionText} />
-            <FlatList data={options} keyExtractor={_keyExtractor} renderItem={_renderItem} scrollEnabled={false} />
-        </React.Fragment>
+            <FlatList
+                data={options}
+                style={styles.options}
+                contentContainerStyle={styles.optionsContent}
+                keyExtractor={_keyExtractor}
+                renderItem={_renderItem}
+                scrollEnabled={false}
+            />
+        </View>
     );
 }
 
-const Option = ({ id: optionID, type, value, re, identity, checked = false, onPress }) => {
+const Option = ({ id: optionID, type, value, re, width, identity, checked = false, onPress }) => {
     const [pressed, setPressed] = useState(false);
-    const [isChecked, setIsChecked] = useState(checked);
 
     const isRadio = type === 2;
     const icon = isRadio ? "circle" : "check";
     const optionText = _replace(value, re, (key) => identity[key]);
+    const optionTextWidth = { width: width - (styles.checkbox.width + styles.checkbox.marginRight) };
+
     const checkboxStyle = [
         styles.checkbox,
         isRadio ? styles.radio : null,
         checked ? styles.checkboxChecked : null,
-        pressed && !isChecked ? styles.checkboxPressed : null,
+        pressed && !checked ? styles.checkboxPressed : null,
     ];
 
     const _onPress = () => {
         if (typeof onPress === "function") {
-            setIsChecked(!isChecked);
-            onPress(optionID, !isChecked);
+            onPress(optionID, !checked);
         }
     };
 
@@ -75,27 +93,33 @@ const Option = ({ id: optionID, type, value, re, identity, checked = false, onPr
             onPressOut={setPressed.bind(null, false)}
         >
             <View style={checkboxStyle}>{checked && <Icon icon={`fas ${icon}`} size={12} color={CT.BG_WHITE} />}</View>
-            <Text style={[styles.optionText, checked ? styles.optionTextChecked : null]}>{optionText}</Text>
+            <Text style={[styles.optionText, checked ? styles.optionTextChecked : null, optionTextWidth]}>{optionText}</Text>
         </Pressable>
     );
 };
 
+const { SMALL_SCREEN } = CT;
 const styles = StyleSheet.create({
     questionText: {
-        lineHeight: 28,
+        lineHeight: 22,
     },
     options: {
-        paddingTop: 15,
+        marginHorizontal: -20,
+    },
+    optionsContent: {
+        paddingHorizontal: 20,
     },
     option: {
         alignItems: "center",
+        justifyContent: "center",
         flexDirection: "row",
-        paddingVertical: 10,
+        paddingVertical: SMALL_SCREEN ? 8 : 10,
     },
     optionText: {
         color: CT.BG_GRAY_400,
-        fontSize: 16,
+        fontSize: SMALL_SCREEN ? 12 : 13,
         fontWeight: "500",
+        lineHeight: SMALL_SCREEN ? 17 : 18,
     },
     optionTextChecked: {
         color: CT.FONT_COLOR,
@@ -103,7 +127,7 @@ const styles = StyleSheet.create({
     checkbox: {
         width: 22,
         height: 22,
-        marginRight: 8,
+        marginRight: 10,
         borderRadius: 8,
         backgroundColor: CT.BG_GRAY_100,
         alignItems: "center",
