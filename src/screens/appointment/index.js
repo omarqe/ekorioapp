@@ -34,10 +34,10 @@ const Scene = ({ data, onPress }) => {
 
 const AppointmentScreen = ({ navigation }) => {
     const Time = () => (
-        <Text>
+        <React.Fragment>
             Fri, 13 Aug 2021 <Text style={{ color: CT.BG_GRAY_200 }}>@</Text> 3:00
             <Text style={{ color: CT.BG_GRAY_500, fontSize: 12, fontWeight: "600" }}>pm</Text>
-        </Text>
+        </React.Fragment>
     );
 
     const [state, setState] = useState({

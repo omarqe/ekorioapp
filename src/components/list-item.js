@@ -97,13 +97,13 @@ const styles = StyleSheet.create({
     },
     title: {
         color: CT.FONT_COLOR,
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: "700",
         marginBottom: 2,
     },
     subtitle: {
         color: CT.FONT_COLOR_LIGHT,
-        fontSize: 14,
+        fontSize: 12,
     },
     tags: {
         display: "flex",
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     },
     tagText: {
         color: CT.BG_GRAY_600,
-        fontSize: 12,
+        fontSize: 10,
     },
 });
 
