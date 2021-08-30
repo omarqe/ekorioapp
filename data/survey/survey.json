@@ -5,7 +5,7 @@
             {
                 "id": 1,
                 "type": 1,
-                "required": true,
+                "required": false,
                 "question": "Which activities does {name} do?",
                 "options": [
                     { "id": 1, "value": "Spending time outdoor unsupervised" },
@@ -22,7 +22,7 @@
             {
                 "id": 2,
                 "type": 2,
-                "required": true,
+                "required": false,
                 "question": "Considering {name}'s activities, about how often does {genderPronoun} get exercise?",
                 "options": [
                     { "id": 10, "value": "Daily" },
@@ -35,7 +35,7 @@
             {
                 "id": 3,
                 "type": 1,
-                "required": true,
+                "required": false,
                 "question": "Do you use a product to protect {name} against these common parasites?",
                 "options": [
                     { "id": 15, "value": "Heartworms" },
@@ -47,7 +47,7 @@
             {
                 "id": 4,
                 "type": 2,
-                "required": true,
+                "required": false,
                 "question": "Do you travel or plan to travel with {name} outside of your local community?",
                 "options": [
                     { "id": 19, "value": "Yes" },
@@ -57,7 +57,7 @@
             {
                 "id": 5,
                 "type": 2,
-                "required": true,
+                "required": false,
                 "question": "When riding in a car or other form of transportation, {name}:",
                 "options": [
                     { "id": 21, "value": "Sleeps/enjoys the ride" },
@@ -70,7 +70,7 @@
             {
                 "id": 6,
                 "type": 1,
-                "required": true,
+                "required": false,
                 "question": "{name} has exposure to:",
                 "options": [
                     { "id": 23, "value": "Small pets (ferrets,birds,reptiles,etc.), livestock or horses" },
@@ -81,7 +81,7 @@
             {
                 "id": 7,
                 "type": 2,
-                "required": true,
+                "required": false,
                 "question": "Is {name} ever around people with weakened immune systems (children <5 years of age, seniors, pregnant women, people on high doses of steroid, organ transplant patients, or patients with cancer, diebetes,chronic disease, or HIV//AIDS)?",
                 "options": [
                     { "id": 26, "value": "Yes/Maybe" },
@@ -91,7 +91,7 @@
             {
                 "id": 8,
                 "type": 1,
-                "required": true,
+                "required": false,
                 "question": "Does {name} do any of the following?",
                 "options": [
                     { "id": 28, "value": "Unwanted begging or pestering for food" },
@@ -115,7 +115,7 @@
             {
                 "id": 9,
                 "type": 2,
-                "required": true,
+                "required": false,
                 "question": "Have you noticed any recent change in {name} weight?",
                 "options": [
                     { "id": 39, "value": "No change in weight" },
@@ -127,7 +127,7 @@
             {
                 "id": 10,
                 "type": 2,
-                "required": true,
+                "required": false,
                 "question": "Any recent change in appetite for {name}?",
                 "options": [
                     { "id": 43, "value": "No change in appetite" },
@@ -139,7 +139,7 @@
             {
                 "id": 11,
                 "type": 1,
-                "required": true,
+                "required": false,
                 "question": "What type of food(s) does {name} eat?",
                 "options": [
                     { "id": 47, "value": "Dry food" },
@@ -159,7 +159,7 @@
             {
                 "id": 12,
                 "type": 2,
-                "required": true,
+                "required": false,
                 "question": "Using graphic below,select the cat shape that best describes {name}:",
                 "options": [
                     { "id": 59, "value": "Very thin waist; Ribs, back and hip bones visible or easily felt" },
@@ -180,7 +180,7 @@
             {
                 "id": 13,
                 "type": 1,
-                "required": true,
+                "required": false,
                 "question": "Has {name} recently had any of the following?",
                 "options": [
                     { "id": 64, "value": "Formed but soft or liquid stools (diarrhea)" },
@@ -199,7 +199,7 @@
             {
                 "id": 14,
                 "type": 1,
-                "required": true,
+                "required": false,
                 "question": "Have you recently noticed {name}:",
                 "options": [
                     { "id": 75, "value": "Drinking more water than usual" },
@@ -215,7 +215,7 @@
             {
                 "id": 15,
                 "type": 1,
-                "required": true,
+                "required": false,
                 "question": "Have you recently noticed any of the following with {name}'s eyes?",
                 "options": [
                     { "id": 83, "value": "Redness or squinting of eyes" },
@@ -228,7 +228,7 @@
             {
                 "id": 16,
                 "type": 1,
-                "required": true,
+                "required": false,
                 "question": "Have you recently noticed any of the following with {name}'s ears?",
                 "options": [
                     { "id": 88, "value": "Smelly or dirty ears (brown, black or other \"gunk\" present)" },
@@ -241,7 +241,7 @@
             {
                 "id": 17,
                 "type": 1,
-                "required": true,
+                "required": false,
                 "question": "Have you recently noticed any of the following with {name}'s mouth?",
                 "options": [
                     { "id": 93, "value": "Bad breath" },
@@ -258,7 +258,7 @@
             {
                 "id": 18,
                 "type": 1,
-                "required": true,
+                "required": false,
                 "question": "Thinking about {name}'s skin and coat, have you noticed:",
                 "options": [
                     { "id": 102, "value": "Swellings or lumps (whether old or new)" },
@@ -276,7 +276,7 @@
             {
                 "id": 19,
                 "type": 1,
-                "required": true,
+                "required": false,
                 "question": "Have you noticed {name}:",
                 "options": [
                     { "id": 112, "value": "Stiff or slower when moving, jumping , standing up or using stairs" },
@@ -290,7 +290,7 @@
             {
                 "id": 20,
                 "type": 1,
-                "required": true,
+                "required": false,
                 "question": "Has {name} recently shown any of the following?",
                 "options": [
                     { "id": 118, "value": "Hiding or sleeping more" },
@@ -309,7 +309,7 @@
             {
                 "id": 21,
                 "type": 1,
-                "required": true,
+                "required": false,
                 "question": "Has {name} had any of the following lately?",
                 "options": [
                     { "id": 129, "value": "Discharge from the nose (yellow, white, green or red)" },
