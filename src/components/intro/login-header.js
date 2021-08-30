@@ -68,13 +68,13 @@ const styles = StyleSheet.create({
     },
     headingTitle: {
         color: CT.BG_WHITE,
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: "700",
         paddingBottom: 2,
     },
     headingSubtitle: {
         color: CT.BG_PURPLE_300,
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: "500",
     },
 });
