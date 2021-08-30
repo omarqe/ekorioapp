@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     text: {
         color: CT.BG_PURPLE_400,
         textAlign: "center",
-        fontSize: 14,
+        fontSize: CT.LOW_RESOLUTION ? 13 : 14,
         fontWeight: "600",
     },
 });

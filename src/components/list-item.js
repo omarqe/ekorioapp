@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     },
     tags: {
         display: "flex",
-        marginTop: 15,
+        marginTop: 10,
         flexDirection: "row",
     },
     tagItem: {
@@ -125,8 +125,9 @@ const styles = StyleSheet.create({
         marginRight: 3,
     },
     tagText: {
-        color: CT.BG_GRAY_600,
-        fontSize: 10,
+        color: CT.BG_GRAY_400,
+        fontSize: CT.LOW_RESOLUTION ? 9 : 10,
+        fontWeight: "500",
     },
 });
 

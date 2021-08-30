@@ -33,12 +33,11 @@ export default function AccountReferralScreen({ navigation }) {
                             For every two successful referrals, you will get one additional pet slot.
                         </Text>
                     </View>
-
                     <View style={{ ...styles.section, marginTop: 50 }}>
                         <Heading
                             size={1}
                             kicker="Share this link to your friends:"
-                            kickerStyle={{ ...styles.headingText, fontSize: 16 }}
+                            kickerStyle={{ ...styles.headingText, fontSize: 14 }}
                             textStyle={styles.headingText}
                             text="https://ref.ekor.io/j82khg"
                         />
@@ -59,7 +58,7 @@ export default function AccountReferralScreen({ navigation }) {
 const styles = StyleSheet.create({
     headingText: {
         textAlign: "center",
-        lineHeight: 30,
+        lineHeight: 28,
     },
     center: {
         display: "flex",
@@ -73,8 +72,8 @@ const styles = StyleSheet.create({
     },
     description: {
         color: CT.FONT_COLOR_LIGHT,
-        fontSize: 16,
-        lineHeight: 22,
+        fontSize: 14,
+        lineHeight: 20,
         marginTop: 5,
         textAlign: "center",
     },
