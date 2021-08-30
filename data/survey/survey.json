@@ -38,7 +38,7 @@
                 "required": false,
                 "question": "Do you use a product to protect {name} against these common parasites?",
                 "options": [
-                    { "id": 15, "value": "Heartworms" },
+                    { "id": 15, "value": "Heartworm" },
                     { "id": 16, "value": "Fleas" },
                     { "id": 17, "value": "Ticks" },
                     { "id": 18, "value": "Intestinal Worms" }
@@ -73,7 +73,7 @@
                 "required": false,
                 "question": "{name} has exposure to:",
                 "options": [
-                    { "id": 23, "value": "Small pets (ferrets,birds,reptiles,etc.), livestock or horses" },
+                    { "id": 23, "value": "Small pets (ferrets, birds, reptiles, etc.), livestock or horses" },
                     { "id": 24, "value": "Wildlife (deer, raccoons, rodents, etc.)" },
                     { "id": 25, "value": "People who care for other cats" }
                 ]
@@ -82,7 +82,7 @@
                 "id": 7,
                 "type": 2,
                 "required": false,
-                "question": "Is {name} ever around people with weakened immune systems (children <5 years of age, seniors, pregnant women, people on high doses of steroid, organ transplant patients, or patients with cancer, diebetes,chronic disease, or HIV//AIDS)?",
+                "question": "Is {name} ever around people with weakened immune systems (children <5 years of age, seniors, pregnant women, people on high doses of steroid, organ transplant patients, or patients with cancer, diabetes, chronic disease, or HIV/AIDS)?",
                 "options": [
                     { "id": 26, "value": "Yes/Maybe" },
                     { "id": 27, "value": "No" }
@@ -98,7 +98,7 @@
                     { "id": 29, "value": "Stealing food (from garbage, counters, tables)" },
                     { "id": 30, "value": "Playing with ribbon, string or floss" },
                     { "id": 31, "value": "Damaging household or outdoor items by chewing or scratching" },
-                    { "id": 32, "value": "Execessive vocalizing (meowing, howling)" },
+                    { "id": 32, "value": "Excessive vocalizing (meowing, howling)" },
                     { "id": 33, "value": "Negatively reacting to noise (thunder, fireworks)" },
                     { "id": 34, "value": "Hissing, growling,scratching, biting or attacking other animals" },
                     { "id": 35, "value": "Hissing, growling,scratching, biting or attacking people" },
@@ -143,7 +143,7 @@
                 "question": "What type of food(s) does {name} eat?",
                 "options": [
                     { "id": 47, "value": "Dry food" },
-                    { "id": 48, "value": "Semi-moist food (dry mixed with water or broth, puch, roll)" },
+                    { "id": 48, "value": "Semi-moist food (dry mixed with water or broth, pouch, roll)" },
                     { "id": 49, "value": "Wet food (canned)" },
                     { "id": 50, "value": "People food or table scraps" },
                     { "id": 51, "value": "Raw meat diet" },
@@ -234,7 +234,7 @@
                     { "id": 88, "value": "Smelly or dirty ears (brown, black or other \"gunk\" present)" },
                     { "id": 89, "value": "Sores, scabs, crusts, swellings or small bumps on ears" },
                     { "id": 90, "value": "Frequent head shaking, scratching or rubbing at ears" },
-                    { "id": 91, "value": "Overly sensitive ears when massanging or petting" },
+                    { "id": 91, "value": "Overly sensitive ears when massaging or petting" },
                     { "id": 92, "value": "(Other ear observations)" }
                 ]
             },
@@ -284,7 +284,7 @@
                     { "id": 114, "value": "Upset when picked up or held a certain way" },
                     { "id": 115, "value": "Unsteady when standing or moving" },
                     { "id": 116, "value": "Weak or tired" },
-                    { "id": 117, "value": "(Other observatios or comments" }
+                    { "id": 117, "value": "(Other observations or comments" }
                 ]
             },
             {
@@ -317,7 +317,7 @@
                     { "id": 131, "value": "Persistent coughing or hacking" },
                     { "id": 132, "value": "Fits of sneezing,snorting or trying to catch breath" },
                     { "id": 133, "value": "Gagging or retching (nothing comes up)" },
-                    { "id": 134, "value": "Vomitting" },
+                    { "id": 134, "value": "Vomiting" },
                     { "id": 135, "value": "Heaving up hair or hairballs" },
                     { "id": 136, "value": "Other observations or comments" }
                 ]
