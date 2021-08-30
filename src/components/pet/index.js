@@ -111,10 +111,10 @@ const styles = StyleSheet.create({
     },
     name: {
         color: CT.BG_PURPLE_300,
-        fontSize: 10,
-        fontWeight: "600",
+        fontSize: 11,
+        fontWeight: "500",
         textAlign: "center",
-        paddingTop: 5,
+        paddingTop: 8,
         paddingHorizontal: 3,
     },
     icon: {

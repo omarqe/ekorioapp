@@ -6,7 +6,7 @@ import { View, StyleSheet } from "react-native";
 export default function Empty({ title, subtitle }) {
     return (
         <View style={styles.base}>
-            <Heading size={1} style={styles.heading} text={title} subtitle={subtitle} />
+            <Heading size={0} style={styles.heading} text={title} subtitle={subtitle} />
         </View>
     );
 }
