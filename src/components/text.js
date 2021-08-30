@@ -13,11 +13,11 @@ export default function Text({ style, ...restProps }) {
         textStyle = { fontFamily: fonts[w] !== undefined ? fonts[w] : fonts[400] };
     }
 
-    return <RNText style={[styles.text, textStyle, style]} {...restProps} />;
+    return <RNText style={[styles.text, textStyle, style]} allowFontScaling={false} {...restProps} />;
 }
 
 const styles = {
-    text: { color: CT.FONT_COLOR },
+    text: { color: CT.FONT_COLOR, fontSize: 14 },
 };
 
 Text.propTypes = {
