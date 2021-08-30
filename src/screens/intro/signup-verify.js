@@ -19,7 +19,6 @@ export default function SignupVerifyScreen({ navigation }) {
     const goBack = () => navigation.goBack();
     const onFocus = () => ref?.current?.focus();
     const onChangeOTP = (otp) => {
-        console.log("otp", otp);
         setOTP(otp);
         if (otp?.length >= 6) {
             auth.onLogin(true);
