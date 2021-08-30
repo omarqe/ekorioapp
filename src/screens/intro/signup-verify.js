@@ -19,6 +19,7 @@ export default function SignupVerifyScreen({ navigation }) {
     const goBack = () => navigation.goBack();
     const onFocus = () => ref?.current?.focus();
     const onChangeOTP = (otp) => {
+        console.log("otp", otp);
         setOTP(otp);
         if (otp?.length >= 6) {
             auth.onLogin(true);
@@ -43,7 +44,7 @@ export default function SignupVerifyScreen({ navigation }) {
                     <Text style={styles.subtitle}>We've sent verification code to:</Text>
                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                         <Text style={styles.subtitlePhone}>+60 12-345 6789</Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={navigation.goBack}>
                             <Text style={styles.subtitleWrongNumber}>(Wrong number?)</Text>
                         </TouchableOpacity>
                     </View>
@@ -156,9 +157,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     inputStyle: {
-        opacity: 0,
-        width: 0,
-        height: 0,
+        width: CT.IS_ANDROID ? 50 : 0,
+        height: CT.IS_ANDROID ? 50 : 0,
+        color: CT.BG_WHITE,
+        left: -CT.SCREEN_WIDTH,
         position: "absolute",
+        backgroundColor: CT.BG_WHITE,
     },
 });
