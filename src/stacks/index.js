@@ -123,7 +123,7 @@ export default {
 
 const styles = StyleSheet.create({
     label: {
-        fontSize: 12,
+        fontSize: 10,
         fontWeight: "500",
         textTransform: "capitalize",
     },
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
         paddingRight: 10,
     },
     tabBarItemStyle: {
-        paddingTop: CT.IS_IOS ? 0 : 8,
+        paddingTop: CT.IS_IOS ? 5 : 8,
         paddingBottom: CT.IS_IOS ? 0 : 15,
     },
     iconShadow: {
