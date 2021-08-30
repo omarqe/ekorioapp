@@ -54,12 +54,11 @@ const styles = StyleSheet.create({
     signInHint: {
         color: CT.BG_PURPLE_300,
         padding: 10,
-        fontSize: 16,
+        fontSize: 14,
         textAlign: "center",
     },
     signInEmphasis: {
         color: "#FFF",
-        fontSize: 16,
         fontWeight: "600",
         marginLeft: 5,
     },

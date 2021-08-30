@@ -28,14 +28,14 @@ const Button = (props) => {
     if (color !== "default") variant.base.borderColor = variant.base.backgroundColor;
     if (small) {
         variant.small.base = { padding: CT.PIXELRATIO < 3 ? 8 : 10, borderRadius: 8 };
-        variant.small.label = { fontSize: 14, textTransform: "none" };
+        variant.small.label = { fontSize: 12, textTransform: "none" };
     }
 
     // Handle style
     const baseStyle = [styles.base, variant?.base, variant?.small?.base, style];
     const labelStyle = [styles.label, variant?.label, variant?.small?.label];
     const ButtonIcon = ({ color: btnColor, position = "left" }) => {
-        const size = small ? 14 : 16;
+        const size = small ? 12 : 14;
         const color = _get(colors, `icon[${btnColor}]`, colors.icon.default);
         const iconProps = { icon, size, color, style: position === "left" ? styles.iconLeft : styles.iconRight };
 
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     },
     label: {
         color: CT.FONT_COLOR,
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: "700",
         textTransform: "uppercase",
         textAlign: "center",

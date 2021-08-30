@@ -79,7 +79,7 @@ export default function HealthCategories({ data = [] }) {
                 })}
 
                 <Modal
-                    headingSize={2}
+                    headingSize={CT.LOW_RESOLUTION ? 1 : 2}
                     headerStyle={styles.modalHeader}
                     onClose={_onClose}
                     title={current?.label}
@@ -126,7 +126,7 @@ export default function HealthCategories({ data = [] }) {
     return null;
 }
 
-const lineHeight = 22;
+const lineHeight = 21;
 const styles = StyleSheet.create({
     base: {
         ...CT.SHADOW_SM,
@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
     },
     label: {
         color: CT.FONT_COLOR,
+        fontSize: 12,
         fontWeight: "700",
     },
     badgeContainer: {
@@ -172,6 +173,7 @@ const styles = StyleSheet.create({
     },
     factor: {
         color: CT.BG_GRAY_600,
+        fontSize: 13,
     },
     factorImportant: {
         color: CT.BG_GRAY_700,

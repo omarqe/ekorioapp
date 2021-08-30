@@ -92,7 +92,6 @@ const AccountScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     headerText: {
         color: CT.BG_PURPLE_50,
-        fontSize: 18,
         marginBottom: 2,
     },
     headerSub: {
@@ -101,7 +100,6 @@ const styles = StyleSheet.create({
     logout: {
         color: CT.CTA_NEGATIVE,
         padding: 15,
-        fontSize: 16,
         fontWeight: "700",
         textAlign: "center",
         marginBottom: 10,

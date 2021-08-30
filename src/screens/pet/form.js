@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     },
     petName: {
         color: CT.BG_PURPLE_100,
-        fontSize: 22,
+        fontSize: 18,
         fontWeight: "700",
         marginTop: 15,
     },

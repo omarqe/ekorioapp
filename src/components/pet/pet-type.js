@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     type: {
         color: CT.BG_GRAY_400,
         marginTop: 5,
+        fontSize: 12,
         fontWeight: "600",
         textAlign: "center",
         textTransform: "capitalize",

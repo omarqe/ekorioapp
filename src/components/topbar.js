@@ -52,7 +52,7 @@ const TopBar = (props) => {
                         </View>
                         <View style={styles.midContent}>
                             {kicker && <Text style={styles.kicker}>{kicker}</Text>}
-                            <Text style={[styles.title, { fontSize: kicker || subtitle ? 16 : 18 }]}>{title}</Text>
+                            <Text style={[styles.title, { fontSize: kicker || subtitle ? 14 : 16 }]}>{title}</Text>
                             {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
                         </View>
                         <View style={styles.rightContent}>
@@ -178,24 +178,23 @@ const styles = StyleSheet.create({
     title: {
         color: CT.BG_WHITE,
         textAlign: "center",
-        fontSize: 18,
         fontWeight: "600",
     },
     kicker: {
         color: CT.BG_PURPLE_400,
-        fontSize: 12,
+        fontSize: 10,
         textAlign: "center",
         marginBottom: 2,
     },
     subtitle: {
         color: CT.BG_PURPLE_400,
-        fontSize: 12,
+        fontSize: 10,
         textAlign: "center",
         marginTop: 2,
     },
     largeTitle: {
         color: CT.BG_WHITE,
-        fontSize: 22,
+        fontSize: 18,
         fontWeight: "600",
     },
 });
