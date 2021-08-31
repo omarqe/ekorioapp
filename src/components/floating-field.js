@@ -319,6 +319,7 @@ const styles = StyleSheet.create({
         height: CT.LOW_RESOLUTION ? 20 : 18,
         fontSize: CT.LOW_RESOLUTION ? 16 : 15,
         fontWeight: "600",
+        fontFamily: CT.IS_ANDROID ? "Inter_600SemiBold" : null,
     },
     inputContainer: {
         flex: 1,
