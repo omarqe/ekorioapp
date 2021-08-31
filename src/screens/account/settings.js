@@ -81,9 +81,11 @@ export default function AccountSettingsScreen({ navigation }) {
                         ],
                     },
                     {
+                        type: "date",
                         name: "birthday",
                         label: "Birthday",
-                        value: data?.birthday,
+                        value: new Date(),
+                        dateFormat: "D MMM, YYYY",
                         placeholder: "01/01/1970",
                     },
                 ],

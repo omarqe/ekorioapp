@@ -22,6 +22,7 @@ export default {
     SMALL_SCREEN: Dimensions.get("window").width < 400,
     LOW_RESOLUTION: PixelRatio.get() < 3,
 
+    DATE_FORMAT: "MMMM D YYYY, h:mm:ss",
     INPUT_TYPES: [
         "url",
         "tel",
