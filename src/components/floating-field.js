@@ -61,6 +61,7 @@ export default function FloatingField({
     const isSelect = type === "select";
     const isDatePicker = type === "date";
     const inputRef = useRef(null);
+    const callingCodeRef = useRef(null);
 
     // Negates guide if strengthGuide is true
     if (strengthGuide && guide) guide = false;
@@ -75,7 +76,7 @@ export default function FloatingField({
     const _onPressFocusInput = () => {
         if (disabled) return;
         if (isSelect) {
-            useNativePicker || !CT.IS_IOS ? inputRef?.current?.focus() : setPicker(true);
+            useNativePicker || CT.IS_ANDROID ? inputRef?.current?.focus() : setPicker(true);
             return;
         } else if (isDatePicker) {
             setDatePicker(true);
@@ -112,6 +113,9 @@ export default function FloatingField({
         if (!disabled && typeof onChange === "function") {
             onChange(value, nameCC);
         }
+    };
+    const _onOpenCallingCode = () => {
+        CT.IS_ANDROID ? callingCodeRef?.current?.focus() : setCCPicker(true);
     };
 
     // Correct value type
@@ -214,7 +218,7 @@ export default function FloatingField({
                         <View style={[styles.inputContainer, { alignItems }]}>
                             {_renderIf(
                                 ["tel", "phone"].indexOf(type) > -1, // Calling Code Picker
-                                <Pressable style={styles.callingCodes} onPress={setCCPicker.bind(null, true)}>
+                                <Pressable style={styles.callingCodes} onPress={_onOpenCallingCode}>
                                     <View style={styles.countryFlagContainer}>
                                         <Image source={countryFlag} style={styles.countryFlag} />
                                     </View>
@@ -222,14 +226,27 @@ export default function FloatingField({
                                         +{callingCode}
                                     </Text>
                                     <Icon icon="caret-down" style={styles.callingCodesCaret} />
-                                    <ModalPicker
-                                        selectedValue={callingCode}
-                                        open={ccPicker}
-                                        label="Calling Codes"
-                                        options={sortedCallingCodes}
-                                        onClose={setCCPicker.bind(null, false)}
-                                        onValueChange={_onCallingCodeChange}
-                                    />
+                                    {_renderIf(
+                                        CT.IS_ANDROID,
+                                        <Picker
+                                            ref={callingCodeRef}
+                                            style={styles.picker}
+                                            onValueChange={_onCallingCodeChange}
+                                            selectedValue={callingCode}
+                                        >
+                                            {sortedCallingCodes.map(({ label, value }, i) => (
+                                                <Picker.Item key={i} label={label} value={value} />
+                                            ))}
+                                        </Picker>,
+                                        <ModalPicker
+                                            selectedValue={callingCode}
+                                            open={ccPicker}
+                                            label="Calling Codes"
+                                            options={sortedCallingCodes}
+                                            onClose={setCCPicker.bind(null, false)}
+                                            onValueChange={_onCallingCodeChange}
+                                        />
+                                    )}
                                 </Pressable>
                             )}
                             <TextInput
@@ -302,7 +319,6 @@ const styles = StyleSheet.create({
         height: CT.LOW_RESOLUTION ? 20 : 18,
         fontSize: CT.LOW_RESOLUTION ? 16 : 15,
         fontWeight: "600",
-        fontFamily: CT.IS_ANDROID ? "Inter_600SemiBold" : null,
     },
     inputContainer: {
         flex: 1,
@@ -321,8 +337,10 @@ const styles = StyleSheet.create({
         ...CT.SHADOW_sm,
     },
     callingCode: {
+        top: CT.IS_ANDROID ? -3 : 0,
         color: CT.FONT_COLOR,
-        fontSize: 15,
+        height: CT.LOW_RESOLUTION ? 20 : 18,
+        fontSize: CT.LOW_RESOLUTION ? 16 : 15,
         fontWeight: "600",
     },
     callingCodes: {
@@ -331,7 +349,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
     },
     callingCodesCaret: {
-        top: 0,
+        top: CT.IS_ANDROID ? -1 : 0,
         color: CT.BG_GRAY_200,
         marginLeft: 1,
     },
