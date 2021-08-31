@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         position: "absolute",
+        alignItems: "center",
     },
     starsGradient: {
         width: "100%",
