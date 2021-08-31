@@ -22,7 +22,20 @@ export default {
     SMALL_SCREEN: Dimensions.get("window").width < 400,
     LOW_RESOLUTION: PixelRatio.get() < 3,
 
-    INPUT_TYPES: ["text", "name", "select", "username", "password", "email", "tel", "phone", "number", "url", "textarea"],
+    INPUT_TYPES: [
+        "url",
+        "tel",
+        "text",
+        "date",
+        "name",
+        "select",
+        "email",
+        "phone",
+        "number",
+        "username",
+        "password",
+        "textarea",
+    ],
 
     DEFAULT_CALLING_CODE: 60, // Malaysia (+60)
     DEFAULT_ANIMATION_TIMING: 200, // Used in dashboard charts
