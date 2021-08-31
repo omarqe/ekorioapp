@@ -23,8 +23,8 @@ export default function AccountPasswordScreen({ navigation }) {
         {
             heading: "New Password",
             fields: [
-                { type: "password", label: "New Password", defaultValue: "password", strengthGuide: true },
-                { type: "password", label: "Confirm New Password", defaultValue: "password", strengthGuide: true },
+                { type: "password", label: "New Password", placeholder: "••••••••", strengthGuide: true },
+                { type: "password", label: "Confirm New Password", placeholder: "••••••••", strengthGuide: true },
             ],
         },
     ];
