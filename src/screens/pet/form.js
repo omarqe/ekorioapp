@@ -18,9 +18,9 @@ import Header from "../../components/layout/header";
 import _map from "lodash/map";
 import _find from "lodash/find";
 import _clone from "lodash/clone";
-import _moment from "moment";
 import _sortBy from "lodash/sortBy";
 import _capitalize from "lodash/capitalize";
+import _makeBirthdate from "../../functions/makeBirthdate";
 
 import petTypesData from "../../../data/pet-types.json";
 
@@ -53,7 +53,7 @@ export default function PetFormScreen({ navigation, route }) {
     // Initialize
     useEffect(() => {
         if (route?.params) {
-            const birthday = new Date(_moment(route?.params?.birthday).format(CT.DATE_FORMAT));
+            const birthday = _makeBirthdate(route?.params?.birthday);
             setData({ ...route?.params, birthday });
             setFormType("update");
             return;
@@ -97,7 +97,7 @@ export default function PetFormScreen({ navigation, route }) {
             },
         ],
         [
-            { name: "birthday", type: "date", value: birthday, label: "Birthday", dateFormat: "D MMM, YYYY" },
+            { name: "birthday", type: "date", value: birthday, label: "Birthday", dateFormat: CT.DATE_FORMAT_PRETTY },
             { name: "weight", value: data?.weight, label: "Weight (kg)", type: "number", placeholder: "0.00" },
         ],
         {

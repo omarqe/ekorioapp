@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import CT from "../../const";
 
 import Button from "../../components/button";
 import Heading from "../../components/heading";
@@ -16,6 +17,7 @@ import { View, StyleSheet } from "react-native";
 import account from "../../../data/account.json";
 import _sortBy from "lodash/sortBy";
 import _lowerCase from "lodash/lowerCase";
+import _makeBirthdate from "../../functions/makeBirthdate";
 
 export default function AccountSettingsScreen({ navigation }) {
     const [data, setData] = useState(null);
@@ -49,7 +51,7 @@ export default function AccountSettingsScreen({ navigation }) {
     ];
 
     useEffect(() => {
-        setData(account);
+        setData({ ...account, birthday: _makeBirthdate(account?.birthday) });
     }, []);
 
     const fieldGroups = [
@@ -84,8 +86,8 @@ export default function AccountSettingsScreen({ navigation }) {
                         type: "date",
                         name: "birthday",
                         label: "Birthday",
-                        value: new Date(),
-                        dateFormat: "D MMM, YYYY",
+                        value: data?.birthday,
+                        dateFormat: CT.DATE_FORMAT_PRETTY,
                         placeholder: "01/01/1970",
                     },
                 ],
