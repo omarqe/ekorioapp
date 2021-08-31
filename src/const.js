@@ -23,6 +23,8 @@ export default {
     LOW_RESOLUTION: PixelRatio.get() < 3,
 
     DATE_FORMAT: "MMMM D YYYY, h:mm:ss",
+    DATE_FORMAT_PRETTY: "D MMM, YYYY",
+
     INPUT_TYPES: [
         "url",
         "tel",
