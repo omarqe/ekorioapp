@@ -35,6 +35,7 @@ export default function FloatingField({
     options = [],
     placeholder,
     dateProps,
+    dateFormat = "DD/MM/YYYY",
     nameCC, // Only works for type=select
     callingCode = CT.DEFAULT_CALLING_CODE, // Only works for type=select
     ...restProps
@@ -103,7 +104,7 @@ export default function FloatingField({
     const _onDateChange = (e, selectedDate) => {
         setDatePicker(false);
         if (!disabled && typeof onChange === "function") {
-            const currentDate = value || selectedDate;
+            const currentDate = selectedDate || value;
             onChange(currentDate, name);
         }
     };
@@ -147,7 +148,7 @@ export default function FloatingField({
     switch (type) {
         case "date":
         case "select":
-            const formattedDate = value instanceof Date ? _moment(value).format("DD/MM/YYYY").toString() : value;
+            const formattedDate = value instanceof Date ? _moment(value).format(dateFormat).toString() : value;
 
             const valueLabel = isDatePicker ? formattedDate : _find(options, { value })?.label;
             const textColor = { color: !valueLabel || disabled ? phColor : CT.FONT_COLOR };
@@ -390,4 +391,5 @@ FloatingField.propTypes = {
     strengthGuide: PropTypes.bool,
     useNativePicker: PropTypes.bool,
     dateProps: PropTypes.object,
+    dateFormat: PropTypes.string,
 };
