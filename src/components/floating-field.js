@@ -5,6 +5,7 @@ import Icon from "./icon";
 import Text from "./text";
 import PropTypes from "prop-types";
 import ModalPicker from "./modal-picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { Picker } from "@react-native-picker/picker";
 import { View, Image, Pressable, TextInput, StyleSheet } from "react-native";
@@ -13,6 +14,7 @@ import { countries } from "countries-list";
 import _find from "lodash/find";
 import _times from "lodash/times";
 import _uniqBy from "lodash/uniqBy";
+import _moment from "moment";
 import _sortBy from "lodash/sortBy";
 import _lowerCase from "lodash/lowerCase";
 import _renderIf from "../functions/renderIf";
@@ -32,13 +34,17 @@ export default function FloatingField({
     onChange,
     options = [],
     placeholder,
+    dateProps,
+    dateFormat = "DD/MM/YYYY",
     nameCC, // Only works for type=select
     callingCode = CT.DEFAULT_CALLING_CODE, // Only works for type=select
     ...restProps
 }) {
     const [picker, setPicker] = useState(false);
+    const [datePicker, setDatePicker] = useState(false);
     const [focused, setFocused] = useState(false);
     const [ccPicker, setCCPicker] = useState(false);
+    const [inputLayout, setInputLayout] = useState({ width: 0, height: 0 });
 
     // Generate calling code options
     const callingCodes = Object.keys(countries).map((key) => {
@@ -53,16 +59,26 @@ export default function FloatingField({
 
     const phColor = disabled ? CT.BG_GRAY_100 : CT.BG_GRAY_100;
     const isSelect = type === "select";
+    const isDatePicker = type === "date";
     const inputRef = useRef(null);
 
     // Negates guide if strengthGuide is true
     if (strengthGuide && guide) guide = false;
+
+    // Find input width and height
+    const _onInputLayout = (e) => {
+        const { width, height } = e.nativeEvent.layout || {};
+        setInputLayout({ width, height });
+    };
 
     // Handle UX feedbacks
     const _onPressFocusInput = () => {
         if (disabled) return;
         if (isSelect) {
             useNativePicker || !CT.IS_IOS ? inputRef?.current?.focus() : setPicker(true);
+            return;
+        } else if (isDatePicker) {
+            setDatePicker(true);
             return;
         }
 
@@ -83,6 +99,13 @@ export default function FloatingField({
     const _onValueChange = (value) => {
         if (!disabled && typeof onChange === "function") {
             onChange(value, name);
+        }
+    };
+    const _onDateChange = (e, selectedDate) => {
+        setDatePicker(false);
+        if (!disabled && typeof onChange === "function") {
+            const currentDate = selectedDate || value;
+            onChange(currentDate, name);
         }
     };
     const _onCallingCodeChange = (value) => {
@@ -120,9 +143,14 @@ export default function FloatingField({
     typeProps.phone = typeProps.tel;
     typeProps.username = typeProps.name;
 
+    // For type=date && type=select
+
     switch (type) {
+        case "date":
         case "select":
-            const valueLabel = _find(options, { value })?.label;
+            const formattedDate = value instanceof Date ? _moment(value).format(dateFormat).toString() : value;
+
+            const valueLabel = isDatePicker ? formattedDate : _find(options, { value })?.label;
             const textColor = { color: !valueLabel || disabled ? phColor : CT.FONT_COLOR };
             const textRightPadding = { paddingRight: 20 };
             const pickerProps = { ref: inputRef, selectedValue: value, onValueChange: _onValueChange, style: styles.picker };
@@ -133,28 +161,44 @@ export default function FloatingField({
             };
 
             return (
-                <View>
+                <View onLayout={_onInputLayout}>
                     <Pressable style={[baseStyle, disabledStyle]} onPress={_onPressFocusInput}>
                         <Text style={[styles.label, disabledLabelStyle, textRightPadding]}>{label}</Text>
                         <Text {...valueProps}>{valueLabel ?? placeholder ?? "Please select"}</Text>
-                        {_renderIf(
-                            CT.IS_ANDROID,
-                            <Picker {...pickerProps}>
-                                {options.map(({ label, value }, i) => (
-                                    <Picker.Item key={i} label={label} value={value} />
-                                ))}
-                            </Picker>,
-                            <ModalPicker
-                                selectedValue={value}
-                                open={picker}
-                                label={label}
-                                options={options}
-                                onClose={setPicker.bind(null, false)}
-                                onValueChange={_onValueChange}
-                            />
-                        )}
 
-                        <Icon icon="caret-down" style={styles.caret} />
+                        {_renderIf(
+                            !isDatePicker,
+                            _renderIf(
+                                CT.IS_ANDROID,
+                                <Picker {...pickerProps}>
+                                    {options.map(({ label, value }, i) => (
+                                        <Picker.Item key={i} label={label} value={value} />
+                                    ))}
+                                </Picker>,
+                                <ModalPicker
+                                    selectedValue={value}
+                                    open={picker}
+                                    label={label}
+                                    options={options}
+                                    onClose={setPicker.bind(null, false)}
+                                    onDateChange={_onDateChange}
+                                    onValueChange={_onValueChange}
+                                />
+                            ),
+                            _renderIf(
+                                datePicker || CT.IS_IOS,
+                                <View style={CT.IS_IOS ? [styles.dateTimePicker, inputLayout] : null}>
+                                    <DateTimePicker
+                                        mode="date"
+                                        value={value}
+                                        display="default"
+                                        onChange={_onDateChange}
+                                        {...dateProps}
+                                    />
+                                </View>
+                            )
+                        )}
+                        <Icon icon={isDatePicker ? "far calendar-alt" : "caret-down"} style={styles.caret} />
                     </Pressable>
                     <FieldGuide type={type} guide={guide} strengthGuide={strengthGuide} />
                 </View>
@@ -162,6 +206,7 @@ export default function FloatingField({
 
         default:
             const alignItems = type === "textarea" ? "flex-start" : "center";
+
             return (
                 <View>
                     <Pressable style={[baseStyle, disabledStyle]} onPress={_onPressFocusInput}>
@@ -227,6 +272,15 @@ const FieldGuide = ({ type, guide, disabled, strengthGuide }) => (
 );
 
 const styles = StyleSheet.create({
+    dateTimePicker: {
+        top: 0,
+        left: 0,
+        right: 0,
+        width: "100%",
+        opacity: CT.IS_IOS ? 0 : 1,
+        position: "absolute",
+        paddingTop: 11,
+    },
     base: {
         ...CT.SHADOW_SM,
         padding: 10,
@@ -336,4 +390,6 @@ FloatingField.propTypes = {
     disabled: PropTypes.bool,
     strengthGuide: PropTypes.bool,
     useNativePicker: PropTypes.bool,
+    dateProps: PropTypes.object,
+    dateFormat: PropTypes.string,
 };
