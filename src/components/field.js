@@ -34,6 +34,7 @@ Field.propTypes = {
 const styles = StyleSheet.create({
     label: {
         color: CT.BG_GRAY_500,
+        fontSize: 12,
         fontWeight: "600",
         marginBottom: 5,
     },

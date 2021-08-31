@@ -88,7 +88,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
 
                 <Body topRounded overlap>
                     <View style={styles.headingSection}>
-                        <Heading text={`${data?.name}'s Health`} subtitle="Last evaluated 3 weeks ago" gapless />
+                        <Heading size={0} text={`${data?.name}'s Health`} subtitle="Last evaluated 3 weeks ago" gapless />
                         <View style={styles.actionBtnContainer}>
                             <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={_onOptions} inverted />
                         </View>

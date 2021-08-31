@@ -97,17 +97,17 @@ const styles = StyleSheet.create({
     },
     title: {
         color: CT.FONT_COLOR,
-        fontSize: 16,
+        fontSize: 13,
         fontWeight: "700",
-        marginBottom: 2,
+        marginBottom: CT.LOW_RESOLUTION ? 0 : 2,
     },
     subtitle: {
         color: CT.FONT_COLOR_LIGHT,
-        fontSize: 14,
+        fontSize: 12,
     },
     tags: {
         display: "flex",
-        marginTop: 15,
+        marginTop: 10,
         flexDirection: "row",
     },
     tagItem: {
@@ -125,8 +125,9 @@ const styles = StyleSheet.create({
         marginRight: 3,
     },
     tagText: {
-        color: CT.BG_GRAY_600,
-        fontSize: 12,
+        color: CT.BG_GRAY_400,
+        fontSize: CT.LOW_RESOLUTION ? 9 : 10,
+        fontWeight: "500",
     },
 });
 

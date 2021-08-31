@@ -5,14 +5,13 @@ import RNCalendarStrip from "react-native-calendar-strip";
 import { View, StyleSheet } from "react-native";
 
 export default function CalendarStrip(props) {
-    const lowRes = CT.PIXELRATIO < 3 || CT.SCREEN_WIDTH < 400;
     const text = [
         { nameStyle: { fontSize: 11, marginTop: 2 }, numberStyle: { fontSize: 22, marginTop: 0, paddingTop: 0 } },
         { nameStyle: { fontSize: 9, marginTop: 2 }, numberStyle: { fontSize: 18, marginTop: 0, paddingTop: 0 } },
     ];
 
-    const dateNameStyle = text[lowRes ? 1 : 0].nameStyle;
-    const dateNumberStyle = text[lowRes ? 1 : 0].numberStyle;
+    const dateNameStyle = text[LOW_RESOLUTION ? 1 : 0].nameStyle;
+    const dateNumberStyle = text[LOW_RESOLUTION ? 1 : 0].numberStyle;
 
     return (
         <View style={styles.base}>
@@ -47,6 +46,7 @@ export default function CalendarStrip(props) {
     );
 }
 
+const LOW_RESOLUTION = CT.LOW_RESOLUTION || CT.SMALL_SCREEN;
 const calendarHeaderMargin = 25;
 const styles = StyleSheet.create({
     base: {

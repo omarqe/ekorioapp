@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     },
     addressText: {
         color: CT.BG_PURPLE_100,
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: "600",
     },
 

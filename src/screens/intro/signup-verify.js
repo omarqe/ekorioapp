@@ -43,7 +43,7 @@ export default function SignupVerifyScreen({ navigation }) {
                     <Text style={styles.subtitle}>We've sent verification code to:</Text>
                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
                         <Text style={styles.subtitlePhone}>+60 12-345 6789</Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={navigation.goBack}>
                             <Text style={styles.subtitleWrongNumber}>(Wrong number?)</Text>
                         </TouchableOpacity>
                     </View>
@@ -92,20 +92,20 @@ const styles = StyleSheet.create({
         marginTop: 15,
     },
     heading: {
-        fontSize: 22,
+        fontSize: 18,
         fontWeight: "700",
         textAlign: "center",
         marginBottom: 10,
     },
     subtitle: {
         color: CT.BG_GRAY_400,
-        fontSize: 16,
+        fontSize: 14,
         textAlign: "center",
         marginBottom: 4,
     },
     subtitlePhone: {
         color: CT.BG_GRAY_500,
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: "700",
         textAlign: "center",
     },
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     },
     otpDigit: {
         width: 22,
-        fontSize: 38,
+        fontSize: 32,
         textAlign: "center",
         fontWeight: "700",
     },
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     ctaNotReceive: {
         color: CT.BG_GRAY_500,
         padding: 10,
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: "500",
         textAlign: "center",
     },
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
         color: CT.CTA_NEUTRAL,
         padding: 10,
         textAlign: "center",
-        fontSize: 18,
+        fontSize: 14,
         fontWeight: "700",
     },
 
@@ -156,9 +156,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     inputStyle: {
-        opacity: 0,
-        width: 0,
-        height: 0,
+        width: CT.IS_ANDROID ? 50 : 0,
+        height: CT.IS_ANDROID ? 50 : 0,
+        color: CT.BG_WHITE,
+        left: -CT.SCREEN_WIDTH,
         position: "absolute",
+        backgroundColor: CT.BG_WHITE,
     },
 });

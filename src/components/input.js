@@ -101,9 +101,7 @@ const Input = ({
                     <View style={styles.countryFlagContainer}>
                         <Image source={countryFlag} style={styles.countryFlag} />
                     </View>
-                    <Text style={[styles.input, { flex: 0, color: CT.BG_GRAY_500 }]} allowFontScaling={false}>
-                        +{callingCode}
-                    </Text>
+                    <Text style={[styles.input, styles.callingCode]}>+{callingCode}</Text>
                     <Icon icon="caret-down" style={styles.callingCodesCaret} />
                     <ModalPicker
                         selectedValue={callingCode}
@@ -180,9 +178,10 @@ const styles = StyleSheet.create({
     },
 
     countryFlag: {
-        width: 21,
-        height: 15,
-        borderRadius: 5,
+        top: CT.IS_IOS ? 0 : 0,
+        width: 22,
+        height: 14,
+        backgroundColor: CT.BG_GRAY_50,
     },
     countryFlagContainer: {
         width: 21,
@@ -191,15 +190,20 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         ...CT.SHADOW_sm,
     },
+    callingCode: {
+        top: CT.IS_IOS ? 0 : -1,
+        flex: 0,
+        color: CT.BG_GRAY_500,
+    },
     callingCodes: {
         marginRight: 5,
         flexDirection: "row",
         alignItems: "center",
     },
     callingCodesCaret: {
-        top: 0,
+        top: CT.IS_IOS ? -1 : 0,
         color: CT.BG_GRAY_200,
-        marginLeft: 1,
+        marginLeft: CT.IS_IOS ? 1 : 2,
     },
 });
 

@@ -239,14 +239,14 @@ const styles = StyleSheet.create({
     },
     label: {
         color: CT.FONT_COLOR_LIGHT,
-        fontSize: 14,
+        fontSize: 12,
         marginBottom: 5,
     },
     input: {
         flex: 1,
         color: CT.FONT_COLOR,
-        height: CT.PIXELRATIO < 3 ? 20 : 18,
-        fontSize: 15,
+        height: CT.LOW_RESOLUTION ? 20 : 18,
+        fontSize: CT.LOW_RESOLUTION ? 16 : 15,
         fontWeight: "600",
         fontFamily: CT.IS_ANDROID ? "Inter_600SemiBold" : null,
     },

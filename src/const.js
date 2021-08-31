@@ -19,6 +19,9 @@ export default {
     IS_3XHDPI: PixelRatio.get() === 3.5,
     PIXELRATIO: PixelRatio.get(),
 
+    SMALL_SCREEN: Dimensions.get("window").width < 400,
+    LOW_RESOLUTION: PixelRatio.get() < 3,
+
     INPUT_TYPES: ["text", "name", "select", "username", "password", "email", "tel", "phone", "number", "url", "textarea"],
 
     DEFAULT_CALLING_CODE: 60, // Malaysia (+60)

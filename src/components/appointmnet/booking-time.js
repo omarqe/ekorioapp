@@ -74,7 +74,7 @@ export default function BookingTime({ onSelect, hidden, selected, unavailable })
 const styles = StyleSheet.create({
     groupText: {
         color: CT.BG_GRAY_300,
-        fontSize: 12,
+        fontSize: 10,
         fontWeight: "500",
         textTransform: "uppercase",
         marginBottom: 5,
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     },
     timeText: {
         color: CT.BG_GRAY_600,
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: "600",
     },
     meridiemText: {

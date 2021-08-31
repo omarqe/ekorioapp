@@ -39,13 +39,13 @@ const styles = StyleSheet.create({
     },
     label: {
         color: CT.FONT_COLOR_LIGHT,
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: "500",
     },
     value: {
         color: CT.FONT_COLOR,
         position: "relative",
-        fontSize: 18,
+        fontSize: 15,
         fontWeight: "700",
     },
     valueBlock: {

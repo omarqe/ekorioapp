@@ -15,15 +15,15 @@ const Badge = (props) => {
     const sizes = [
         {
             base: { padding: 4, paddingLeft: 5, paddingRight: 6, borderRadius: 6 },
-            text: { fontSize: 12 },
+            text: { fontSize: 10 },
         },
         {
             base: { padding: 5, paddingLeft: 6, paddingRight: 6, borderRadius: 7 },
-            text: { fontSize: 14 },
+            text: { fontSize: 12 },
         },
         {
             base: { padding: 6, paddingLeft: 7, paddingRight: 7, borderRadius: 8 },
-            text: { fontSize: 16 },
+            text: { fontSize: 14 },
         },
     ];
     const colors = {

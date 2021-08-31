@@ -121,7 +121,7 @@ export default function PetHealthSurveyScreen({ navigation, route }) {
                                 icon="arrow-right"
                                 color="purple"
                                 style={styles.button}
-                                onPress={_onNext}
+                                onPress={isFinal ? navigation.goBack : _onNext}
                                 disabled={disabled}
                             />
                         </View>
