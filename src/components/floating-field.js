@@ -5,6 +5,7 @@ import Icon from "./icon";
 import Text from "./text";
 import PropTypes from "prop-types";
 import ModalPicker from "./modal-picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { Picker } from "@react-native-picker/picker";
 import { View, Image, Pressable, TextInput, StyleSheet } from "react-native";
@@ -37,6 +38,7 @@ export default function FloatingField({
     ...restProps
 }) {
     const [picker, setPicker] = useState(false);
+    const [datePicker, setDatePicker] = useState(false);
     const [focused, setFocused] = useState(false);
     const [ccPicker, setCCPicker] = useState(false);
 
@@ -53,6 +55,7 @@ export default function FloatingField({
 
     const phColor = disabled ? CT.BG_GRAY_100 : CT.BG_GRAY_100;
     const isSelect = type === "select";
+    const isDatePicker = type === "date";
     const inputRef = useRef(null);
 
     // Negates guide if strengthGuide is true
@@ -63,6 +66,9 @@ export default function FloatingField({
         if (disabled) return;
         if (isSelect) {
             useNativePicker || !CT.IS_IOS ? inputRef?.current?.focus() : setPicker(true);
+            return;
+        } else if (isDatePicker) {
+            CT.IS_IOS ? setPicker(true) : setDatePicker(true);
             return;
         }
 
@@ -83,6 +89,13 @@ export default function FloatingField({
     const _onValueChange = (value) => {
         if (!disabled && typeof onChange === "function") {
             onChange(value, name);
+        }
+    };
+    const _onDateChange = (e, selectedDate) => {
+        setDatePicker(!CT.IS_ANDROID);
+        if (!disabled && typeof onChange === "function") {
+            const currentDate = value || selectedDate;
+            onChange(currentDate, name);
         }
     };
     const _onCallingCodeChange = (value) => {
@@ -120,7 +133,10 @@ export default function FloatingField({
     typeProps.phone = typeProps.tel;
     typeProps.username = typeProps.name;
 
+    // For type=date && type=select
+
     switch (type) {
+        case "date":
         case "select":
             const valueLabel = _find(options, { value })?.label;
             const textColor = { color: !valueLabel || disabled ? phColor : CT.FONT_COLOR };
@@ -139,22 +155,35 @@ export default function FloatingField({
                         <Text {...valueProps}>{valueLabel ?? placeholder ?? "Please select"}</Text>
                         {_renderIf(
                             CT.IS_ANDROID,
-                            <Picker {...pickerProps}>
-                                {options.map(({ label, value }, i) => (
-                                    <Picker.Item key={i} label={label} value={value} />
-                                ))}
-                            </Picker>,
+                            _renderIf(
+                                isDatePicker,
+                                datePicker && (
+                                    <DateTimePicker
+                                        value={new Date()}
+                                        mode="date"
+                                        display="default"
+                                        onChange={_onDateChange}
+                                    />
+                                ),
+                                <Picker {...pickerProps}>
+                                    {options.map(({ label, value }, i) => (
+                                        <Picker.Item key={i} label={label} value={value} />
+                                    ))}
+                                </Picker>
+                            ),
                             <ModalPicker
+                                date={isDatePicker}
                                 selectedValue={value}
                                 open={picker}
                                 label={label}
                                 options={options}
                                 onClose={setPicker.bind(null, false)}
+                                onDateChange={_onDateChange}
                                 onValueChange={_onValueChange}
                             />
                         )}
 
-                        <Icon icon="caret-down" style={styles.caret} />
+                        <Icon icon={isDatePicker ? "fal calendar-alt" : "caret-down"} style={styles.caret} />
                     </Pressable>
                     <FieldGuide type={type} guide={guide} strengthGuide={strengthGuide} />
                 </View>
@@ -162,6 +191,7 @@ export default function FloatingField({
 
         default:
             const alignItems = type === "textarea" ? "flex-start" : "center";
+
             return (
                 <View>
                     <Pressable style={[baseStyle, disabledStyle]} onPress={_onPressFocusInput}>
