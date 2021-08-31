@@ -86,7 +86,7 @@ export default function AccountSettingsScreen({ navigation }) {
                         type: "date",
                         name: "birthday",
                         label: "Birthday",
-                        value: data?.birthday,
+                        value: data?.birthday || new Date(),
                         dateFormat: CT.DATE_FORMAT_PRETTY,
                         placeholder: "01/01/1970",
                     },
