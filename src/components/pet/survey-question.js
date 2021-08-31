@@ -90,7 +90,7 @@ const Option = ({ id: optionID, type, value, image = null, re, width, identity, 
         <Pressable onPress={_onPress} onPressIn={setPressed.bind(null, true)} onPressOut={setPressed.bind(null, false)}>
             {image && (
                 <View style={styles.imageView}>
-                    <Image style={styles.image} source={{ uri: image }} resizeMode="cover" />
+                    <Image style={styles.image} source={{ uri: image }} resizeMode="contain" />
                 </View>
             )}
             <View style={styles.option}>
