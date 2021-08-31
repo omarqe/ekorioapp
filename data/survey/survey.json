@@ -164,27 +164,27 @@
                 "options": [
                     {
                         "id": 59,
-                        "image": "not_null",
+                        "image": "https://img.omvr.io/ekorio/cat-body-charts/very-thin.png",
                         "value": "Very thin waist; Ribs, back and hip bones visible or easily felt"
                     },
                     {
                         "id": 60,
-                        "image": "not_null",
+                        "image": "https://img.omvr.io/ekorio/cat-body-charts/underweight.png",
                         "value": "Thin waist; Ribs, back or hip bones visible or easily felt"
                     },
                     {
                         "id": 61,
-                        "image": "not_null",
+                        "image": "https://img.omvr.io/ekorio/cat-body-charts/normal.png",
                         "value": "Waist slimmer than chest; Ribs, back and hip bones can be felt with slight pressure"
                     },
                     {
                         "id": 62,
-                        "image": "not_null",
+                        "image": "https://img.omvr.io/ekorio/cat-body-charts/overweight.png",
                         "value": "Waist same size as chest; Ribs, back and hip bones hard to feel"
                     },
                     {
                         "id": 63,
-                        "image": "not_null",
+                        "image": "https://img.omvr.io/ekorio/cat-body-charts/obese.png",
                         "value": "Waist larger than chest; Ribs, back and hip bones not felt; Neck and legs thick"
                     }
                 ]

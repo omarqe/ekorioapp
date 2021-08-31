@@ -6,7 +6,7 @@ import Text from "../text";
 import Heading from "../heading";
 import PropTypes from "prop-types";
 
-import { View, Pressable, FlatList, StyleSheet } from "react-native";
+import { View, Image, Pressable, FlatList, StyleSheet } from "react-native";
 
 import _replace from "lodash/replace";
 import _isArray from "lodash/isArray";
@@ -66,6 +66,7 @@ export default function SurveyQuestion({ pet, type = 1, options, question, value
 
 const Option = ({ id: optionID, type, value, image = null, re, width, identity, checked = false, onPress }) => {
     const [pressed, setPressed] = useState(false);
+    console.log("image", image);
 
     const isRadio = type === 2;
     const icon = isRadio ? "circle" : "check";
@@ -87,7 +88,11 @@ const Option = ({ id: optionID, type, value, image = null, re, width, identity, 
 
     return (
         <Pressable onPress={_onPress} onPressIn={setPressed.bind(null, true)} onPressOut={setPressed.bind(null, false)}>
-            {image && <View style={styles.image} />}
+            {image && (
+                <View style={styles.imageView}>
+                    <Image style={styles.image} source={{ uri: image }} resizeMode="cover" />
+                </View>
+            )}
             <View style={styles.option}>
                 <View style={checkboxStyle}>{checked && <Icon icon={`fas ${icon}`} size={12} color={CT.BG_WHITE} />}</View>
                 <Text style={[styles.optionText, checked ? styles.optionTextChecked : null, optionTextWidth]}>
@@ -115,13 +120,22 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         paddingVertical: SMALL_SCREEN ? 8 : 10,
     },
+    imageView: {
+        width: "100%",
+        height: "auto",
+        minHeight: 150,
+        marginTop: 20,
+        borderRadius: 10,
+        backgroundColor: CT.BG_WHITE,
+        ...CT.SHADOW_MD,
+    },
     image: {
         width: "100%",
-        height: 150,
-        marginTop: 20,
-        borderRadius: 5,
-        backgroundColor: CT.BG_GRAY_50,
+        height: "auto",
+        minHeight: 150,
+        borderRadius: 10,
     },
+
     optionText: {
         color: CT.BG_GRAY_400,
         fontSize: SMALL_SCREEN ? 12 : 13,
