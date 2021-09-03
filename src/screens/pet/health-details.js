@@ -98,12 +98,12 @@ const styles = StyleSheet.create({
     },
     medName: {
         color: CT.FONT_COLOR,
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: "700",
     },
     medDesc: {
         color: CT.BG_GRAY_700,
-        fontSize: 14,
+        fontSize: 12,
         marginTop: 1,
     },
     medBadges: {
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     },
     medBadgeText: {
         color: CT.BG_GRAY_300,
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: "400",
     },
 
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     },
     diagnosis: {
         color: CT.BG_GRAY_600,
-        fontSize: 16,
-        lineHeight: 26,
+        fontSize: 14,
+        lineHeight: 24,
     },
 });

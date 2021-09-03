@@ -25,7 +25,7 @@ export default function AppointmentDetailsScreen({ navigation }) {
         subtitle: "Petsville Animal Clinic, Cyberjaya",
         text: (
             <Text>
-                Fri, 13 August{" "}
+                {"Friday, 3 August "}
                 <Text style={styles.time}>
                     <Text style={styles.at}>@</Text> 3.00<Text style={styles.meridiem}>pm</Text>
                 </Text>
@@ -62,15 +62,15 @@ export default function AppointmentDetailsScreen({ navigation }) {
 const styles = StyleSheet.create({
     at: {
         color: CT.BG_GRAY_200,
-        fontSize: 18,
+        fontSize: 16,
     },
     time: {
-        fontSize: 18,
+        fontSize: 14,
         fontWeight: "700",
     },
     meridiem: {
-        // color: CT.BG_GRAY_500,
-        fontSize: 16,
+        color: CT.BG_GRAY_500,
+        fontSize: 12,
         fontWeight: "500",
     },
 });
