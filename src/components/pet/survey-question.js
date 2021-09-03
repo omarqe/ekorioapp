@@ -66,7 +66,6 @@ export default function SurveyQuestion({ pet, type = 1, options, question, value
 
 const Option = ({ id: optionID, type, value, image = null, re, width, identity, checked = false, onPress }) => {
     const [pressed, setPressed] = useState(false);
-    console.log("image", image);
 
     const isRadio = type === 2;
     const icon = isRadio ? "circle" : "check";
