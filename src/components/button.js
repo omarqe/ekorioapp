@@ -55,14 +55,15 @@ const Button = (props) => {
             onPressOut={!disabled ? setPressed.bind(null, 0) : null}
         >
             <View style={[baseStyle, { opacity: disabled ? 0.4 : 1 }]}>
-                {_renderIf(
-                    loading === true,
-                    <ActivityIndicator color={iconColor} />,
-                    <>
-                        <ButtonIcon position="left" />
-                        <Text style={[labelStyle, textStyle]}>{text}</Text>
-                        <ButtonIcon position="right" />
-                    </>
+                <View style={{ opacity: loading ? 0 : 1 }}>
+                    <ButtonIcon position="left" />
+                    <Text style={[labelStyle, textStyle]}>{text}</Text>
+                    <ButtonIcon position="right" />
+                </View>
+                {loading && (
+                    <View style={styles.spinner}>
+                        <ActivityIndicator color={iconColor} />
+                    </View>
                 )}
             </View>
         </Pressable>
@@ -95,6 +96,9 @@ const styles = StyleSheet.create({
     iconRight: {
         top: -1,
         marginLeft: 5,
+    },
+    spinner: {
+        position: "absolute",
     },
 });
 
