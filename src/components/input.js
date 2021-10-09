@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import CT from "../const.js";
 import Icon from "./icon";
 import Text from "./text";
@@ -7,7 +7,7 @@ import ModalPicker from "./modal-picker";
 import PropTypes from "prop-types";
 
 import { countries } from "countries-list";
-import { View, Image, Pressable, TextInput, StyleSheet } from "react-native";
+import { View, Image, Pressable, TextInput, StyleSheet, Keyboard } from "react-native";
 
 import _find from "lodash/find";
 import _uniqBy from "lodash/uniqBy";
@@ -44,6 +44,13 @@ const Input = ({
     });
     const countryAbbrv = _lowerCase(_find(callingCodes, { value: callingCode })?.abbrv);
     const countryFlag = { uri: `https://countryflags.io/${countryAbbrv}/flat/64.png` };
+
+    // When disabled, dismiss keyboard
+    useEffect(() => {
+        if (disabled) {
+            Keyboard.dismiss();
+        }
+    }, [disabled]);
 
     const _onPressFocusInput = () => {
         if (inputRef?.current && !disabled) {
@@ -211,10 +218,12 @@ const styles = StyleSheet.create({
         marginLeft: CT.IS_IOS ? 1 : 2,
     },
     disabledOverlay: {
-        width: "100%",
-        height: "100%",
+        top: -1,
+        left: -1,
+        right: -1,
+        bottom: -1,
         zIndex: 99,
-        opacity: 0.5,
+        opacity: 0.3,
         position: "absolute",
         borderRadius: radius,
         backgroundColor: CT.BG_WHITE,
