@@ -19,7 +19,7 @@ const LoginBody = ({ label, fields = [] }) => {
             <WaveForm />
             <View style={styles.body}>
                 <View style={styles.content}>
-                    <Fields fields={fields} grouping={grouping} />
+                    <Fields fields={fields} disabled={loading} grouping={grouping} />
                 </View>
                 <Button text={label} color="yellow" onPress={onSubmit} loading={loading} />
             </View>

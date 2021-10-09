@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import CT from "../../const.js";
 import Context from "../../components/context";
 import Container from "../../components/container";
@@ -6,7 +6,16 @@ import LoginComponent from "../../components/intro/login-component";
 import KeyboardAvoiding from "../../components/keyboard-avoiding";
 
 export default function SignupScreen({ navigation }) {
-    const onSubmit = () => navigation.navigate("signup-verify");
+    const [loading, setLoading] = useState(false);
+    const onSubmit = () => {
+        setLoading(true);
+        const t = setTimeout(() => {
+            setLoading(false);
+            navigation.navigate("signup-verify");
+            clearTimeout(t);
+        }, CT.WAITING_DEMO);
+    };
+
     const Provider = Context.Login.Provider;
     const fields = [
         { type: "name", label: "Full Name", placeholder: "John Doe" },
@@ -18,7 +27,7 @@ export default function SignupScreen({ navigation }) {
     return (
         <KeyboardAvoiding>
             <Container bgColor={CT.BG_PURPLE_900} paddingX={0} isLogin>
-                <Provider value={{ fields, navigation, onSubmit, grouping: true, swapTitle: true }}>
+                <Provider value={{ fields, navigation, onSubmit, loading, grouping: true, swapTitle: true }}>
                     <LoginComponent
                         title="Create a free account"
                         subtitle="Please enter your details below."
