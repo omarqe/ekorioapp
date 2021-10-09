@@ -3,16 +3,19 @@ import CT from "../const.js";
 import Icon from "./icon";
 import Text from "./text";
 import PropTypes from "prop-types";
-import { View, Pressable, StyleSheet } from "react-native";
+import { View, Pressable, StyleSheet, ActivityIndicator } from "react-native";
 
 import _get from "lodash/get";
+import _renderIf from "../functions/renderIf";
 
 const Button = (props) => {
     let variant = {};
     const [pressed, setPressed] = useState(0);
-    const { text, style, textStyle, small = false, disabled = false, color = "default", onPress, icon, iconRight } = props;
+    const { small = false, disabled = false, loading = false } = props;
+    const { text, style, textStyle, color = "default", onPress, icon, iconRight } = props;
 
     const colors = {
+        spinner: { default: CT.BG_GRAY_400, yellow: CT.BG_WHITE, purple: CT.BG_PURPLE_100 },
         label: { default: CT.FONT_COLOR, yellow: CT.BG_YELLOW_800, purple: CT.BG_PURPLE_50 },
         icon: { default: CT.BG_GRAY_200, yellow: CT.BG_YELLOW_700, purple: CT.BG_PURPLE_400 },
         base: [
@@ -32,12 +35,12 @@ const Button = (props) => {
     }
 
     // Handle style
+    const iconColor = _get(colors, `icon[${color}]`, colors.icon.default);
     const baseStyle = [styles.base, variant?.base, variant?.small?.base, style];
     const labelStyle = [styles.label, variant?.label, variant?.small?.label];
-    const ButtonIcon = ({ color: btnColor, position = "left" }) => {
+    const ButtonIcon = ({ position = "left" }) => {
         const size = small ? 12 : 14;
-        const color = _get(colors, `icon[${btnColor}]`, colors.icon.default);
-        const iconProps = { icon, size, color, style: position === "left" ? styles.iconLeft : styles.iconRight };
+        const iconProps = { icon, size, color: iconColor, style: position === "left" ? styles.iconLeft : styles.iconRight };
 
         if (icon && !iconRight && position === "left") return <Icon {...iconProps} />;
         else if (icon && iconRight && position === "right") return <Icon {...iconProps} />;
@@ -46,15 +49,21 @@ const Button = (props) => {
 
     return (
         <Pressable
-            disabled={disabled}
+            disabled={disabled || loading}
             onPress={!disabled ? onPress : null}
             onPressIn={!disabled ? setPressed.bind(null, 1) : null}
             onPressOut={!disabled ? setPressed.bind(null, 0) : null}
         >
             <View style={[baseStyle, { opacity: disabled ? 0.4 : 1 }]}>
-                <ButtonIcon color={color} position="left" />
-                <Text style={[labelStyle, textStyle]}>{text}</Text>
-                <ButtonIcon color={color} position="right" />
+                {_renderIf(
+                    loading === true,
+                    <ActivityIndicator color={iconColor} />,
+                    <>
+                        <ButtonIcon position="left" />
+                        <Text style={[labelStyle, textStyle]}>{text}</Text>
+                        <ButtonIcon position="right" />
+                    </>
+                )}
             </View>
         </Pressable>
     );
