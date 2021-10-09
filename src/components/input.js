@@ -24,6 +24,7 @@ const Input = ({
     onChange,
     onFocus,
     onBlur,
+    disabled = false,
     inputStyle = {},
     nameCC,
     callingCode = CT.DEFAULT_CALLING_CODE,
@@ -45,7 +46,7 @@ const Input = ({
     const countryFlag = { uri: `https://countryflags.io/${countryAbbrv}/flat/64.png` };
 
     const _onPressFocusInput = () => {
-        if (inputRef?.current) {
+        if (inputRef?.current && !disabled) {
             inputRef?.current.focus();
             _onFocus();
         }
@@ -95,6 +96,8 @@ const Input = ({
 
     return (
         <Pressable style={inputBaseStyle} onPress={_onPressFocusInput}>
+            {disabled && <View style={styles.disabledOverlay} />}
+
             {_renderIf(
                 ["tel", "phone"].indexOf(type) > -1, // Calling Code Picker
                 <Pressable style={styles.callingCodes} onPress={setCCPicker.bind(null, true)}>
@@ -144,6 +147,7 @@ Input.propTypes = {
     onBlur: PropTypes.func,
     type: PropTypes.oneOf(CT.INPUT_TYPES),
     style: PropTypes.object,
+    disabled: PropTypes.bool,
     inputStyle: PropTypes.object,
     placeholder: PropTypes.string,
 };
@@ -160,6 +164,7 @@ const styles = StyleSheet.create({
     inputBase: {
         padding: 15,
         fontSize: 16,
+        position: "relative",
         alignItems: "center",
         borderWidth: 1,
         borderColor: CT.BG_GRAY_100,
@@ -204,6 +209,15 @@ const styles = StyleSheet.create({
         top: CT.IS_IOS ? -1 : 0,
         color: CT.BG_GRAY_200,
         marginLeft: CT.IS_IOS ? 1 : 2,
+    },
+    disabledOverlay: {
+        width: "100%",
+        height: "100%",
+        zIndex: 99,
+        opacity: 0.5,
+        position: "absolute",
+        borderRadius: radius,
+        backgroundColor: CT.BG_WHITE,
     },
 });
 

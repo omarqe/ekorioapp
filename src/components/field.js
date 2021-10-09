@@ -18,7 +18,7 @@ const Field = ({ type, label = "Input Label", last = false, ...restProps }) => {
     return (
         <TouchableWithoutFeedback onPress={onPressShouldFocus}>
             <View style={{ paddingBottom: last ? 0 : CT.FIELD_BOTTOM_SPACING }}>
-                <Text style={styles.label}>{label}</Text>
+                <Text style={[styles.label, { opacity: restProps?.disabled ? 0.5 : 1 }]}>{label}</Text>
                 <Input type={type} {...restProps} />
             </View>
         </TouchableWithoutFeedback>
