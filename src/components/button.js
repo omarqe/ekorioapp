@@ -55,7 +55,7 @@ const Button = (props) => {
             onPressOut={!disabled ? setPressed.bind(null, 0) : null}
         >
             <View style={[baseStyle, { opacity: disabled ? 0.4 : 1 }]}>
-                <View style={{ opacity: loading ? 0 : 1 }}>
+                <View style={{ opacity: loading ? 0 : 1, flexDirection: "row", alignItems: "center" }}>
                     <ButtonIcon position="left" />
                     <Text style={[labelStyle, textStyle]}>{text}</Text>
                     <ButtonIcon position="right" />
@@ -90,11 +90,9 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     iconLeft: {
-        top: -1,
         marginRight: 5,
     },
     iconRight: {
-        top: -1,
         marginLeft: 5,
     },
     spinner: {

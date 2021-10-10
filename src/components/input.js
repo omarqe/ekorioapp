@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
         right: -1,
         bottom: -1,
         zIndex: 99,
-        opacity: 0.3,
+        opacity: 0.5,
         position: "absolute",
         borderRadius: radius,
         backgroundColor: CT.BG_WHITE,
