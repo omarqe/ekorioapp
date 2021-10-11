@@ -13,6 +13,7 @@ import _times from "lodash/times";
 export default function SignupVerifyScreen({ navigation }) {
     const [otp, setOTP] = useState("");
     const [sec, setSec] = useState(CT.LOGIN_OTP_TIMEOUT);
+    const [loading, setLoading] = useState(false);
     const ref = useRef(null);
     const auth = useContext(Context.Auth);
     const resendDisabled = sec > 0;
@@ -21,7 +22,11 @@ export default function SignupVerifyScreen({ navigation }) {
     const onChangeOTP = (otp) => {
         setOTP(otp);
         if (otp?.length >= 6) {
-            auth.onLogin(true);
+            setLoading(true);
+            const t = setTimeout(() => {
+                setLoading(false);
+                auth.onLogin(true);
+            }, CT.WAITING_DEMO);
         }
     };
 
@@ -32,7 +37,14 @@ export default function SignupVerifyScreen({ navigation }) {
     }, [sec]);
 
     return (
-        <Container paddingX={25} statusBarStyle="dark" safeTop="light" isLogin>
+        <Container
+            paddingX={25}
+            statusBarStyle="dark"
+            safeTop="light"
+            loading={loading}
+            spinnerBoxStyle={styles.spinnerBoxStyle}
+            isLogin
+        >
             <View style={styles.top}>
                 <ButtonIcon icon="arrow-left" onPress={goBack} inverted />
             </View>
@@ -113,6 +125,9 @@ const styles = StyleSheet.create({
         color: CT.CTA_NEUTRAL,
         fontSize: 12,
         marginLeft: 3,
+    },
+    spinnerBoxStyle: {
+        marginTop: "-50%",
     },
 
     otpContainer: {

@@ -5,7 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import { View, SafeAreaView, StyleSheet, ActivityIndicator } from "react-native";
 
 const Container = (props) => {
-    let { style, light, bgColor = CT.BG_WHITE, paddingX = 0, statusBarStyle = "light" } = props;
+    let { style, light, bgColor = CT.BG_WHITE, paddingX = 0, statusBarStyle = "light", spinnerBoxStyle } = props;
     const { children, loading = false, isLogin = false } = props;
 
     let safeAreaStyle = { flex: 1, backgroundColor: light ? CT.BG_WHITE : CT.BG_PURPLE_900 };
@@ -40,7 +40,7 @@ const Container = (props) => {
             </SafeAreaView>
             {loading && (
                 <View style={styles.overlay}>
-                    <View style={styles.spinnerBox}>
+                    <View style={[styles.spinnerBox, spinnerBoxStyle]}>
                         <ActivityIndicator style={styles.spinner} color={CT.CTA_POSITIVE} />
                     </View>
                 </View>
@@ -59,6 +59,7 @@ Container.propTypes = {
     bgColor: PropTypes.string,
     paddingX: PropTypes.number,
     statusBarStyle: PropTypes.oneOf(["auto", "dark", "inverted", "light"]),
+    spinnerBoxStyle: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
 
 const styles = StyleSheet.create({
