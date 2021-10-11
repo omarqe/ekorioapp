@@ -79,7 +79,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
             go("pet__health-survey", { petID: data?.id });
             setLoadingSurvey(false);
             clearTimeout(t);
-        }, CT.WAITING_DEMO);
+        }, CT.WAITING_DEMO / 3);
     };
     const _onChangePet = (id) => {
         if (loading) {
@@ -109,6 +109,17 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         });
     };
 
+    let updateBtn = null;
+    if (!loading) {
+        updateBtn = {
+            icon: "far edit",
+            text: "Update Pet",
+            onPress: go.bind(null, "pet__form", data),
+            disabled: loadingPet,
+            iconRight: true,
+        };
+    }
+
     return (
         <Container loading={loadingSurvey}>
             <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: go.bind(null, "pet__form", null) }} />
@@ -134,17 +145,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
                 </Body>
 
                 <Body gray>
-                    <PetIdentity
-                        loading={loadingPet}
-                        data={displayData}
-                        button={{
-                            icon: "far edit",
-                            text: "Update Pet",
-                            onPress: go.bind(null, "pet__form", data),
-                            disabled: loadingPet,
-                            iconRight: true,
-                        }}
-                    />
+                    <PetIdentity data={displayData} button={updateBtn} loading={loadingPet} />
                 </Body>
             </Layout>
         </Container>

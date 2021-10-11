@@ -19,11 +19,13 @@ const PetIdentity = ({ data: d, button = null, loading = false }) => {
     }
 
     const chunks = _chunk(data, 2);
+    const badge = loading ? null : { text: data?.type ?? "Cat" };
+    const subtitle = loading ? "Loading.." : "Family since 20 June 2021";
 
     return (
         <React.Fragment>
             <View style={styles.headingSection}>
-                <Heading text="Pet Identity" subtitle="Family since 20 June 2021" badge={{ text: "Cat" }} gapless />
+                <Heading text="Pet Identity" subtitle={subtitle} badge={badge} gapless />
                 {button && (
                     <View style={styles.actionBtnContainer}>
                         <Button small {...button} />
