@@ -35,10 +35,10 @@ export default function HealthCharts({ data = [], loading = false }) {
     };
 
     useEffect(() => {
-        animate(animation1, data[0]?.value, setAnim1);
-        animate(animation2, data[1]?.value, setAnim2);
-        animate(animation3, data[2]?.value, setAnim3);
-    }, [data]);
+        animate(animation1, loading ? 0 : data[0]?.value, setAnim1);
+        animate(animation2, loading ? 0 : data[1]?.value, setAnim2);
+        animate(animation3, loading ? 0 : data[2]?.value, setAnim3);
+    }, [data, loading]);
 
     const values = [anim1, anim2, anim3];
     const chartBg = CT.BG_WHITE;
@@ -78,7 +78,7 @@ export default function HealthCharts({ data = [], loading = false }) {
                                     strokeWidth={lowRatio ? 10 : 12}
                                     data={{
                                         colors: [loading ? CT.BG_GRAY_100 : CT.BG_PURPLE_500],
-                                        data: [loading ? 0 : value],
+                                        data: [value],
                                     }}
                                     chartConfig={{
                                         backgroundGradientFrom: chartBg,
