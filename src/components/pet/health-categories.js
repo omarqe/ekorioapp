@@ -6,6 +6,7 @@ import Text from "../text";
 import Badge from "../badge";
 import Modal from "../modal";
 import Heading from "../heading";
+import Shimmer from "../shimmer";
 import PropTypes from "prop-types";
 
 import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
@@ -15,7 +16,7 @@ import _isArray from "lodash/isArray";
 import _renderIf from "../../functions/renderIf";
 import _makeColor from "../../functions/makeColor";
 
-export default function HealthCategories({ data = [] }) {
+export default function HealthCategories({ loading = false, data = [] }) {
     const [openID, setOpenID] = useState(null);
     const [pressedIndex, setPressedIndex] = useState(null);
 
@@ -63,15 +64,18 @@ export default function HealthCategories({ data = [] }) {
                     return (
                         <TouchableWithoutFeedback {...props}>
                             <View style={itemStyle}>
-                                <View style={styles.badgeContainer}>
-                                    <Badge
-                                        text={`${score}/10`}
-                                        style={{ backgroundColor: color?.background }}
-                                        textStyle={{ ...styles.badge, color: color?.text }}
-                                        xs
-                                    />
-                                </View>
-                                <Text style={styles.label}>{label}</Text>
+                                <Shimmer loading={loading} style={{ alignItems: "center", flexDirection: "row" }}>
+                                    <View style={styles.badgeContainer}>
+                                        <Badge
+                                            text={`${score}/10`}
+                                            style={{ backgroundColor: color?.background }}
+                                            textStyle={{ ...styles.badge, color: color?.text }}
+                                            xs
+                                        />
+                                    </View>
+                                    <Text style={styles.label}>{label}</Text>
+                                </Shimmer>
+
                                 <Icon icon="fas chevron-right" size={12} color={iconColor} style={styles.icon} />
                             </View>
                         </TouchableWithoutFeedback>

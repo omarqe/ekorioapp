@@ -42,7 +42,7 @@ export default {
 
     DEFAULT_CALLING_CODE: 60, // Malaysia (+60)
     DEFAULT_ANIMATION_TIMING: 200, // Used in dashboard charts
-    WAITING_DEMO: 10000,
+    WAITING_DEMO: 2000,
 
     BG_BLACK: "#000000",
     BG_WHITE: "#FFFFFF",

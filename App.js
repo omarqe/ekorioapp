@@ -15,7 +15,7 @@ import { fas } from "@fortawesome/pro-solid-svg-icons";
 library.add(fab, far, fal, fas);
 
 export default function App() {
-    const [signedIn, setSignedIn] = useState(false);
+    const [signedIn, setSignedIn] = useState(true);
     const AuthProvider = Context.Auth.Provider;
     const toggleAuth = () => setSignedIn(!signedIn);
 
