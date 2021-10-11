@@ -95,7 +95,7 @@ export default function HealthCharts({ data = [], loading = false }) {
                                 {_renderIf(
                                     id && !loading,
                                     <ChartIcon style={styles.chartIcon} />,
-                                    <Shimmer shimmerStyle={styles.shimmer} />
+                                    <Shimmer style={styles.shimmer} />
                                 )}
                             </View>
 
@@ -103,9 +103,9 @@ export default function HealthCharts({ data = [], loading = false }) {
                                 {_renderIf(
                                     loading,
                                     <View style={{ alignItems: "center" }}>
-                                        <Shimmer width={50} height={20} shimmerStyle={{ marginBottom: 8 }} />
-                                        <Shimmer width={80} height={15} shimmerStyle={{ marginBottom: 5 }} />
-                                        <Shimmer width={100} height={8} shimmerStyle={{ marginBottom: 5 }} />
+                                        <Shimmer width={50} height={20} style={{ marginBottom: 8 }} />
+                                        <Shimmer width={80} height={15} style={{ marginBottom: 5 }} />
+                                        <Shimmer width={100} height={8} style={{ marginBottom: 5 }} />
                                         <Shimmer width={60} height={8} />
                                     </View>,
                                     <React.Fragment>

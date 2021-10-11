@@ -67,7 +67,7 @@ export default function HealthCategories({ loading = false, data = [] }) {
                     return (
                         <TouchableWithoutFeedback {...props}>
                             <View style={itemStyle}>
-                                <Shimmer loading={loading} height={10} style={styles.shimmer}>
+                                <Shimmer loading={loading} height={10} contentStyle={styles.shimmer}>
                                     <View style={styles.badgeContainer}>
                                         <Badge
                                             text={`${score}/10`}

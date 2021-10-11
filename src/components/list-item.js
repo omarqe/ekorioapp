@@ -55,7 +55,7 @@ export default function ListItem({
                 </View>
             )}
             <View style={styles.labelContainer}>
-                {_renderIf(loading, <Shimmer shimmerStyle={{ marginBottom: 5 }} />, <Text style={styles.title}>{text}</Text>)}
+                {_renderIf(loading, <Shimmer style={{ marginBottom: 5 }} />, <Text style={styles.title}>{text}</Text>)}
                 {_renderIf(
                     subtitle,
                     _renderIf(loading, <Shimmer width={100} height={8} />, <Text style={styles.subtitle}>{subtitle}</Text>)
@@ -70,7 +70,7 @@ export default function ListItem({
                     loading,
                     <View style={styles.tags}>
                         {_times(2).map((n) => (
-                            <Shimmer key={n} width={30} height={8} shimmerStyle={{ marginRight: 5 }} />
+                            <Shimmer key={n} width={30} height={8} style={{ marginRight: 5 }} />
                         ))}
                     </View>,
                     tags && (

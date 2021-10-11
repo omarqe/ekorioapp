@@ -24,7 +24,7 @@ const PetID = ({ label, value, style, verified = false, loading = false, labelSt
             {_renderIf(
                 loading,
                 <View style={[styles.valueBlock, { alignItems: "flex-start", flexDirection: "column" }]}>
-                    <Shimmer width={70} height={10} shimmerStyle={{ marginBottom: 6 }} />
+                    <Shimmer width={70} height={10} style={{ marginBottom: 6 }} />
                     <Shimmer width={120} />
                 </View>,
                 <React.Fragment>

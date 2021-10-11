@@ -80,7 +80,7 @@ export default function Pet(props) {
             <View style={[styles.base, baseStyle, _baseStyle]}>
                 {_renderIf(
                     loading,
-                    <Shimmer shimmerStyle={imageBase} colors={shimmerColors} />,
+                    <Shimmer style={imageBase} colors={shimmerColors} />,
                     <View style={imageBase}>
                         {_renderIf(
                             image,
