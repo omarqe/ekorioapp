@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CT from "../../const";
 
 import Body from "../../components/layout/body";
@@ -18,13 +18,13 @@ import { TabView, SceneMap } from "react-native-tab-view";
 import _renderIf from "../../functions/renderIf";
 import _createSceneMap from "../../functions/createSceneMap";
 
-const Scene = ({ data, onPress }) => {
+const Scene = ({ data, loading, onPress }) => {
     return (
         <Layout scrollEnabled={false} gray>
             <Body gray flex expanded>
                 {_renderIf(
                     data?.length > 0,
-                    <List list={data} onPress={onPress} padded bounces scrollEnabled />,
+                    <List list={data} loading={loading} onPress={onPress} padded bounces scrollEnabled />,
                     <Empty title="Oh mom, look it's empty! 👀" subtitle="Your upcoming appointments will appear here" />
                 )}
             </Body>
@@ -42,6 +42,7 @@ const AppointmentScreen = ({ navigation }) => {
         </React.Fragment>
     );
 
+    const [loading, setLoading] = useState(true);
     const [state, setState] = useState({
         index: 0,
         routes: [
@@ -121,11 +122,18 @@ const AppointmentScreen = ({ navigation }) => {
         ],
     });
 
+    useEffect(() => {
+        const t = setTimeout(() => {
+            setLoading(false);
+            clearTimeout(t);
+        }, CT.WAITING_DEMO);
+    }, []);
+
     const _onIndexChange = (index) => setState({ ...state, index });
     const _onPressItem = (index) => navigation.navigate("appointment__details");
     const _onPressBookingAppointment = () => navigation.navigate("appointment__booking");
 
-    const _renderScene = SceneMap(_createSceneMap(state?.routes, _onPressItem, Scene));
+    const _renderScene = SceneMap(_createSceneMap(state?.routes, _onPressItem, Scene, {}, loading));
     const _renderTabBar = ({ navigationState: state }) => (
         <Header style={styles.header}>
             <Tabs tabs={state?.routes} active={state?.index} onPress={_onIndexChange} alwaysBounceHorizontal={false} />
