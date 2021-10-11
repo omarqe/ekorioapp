@@ -12,7 +12,7 @@ import _times from "lodash/times";
 import _renderIf from "../functions/renderIf";
 
 export default function ListItem({
-    // loading = false,
+    loading = false,
     padded = false,
     tags,
     badge,
@@ -24,7 +24,6 @@ export default function ListItem({
     onPressOut,
     ...restProps
 }) {
-    const loading = true;
     const [pressed, setPressed] = useState(false);
     const _onPressIn = () => {
         if (!loading) {
@@ -52,7 +51,11 @@ export default function ListItem({
         <Pressable style={baseStyle} onPressIn={_onPressIn} onPressOut={_onPressOut} disabled={loading} {...restProps}>
             {icon && (
                 <View style={styles.iconContainer}>
-                    <Icon icon={`fal ${icon}`} size={20} color={CT.BG_GRAY_300} />
+                    {_renderIf(
+                        loading,
+                        <Shimmer width={25} height={25} style={{ borderRadius: 20 }} />,
+                        <Icon icon={`fal ${icon}`} size={20} color={CT.BG_GRAY_300} />
+                    )}
                 </View>
             )}
             <View style={styles.labelContainer}>
