@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import CT from "../../const.js";
 import Text from "../text";
+import Shimmer from "../shimmer";
 import PropTypes from "prop-types";
 
 import ChartCatIcon from "../../../assets/icons/chart__cat.svg";
@@ -13,11 +14,12 @@ import { Easing, Animated, View, StyleSheet } from "react-native";
 import _fill from "lodash/fill";
 import _isArray from "lodash/isArray";
 import _startCase from "lodash/startCase";
+import _renderIf from "../../functions/renderIf";
 
 const lowRatio = CT.PIXELRATIO < 3;
 const columnw = lowRatio ? 90 : 100;
 
-export default function HealthCharts({ data = [] }) {
+export default function HealthCharts({ data = [], loading = false }) {
     const [anim1, setAnim1] = useState(0);
     const [anim2, setAnim2] = useState(0);
     const [anim3, setAnim3] = useState(0);
@@ -75,8 +77,8 @@ export default function HealthCharts({ data = [] }) {
                                     radius={lowRatio ? 40 : 44}
                                     strokeWidth={lowRatio ? 10 : 12}
                                     data={{
-                                        colors: [CT.BG_PURPLE_500],
-                                        data: [value],
+                                        colors: [loading ? CT.BG_GRAY_100 : CT.BG_PURPLE_500],
+                                        data: [loading ? 0 : value],
                                     }}
                                     chartConfig={{
                                         backgroundGradientFrom: chartBg,
@@ -90,20 +92,34 @@ export default function HealthCharts({ data = [] }) {
                                         },
                                     }}
                                 />
-                                {id && <ChartIcon style={styles.chartIcon} />}
+                                {_renderIf(
+                                    id && !loading,
+                                    <ChartIcon style={styles.chartIcon} />,
+                                    <Shimmer shimmerStyle={styles.shimmer} />
+                                )}
                             </View>
 
                             <View style={styles.chartOverview}>
-                                <Text style={styles.chartValueLg} weight="700">
-                                    {vPer100}
-                                    <Text style={styles.chartValueSymbol} weight="600" mf>
-                                        %
-                                    </Text>
-                                </Text>
-                                <Text style={styles.chartLabel}>{mappedData[id]?.label}</Text>
-                                <Text style={styles.chartDesc}>
-                                    {_startCase(indicator)} {dPer100}% from last week
-                                </Text>
+                                {_renderIf(
+                                    loading,
+                                    <View style={{ alignItems: "center" }}>
+                                        <Shimmer width={50} height={20} shimmerStyle={{ marginBottom: 5 }} />
+                                        <Shimmer width={80} height={15} shimmerStyle={{ marginBottom: 5 }} />
+                                        <Shimmer width={100} height={8} />
+                                    </View>,
+                                    <React.Fragment>
+                                        <Text style={styles.chartValueLg} weight="700">
+                                            {vPer100}
+                                            <Text style={styles.chartValueSymbol} weight="600" mf>
+                                                %
+                                            </Text>
+                                        </Text>
+                                        <Text style={styles.chartLabel}>{mappedData[id]?.label}</Text>
+                                        <Text style={styles.chartDesc}>
+                                            {_startCase(indicator)} {dPer100}% from last week
+                                        </Text>
+                                    </React.Fragment>
+                                )}
                             </View>
                         </View>
                     );
@@ -135,6 +151,12 @@ const styles = StyleSheet.create({
     },
     chartIcon: {
         position: "absolute",
+    },
+    shimmer: {
+        width: 35,
+        height: 35,
+        position: "absolute",
+        borderRadius: 35,
     },
 
     chartOverview: {
@@ -172,4 +194,5 @@ const styles = StyleSheet.create({
 
 HealthCharts.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
+    loading: PropTypes.bool,
 };

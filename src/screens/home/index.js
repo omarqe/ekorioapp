@@ -31,6 +31,7 @@ import petTypes from "../../../data/pet-types.json";
 const HomeScreen = connectActionSheet(({ navigation }) => {
     const go = (key, options = {}) => navigation.navigate(key, options);
     const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [healthData, setHealthData] = useState(null);
     const { showActionSheetWithOptions } = useActionSheet();
 
@@ -38,6 +39,11 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         const data = _first(pets);
         const id = data?.id;
         const healthData = _find(health, { id });
+
+        const t = setTimeout(() => {
+            setLoading(false);
+            clearTimeout(t);
+        }, CT.WAITING_DEMO);
 
         setData(data);
         setHealthData(healthData);
@@ -94,10 +100,10 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
                         </View>
                     </View>
                     <View style={styles.section}>
-                        <HealthCharts data={healthChartsData} />
+                        <HealthCharts data={healthChartsData} loading={loading} />
                     </View>
                     <View style={{ ...styles.section, marginBottom: 0 }}>
-                        <HealthCategories data={healthCategoriesData} />
+                        <HealthCategories data={healthCategoriesData} loading={loading} />
                     </View>
                 </Body>
 

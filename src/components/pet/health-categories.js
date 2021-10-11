@@ -23,13 +23,16 @@ export default function HealthCategories({ loading = false, data = [] }) {
     const current = _find(data, { id: openID });
     const currentColor = _makeColor(current?.score, 10);
 
-    const _onPressOut = () => setPressedIndex(null);
-    const _onPressIn = (index) => setPressedIndex(index);
+    const _onPressOut = () => togglePressed(null);
+    const _onPressIn = (index) => togglePressed(index);
     const _onClose = () => setOpenID(null);
     const _onPress = (id) => {
-        if (_find(data, { id })) {
+        if (_find(data, { id }) && !loading) {
             setOpenID(id);
         }
+    };
+    const togglePressed = (state) => {
+        if (!loading) setPressedIndex(state);
     };
 
     if (_isArray(data) && data.length > 0) {
@@ -198,4 +201,5 @@ const styles = StyleSheet.create({
 
 HealthCategories.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
+    loading: PropTypes.bool,
 };
