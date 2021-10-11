@@ -198,8 +198,6 @@ const styles = StyleSheet.create({
         backgroundColor: CT.BG_WHITE,
     },
     shimmer: {
-        marginTop: 5,
-        marginBottom: 5,
         flexDirection: "row",
         alignItems: "center",
     },
