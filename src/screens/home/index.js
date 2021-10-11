@@ -32,6 +32,8 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
     const go = (key, options = {}) => navigation.navigate(key, options);
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [loadingPet, setLoadingPet] = useState(true);
+
     const [healthData, setHealthData] = useState(null);
     const { showActionSheetWithOptions } = useActionSheet();
 
@@ -41,14 +43,21 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         const healthData = _find(health, { id });
 
         const t = setTimeout(() => {
-            setLoading(false);
+            // setLoadingPet(false);
             clearTimeout(t);
         }, CT.WAITING_DEMO);
+
+        const t2 = setTimeout(() => {
+            // setLoading(false);
+            clearTimeout(t2);
+        }, CT.WAITING_DEMO * 2);
 
         setData(data);
         setHealthData(healthData);
     }, []);
 
+    const healthChartTitle = loading ? "Health Report" : `${data?.name}'s Health`;
+    const healthChartSubtitle = loading ? "Loading.." : "Last evaluated 3 weeks ago";
     const healthChartsData = healthData?.chart;
     const healthCategoriesData = _find(healthData?.categories, { current: true })?.data;
     const displayData = [
@@ -65,6 +74,10 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
     ];
 
     const _onChangePet = (id) => {
+        if (loading) {
+            return;
+        }
+
         setData(_find(pets, { id }));
         setLoading(true);
         setHealthData(_find(health, { id }));
@@ -94,12 +107,12 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
 
             <Layout gray withHeader>
                 <Header horizontal overlap>
-                    <PetList size={65} margin={4} active={data?.id} onPress={_onChangePet} />
+                    <PetList size={65} margin={4} active={data?.id} loading={loadingPet} onPress={_onChangePet} />
                 </Header>
 
                 <Body topRounded overlap>
                     <View style={styles.headingSection}>
-                        <Heading size={0} text={`${data?.name}'s Health`} subtitle="Last evaluated 3 weeks ago" gapless />
+                        <Heading size={0} text={healthChartTitle} subtitle={healthChartSubtitle} gapless />
                         <View style={styles.actionBtnContainer}>
                             <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={_onOptions} inverted />
                         </View>

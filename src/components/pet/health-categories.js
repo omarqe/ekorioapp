@@ -67,7 +67,7 @@ export default function HealthCategories({ loading = false, data = [] }) {
                     return (
                         <TouchableWithoutFeedback {...props}>
                             <View style={itemStyle}>
-                                <Shimmer loading={loading} style={{ alignItems: "center", flexDirection: "row" }}>
+                                <Shimmer loading={loading} height={10} style={styles.shimmer}>
                                     <View style={styles.badgeContainer}>
                                         <Badge
                                             text={`${score}/10`}
@@ -196,6 +196,12 @@ const styles = StyleSheet.create({
     modalHeader: {
         paddingBottom: 25,
         backgroundColor: CT.BG_WHITE,
+    },
+    shimmer: {
+        marginTop: 5,
+        marginBottom: 5,
+        flexDirection: "row",
+        alignItems: "center",
     },
 });
 

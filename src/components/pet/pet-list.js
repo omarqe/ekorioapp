@@ -4,10 +4,21 @@ import PropTypes from "prop-types";
 import { View, FlatList, StyleSheet } from "react-native";
 
 import pets from "../../../data/pets.json";
+import _clone from "lodash/clone";
 import _sortBy from "lodash/sortBy";
-export default function PetList({ data = null, margin = 4, checked, active, onPress, ...restProps }) {
+
+export default function PetList({ data: d = null, margin = 4, loading = true, checked, active, onPress, ...restProps }) {
+    let data = _clone(d);
+    if (loading) {
+        data = [];
+        active = null;
+        for (let id = 0; id <= 2; id++) {
+            data = [...data, { id, loading }];
+        }
+    }
+
     const _renderItem = ({ item, index }) => {
-        const { id, name, imageURL } = item;
+        const { id, name, loading, imageURL } = item;
         return (
             <Pet
                 name={name}
@@ -16,6 +27,7 @@ export default function PetList({ data = null, margin = 4, checked, active, onPr
                 active={id === active}
                 checked={id === checked}
                 onPress={typeof onPress === "function" ? onPress.bind(null, id, index) : null}
+                loading={loading}
                 {...restProps}
             />
         );

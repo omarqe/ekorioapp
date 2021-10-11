@@ -7,10 +7,12 @@ import { View, Image, Pressable, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
 import _renderIf from "../../functions/renderIf";
+import Shimmer from "../shimmer";
 
 export default function Pet(props) {
     const [pressed, setPressed] = useState(false);
-    const { name, image = null, theme = "default", defaultSource = false, active, checked, deemphasized = false } = props;
+    const { loading = false, deemphasized = false, defaultSource = false } = props;
+    const { name, image = null, theme = "default", active, checked } = props;
     const { size = 60, padding = 3, borderRadius = null } = props;
     const { phIcon = null, phIconProps } = props;
 
@@ -23,6 +25,7 @@ export default function Pet(props) {
         iconBackdropStyle: _iconBackdropStyle,
     } = props;
 
+    const shimmerColors = [CT.BG_PURPLE_600, CT.BG_PURPLE_600, CT.BG_PURPLE_500];
     const width = size + padding * 2;
     const height = width;
     const radius = borderRadius ? borderRadius : size * 0.35;
@@ -31,10 +34,13 @@ export default function Pet(props) {
     const imageURL = typeof image === "string" ? { uri: image } : image;
     const imageProps = defaultSource ? { defaultSource: imageURL } : { source: imageURL };
 
-    const pressable = {
-        onPressIn: setPressed.bind(null, true),
-        onPressOut: setPressed.bind(null, false),
-    };
+    let pressable = {};
+    if (!loading) {
+        pressable = {
+            onPressIn: setPressed.bind(null, true),
+            onPressOut: setPressed.bind(null, false),
+        };
+    }
 
     let nameStyle = { width };
     let baseStyle = { padding, width, height, borderRadius: radius };
@@ -67,30 +73,43 @@ export default function Pet(props) {
         baseStyle = { ...baseStyle, opacity: 0.4 };
     }
 
+    const imageBase = [styles.imageBase, imageBaseStyle, _imageBaseStyle];
+
     return (
         <Pressable {..._omit(props, ["onPressIn", "onPressOut"])} {...pressable}>
             <View style={[styles.base, baseStyle, _baseStyle]}>
-                <View style={[styles.imageBase, imageBaseStyle, _imageBaseStyle]}>
-                    {_renderIf(
-                        image,
-                        <Image style={[styles.image, imageStyle, _imageStyle]} resizeMode="cover" {...imageProps} />,
-                        <Icon
-                            icon={phIcon ?? "fas paw"}
-                            size={size * 0.25}
-                            color={isLight ? CT.BG_GRAY_300 : CT.BG_PURPLE_500}
-                            {...phIconProps}
-                        />
-                    )}
-                    {checked && (
-                        <React.Fragment>
-                            <View style={[imageBaseStyle, styles.overlay, overlayStyle, _overlayStyle]} />
-                            <View style={[styles.iconBackdrop, iconBackdropStyle, _iconBackdropStyle]} />
-                            <Icon icon="fas check-circle" size={size * 0.35} color={CT.BG_WHITE} style={styles.icon} />
-                        </React.Fragment>
-                    )}
-                </View>
+                {_renderIf(
+                    loading,
+                    <Shimmer shimmerStyle={imageBase} colors={shimmerColors} />,
+                    <View style={imageBase}>
+                        {_renderIf(
+                            image,
+                            <Image style={[styles.image, imageStyle, _imageStyle]} resizeMode="cover" {...imageProps} />,
+                            _renderIf(
+                                !loading,
+                                <Icon
+                                    icon={phIcon ?? "fas paw"}
+                                    size={size * 0.25}
+                                    color={isLight ? CT.BG_GRAY_300 : CT.BG_PURPLE_500}
+                                    {...phIconProps}
+                                />
+                            )
+                        )}
+                        {checked && (
+                            <React.Fragment>
+                                <View style={[imageBaseStyle, styles.overlay, overlayStyle, _overlayStyle]} />
+                                <View style={[styles.iconBackdrop, iconBackdropStyle, _iconBackdropStyle]} />
+                                <Icon icon="fas check-circle" size={size * 0.35} color={CT.BG_WHITE} style={styles.icon} />
+                            </React.Fragment>
+                        )}
+                    </View>
+                )}
             </View>
-            {name && (
+            {_renderIf(
+                loading,
+                <View style={styles.nameShimmer}>
+                    <Shimmer width={40} height={10} colors={shimmerColors} />
+                </View>,
                 <Text style={[styles.name, nameStyle, _nameStyle]} numberOfLines={1}>
                     {name}
                 </Text>
@@ -116,6 +135,10 @@ const styles = StyleSheet.create({
         textAlign: "center",
         paddingTop: 8,
         paddingHorizontal: 3,
+    },
+    nameShimmer: {
+        paddingTop: 8,
+        alignItems: "center",
     },
     icon: {
         position: "absolute",
