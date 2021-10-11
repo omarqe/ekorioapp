@@ -74,19 +74,18 @@ export default function AccountPasswordScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     guideContainer: {
-        marginTop: 5,
         marginBottom: 15,
     },
     guide: {
         color: CT.BG_GRAY_400,
-        fontSize: 16,
-        marginBottom: 10,
+        fontSize: 12,
+        marginBottom: 8,
     },
     guideBullet: {
         color: CT.BG_GRAY_400,
-        fontSize: 16,
+        fontSize: 12,
         paddingLeft: 10,
-        marginBottom: 10,
+        marginBottom: 8,
     },
     bullet: {
         color: CT.BG_GRAY_400,

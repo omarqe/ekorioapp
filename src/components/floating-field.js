@@ -384,7 +384,7 @@ const styles = StyleSheet.create({
     },
     strengthLabel: {
         color: CT.BG_GRAY_300,
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: "500",
         marginLeft: 3,
     },
