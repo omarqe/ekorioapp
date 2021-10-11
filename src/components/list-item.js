@@ -12,7 +12,7 @@ import _times from "lodash/times";
 import _renderIf from "../functions/renderIf";
 
 export default function ListItem({
-    loading = false,
+    // loading = false,
     padded = false,
     tags,
     badge,
@@ -24,6 +24,7 @@ export default function ListItem({
     onPressOut,
     ...restProps
 }) {
+    const loading = true;
     const [pressed, setPressed] = useState(false);
     const _onPressIn = () => {
         if (!loading) {
@@ -55,14 +56,18 @@ export default function ListItem({
                 </View>
             )}
             <View style={styles.labelContainer}>
-                {_renderIf(loading, <Shimmer style={{ marginBottom: 5 }} />, <Text style={styles.title}>{text}</Text>)}
+                {_renderIf(
+                    loading,
+                    <Shimmer height={12} style={{ marginBottom: 5 }} />,
+                    <Text style={styles.title}>{text}</Text>
+                )}
                 {_renderIf(
                     subtitle,
                     _renderIf(loading, <Shimmer width={100} height={8} />, <Text style={styles.subtitle}>{subtitle}</Text>)
                 )}
                 {badge && (
                     <View style={styles.badgeContainer}>
-                        {_renderIf(loading, <Shimmer width={60} />, <Badge xs {...badge} />)}
+                        {_renderIf(loading, <Shimmer width={60} height={12} />, <Badge xs {...badge} />)}
                     </View>
                 )}
 
