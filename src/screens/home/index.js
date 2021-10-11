@@ -33,6 +33,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [loadingPet, setLoadingPet] = useState(true);
+    const [loadingSurvey, setLoadingSurvey] = useState(false);
 
     const [healthData, setHealthData] = useState(null);
     const { showActionSheetWithOptions } = useActionSheet();
@@ -72,6 +73,14 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         { label: "Weight", value: `${data?.weight} kg` },
     ];
 
+    const _onStartSurvey = () => {
+        setLoadingSurvey(true);
+        const t = setTimeout(() => {
+            go("pet__health-survey", { petID: data?.id });
+            setLoadingSurvey(false);
+            clearTimeout(t);
+        }, CT.WAITING_DEMO);
+    };
     const _onChangePet = (id) => {
         if (loading) {
             return;
@@ -91,7 +100,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         showActionSheetWithOptions({ options, cancelButtonIndex }, (buttonIndex) => {
             const cmd = [
                 go.bind(null, "pet__form", data),
-                go.bind(null, "pet__health-survey", { petID: data?.id }),
+                _onStartSurvey,
                 go.bind(null, "pet__health-records", { petID: data?.id }),
             ];
             if (typeof cmd[buttonIndex] === "function") {
@@ -101,7 +110,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
     };
 
     return (
-        <Container>
+        <Container loading={loadingSurvey}>
             <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: go.bind(null, "pet__form", null) }} />
 
             <Layout gray withHeader>
