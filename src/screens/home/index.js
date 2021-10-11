@@ -66,7 +66,12 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
 
     const _onChangePet = (id) => {
         setData(_find(pets, { id }));
+        setLoading(true);
         setHealthData(_find(health, { id }));
+        const t = setTimeout(() => {
+            setLoading(false);
+            clearTimeout(t);
+        }, CT.WAITING_DEMO);
     };
     const _onOptions = () => {
         const options = ["Update Pet", "Reevaluate Health", "View Health Records", "Done"];
