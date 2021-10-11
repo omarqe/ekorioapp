@@ -43,14 +43,13 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         const healthData = _find(health, { id });
 
         const t = setTimeout(() => {
-            // setLoadingPet(false);
+            setLoadingPet(false);
             clearTimeout(t);
         }, CT.WAITING_DEMO);
-
         const t2 = setTimeout(() => {
-            // setLoading(false);
+            setLoading(false);
             clearTimeout(t2);
-        }, CT.WAITING_DEMO * 2);
+        }, CT.WAITING_DEMO + 200);
 
         setData(data);
         setHealthData(healthData);
@@ -127,11 +126,13 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
 
                 <Body gray>
                     <PetIdentity
+                        loading={loadingPet}
                         data={displayData}
                         button={{
                             icon: "far edit",
                             text: "Update Pet",
                             onPress: go.bind(null, "pet__form", data),
+                            disabled: loadingPet,
                             iconRight: true,
                         }}
                     />
