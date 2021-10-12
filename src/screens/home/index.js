@@ -50,13 +50,13 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         const t2 = setTimeout(() => {
             setLoading(false);
             clearTimeout(t2);
-        }, CT.WAITING_DEMO + 200);
+        }, CT.WAITING_DEMO + 1000);
 
         setData(data);
         setHealthData(healthData);
     }, []);
 
-    const healthChartTitle = loading ? "Health Report" : `${data?.name}'s Health`;
+    const healthChartTitle = loadingPet ? "Health Report" : `${data?.name}'s Health`;
     const healthChartSubtitle = loading ? "Loading.." : "Last evaluated 3 weeks ago";
     const healthChartsData = healthData?.chart;
     const healthCategoriesData = _find(healthData?.categories, { current: true })?.data;
