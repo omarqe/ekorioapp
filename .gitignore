@@ -14,3 +14,4 @@ src/components/template.js
 
 # macOS
 .DS_Store
+.env
