@@ -18,12 +18,14 @@ library.add(fab, far, fal, fas);
 
 export default function App() {
     const [fontsLoaded] = useFonts({ Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold });
+    const [uid, setUID] = useState(0);
     const [authed, setAuthed] = useState(false);
     const AuthProvider = Context.Auth.Provider;
 
     // We should check the auth token over here
-    store.get("token").then((token) => {
+    Promise.all([store.get("token"), store.get("uid")]).then(([token, uid]) => {
         if (token?.length > 0) {
+            setUID(uid);
             setAuthed(true);
             http.interceptors.request.use((config) => {
                 const headers = { ...config.headers, Authorization: `Bearer ${token}` };
@@ -37,7 +39,7 @@ export default function App() {
     } else {
         return (
             <ActionSheetProvider>
-                <AuthProvider value={{ setAuthed }}>
+                <AuthProvider value={{ uid, setAuthed }}>
                     <NavigationContainer>{authed ? <UIStacks.Authenticated /> : <UIStacks.Intro />}</NavigationContainer>
                 </AuthProvider>
             </ActionSheetProvider>

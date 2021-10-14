@@ -24,10 +24,10 @@ export default function SigninScreen({ navigation }) {
 
         setLoading(true);
         http.post("/auth/signin", qs.stringify({ email, password }))
-            .then(({ data: o }) => {
+            .then(({ data: o = {} }) => {
                 setLoading(false);
 
-                const token = o?.payload?.token;
+                const { uid, token } = o?.payload ?? {};
                 if (token?.length < 1) {
                     console.error("[Error 401]: Token is not good!");
                     return false;
@@ -35,6 +35,7 @@ export default function SigninScreen({ navigation }) {
 
                 auth.setAuthed(true);
                 store.save("token", token);
+                store.save("uid", uid?.toString());
             })
             .catch(({ response = {} }) => {
                 setLoading(false);
