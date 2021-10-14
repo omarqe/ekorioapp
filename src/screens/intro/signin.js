@@ -41,8 +41,7 @@ export default function SigninScreen({ navigation }) {
                 if (data) {
                     console.error(`[Error ${status}]: ${data.response[0].message}`);
                 }
-            })
-            .finally(() => setLoading(false));
+            });
     };
 
     return (
