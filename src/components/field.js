@@ -30,6 +30,7 @@ Field.propTypes = {
     last: PropTypes.bool,
     type: PropTypes.string,
     label: PropTypes.string,
+    onChange: PropTypes.func,
 };
 
 const styles = StyleSheet.create({

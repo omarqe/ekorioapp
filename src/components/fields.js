@@ -33,6 +33,7 @@ const fields = ({ fields = [], grouping = false, ...restProps }) => {
 fields.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.object),
     grouping: PropTypes.bool,
+    onChange: PropTypes.func,
 };
 
 export default fields;
