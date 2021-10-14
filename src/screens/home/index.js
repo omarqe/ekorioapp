@@ -36,8 +36,6 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
     const [loadingPet, setLoadingPet] = useState(true);
     const [loadingSurvey, setLoadingSurvey] = useState(false);
 
-    window.env;
-
     const [healthData, setHealthData] = useState(null);
     const { showActionSheetWithOptions } = useActionSheet();
 
