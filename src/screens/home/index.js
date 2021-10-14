@@ -5,7 +5,6 @@ import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
 
-import Modal from "../../components/modal";
 import PetList from "../../components/pet/pet-list";
 import PetIdentity from "../../components/pet/pet-identity";
 import HealthCharts from "../../components/pet/health-charts";
@@ -19,7 +18,6 @@ import ButtonIcon from "../../components/button-icon";
 import { View, StyleSheet } from "react-native";
 import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
 
-import store from "../../functions/store";
 import _env from "../../functions/env";
 import _find from "lodash/find";
 import _times from "lodash/times";
@@ -39,9 +37,6 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
 
     const [healthData, setHealthData] = useState(null);
     const { showActionSheetWithOptions } = useActionSheet();
-
-    store.save("test", "asdasdasdasdasd");
-    store.get("test").then((v) => console.log("store.get", v));
 
     useEffect(() => {
         const data = _first(pets);
