@@ -19,6 +19,7 @@ import ButtonIcon from "../../components/button-icon";
 import { View, StyleSheet } from "react-native";
 import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
 
+import _env from "../../functions/env";
 import _find from "lodash/find";
 import _times from "lodash/times";
 import _first from "lodash/first";
@@ -35,6 +36,8 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
     const [loadingPet, setLoadingPet] = useState(true);
     const [loadingSurvey, setLoadingSurvey] = useState(false);
 
+    window.env;
+
     const [healthData, setHealthData] = useState(null);
     const { showActionSheetWithOptions } = useActionSheet();
 
@@ -47,6 +50,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
             setLoadingPet(false);
             clearTimeout(t);
         }, CT.WAITING_DEMO);
+
         const t2 = setTimeout(() => {
             setLoading(false);
             clearTimeout(t2);
