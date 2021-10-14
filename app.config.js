@@ -1,5 +1,4 @@
 import "dotenv/config";
-
 export default {
     name: "Ekorio",
     version: "1.0.0",

@@ -5,6 +5,10 @@ import Container from "../../components/container";
 import LoginComponent from "../../components/intro/login-component";
 import KeyboardAvoiding from "../../components/keyboard-avoiding";
 
+import qs from "qs";
+import http from "../../functions/http";
+import store from "../../functions/store";
+
 export default function SigninScreen({ navigation }) {
     const [loading, setLoading] = useState(false);
     const Provider = Context.Login.Provider;
@@ -15,12 +19,31 @@ export default function SigninScreen({ navigation }) {
     ];
 
     const onSubmit = () => {
+        const email = "hello@omvr.io";
+        const password = "123";
+
         setLoading(true);
-        const t = setTimeout(() => {
-            auth.onLogin(true);
-            clearTimeout(t);
-        }, CT.WAITING_DEMO);
-    }; // temporary...
+        http.post("/auth/signin", qs.stringify({ email, password }))
+            .then(({ data: o }) => {
+                setLoading(false);
+
+                const token = o?.payload?.token;
+                if (token?.length < 1) {
+                    console.error("[Error 401]: Token is not good!");
+                    return false;
+                }
+
+                store.save("token", token);
+            })
+            .catch(({ response = {} }) => {
+                setLoading(false);
+                const { data, status } = response;
+                if (data) {
+                    console.error(`[Error ${status}]: ${data.response[0].message}`);
+                }
+            })
+            .finally(() => setLoading(false));
+    };
 
     return (
         <KeyboardAvoiding>

@@ -1,7 +1,11 @@
 import axios from "axios";
-export default axios.create({
-    baseURL: process.env.API_HOST,
+
+const devenv = "coffee";
+const http = axios.create({
+    baseURL: devenv === "coffee" ? "http://172.20.10.2:3000" : process.env.API_HOST,
     headers: {
         Authorization: `Bearer ${process.env.API_SECRET}`,
     },
 });
+
+export default http;
