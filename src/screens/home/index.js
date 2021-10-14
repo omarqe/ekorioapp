@@ -27,6 +27,7 @@ import _capitalize from "lodash/capitalize";
 import pets from "../../../data/pets.json";
 import health from "../../../data/health.json";
 import petTypes from "../../../data/pet-types.json";
+import http from "../../functions/http.js";
 
 const HomeScreen = connectActionSheet(({ navigation }) => {
     const go = (key, options = {}) => navigation.navigate(key, options);
@@ -121,9 +122,16 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         };
     }
 
+    // Replaced by: go.bind(null, "pet__form", null)
+    const test = () => {
+        http.get("/users")
+            .then(({ data }) => console.log("data:", data))
+            .catch(({ response }) => console.error("An error occured", response?.data));
+    };
+
     return (
         <Container loading={loadingSurvey}>
-            <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: go.bind(null, "pet__form", null) }} />
+            <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: test }} />
 
             <Layout gray withHeader>
                 <Header horizontal overlap>

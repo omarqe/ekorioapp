@@ -33,6 +33,7 @@ export default function SigninScreen({ navigation }) {
                     return false;
                 }
 
+                auth.setAuthed(true);
                 store.save("token", token);
             })
             .catch(({ response = {} }) => {

@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import CT from "../../const";
 import Context from "../../components/context";
+import store from "../../functions/store";
 
 import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
@@ -65,6 +66,14 @@ const AccountScreen = ({ navigation }) => {
         },
     ];
 
+    const onLogout = () => {
+        store.delete("token");
+        store.delete("uid");
+        if (typeof auth.setAuthed === "function") {
+            auth.setAuthed(false);
+        }
+    };
+
     return (
         <Container>
             <TopBar type={2} />
@@ -80,7 +89,7 @@ const AccountScreen = ({ navigation }) => {
                 </Header>
                 <Body gray flex expanded>
                     <List sections={sections} />
-                    <TouchableOpacity style={{ marginTop: 5 }} onPress={auth.onLogout}>
+                    <TouchableOpacity style={{ marginTop: 5 }} onPress={onLogout}>
                         <Text style={styles.logout}>Log out from account</Text>
                     </TouchableOpacity>
                 </Body>
