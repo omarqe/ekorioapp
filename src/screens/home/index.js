@@ -5,7 +5,6 @@ import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
 
-import Modal from "../../components/modal";
 import PetList from "../../components/pet/pet-list";
 import PetIdentity from "../../components/pet/pet-identity";
 import HealthCharts from "../../components/pet/health-charts";
@@ -28,6 +27,7 @@ import _capitalize from "lodash/capitalize";
 import pets from "../../../data/pets.json";
 import health from "../../../data/health.json";
 import petTypes from "../../../data/pet-types.json";
+import http from "../../functions/http.js";
 
 const HomeScreen = connectActionSheet(({ navigation }) => {
     const go = (key, options = {}) => navigation.navigate(key, options);
@@ -122,9 +122,16 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         };
     }
 
+    // Replaced by: go.bind(null, "pet__form", null)
+    const test = () => {
+        http.get("/users")
+            .then(({ data }) => console.log("data:", data))
+            .catch(({ response }) => console.error("An error occured", response?.data));
+    };
+
     return (
         <Container loading={loadingSurvey}>
-            <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: go.bind(null, "pet__form", null) }} />
+            <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: test }} />
 
             <Layout gray withHeader>
                 <Header horizontal overlap>

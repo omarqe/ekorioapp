@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import http from "./src/functions/http";
+import store from "./src/functions/store";
 import Context from "./src/components/context";
 import UIStacks from "./src/stacks";
 import AppLoading from "expo-app-loading";
@@ -15,15 +17,21 @@ import { fas } from "@fortawesome/pro-solid-svg-icons";
 library.add(fab, far, fal, fas);
 
 export default function App() {
-    const [signedIn, setSignedIn] = useState(true);
+    const [fontsLoaded] = useFonts({ Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold });
+    const [uid, setUID] = useState(0);
+    const [authed, setAuthed] = useState(false);
     const AuthProvider = Context.Auth.Provider;
-    const toggleAuth = () => setSignedIn(!signedIn);
 
-    const [fontsLoaded] = useFonts({
-        Inter_400Regular,
-        Inter_500Medium,
-        Inter_600SemiBold,
-        Inter_700Bold,
+    // We should check the auth token over here
+    Promise.all([store.get("token"), store.get("uid")]).then(([token, uid]) => {
+        if (token?.length > 0) {
+            setUID(uid);
+            setAuthed(true);
+            http.interceptors.request.use((config) => {
+                const headers = { ...config.headers, Authorization: `Bearer ${token}` };
+                return { ...config, headers };
+            });
+        }
     });
 
     if (!fontsLoaded) {
@@ -31,8 +39,8 @@ export default function App() {
     } else {
         return (
             <ActionSheetProvider>
-                <AuthProvider value={{ onLogin: toggleAuth, onLogout: toggleAuth }}>
-                    <NavigationContainer>{signedIn ? <UIStacks.Authenticated /> : <UIStacks.Intro />}</NavigationContainer>
+                <AuthProvider value={{ uid, setAuthed }}>
+                    <NavigationContainer>{authed ? <UIStacks.Authenticated /> : <UIStacks.Intro />}</NavigationContainer>
                 </AuthProvider>
             </ActionSheetProvider>
         );
