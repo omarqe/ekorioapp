@@ -7,6 +7,7 @@ import KeyboardAvoiding from "../../components/keyboard-avoiding";
 
 import qs from "qs";
 import http from "../../functions/http";
+import toast from "../../functions/toast";
 import store from "../../functions/store";
 import _clone from "lodash/clone";
 
@@ -30,7 +31,7 @@ export default function SigninScreen({ navigation }) {
 
                 const { uid, token } = o?.payload ?? {};
                 if (token?.length < 1) {
-                    console.error("[Error 401]: Token is not good!");
+                    toast.show(data?.response[0]?.message);
                     return false;
                 }
 
@@ -40,9 +41,10 @@ export default function SigninScreen({ navigation }) {
             })
             .catch(({ response = {} }) => {
                 setLoading(false);
-                const { data, status } = response;
+                const { data } = response;
                 if (data) {
-                    console.error(`[Error ${status}]: ${data.response[0].message}`);
+                    const message = data?.response[0]?.message;
+                    toast.show(message);
                 }
             });
     };

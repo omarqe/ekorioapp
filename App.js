@@ -4,6 +4,7 @@ import store from "./src/functions/store";
 import Context from "./src/components/context";
 import UIStacks from "./src/stacks";
 import AppLoading from "expo-app-loading";
+import { RootSiblingParent } from "react-native-root-siblings";
 import { NavigationContainer } from "@react-navigation/native";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { useFonts, Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold } from "@expo-google-fonts/inter";
@@ -38,11 +39,13 @@ export default function App() {
         return <AppLoading />;
     } else {
         return (
-            <ActionSheetProvider>
-                <AuthProvider value={{ uid, setAuthed }}>
-                    <NavigationContainer>{authed ? <UIStacks.Authenticated /> : <UIStacks.Intro />}</NavigationContainer>
-                </AuthProvider>
-            </ActionSheetProvider>
+            <RootSiblingParent>
+                <ActionSheetProvider>
+                    <AuthProvider value={{ uid, setAuthed }}>
+                        <NavigationContainer>{authed ? <UIStacks.Authenticated /> : <UIStacks.Intro />}</NavigationContainer>
+                    </AuthProvider>
+                </ActionSheetProvider>
+            </RootSiblingParent>
         );
     }
 }
