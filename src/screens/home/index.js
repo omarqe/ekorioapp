@@ -52,7 +52,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         const t2 = setTimeout(() => {
             setLoading(false);
             clearTimeout(t2);
-        }, CT.WAITING_DEMO + 1000);
+        }, CT.WAITING_DEMO + 300);
 
         setData(data);
         setHealthData(healthData);
