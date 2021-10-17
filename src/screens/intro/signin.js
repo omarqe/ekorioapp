@@ -9,6 +9,8 @@ import net from "../../functions/net";
 import http from "../../functions/http";
 import toast from "../../functions/toast";
 import store from "../../functions/store";
+import hasMissingDataToVerify from "../../functions/hasMissingDataToVerify";
+
 import _clone from "lodash/clone";
 
 export default function SigninScreen({ navigation }) {
@@ -29,10 +31,18 @@ export default function SigninScreen({ navigation }) {
             .then(({ data: o = {} }) => {
                 setLoading(false);
 
-                const { uid, token } = o?.payload ?? {};
+                const { uid, token, cc, phone, verified } = o?.payload;
                 if (token?.length < 1) {
                     toast.show(data?.response[0]?.message);
-                    return false;
+                    return;
+                } else if (!verified) {
+                    const verifyData = { uid, token, cc, phone };
+                    if (hasMissingDataToVerify(verifyData)) {
+                        toast.show(CT.ERRORS.MISSING_VERIFY_DATA);
+                        return;
+                    }
+                    navigation.navigate("signup-verify", verifyData);
+                    return;
                 }
 
                 auth.setAuthed(true);

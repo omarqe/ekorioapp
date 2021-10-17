@@ -8,10 +8,7 @@ import KeyboardAvoiding from "../../components/keyboard-avoiding";
 import net from "../../functions/net";
 import http from "../../functions/http";
 import toast from "../../functions/toast";
-
-import _some from "lodash/some";
-import _values from "lodash/values";
-import _isEmpty from "lodash/isEmpty";
+import hasMissingDataToVerify from "../../functions/hasMissingDataToVerify";
 
 export default function SignupScreen({ navigation }) {
     const [loading, setLoading] = useState(false);
@@ -19,22 +16,19 @@ export default function SignupScreen({ navigation }) {
 
     const onChange = (value, name) => setData({ ...data, [name]: value });
     const onSubmit = () => {
-        const { cc, phone, email, password } = data;
-        let verifyData = { uid: null, token: null, cc, phone, email, password };
-
-        // setLoading(true);
+        setLoading(true);
         http.post("/users/create", net.data(data))
             .then((o) => {
                 setLoading(false);
                 const { data } = o;
                 const { payload } = data;
                 if (data?.success) {
-                    verifyData = { ...verifyData, uid: payload?.id, token: payload?.token };
-                    if (_values(verifyData).some((x) => x === undefined || x === null)) {
-                        toast.show("Some data are missing for verification, please try signing in instead");
+                    const { id: uid, token, cc, phone } = payload;
+                    const verifyData = { uid, token, cc, phone };
+                    if (hasMissingDataToVerify(verifyData)) {
+                        toast.show(CT.ERRORS.MISSING_VERIFY_DATA);
                         return;
                     }
-
                     navigation.navigate("signup-verify", verifyData);
                     return;
                 }

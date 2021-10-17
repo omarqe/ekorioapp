@@ -130,4 +130,19 @@ export default {
         },
         elevation: 3,
     },
+
+    STATUS: {
+        ACTIVE: "0001",
+        PENDING: "0002",
+        DELETED: "0003",
+        SUSPENDED: "0004",
+        DEACTIVATED: "0005",
+        CONFIRMED: "0006",
+        CANCELLED: "0007",
+        COMPLETED: "0008",
+    },
+
+    ERRORS: {
+        MISSING_VERIFY_DATA: "Some data are missing for verification, please try signing in instead",
+    },
 };
