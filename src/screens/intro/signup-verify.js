@@ -31,7 +31,7 @@ export default function SignupVerifyScreen({ route, navigation }) {
         if (otp?.length >= 6) {
             if (!loading) {
                 setLoading(true);
-                http.post("/otp/verify_otp", net.data({ code: otp, request_id: requestID }))
+                http.post("/otp/verify_otp", net.data({ uid, code: otp, request_id: requestID }))
                     .then((o) => {
                         setLoading(false);
                         const { data } = o;
