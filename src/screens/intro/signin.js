@@ -5,7 +5,7 @@ import Container from "../../components/container";
 import LoginComponent from "../../components/intro/login-component";
 import KeyboardAvoiding from "../../components/keyboard-avoiding";
 
-import qs from "qs";
+import net from "../../functions/net";
 import http from "../../functions/http";
 import toast from "../../functions/toast";
 import store from "../../functions/store";
@@ -25,7 +25,7 @@ export default function SigninScreen({ navigation }) {
     const onChange = (value, name) => setData({ ...data, [name]: value });
     const onSubmit = () => {
         setLoading(true);
-        http.post("/auth/signin", qs.stringify({ email: data?.email, password: data?.password }))
+        http.post("/auth/signin", net.data(data))
             .then(({ data: o = {} }) => {
                 setLoading(false);
 
@@ -39,14 +39,7 @@ export default function SigninScreen({ navigation }) {
                 store.save("token", token);
                 store.save("uid", uid?.toString());
             })
-            .catch(({ response = {} }) => {
-                setLoading(false);
-                const { data } = response;
-                if (data) {
-                    const message = data?.response[0]?.message;
-                    toast.show(message);
-                }
-            });
+            .catch(({ response }) => net.handleCatch(response, setLoading));
     };
 
     return (

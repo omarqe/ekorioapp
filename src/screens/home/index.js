@@ -122,16 +122,9 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         };
     }
 
-    // Replaced by: go.bind(null, "pet__form", null)
-    const test = () => {
-        http.get("/users")
-            .then(({ data }) => console.log("data:", data))
-            .catch(({ response }) => console.error("An error occured", response?.data));
-    };
-
     return (
         <Container loading={loadingSurvey}>
-            <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: test }} />
+            <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: go.bind(null, "pet__form", null) }} />
 
             <Layout gray withHeader>
                 <Header horizontal overlap>

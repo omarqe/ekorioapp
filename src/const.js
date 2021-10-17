@@ -88,7 +88,7 @@ export default {
     ACTIVE_OPACITY: 0.55,
     TOPBAR_MIN_HEIGHT: isIOS ? 115 : 95,
     FIELD_BOTTOM_SPACING: 15,
-    LOGIN_OTP_TIMEOUT: 60,
+    LOGIN_OTP_TIMEOUT: 60 * 2,
     LOGIN_CONTENT_PADDING: 30,
     SHADOW_SM: {
         shadowOpacity: 0.06,

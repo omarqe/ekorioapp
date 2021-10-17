@@ -8,27 +8,74 @@ import ButtonIcon from "../../components/button-icon";
 import KeyboardAvoiding from "../../components/keyboard-avoiding";
 import { View, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 
+import net from "../../functions/net";
+import http from "../../functions/http";
+import toast from "../../functions/toast";
+import store from "../../functions/store";
 import _times from "lodash/times";
 
-export default function SignupVerifyScreen({ navigation }) {
+export default function SignupVerifyScreen({ route, navigation }) {
     const [otp, setOTP] = useState("");
     const [sec, setSec] = useState(CT.LOGIN_OTP_TIMEOUT);
-    const [loading, setLoading] = useState(false);
+    const [requestID, setRequestID] = useState(null);
+    const [loading, setLoading] = useState(true);
     const ref = useRef(null);
     const auth = useContext(Context.Auth);
     const resendDisabled = sec > 0;
+    const { uid, cc, phone, token } = route?.params || {};
+
     const goBack = () => navigation.goBack();
     const onFocus = () => ref?.current?.focus();
     const onChangeOTP = (otp) => {
         setOTP(otp);
         if (otp?.length >= 6) {
-            setLoading(true);
-            const t = setTimeout(() => {
-                setLoading(false);
-                auth.onLogin(true);
-            }, CT.WAITING_DEMO);
+            if (!loading) {
+                setLoading(true);
+                http.post("/otp/verify_otp", net.data({ code: otp, request_id: requestID }))
+                    .then((o) => {
+                        setLoading(false);
+                        const { data } = o;
+                        if (!data?.success) {
+                            toast.fromData(data, "response[0].message");
+                            return;
+                        }
+
+                        auth.setAuthed(true);
+                        store.save("token", token);
+                        store.save("uid", uid?.toString());
+                    })
+                    .catch(({ response }) => {
+                        setOTP("");
+                        net.handleCatch(response, setLoading);
+                    });
+            }
         }
     };
+    const requestOTP = (cc, phone) => {
+        http.post("/otp/request_otp", net.data({ cc, phone }))
+            .then((o) => {
+                setLoading(false);
+                const { data } = o;
+                const { payload } = data;
+                if (!data?.success) {
+                    toast.fromData(data, "response[0].message");
+                    return;
+                }
+
+                setRequestID(payload?.request_id);
+            })
+            .catch(({ response }) => net.handleCatch(response, setLoading));
+    };
+    const resendOTP = () => {
+        if (!resendDisabled) {
+            setOTP("");
+            setSec(CT.LOGIN_OTP_TIMEOUT);
+            requestOTP(cc, phone);
+        }
+    };
+
+    // When screen was rendered for the first time, request an OTP to the phone number
+    useEffect(() => requestOTP(cc, phone), []);
 
     // Resend OTP timer
     useEffect(() => {
@@ -54,7 +101,9 @@ export default function SignupVerifyScreen({ navigation }) {
                     <Text style={styles.heading}>Please enter verification code</Text>
                     <Text style={styles.subtitle}>We've sent verification code to:</Text>
                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                        <Text style={styles.subtitlePhone}>+60 12-345 6789</Text>
+                        <Text style={styles.subtitlePhone}>
+                            +{cc} {phone}
+                        </Text>
                         <TouchableOpacity onPress={navigation.goBack}>
                             <Text style={styles.subtitleWrongNumber}>(Wrong number?)</Text>
                         </TouchableOpacity>
@@ -78,7 +127,7 @@ export default function SignupVerifyScreen({ navigation }) {
                 </TouchableWithoutFeedback>
                 <View>
                     <Text style={styles.ctaNotReceive}>Didn't receive the code?</Text>
-                    <TouchableOpacity disabled={sec > 0}>
+                    <TouchableOpacity onPress={resendOTP} disabled={resendDisabled}>
                         <Text style={{ ...styles.ctaResend, opacity: resendDisabled ? 0.3 : 1 }}>
                             {resendDisabled ? `RESEND IN ${sec}s` : "RESEND CODE"}
                         </Text>
