@@ -44,7 +44,6 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
 
     useEffect(() => {
         const petData = _first(pets);
-        const id = petData?.id;
         const healthData = _find(health, { id: petData?.id });
 
         const t = setTimeout(() => {
@@ -63,7 +62,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
 
     const healthChartTitle = loadingPet ? "Health Report" : `${petData?.name}'s Health`;
     const healthChartSubtitle = loading ? "Loading.." : healthData ? "Last evaluated 3 weeks ago" : "No data available";
-    const healthChartsData = healthData?.chart;
+    const healthChartsData = healthData?.charts;
     const healthCategoriesData = _find(healthData?.categories, { current: true })?.data;
     const displayData = [
         { label: "Name", value: petData?.name },
@@ -77,6 +76,8 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         { label: "Gender", value: _capitalize(petData?.gender) },
         { label: "Weight", value: `${petData?.weight} kg` },
     ];
+
+    const setHealthDataWithCaution = (data) => {};
 
     const _onStartSurvey = () => {
         setLoadingSurvey(true);
