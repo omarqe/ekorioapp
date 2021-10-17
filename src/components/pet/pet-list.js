@@ -7,18 +7,32 @@ import pets from "../../../data/pets.json";
 import _clone from "lodash/clone";
 import _sortBy from "lodash/sortBy";
 
-export default function PetList({ data: d = null, margin = 4, loading = false, checked, active, onPress, ...restProps }) {
-    let data = _clone(d);
+export default function PetList({
+    data: d = null,
+    margin = 4,
+    loading = false,
+    checked,
+    active,
+    onAddPet,
+    onPress,
+    ...restProps
+}) {
+    let data = _clone(d ?? pets);
     if (loading) {
         data = [];
         active = null;
-        for (let id = 0; id <= 2; id++) {
+        for (let id = 0; id < 5; id++) {
             data = [...data, { id, loading }];
         }
     }
 
+    data = _sortBy(data, "name");
+    if (!loading) {
+        data = [{ id: 0, name: "Add Pet", phIcon: "plus", onPress: onAddPet }, ...data];
+    }
+
     const _renderItem = ({ item, index }) => {
-        const { id, name, loading, imageURL } = item;
+        const { id, name, loading, imageURL, ...props } = item;
         return (
             <Pet
                 name={name}
@@ -28,6 +42,7 @@ export default function PetList({ data: d = null, margin = 4, loading = false, c
                 checked={id === checked}
                 onPress={typeof onPress === "function" ? onPress.bind(null, id, index) : null}
                 loading={loading}
+                {...props}
                 {...restProps}
             />
         );
@@ -36,7 +51,7 @@ export default function PetList({ data: d = null, margin = 4, loading = false, c
     return (
         <View style={[styles.container, { marginLeft: -margin }]}>
             <FlatList
-                data={_sortBy(data ?? pets, "name")}
+                data={data}
                 style={{ overflow: "visible" }}
                 renderItem={_renderItem}
                 keyExtractor={({ id }) => id.toString()}

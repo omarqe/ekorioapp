@@ -1,1 +1,32 @@
-[]
+[
+    {
+        "id": 1,
+        "type": "cat",
+        "name": "Cheshire",
+        "imageURL": "https://img.omvr.io/ekorio/pets/cat-04.png",
+        "microchipID": "87886393649878",
+        "microchipVerified": true,
+        "breedID": "00002",
+        "gender": "male",
+        "weight": 2.5,
+        "birthday": "2021-05-09 01:34:39",
+        "agePet": "7 months",
+        "ageHuman": "11 years",
+        "bio": ""
+    },
+    {
+        "id": 2,
+        "type": "cat",
+        "name": "Cleo",
+        "imageURL": "https://img.omvr.io/ekorio/pets/cat-01.png",
+        "microchipID": "996007642552875",
+        "microchipVerified": false,
+        "breedID": "00004",
+        "gender": "male",
+        "weight": 2.5,
+        "birthday": "2021-01-31 01:34:39",
+        "agePet": "7 months",
+        "ageHuman": "11 years",
+        "bio": ""
+    }
+]

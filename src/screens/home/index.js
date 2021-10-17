@@ -111,7 +111,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         }, CT.WAITING_DEMO);
     };
     const _onOptions = () => {
-        const options = ["Update Pet", "Reevaluate Health", "View Health Records", "Done"];
+        const options = ["Update Pet", `${hasHealthData ? "Reevaluate" : "Evaluate"} Health`, "View Health Records", "Done"];
         const cancelButtonIndex = 3;
         showActionSheetWithOptions({ options, cancelButtonIndex }, (buttonIndex) => {
             const cmd = [
@@ -132,7 +132,14 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
             <Layout gray withHeader>
                 {!emptyPets && (
                     <Header horizontal overlap>
-                        <PetList size={65} margin={4} active={petData?.id} loading={loadingPet} onPress={_onChangePet} />
+                        <PetList
+                            size={65}
+                            margin={4}
+                            active={petData?.id}
+                            loading={loadingPet}
+                            onPress={_onChangePet}
+                            onAddPet={go.bind(null, "pet__form", null)}
+                        />
                     </Header>
                 )}
 
