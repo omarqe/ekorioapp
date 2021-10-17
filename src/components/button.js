@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CT from "../const.js";
 import Icon from "./icon";
 import Text from "./text";
+import Shimmer from "./shimmer";
 import PropTypes from "prop-types";
 import { View, Pressable, StyleSheet, ActivityIndicator } from "react-native";
 
@@ -10,6 +11,7 @@ import _renderIf from "../functions/renderIf";
 
 const Button = (props) => {
     let variant = {};
+    const [width, setWidth] = useState(0);
     const [pressed, setPressed] = useState(0);
     const { small = false, disabled = false, loading = false } = props;
     const { text, style, textStyle, color = "default", onPress, icon, iconRight } = props;
@@ -47,6 +49,10 @@ const Button = (props) => {
         else return null;
     };
 
+    const onLayout = (e) => {
+        setWidth(e?.nativeEvent?.layout?.width);
+    };
+
     return (
         <Pressable
             disabled={disabled || loading}
@@ -60,11 +66,16 @@ const Button = (props) => {
                     <Text style={[labelStyle, textStyle]}>{text}</Text>
                     <ButtonIcon position="right" />
                 </View>
-                {loading && (
-                    <View style={styles.spinner}>
-                        <ActivityIndicator color={iconColor} />
-                    </View>
-                )}
+                {loading &&
+                    _renderIf(
+                        small,
+                        <View onLayout={onLayout} style={styles.shimmer}>
+                            <Shimmer width={width} height={6} />
+                        </View>,
+                        <View style={styles.spinner}>
+                            <ActivityIndicator color={iconColor} />
+                        </View>
+                    )}
             </View>
         </Pressable>
     );
@@ -74,6 +85,7 @@ const styles = StyleSheet.create({
     base: {
         ...CT.SHADOW_SM,
         padding: 14,
+        position: "relative",
         alignItems: "center",
         flexDirection: "row",
         justifyContent: "center",
@@ -96,6 +108,12 @@ const styles = StyleSheet.create({
         marginLeft: 5,
     },
     spinner: {
+        position: "absolute",
+    },
+    shimmer: {
+        left: 14,
+        right: 14,
+        opacity: 0.5,
         position: "absolute",
     },
 });
