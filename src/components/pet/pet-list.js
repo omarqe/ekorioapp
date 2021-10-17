@@ -7,7 +7,7 @@ import pets from "../../../data/pets.json";
 import _clone from "lodash/clone";
 import _sortBy from "lodash/sortBy";
 
-export default function PetList({ data: d = null, margin = 4, loading = true, checked, active, onPress, ...restProps }) {
+export default function PetList({ data: d = null, margin = 4, loading = false, checked, active, onPress, ...restProps }) {
     let data = _clone(d);
     if (loading) {
         data = [];

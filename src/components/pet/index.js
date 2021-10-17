@@ -25,7 +25,6 @@ export default function Pet(props) {
         iconBackdropStyle: _iconBackdropStyle,
     } = props;
 
-    const shimmerColors = [CT.BG_PURPLE_600, CT.BG_PURPLE_600, CT.BG_PURPLE_500];
     const width = size + padding * 2;
     const height = width;
     const radius = borderRadius ? borderRadius : size * 0.35;
@@ -54,6 +53,8 @@ export default function Pet(props) {
         backgroundColor: isLight ? CT.CTA_POSITIVE : CT.BG_PURPLE_500,
     };
 
+    let shimmerColors = [CT.BG_PURPLE_600, CT.BG_PURPLE_600, CT.BG_PURPLE_500];
+
     // Alter the styles based on several conditions
     if (pressed) baseStyle = { ...baseStyle, transform: [{ scale: 0.97 }] };
     if (active) {
@@ -62,6 +63,7 @@ export default function Pet(props) {
     } else if (isLight) {
         baseStyle = { ...baseStyle, backgroundColor: CT.BG_GRAY_100 };
         nameStyle = { ...nameStyle, color: checked ? CT.BG_GRAY_800 : CT.BG_GRAY_400 };
+        shimmerColors = [CT.BG_GRAY_100, CT.BG_GRAY_100, CT.BG_GRAY_50];
         imageBaseStyle = { ...imageBaseStyle, backgroundColor: CT.BG_GRAY_200 };
         if (CT.IS_IOS) {
             baseStyle = { ...baseStyle, backgroundColor: CT.BG_WHITE, ...CT.SHADOW_MD, shadowOpacity: 0.09 };
@@ -105,15 +107,16 @@ export default function Pet(props) {
                     </View>
                 )}
             </View>
-            {_renderIf(
-                loading,
-                <View style={styles.nameShimmer}>
-                    <Shimmer width={40} height={10} colors={shimmerColors} />
-                </View>,
-                <Text style={[styles.name, nameStyle, _nameStyle]} numberOfLines={1}>
-                    {name}
-                </Text>
-            )}
+            {name &&
+                _renderIf(
+                    loading,
+                    <View style={styles.nameShimmer}>
+                        <Shimmer width={40} height={10} colors={shimmerColors} />
+                    </View>,
+                    <Text style={[styles.name, nameStyle, _nameStyle]} numberOfLines={1}>
+                        {name}
+                    </Text>
+                )}
         </Pressable>
     );
 }
