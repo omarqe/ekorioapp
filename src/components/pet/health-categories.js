@@ -12,12 +12,18 @@ import PropTypes from "prop-types";
 import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 
 import _find from "lodash/find";
+import _clone from "lodash/clone";
 import _isArray from "lodash/isArray";
 import _renderIf from "../../functions/renderIf";
 import _makeColor from "../../functions/makeColor";
 
 export default function HealthCategories({ loading = false, data = [] }) {
-    if (data?.length < 1) {
+    if (loading) {
+        data = [];
+        for (let i = 0; i < 3; i++) {
+            data = [...data, {}];
+        }
+    } else if (data?.length < 1 && !loading) {
         return <React.Fragment />;
     }
 

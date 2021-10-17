@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import CT from "../../const.js";
 import Text from "../text";
+import Empty from "../empty";
 import Shimmer from "../shimmer";
 import PropTypes from "prop-types";
 
@@ -11,15 +12,36 @@ import ChartThreadIcon from "../../../assets/icons/chart__thread.svg";
 import { ProgressChart } from "react-native-chart-kit";
 import { Easing, Animated, View, StyleSheet } from "react-native";
 
+import _renderIf from "../../functions/renderIf";
 import _fill from "lodash/fill";
+import _clone from "lodash/clone";
 import _isArray from "lodash/isArray";
 import _startCase from "lodash/startCase";
-import _renderIf from "../../functions/renderIf";
 
 const lowRatio = CT.PIXELRATIO < 3;
 const columnw = lowRatio ? 90 : 100;
 
-export default function HealthCharts({ data = [], loading = false }) {
+export default function HealthCharts({ data = [], loading = false, name = null, onStartSurvey }) {
+    if (loading) {
+        data = [];
+        ["physical", "nutrition", "lifestyle"].map((id) => {
+            data = [...data, { id, value: 0, delta: 0, indicator: "up" }];
+        });
+    } else if (data?.length < 1 && !loading) {
+        return (
+            <Empty
+                style={styles.empty}
+                title="No data available"
+                subtitle={`You haven't answered a health survey for ${name ? name : "this pet"} yet.`}
+                button={{
+                    text: "Start Survey",
+                    small: true,
+                    onPress: onStartSurvey,
+                }}
+            />
+        );
+    }
+
     const [anim1, setAnim1] = useState(0);
     const [anim2, setAnim2] = useState(0);
     const [anim3, setAnim3] = useState(0);
@@ -35,9 +57,9 @@ export default function HealthCharts({ data = [], loading = false }) {
     };
 
     useEffect(() => {
-        animate(animation1, loading ? 0 : data[0]?.value, setAnim1);
-        animate(animation2, loading ? 0 : data[1]?.value, setAnim2);
-        animate(animation3, loading ? 0 : data[2]?.value, setAnim3);
+        animate(animation1, data[0]?.value, setAnim1);
+        animate(animation2, data[1]?.value, setAnim2);
+        animate(animation3, data[2]?.value, setAnim3);
     }, [data, loading]);
 
     const values = [anim1, anim2, anim3];
@@ -99,7 +121,7 @@ export default function HealthCharts({ data = [], loading = false }) {
                                 )}
                             </View>
 
-                            <View style={styles.chartOverview}>
+                            <View style={[styles.chartOverview, { marginTop: loading ? 20 : 10 }]}>
                                 {_renderIf(
                                     loading,
                                     <View style={{ alignItems: "center" }}>
@@ -137,6 +159,10 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
+    },
+    empty: {
+        paddingTop: 30,
+        paddingBottom: 30,
     },
     column: {
         flex: 1,
@@ -195,5 +221,7 @@ const styles = StyleSheet.create({
 
 HealthCharts.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
+    name: PropTypes.string,
     loading: PropTypes.bool,
+    onStartSurvey: PropTypes.func,
 };

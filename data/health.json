@@ -70,26 +70,7 @@
     },
     {
         "id": 2,
-        "charts": [
-            {
-                "id": "physical",
-                "value": 0.55,
-                "delta": 0.1,
-                "indicator": "up"
-            },
-            {
-                "id": "nutrition",
-                "value": 0.6,
-                "delta": 0.25,
-                "indicator": "up"
-            },
-            {
-                "id": "lifestyle",
-                "value": 0.85,
-                "delta": 0.3,
-                "indicator": "up"
-            }
-        ],
+        "charts": [],
         "categories": [
             {
                 "createdAt": "",

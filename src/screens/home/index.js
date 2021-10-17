@@ -24,6 +24,7 @@ import _env from "../../functions/env";
 import _find from "lodash/find";
 import _times from "lodash/times";
 import _first from "lodash/first";
+import _isEmpty from "lodash/isEmpty";
 import _capitalize from "lodash/capitalize";
 
 import pets from "../../../data/pets.json";
@@ -57,11 +58,13 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         }, CT.WAITING_DEMO + 300);
 
         setPetData(petData);
-        setHealthData(healthData);
+        setHealthDataWithCaution(healthData);
     }, []);
 
+    const hasHealthData = !_isEmpty(healthData) && !_isEmpty(healthData?.charts) && !_isEmpty(healthData?.categories);
+
     const healthChartTitle = loadingPet ? "Health Report" : `${petData?.name}'s Health`;
-    const healthChartSubtitle = loading ? "Loading.." : healthData ? "Last evaluated 3 weeks ago" : "No data available";
+    const healthChartSubtitle = loading ? "Loading.." : hasHealthData ? "Last evaluated 3 weeks ago" : "Not available";
     const healthChartsData = healthData?.charts;
     const healthCategoriesData = _find(healthData?.categories, { current: true })?.data;
     const displayData = [
@@ -77,7 +80,13 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         { label: "Weight", value: `${petData?.weight} kg` },
     ];
 
-    const setHealthDataWithCaution = (data) => {};
+    const setHealthDataWithCaution = (data = {}) => {
+        if (!_isEmpty(data) && !_isEmpty(data?.charts) && !_isEmpty(data?.categories)) {
+            setHealthData(data);
+            return;
+        }
+        setHealthData({ charts: [], categories: [] });
+    };
 
     const _onStartSurvey = () => {
         setLoadingSurvey(true);
@@ -92,9 +101,9 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
             return;
         }
 
-        setPetData(_find(pets, { id }));
         setLoading(true);
-        setHealthData(_find(health, { id }) || null);
+        setPetData(_find(pets, { id }));
+        setHealthDataWithCaution(_find(health, { id }) || null);
         const t = setTimeout(() => {
             setLoading(false);
             clearTimeout(t);
@@ -131,23 +140,17 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
                             <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={_onOptions} inverted />
                         </View>
                     </View>
-                    {_renderIf(
-                        healthData,
-                        <React.Fragment>
-                            <View style={styles.section}>
-                                <HealthCharts data={healthChartsData} loading={loading} />
-                            </View>
-                            <View style={{ ...styles.section, marginBottom: 0 }}>
-                                <HealthCategories data={healthCategoriesData} loading={loading} />
-                            </View>
-                        </React.Fragment>,
-                        <Empty
-                            button={{ text: "Start Survey", onPress: _onStartSurvey }}
-                            style={{ paddingTop: 50, paddingBottom: 50 }}
-                            title="No data available"
-                            subtitle={`You've never answered a health survey for ${petData?.name} yet.`}
+                    <View style={styles.section}>
+                        <HealthCharts
+                            name={petData?.name}
+                            data={healthChartsData}
+                            loading={loading}
+                            onStartSurvey={_onStartSurvey}
                         />
-                    )}
+                    </View>
+                    <View style={{ ...styles.section, marginBottom: 0 }}>
+                        <HealthCategories data={healthCategoriesData} loading={loading} />
+                    </View>
                 </Body>
 
                 <Body gray>
