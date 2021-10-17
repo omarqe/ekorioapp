@@ -10,6 +10,7 @@ import PetIdentity from "../../components/pet/pet-identity";
 import HealthCharts from "../../components/pet/health-charts";
 import HealthCategories from "../../components/pet/health-categories";
 
+import Empty from "../../components/empty";
 import Heading from "../../components/heading";
 import TopBar from "../../components/topbar";
 import Container from "../../components/container";
@@ -18,6 +19,7 @@ import ButtonIcon from "../../components/button-icon";
 import { View, StyleSheet } from "react-native";
 import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
 
+import _renderIf from "../../functions/renderIf";
 import _env from "../../functions/env";
 import _find from "lodash/find";
 import _times from "lodash/times";
@@ -59,7 +61,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
     }, []);
 
     const healthChartTitle = loadingPet ? "Health Report" : `${data?.name}'s Health`;
-    const healthChartSubtitle = loading ? "Loading.." : "Last evaluated 3 weeks ago";
+    const healthChartSubtitle = loading ? "Loading.." : healthData ? "Last evaluated 3 weeks ago" : "No data available";
     const healthChartsData = healthData?.chart;
     const healthCategoriesData = _find(healthData?.categories, { current: true })?.data;
     const displayData = [
@@ -84,13 +86,13 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         }, CT.WAITING_DEMO / 3);
     };
     const _onChangePet = (id) => {
-        if (loading) {
+        if (loading || id === healthData?.id) {
             return;
         }
 
         setData(_find(pets, { id }));
         setLoading(true);
-        setHealthData(_find(health, { id }));
+        setHealthData(_find(health, { id }) || null);
         const t = setTimeout(() => {
             setLoading(false);
             clearTimeout(t);
@@ -111,17 +113,6 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         });
     };
 
-    let updateBtn = null;
-    if (!loading) {
-        updateBtn = {
-            icon: "far edit",
-            text: "Update Pet",
-            onPress: go.bind(null, "pet__form", data),
-            disabled: loadingPet,
-            iconRight: true,
-        };
-    }
-
     return (
         <Container loading={loadingSurvey}>
             <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: go.bind(null, "pet__form", null) }} />
@@ -138,16 +129,37 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
                             <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={_onOptions} inverted />
                         </View>
                     </View>
-                    <View style={styles.section}>
-                        <HealthCharts data={healthChartsData} loading={loading} />
-                    </View>
-                    <View style={{ ...styles.section, marginBottom: 0 }}>
-                        <HealthCategories data={healthCategoriesData} loading={loading} />
-                    </View>
+                    {_renderIf(
+                        healthData,
+                        <React.Fragment>
+                            <View style={styles.section}>
+                                <HealthCharts data={healthChartsData} loading={loading} />
+                            </View>
+                            <View style={{ ...styles.section, marginBottom: 0 }}>
+                                <HealthCategories data={healthCategoriesData} loading={loading} />
+                            </View>
+                        </React.Fragment>,
+                        <Empty
+                            button={{ text: "Start Survey", onPress: _onStartSurvey }}
+                            style={{ paddingTop: 50, paddingBottom: 50 }}
+                            title="No data available"
+                            subtitle={`You've never answered a health survey for ${data?.name} yet.`}
+                        />
+                    )}
                 </Body>
 
                 <Body gray>
-                    <PetIdentity data={displayData} button={updateBtn} loading={loadingPet} />
+                    <PetIdentity
+                        loading={loadingPet}
+                        data={displayData}
+                        button={{
+                            icon: "far edit",
+                            text: "Update Pet",
+                            loading: loadingPet,
+                            onPress: go.bind(null, "pet__form", data),
+                            iconRight: true,
+                        }}
+                    />
                 </Body>
             </Layout>
         </Container>
