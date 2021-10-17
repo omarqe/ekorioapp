@@ -11,7 +11,7 @@ export default function Empty({ art: Art, title, style, button, subtitle }) {
             <Heading size={0} style={styles.heading} text={title} subtitle={subtitle} />
             {button && (
                 <View style={{ marginTop: 5 }}>
-                    <Button {...button} small />
+                    <Button small {...button} />
                 </View>
             )}
         </View>

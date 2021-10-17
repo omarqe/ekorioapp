@@ -61,6 +61,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         setHealthDataWithCaution(healthData);
     }, []);
 
+    const emptyPets = pets?.length < 1 && !loadingPet;
     const hasHealthData = !_isEmpty(healthData) && !_isEmpty(healthData?.charts) && !_isEmpty(healthData?.categories);
 
     const healthChartTitle = loadingPet ? "Health Report" : `${petData?.name}'s Health`;
@@ -129,43 +130,56 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
             <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: go.bind(null, "pet__form", null) }} />
 
             <Layout gray withHeader>
-                <Header horizontal overlap>
-                    <PetList size={65} margin={4} active={petData?.id} loading={loadingPet} onPress={_onChangePet} />
-                </Header>
+                {!emptyPets && (
+                    <Header horizontal overlap>
+                        <PetList size={65} margin={4} active={petData?.id} loading={loadingPet} onPress={_onChangePet} />
+                    </Header>
+                )}
 
-                <Body topRounded overlap>
-                    <View style={styles.headingSection}>
-                        <Heading size={0} text={healthChartTitle} subtitle={healthChartSubtitle} gapless />
-                        <View style={styles.actionBtnContainer}>
-                            <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={_onOptions} inverted />
-                        </View>
-                    </View>
-                    <View style={styles.section}>
-                        <HealthCharts
-                            name={petData?.name}
-                            data={healthChartsData}
-                            loading={loading}
-                            onStartSurvey={_onStartSurvey}
+                {_renderIf(
+                    emptyPets,
+                    <Body gray flex topRounded>
+                        <Empty
+                            title="Wow.. it's so quiet over here 😿"
+                            button={{ text: "Add Pet", onPress: go.bind(null, "pet__form", null) }}
+                            subtitle="Apparently, you do not own any pet yet."
                         />
-                    </View>
-                    <View style={{ ...styles.section, marginBottom: 0 }}>
-                        <HealthCategories data={healthCategoriesData} loading={loading} />
-                    </View>
-                </Body>
-
-                <Body gray>
-                    <PetIdentity
-                        loading={loadingPet}
-                        data={displayData}
-                        button={{
-                            icon: "far edit",
-                            text: "Update Pet",
-                            loading: loadingPet,
-                            onPress: go.bind(null, "pet__form", petData),
-                            iconRight: true,
-                        }}
-                    />
-                </Body>
+                    </Body>,
+                    <React.Fragment>
+                        <Body topRounded overlap>
+                            <View style={styles.headingSection}>
+                                <Heading size={0} text={healthChartTitle} subtitle={healthChartSubtitle} gapless />
+                                <View style={styles.actionBtnContainer}>
+                                    <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={_onOptions} inverted />
+                                </View>
+                            </View>
+                            <View style={styles.section}>
+                                <HealthCharts
+                                    name={petData?.name}
+                                    data={healthChartsData}
+                                    loading={loading}
+                                    onStartSurvey={_onStartSurvey}
+                                />
+                            </View>
+                            <View style={{ ...styles.section, marginBottom: 0 }}>
+                                <HealthCategories data={healthCategoriesData} loading={loading} />
+                            </View>
+                        </Body>
+                        <Body gray>
+                            <PetIdentity
+                                loading={loadingPet}
+                                data={displayData}
+                                button={{
+                                    icon: "far edit",
+                                    text: "Update Pet",
+                                    loading: loadingPet,
+                                    onPress: go.bind(null, "pet__form", petData),
+                                    iconRight: true,
+                                }}
+                            />
+                        </Body>
+                    </React.Fragment>
+                )}
             </Layout>
         </Container>
     );
@@ -216,6 +230,11 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "600",
         textDecorationLine: "underline",
+    },
+
+    emptyLayout: {
+        alignItems: "center",
+        justifyContent: "center",
     },
 });
 
