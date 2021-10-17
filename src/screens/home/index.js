@@ -33,18 +33,19 @@ import http from "../../functions/http.js";
 
 const HomeScreen = connectActionSheet(({ navigation }) => {
     const go = (key, options = {}) => navigation.navigate(key, options);
-    const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [loadingPet, setLoadingPet] = useState(true);
     const [loadingSurvey, setLoadingSurvey] = useState(false);
 
+    const [petData, setPetData] = useState(null);
     const [healthData, setHealthData] = useState(null);
+
     const { showActionSheetWithOptions } = useActionSheet();
 
     useEffect(() => {
-        const data = _first(pets);
-        const id = data?.id;
-        const healthData = _find(health, { id });
+        const petData = _first(pets);
+        const id = petData?.id;
+        const healthData = _find(health, { id: petData?.id });
 
         const t = setTimeout(() => {
             setLoadingPet(false);
@@ -56,31 +57,31 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
             clearTimeout(t2);
         }, CT.WAITING_DEMO + 300);
 
-        setData(data);
+        setPetData(petData);
         setHealthData(healthData);
     }, []);
 
-    const healthChartTitle = loadingPet ? "Health Report" : `${data?.name}'s Health`;
+    const healthChartTitle = loadingPet ? "Health Report" : `${petData?.name}'s Health`;
     const healthChartSubtitle = loading ? "Loading.." : healthData ? "Last evaluated 3 weeks ago" : "No data available";
     const healthChartsData = healthData?.chart;
     const healthCategoriesData = _find(healthData?.categories, { current: true })?.data;
     const displayData = [
-        { label: "Name", value: data?.name },
-        { label: "Microchip ID", value: data?.microchipID, verified: data?.microchipVerified },
+        { label: "Name", value: petData?.name },
+        { label: "Microchip ID", value: petData?.microchipID, verified: petData?.microchipVerified },
         { label: "Parent's Name", value: "Eve Harrison" },
         { label: "Colors", value: ["#3E4C59", "#9AA5B1"] },
-        { label: "Breed", value: _find(_find(petTypes, { id: data?.type })?.breeds, { value: data?.breedID })?.label },
-        { label: "Birthday", value: data?.birthday },
-        { label: "Age (Cat Year)", value: data?.agePet },
-        { label: "Age (Human Year)", value: data?.ageHuman },
-        { label: "Gender", value: _capitalize(data?.gender) },
-        { label: "Weight", value: `${data?.weight} kg` },
+        { label: "Breed", value: _find(_find(petTypes, { id: petData?.type })?.breeds, { value: petData?.breedID })?.label },
+        { label: "Birthday", value: petData?.birthday },
+        { label: "Age (Cat Year)", value: petData?.agePet },
+        { label: "Age (Human Year)", value: petData?.ageHuman },
+        { label: "Gender", value: _capitalize(petData?.gender) },
+        { label: "Weight", value: `${petData?.weight} kg` },
     ];
 
     const _onStartSurvey = () => {
         setLoadingSurvey(true);
         const t = setTimeout(() => {
-            go("pet__health-survey", { petID: data?.id });
+            go("pet__health-survey", { petID: petData?.id });
             setLoadingSurvey(false);
             clearTimeout(t);
         }, CT.WAITING_DEMO / 3);
@@ -90,7 +91,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
             return;
         }
 
-        setData(_find(pets, { id }));
+        setPetData(_find(pets, { id }));
         setLoading(true);
         setHealthData(_find(health, { id }) || null);
         const t = setTimeout(() => {
@@ -103,9 +104,9 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         const cancelButtonIndex = 3;
         showActionSheetWithOptions({ options, cancelButtonIndex }, (buttonIndex) => {
             const cmd = [
-                go.bind(null, "pet__form", data),
+                go.bind(null, "pet__form", petData),
                 _onStartSurvey,
-                go.bind(null, "pet__health-records", { petID: data?.id }),
+                go.bind(null, "pet__health-records", { petID: petData?.id }),
             ];
             if (typeof cmd[buttonIndex] === "function") {
                 cmd[buttonIndex]();
@@ -119,7 +120,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
 
             <Layout gray withHeader>
                 <Header horizontal overlap>
-                    <PetList size={65} margin={4} active={data?.id} loading={loadingPet} onPress={_onChangePet} />
+                    <PetList size={65} margin={4} active={petData?.id} loading={loadingPet} onPress={_onChangePet} />
                 </Header>
 
                 <Body topRounded overlap>
@@ -143,7 +144,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
                             button={{ text: "Start Survey", onPress: _onStartSurvey }}
                             style={{ paddingTop: 50, paddingBottom: 50 }}
                             title="No data available"
-                            subtitle={`You've never answered a health survey for ${data?.name} yet.`}
+                            subtitle={`You've never answered a health survey for ${petData?.name} yet.`}
                         />
                     )}
                 </Body>
@@ -156,7 +157,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
                             icon: "far edit",
                             text: "Update Pet",
                             loading: loadingPet,
-                            onPress: go.bind(null, "pet__form", data),
+                            onPress: go.bind(null, "pet__form", petData),
                             iconRight: true,
                         }}
                     />
