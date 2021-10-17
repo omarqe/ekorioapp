@@ -60,10 +60,10 @@ export default function HealthCharts({ data = [], loading = false }) {
     if (_isArray(data) && data.length > 0) {
         return (
             <View style={styles.container}>
-                {data.map(({ id, indicator = "down", delta = 0.1 }, i) => {
+                {data.map(({ id, indicator = "down", delta = 0.1, value: v }, i) => {
                     const ChartIcon = mappedData[id]?.icon;
                     const value = values[i];
-                    const vPer100 = (value * 100).toFixed(0);
+                    const vPer100 = (v * 100).toFixed(0);
                     const dPer100 = (delta * 100).toFixed(0);
 
                     return (

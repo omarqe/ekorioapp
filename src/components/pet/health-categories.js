@@ -17,9 +17,12 @@ import _renderIf from "../../functions/renderIf";
 import _makeColor from "../../functions/makeColor";
 
 export default function HealthCategories({ loading = false, data = [] }) {
+    if (data?.length < 1) {
+        return <React.Fragment />;
+    }
+
     const [openID, setOpenID] = useState(null);
     const [pressedIndex, setPressedIndex] = useState(null);
-
     const current = _find(data, { id: openID });
     const currentColor = _makeColor(current?.score, 10);
 
