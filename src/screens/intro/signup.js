@@ -13,25 +13,9 @@ import _some from "lodash/some";
 import _values from "lodash/values";
 import _isEmpty from "lodash/isEmpty";
 
-function fakeEmail(length = 12) {
-    var result = "";
-    var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    var charsLen = chars.length;
-    for (var i = 0; i < length; i++) {
-        result += chars.charAt(Math.floor(Math.random() * charsLen));
-    }
-    return `${result}@gmail.com`;
-}
-
 export default function SignupScreen({ navigation }) {
     const [loading, setLoading] = useState(false);
-    const [data, setData] = useState({
-        cc: 60,
-        name: "John Doe",
-        email: fakeEmail(),
-        phone: "126647006",
-        password: "123",
-    });
+    const [data, setData] = useState({ cc: 60, name: "", email: "", phone: "", password: "" });
 
     const onChange = (value, name) => setData({ ...data, [name]: value });
     const onSubmit = () => {
