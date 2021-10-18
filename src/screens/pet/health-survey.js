@@ -26,8 +26,8 @@ import _findIndex from "lodash/findIndex";
 import _upperFirst from "lodash/upperFirst";
 
 export default function PetHealthSurveyScreen({ navigation, route }) {
-    const petID = route?.params?.petID;
-    const pet = _find(pets, { id: petID });
+    const petID = _get(route, "params.petID");
+    const pet = _get(route, "params.pet");
     const [qIndex, setQIndex] = useState(0);
     const [answers, setAnswers] = useState([]);
 
@@ -86,7 +86,7 @@ export default function PetHealthSurveyScreen({ navigation, route }) {
                 type={1}
                 leftIcon="chevron-left"
                 leftIconProps={{ onPress: navigation.goBack }}
-                rightComponent={<PetSwitch pets={pets} checked={petID} supressed />}
+                rightComponent={<PetSwitch pets={[pet]} checked={petID} supressed />}
             />
             <Header contentStyle={styles.headerContent}>
                 <Heading
