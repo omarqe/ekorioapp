@@ -32,7 +32,6 @@ export default function HealthCategories({ loading = false, data = [] }) {
     const [pressedIndex, setPressedIndex] = useState(null);
     const current = _find(data, { id: openID });
     const currentColor = _makeColor(current?.score, 10);
-    console.log("current", current);
 
     const _onPressOut = () => togglePressed(null);
     const _onPressIn = (index) => togglePressed(index);
