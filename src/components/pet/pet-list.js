@@ -3,21 +3,10 @@ import Pet from "./";
 import PropTypes from "prop-types";
 import { View, FlatList, StyleSheet } from "react-native";
 
-import pets from "../../../data/pets.json";
 import _clone from "lodash/clone";
 import _sortBy from "lodash/sortBy";
 
-export default function PetList({
-    data: d = null,
-    margin = 4,
-    loading = false,
-    checked,
-    active,
-    onAddPet,
-    onPress,
-    ...restProps
-}) {
-    let data = _clone(d ?? pets);
+export default function PetList({ data = [], margin = 4, loading = false, checked, active, onAddPet, onPress, ...restProps }) {
     if (loading) {
         data = [];
         active = null;
