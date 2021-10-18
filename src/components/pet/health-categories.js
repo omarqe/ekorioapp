@@ -32,6 +32,7 @@ export default function HealthCategories({ loading = false, data = [] }) {
     const [pressedIndex, setPressedIndex] = useState(null);
     const current = _find(data, { id: openID });
     const currentColor = _makeColor(current?.score, 10);
+    console.log("current", current);
 
     const _onPressOut = () => togglePressed(null);
     const _onPressIn = (index) => togglePressed(index);
@@ -135,7 +136,7 @@ export default function HealthCategories({ loading = false, data = [] }) {
                     <View style={styles.section}>
                         <Heading text="Explanation" style={styles.sectionHeading} />
                         <Text style={[styles.factor, { lineHeight }]}>
-                            {current?.explanation ?? "No explanation available."}
+                            {current?.explanation !== "" ? current?.explanation : "No explanation available."}
                         </Text>
                     </View>
                 </Modal>
