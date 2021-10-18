@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import CT from "../../const.js";
 import Text from "../text";
+import Icon from "../icon";
 import Empty from "../empty";
 import Shimmer from "../shimmer";
 import PropTypes from "prop-types";
@@ -15,6 +16,7 @@ import { Easing, Animated, View, StyleSheet } from "react-native";
 import _renderIf from "../../functions/renderIf";
 import _fill from "lodash/fill";
 import _clone from "lodash/clone";
+import _sortBy from "lodash/sortBy";
 import _isArray from "lodash/isArray";
 import _startCase from "lodash/startCase";
 
@@ -64,58 +66,46 @@ export default function HealthCharts({ data = [], loading = false, name = null, 
 
     const values = [anim1, anim2, anim3];
     const chartBg = CT.BG_WHITE;
-    const mappedData = {
-        physical: {
-            icon: ChartCatIcon,
-            label: "Physical",
-        },
-        nutrition: {
-            icon: ChartMeatIcon,
-            label: "Nutrition",
-        },
-        lifestyle: {
-            icon: ChartThreadIcon,
-            label: "Lifestyle",
-        },
-    };
+    const chartIcon = { physical: ChartCatIcon, nutrition: ChartMeatIcon, lifestyle: ChartThreadIcon };
 
-    if (_isArray(data) && data.length > 0) {
+    if (_isArray(data) && data?.length > 0) {
+        _sortBy(data, "sorting");
         return (
             <View style={styles.container}>
-                {data.map(({ id, indicator = "down", delta = 0.1, value: v }, i) => {
-                    const ChartIcon = mappedData[id]?.icon;
+                {data.map(({ id, indicator = "up", label, delta = 0.1, value: v }, i) => {
+                    const ChartIcon = chartIcon[id];
                     const value = values[i];
                     const vPer100 = (v * 100).toFixed(0);
                     const dPer100 = (delta * 100).toFixed(0);
+                    const indicatorIcon = { up: "chevron-circle-up", down: "chevron-circle-down" }[indicator];
+                    const indicatorColor = indicator === "up" ? CT.CTA_POSITIVE : CT.CTA_NEGATIVE;
+                    const chartProps = {
+                        withCustomBarColorFromData: true,
+                        hideLegend: true,
+                        width: columnw,
+                        height: columnw,
+                        radius: lowRatio ? 40 : 44,
+                        strokeWidth: lowRatio ? 10 : 12,
+                        data: { colors: [loading ? CT.BG_GRAY_100 : CT.BG_PURPLE_500], data: [value] },
+                        chartConfig: {
+                            backgroundGradientFrom: chartBg,
+                            backgroundGradientTo: chartBg,
+                            decimalPlaces: 2,
+                            color: () => CT.BG_GRAY_50,
+                            style: {
+                                margin: 0,
+                                padding: 10,
+                                borderRadius: 16,
+                            },
+                        },
+                    };
 
                     return (
                         <View key={i} style={styles.column}>
                             <View style={styles.chart}>
-                                <ProgressChart
-                                    withCustomBarColorFromData
-                                    hideLegend
-                                    width={columnw}
-                                    height={columnw}
-                                    radius={lowRatio ? 40 : 44}
-                                    strokeWidth={lowRatio ? 10 : 12}
-                                    data={{
-                                        colors: [loading ? CT.BG_GRAY_100 : CT.BG_PURPLE_500],
-                                        data: [value],
-                                    }}
-                                    chartConfig={{
-                                        backgroundGradientFrom: chartBg,
-                                        backgroundGradientTo: chartBg,
-                                        decimalPlaces: 2,
-                                        color: () => CT.BG_GRAY_50,
-                                        style: {
-                                            margin: 0,
-                                            padding: 10,
-                                            borderRadius: 16,
-                                        },
-                                    }}
-                                />
+                                <ProgressChart {...chartProps} />
                                 {_renderIf(
-                                    id && !loading,
+                                    id && !loading && ChartIcon !== undefined,
                                     <ChartIcon style={styles.chartIcon} />,
                                     <Shimmer style={styles.shimmer} />
                                 )}
@@ -137,10 +127,32 @@ export default function HealthCharts({ data = [], loading = false, name = null, 
                                                 %
                                             </Text>
                                         </Text>
-                                        <Text style={styles.chartLabel}>{mappedData[id]?.label}</Text>
-                                        <Text style={styles.chartDesc}>
-                                            {_startCase(indicator)} {dPer100}% from last week
-                                        </Text>
+                                        <Text style={styles.chartLabel}>{label}</Text>
+                                        <View style={styles.chartDesc}>
+                                            <View style={{ flexDirection: "row" }}>
+                                                <Icon
+                                                    size={10}
+                                                    icon={indicatorIcon}
+                                                    color={indicatorColor}
+                                                    style={styles.indicatorIcon}
+                                                />
+                                                <Text style={[styles.chartDescValue, { color: indicatorColor }]}>
+                                                    {`${vPer100}% `}
+                                                </Text>
+                                                <Text style={styles.chartDescText}>from</Text>
+                                            </View>
+                                            <View>
+                                                <Text style={styles.chartDescText}>previous record</Text>
+                                            </View>
+                                            <Text></Text>
+                                        </View>
+
+                                        {/* <Text style={styles.chartDesc}>
+                                            <Text style={[styles.indicator, { color: indicatorColor }]}>
+                                                <Icon icon={indicatorIcon} color={indicatorColor} size={10} /> {dPer100}%
+                                            </Text>
+                                            from previous record
+                                        </Text> */}
                                     </React.Fragment>
                                 )}
                             </View>
@@ -211,11 +223,27 @@ const styles = StyleSheet.create({
         marginTop: 3,
     },
     chartDesc: {
+        marginTop: 3,
+        flexWrap: "wrap",
+        flexDirection: "row",
+        justifyContent: "center",
+    },
+    chartDescText: {
         color: CT.BG_GRAY_500,
         fontSize: 10,
         textAlign: "center",
-        lineHeight: 14,
-        marginTop: 3,
+    },
+    chartDescValue: {
+        fontSize: 10,
+        fontWeight: "700",
+    },
+    indicator: {
+        display: "flex",
+    },
+    indicatorIcon: {
+        top: 1,
+        position: "relative",
+        marginRight: 2,
     },
 });
 

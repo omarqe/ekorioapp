@@ -21,7 +21,6 @@ import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sh
 
 import net from "../../functions/net";
 import http from "../../functions/http";
-import moment from "moment";
 
 import _renderIf from "../../functions/renderIf";
 import _env from "../../functions/env";
@@ -31,9 +30,6 @@ import _first from "lodash/first";
 import _sortBy from "lodash/sortBy";
 import _isEmpty from "lodash/isEmpty";
 import _capitalize from "lodash/capitalize";
-
-import health from "../../../data/health.json";
-import petTypes from "../../../data/pet-types.json";
 
 const HomeScreen = connectActionSheet(({ navigation }) => {
     const go = (key, options = {}) => navigation.navigate(key, options);
@@ -54,36 +50,38 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
                 setLoadingPet(false);
                 if (data?.length > 0) {
                     const petID = _first(_sortBy(data, "name"))?.id;
-
                     setPets(data);
                     setPetID(petID);
-                    return;
+                    getHealthData(petID);
                 }
             })
             .catch(({ response }) => net.handleCatch(response, setLoadingPet));
-
-        const t2 = setTimeout(() => {
-            setLoading(false);
-            clearTimeout(t2);
-        }, CT.WAITING_DEMO + 300);
-
-        setHealthDataWithCaution({});
     }, []);
 
     const emptyPets = pets?.length < 1 && !loadingPet;
     const hasHealthData = !_isEmpty(healthData) && !_isEmpty(healthData?.charts) && !_isEmpty(healthData?.categories);
 
+    const placeholderChart = { charts: [], categories: [] };
+    const healthChartsData = healthData?.charts;
     const healthChartTitle = loadingPet ? "Health Report" : `${pet?.name}'s Health`;
     const healthChartSubtitle = loading ? "Loading.." : hasHealthData ? "Last evaluated 3 weeks ago" : "Not available";
-    const healthChartsData = healthData?.charts;
     const healthCategoriesData = _find(healthData?.categories, { current: true })?.data;
 
-    const setHealthDataWithCaution = (data = {}) => {
-        if (!_isEmpty(data) && !_isEmpty(data?.charts) && !_isEmpty(data?.categories)) {
-            setHealthData(data);
-            return;
-        }
-        setHealthData({ charts: [], categories: [] });
+    // Fetch health data from our server
+    const getHealthData = (petID) => {
+        setLoading(true);
+        http.get(`/reports/pet/${petID}`)
+            .then(({ data }) => {
+                setLoading(false);
+                const payload = data?.payload;
+                const reports = { charts: payload?.charts, categories: payload?.categories };
+                if (!_isEmpty(reports) && !_isEmpty(reports?.charts) && !_isEmpty(reports?.categories)) {
+                    setHealthData(reports);
+                    return;
+                }
+                setHealthData(placeholderChart);
+            })
+            .catch(() => setHealthData(placeholderChart));
     };
 
     const _onStartSurvey = () => {
@@ -100,12 +98,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         }
 
         setPetID(id);
-        setLoading(true);
-        setHealthDataWithCaution(_find(health, { id }) || null);
-        const t = setTimeout(() => {
-            setLoading(false);
-            clearTimeout(t);
-        }, CT.WAITING_DEMO);
+        getHealthData(id);
     };
     const _onOptions = () => {
         const options = ["Update Pet", `${hasHealthData ? "Reevaluate" : "Evaluate"} Health`, "View Health Records", "Done"];
@@ -166,9 +159,9 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
                                     onStartSurvey={_onStartSurvey}
                                 />
                             </View>
-                            <View style={{ ...styles.section, marginBottom: 0 }}>
+                            {/* <View style={{ ...styles.section, marginBottom: 0 }}>
                                 <HealthCategories data={healthCategoriesData} loading={loading} />
-                            </View>
+                            </View> */}
                         </Body>
                         <Body gray>
                             <PetIdentity
