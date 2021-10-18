@@ -91,7 +91,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
     const _onStartSurvey = () => {
         setLoadingSurvey(true);
         const t = setTimeout(() => {
-            go("pet__health-survey", { petID: pet?.id });
+            go("pet__health-survey", { petID });
             setLoadingSurvey(false);
             clearTimeout(t);
         }, CT.WAITING_DEMO / 3);
