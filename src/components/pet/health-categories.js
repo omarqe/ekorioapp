@@ -13,6 +13,7 @@ import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 
 import _find from "lodash/find";
 import _clone from "lodash/clone";
+import _orderBy from "lodash/orderBy";
 import _isArray from "lodash/isArray";
 import _renderIf from "../../functions/renderIf";
 import _makeColor from "../../functions/makeColor";
@@ -45,9 +46,12 @@ export default function HealthCategories({ loading = false, data = [] }) {
     };
 
     if (_isArray(data) && data.length > 0) {
+        data = _orderBy(data, "score", "asc");
+
         return (
             <View style={styles.base}>
                 {data.map(({ id, label, score }, i) => {
+                    score = Math.ceil(score);
                     const color = _makeColor(score ?? 0, 10);
                     const isPressed = pressedIndex === i;
                     const iconColor = isPressed ? CT.BG_GRAY_300 : CT.BG_GRAY_200;
@@ -102,7 +106,7 @@ export default function HealthCategories({ loading = false, data = [] }) {
                     open={openID !== null}
                     style={{ backgroundColor: CT.BG_GRAY_50 }}
                     badge={{
-                        text: `${current?.score}/10`,
+                        text: `${Math.ceil(current?.score)}/10`,
                         style: { backgroundColor: currentColor?.background },
                         textStyle: { color: currentColor?.text },
                     }}
@@ -117,10 +121,10 @@ export default function HealthCategories({ loading = false, data = [] }) {
                             {_renderIf(
                                 (current?.factors ?? [])?.length < 1,
                                 <Text style={styles.factor}>No factor known.</Text>,
-                                (current?.factors ?? []).map(({ value, important }, i) => (
-                                    <Text key={i} style={[styles.factor, important ? styles.factorImportant : null]}>
-                                        {value}
-                                        <Text style={[styles.factorDot, important ? styles.factorDotImportant : null]}>
+                                (_orderBy(current?.factors, "critical", "desc") ?? []).map(({ text, critical }, i) => (
+                                    <Text key={i} style={[styles.factor, critical ? styles.factorCritical : null]}>
+                                        {text}
+                                        <Text style={[styles.factorDot, critical ? styles.factorDotCritical : null]}>
                                             {i === current?.factors?.length - 1 ? "" : " • "}
                                         </Text>
                                     </Text>
@@ -191,16 +195,16 @@ const styles = StyleSheet.create({
         color: CT.BG_GRAY_600,
         fontSize: 13,
     },
-    factorImportant: {
-        color: CT.BG_GRAY_700,
+    factorCritical: {
+        color: "#df7373",
         fontWeight: "700",
     },
     factorDot: {
         color: CT.BG_GRAY_200,
         fontWeight: "700",
     },
-    factorDotImportant: {
-        color: CT.BG_GRAY_200,
+    factorDotCritical: {
+        color: CT.BG_GRAY_200, // "#fcb9b2",
     },
     modalHeader: {
         paddingBottom: 25,

@@ -61,11 +61,12 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
     const emptyPets = pets?.length < 1 && !loadingPet;
     const hasHealthData = !_isEmpty(healthData) && !_isEmpty(healthData?.charts) && !_isEmpty(healthData?.categories);
 
-    const placeholderChart = { charts: [], categories: [] };
-    const healthChartsData = healthData?.charts;
     const healthChartTitle = loadingPet ? "Health Report" : `${pet?.name}'s Health`;
     const healthChartSubtitle = loading ? "Loading.." : hasHealthData ? "Last evaluated 3 weeks ago" : "Not available";
-    const healthCategoriesData = _find(healthData?.categories, { current: true })?.data;
+
+    const healthChartsData = healthData?.charts;
+    const healthCategories = healthData?.categories;
+    const placeholderChart = { charts: [], categories: [] };
 
     // Fetch health data from our server
     const getHealthData = (petID) => {
@@ -81,7 +82,10 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
                 }
                 setHealthData(placeholderChart);
             })
-            .catch(() => setHealthData(placeholderChart));
+            .catch(() => {
+                setLoading(false);
+                setHealthData(placeholderChart);
+            });
     };
 
     const _onStartSurvey = () => {
@@ -159,9 +163,9 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
                                     onStartSurvey={_onStartSurvey}
                                 />
                             </View>
-                            {/* <View style={{ ...styles.section, marginBottom: 0 }}>
-                                <HealthCategories data={healthCategoriesData} loading={loading} />
-                            </View> */}
+                            <View style={{ ...styles.section, marginBottom: 0 }}>
+                                <HealthCategories data={healthCategories} loading={loading} />
+                            </View>
                         </Body>
                         <Body gray>
                             <PetIdentity
