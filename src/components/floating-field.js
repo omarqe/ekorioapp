@@ -130,8 +130,8 @@ export default function FloatingField({
     if (gapless) baseStyle = { ...baseStyle, marginBottom: 0 };
     if (type === "textarea") baseStyle = { ...baseStyle, minHeight: 120 };
     if (disabled) {
-        disabledStyle = { shadowOpacity: 0, opacity: 0.7 };
-        disabledTextStyle = { color: CT.BG_GRAY_400 };
+        disabledStyle = { shadowOpacity: 0, opacity: 0.6 };
+        disabledTextStyle = { color: CT.BG_GRAY_300 };
         disabledLabelStyle = { color: CT.BG_GRAY_300 };
     }
 
