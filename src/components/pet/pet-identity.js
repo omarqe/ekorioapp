@@ -59,7 +59,6 @@ const PetIdentity = ({ data = {}, button = null, loading = false }) => {
         fields = [
             { label: "Name", path: "name" },
             { label: "Microchip ID", path: "microchipId", verifiedKey: "microchipVerified" },
-            { label: "Parent's Name", path: "owner.name" },
             { label: "Breed", path: "breed.name" },
             { label: "Gender", path: "gender", special: (v) => _capitalize(v) },
             { label: "Birthday", path: "birthday", special: (v) => moment(v).format("MMMM D, YYYY") },
