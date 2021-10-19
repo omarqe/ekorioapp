@@ -47,5 +47,5 @@ SpeciesList.propTypes = {
     types: PropTypes.arrayOf(PropTypes.string),
     active: PropTypes.number,
     onPress: PropTypes.func,
-    disabled: PropTypes.arrayOf(PropTypes.string),
+    disabled: PropTypes.arrayOf(PropTypes.number),
 };
