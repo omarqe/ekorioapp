@@ -40,7 +40,11 @@ export default function PetFormScreen({ navigation, route }) {
     const pageTitle = isUpdate ? "Update Pet" : "Add Pet";
 
     const _onChange = (value, name) => setData({ ...data, [name]: value });
-    const _onChangePetSpecies = (speciesId) => setData({ ...data, speciesId, breedId: null });
+    const _onChangePetSpecies = (speciesId) => {
+        if (speciesId !== data?.speciesId) {
+            setData({ ...data, speciesId, breedId: null });
+        }
+    };
 
     const breeds = _find(species, { id: data?.speciesId })?.breeds;
     const breedNameFromOptions = _find(breeds, { id: data?.breedId })?.name || "Unknown Breed";
@@ -51,21 +55,24 @@ export default function PetFormScreen({ navigation, route }) {
         "label"
     );
 
+    let disabledSpecies = [];
+    if (isUpdate) {
+        disabledSpecies = _map(species, "id");
+        disabledSpecies.splice(disabledSpecies.indexOf(data?.species?.id), 1);
+    }
+
     // Initialize
     useEffect(() => {
         if (isUpdate) {
-            Promise.all([net.get(`/pet/${petID}`), net.get("/pets/species")])
+            Promise.all([http.get(`/pets/${petID}`), http.get("/pets/species")])
                 .then(([{ data }, { data: species }]) => {
+                    if (species) setSpecies(species);
                     if (data) {
                         data.birthday = _makeBirthdate(data?.birthday);
                         data.breedId = data?.breed?.id;
                         data.speciesId = data?.species?.id;
                         setData(data);
                     }
-                    if (species) {
-                        setSpecies(species);
-                    }
-
                     setLoadingData(false);
                 })
                 .catch(([{ response: petResponse }]) => {
@@ -101,6 +108,7 @@ export default function PetFormScreen({ navigation, route }) {
             label: "Microchip ID",
             value: data?.microchipId,
             guide: "This microchip ID is non-editable once verified by the admin.",
+            disabled: isUpdate && data?.microchipVerified,
             placeholder: "000000000000000",
         },
         [
@@ -109,6 +117,7 @@ export default function PetFormScreen({ navigation, route }) {
                 type: "select",
                 label: "Gender",
                 value: data?.gender,
+                disabled: isUpdate,
                 options: [
                     { label: "Male", value: "male" },
                     { label: "Female", value: "female" },
@@ -119,12 +128,20 @@ export default function PetFormScreen({ navigation, route }) {
                 type: "select",
                 label: "Breed",
                 value: data?.breedId,
+                disabled: isUpdate,
                 defaultValue: "others",
                 options: [...breedOptions, { label: "Others", value: "others" }],
             },
         ],
         [
-            { name: "birthday", type: "date", value: birthday, label: "Birthday", dateFormat: CT.DATE_FORMAT_PRETTY },
+            {
+                name: "birthday",
+                type: "date",
+                value: birthday,
+                label: "Birthday",
+                disabled: isUpdate,
+                dateFormat: CT.DATE_FORMAT_PRETTY,
+            },
             { name: "weight", value: data?.weight, label: "Weight (kg)", type: "number", placeholder: "0.00" },
         ],
         {
@@ -163,7 +180,12 @@ export default function PetFormScreen({ navigation, route }) {
                     <Body gray flex overlap topRounded>
                         <View style={styles.section}>
                             <Heading text={isUpdate ? "Pet Species" : "Choose Species"} />
-                            <SpeciesList data={species} active={data?.speciesId} onPress={_onChangePetSpecies} />
+                            <SpeciesList
+                                data={species}
+                                active={data?.speciesId}
+                                onPress={_onChangePetSpecies}
+                                disabled={disabledSpecies}
+                            />
                         </View>
                         <View style={[styles.section, { marginBottom: 15 }]}>
                             <Heading text="Pet Details" disabled={disabled} />

@@ -124,12 +124,14 @@ export default function FloatingField({
     // Handle styles
     let baseStyle = { ...styles.base, ...style };
     let disabledStyle = {};
+    let disabledTextStyle = {};
     let disabledLabelStyle = {};
     if (focused) baseStyle = { ...baseStyle, borderColor: CT.BORDER_FOCUS };
     if (gapless) baseStyle = { ...baseStyle, marginBottom: 0 };
     if (type === "textarea") baseStyle = { ...baseStyle, minHeight: 120 };
     if (disabled) {
         disabledStyle = { shadowOpacity: 0, opacity: 0.7 };
+        disabledTextStyle = { color: CT.BG_GRAY_400 };
         disabledLabelStyle = { color: CT.BG_GRAY_300 };
     }
 
@@ -147,8 +149,6 @@ export default function FloatingField({
     typeProps.phone = typeProps.tel;
     typeProps.username = typeProps.name;
 
-    // For type=date && type=select
-
     switch (type) {
         case "date":
         case "select":
@@ -159,7 +159,7 @@ export default function FloatingField({
             const textRightPadding = { paddingRight: 20 };
             const pickerProps = { ref: inputRef, selectedValue: value, onValueChange: _onValueChange, style: styles.picker };
             const valueProps = {
-                style: [styles.input, textColor, textRightPadding, { top: CT.IS_ANDROID ? -3 : 0 }],
+                style: [styles.input, textColor, textRightPadding, { top: CT.IS_ANDROID ? -3 : 0 }, disabledTextStyle],
                 numberOfLines: 1,
                 allowFontScaling: false,
             };
@@ -252,7 +252,7 @@ export default function FloatingField({
                             <TextInput
                                 ref={inputRef}
                                 value={value}
-                                style={[styles.input, type === "textarea" ? { height: "auto" } : null]}
+                                style={[styles.input, type === "textarea" ? { height: "auto" } : null, disabledTextStyle]}
                                 onBlur={_onBlur}
                                 onFocus={_onFocus}
                                 editable={!disabled}
