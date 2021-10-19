@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import CT from "../../const";
 
-import PetTypes from "../../components/pet/pet-types";
 import Pet from "../../components/pet";
+import Icon from "../../components/icon";
 import Badge from "../../components/badge";
 import Button from "../../components/button";
 import TopBar from "../../components/topbar";
@@ -10,57 +10,98 @@ import Heading from "../../components/heading";
 import Container from "../../components/container";
 import FloatingFields from "../../components/floating-fields";
 import KeyboardAvoiding from "../../components/keyboard-avoiding";
+import SpeciesList from "../../components/pet/species-list";
 
 import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
 
+import { View, StyleSheet } from "react-native";
+
 import _map from "lodash/map";
+import _get from "lodash/get";
 import _find from "lodash/find";
 import _clone from "lodash/clone";
 import _sortBy from "lodash/sortBy";
+import _toLower from "lodash/toLower";
 import _capitalize from "lodash/capitalize";
 import _makeBirthdate from "../../functions/makeBirthdate";
 
-import petTypesData from "../../../data/pet-types.json";
-
-import { View, StyleSheet } from "react-native";
+import net from "../../functions/net";
+import http from "../../functions/http";
 
 export default function PetFormScreen({ navigation, route }) {
     const [data, setData] = useState(null);
-    const [formType, setFormType] = useState("add");
+    const [species, setSpecies] = useState([]);
+    const [loadingData, setLoadingData] = useState(true);
 
-    const disabled = !data?.type;
-    const isUpdate = formType === "update";
+    const petID = _get(route, "params.id", null);
+    const disabled = !data?.speciesId;
+    const isUpdate = petID !== null;
     const pageTitle = isUpdate ? "Update Pet" : "Add Pet";
 
-    // Callbacks
     const _onChange = (value, name) => setData({ ...data, [name]: value });
-    const _onChangePetType = (type) => setData({ ...data, type, breedID: "00000" });
+    const _onChangePetSpecies = (speciesId) => setData({ ...data, speciesId, breedId: null });
 
-    // Pet types
-    let breeds = _find(petTypesData, { id: data?.type })?.breeds;
-    let petTypes = _map(petTypesData, "id");
-    let disabledPetTypes = [];
-    if (isUpdate) {
-        disabledPetTypes = _clone(petTypes);
-        disabledPetTypes.splice(petTypes.indexOf(data?.type), 1);
-    }
-
-    // Breed name
-    const breedName = _find(breeds, { value: data?.breedID })?.label ?? "Others";
+    const breeds = _find(species, { id: data?.speciesId })?.breeds;
+    const breedNameFromOptions = _find(breeds, { id: data?.breedId })?.name;
+    const breedOptions = _sortBy(
+        (breeds ?? []).map(({ name: label, id: value }) => {
+            return { label, value };
+        }),
+        "label"
+    );
 
     // Initialize
     useEffect(() => {
-        if (route?.params) {
-            const birthday = _makeBirthdate(route?.params?.birthday);
-            setData({ ...route?.params, birthday });
-            setFormType("update");
+        http.get("/pets/species")
+            .then(({ data }) => setSpecies(data))
+            .catch(({ response }) => net.handleCatch(response, setLoadingData));
+
+        if (isUpdate) {
+            Promise.all([net.get(`/pet/${petID}`), net.get("/pets/species")])
+                .then(([{ data }, { data: species }]) => {
+                    if (data) {
+                        data.birthday = _makeBirthdate(data?.birthday);
+                        data.breedId = data?.breed?.id;
+                        data.speciesId = data?.species?.id;
+                        setData(data);
+                    }
+                    if (species) {
+                        setSpecies(species);
+                    }
+
+                    setLoadingData(false);
+                })
+                .catch(([{ response: petResponse }]) => {
+                    net.handleCatch(petResponse);
+                    if (petResponse?.status === 404) {
+                        navigation.goBack();
+                    }
+                    setLoadingData(false);
+                });
+
+            http.get(`/pets/${petID}`)
+                .then(({ data }) => {
+                    data.birthday = _makeBirthdate(data?.birthday);
+                    data.breedId = data?.breed?.id;
+                    data.speciesId = data?.species?.id;
+                    setData(data);
+                    setLoadingData(false);
+                })
+                .catch(({ response }) => {
+                    net.handleCatch(response);
+                    if (response?.status === 404) {
+                        navigation.goBack();
+                    }
+                    setLoadingData(false);
+                });
             return;
         }
-        setData({ ...data, birthday: new Date(), breedID: "00000" });
+        setLoadingData(false);
     }, []);
 
+    const genderIcon = { male: "far mars", female: "far venus" };
     const birthday = data?.birthday || new Date();
     const fields = [
         {
@@ -72,8 +113,8 @@ export default function PetFormScreen({ navigation, route }) {
         {
             name: "microchipID",
             label: "Microchip ID",
-            value: data?.microchipID,
-            guide: "This microchip ID is non-editable and may be verified by the admin.",
+            value: data?.microchipId,
+            guide: "This microchip ID is non-editable once verified by the admin.",
             placeholder: "000000000000000",
         },
         [
@@ -88,12 +129,12 @@ export default function PetFormScreen({ navigation, route }) {
                 ],
             },
             {
-                name: "breedID",
+                name: "breedId",
                 type: "select",
                 label: "Breed",
-                value: data?.breedID,
-                defaultValue: "00000",
-                options: [..._sortBy(breeds, "label"), { label: "Others", value: "00000" }],
+                value: data?.breedId,
+                defaultValue: "others",
+                options: [...breedOptions, { label: "Others", value: "others" }],
             },
         ],
         [
@@ -111,7 +152,7 @@ export default function PetFormScreen({ navigation, route }) {
 
     return (
         <KeyboardAvoiding>
-            <Container>
+            <Container loading={loadingData}>
                 <TopBar
                     title={pageTitle}
                     leftIcon="arrow-left"
@@ -121,7 +162,7 @@ export default function PetFormScreen({ navigation, route }) {
                 <Layout gray withHeader>
                     <Header contentStyle={styles.headerContent} overlap>
                         <Pet
-                            name={data?.name ?? "Pet Name"}
+                            name={data?.name || "Unnamed Pet"}
                             borderRadius={35}
                             padding={5}
                             size={130}
@@ -131,17 +172,12 @@ export default function PetFormScreen({ navigation, route }) {
                             imageBaseStyle={styles.petImageBase}
                             phIconProps={{ color: CT.BG_PURPLE_200 }}
                         />
-                        <Badge text={`Breed: ${breedName}`} style={styles.petBadge} color="purple" />
+                        {breedNameFromOptions && <Badge text={breedNameFromOptions} style={styles.petBadge} color="purple" />}
                     </Header>
                     <Body gray flex overlap topRounded>
                         <View style={styles.section}>
                             <Heading text={isUpdate ? "Pet Species" : "Choose Species"} />
-                            <PetTypes
-                                types={petTypes}
-                                active={data?.type}
-                                onPress={_onChangePetType}
-                                disabled={disabledPetTypes}
-                            />
+                            <SpeciesList data={species} active={data?.speciesId} onPress={_onChangePetSpecies} />
                         </View>
                         <View style={[styles.section, { marginBottom: 15 }]}>
                             <Heading text="Pet Details" disabled={disabled} />

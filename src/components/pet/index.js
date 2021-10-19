@@ -107,7 +107,9 @@ export default function Pet(props) {
                     </View>
                 )}
             </View>
-            {name &&
+
+            {_renderIf(
+                name !== "" && name !== null,
                 _renderIf(
                     loading,
                     <View style={styles.nameShimmer}>
@@ -116,7 +118,8 @@ export default function Pet(props) {
                     <Text style={[styles.name, nameStyle, _nameStyle]} numberOfLines={1}>
                         {name}
                     </Text>
-                )}
+                )
+            )}
         </Pressable>
     );
 }

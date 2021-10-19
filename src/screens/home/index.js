@@ -169,13 +169,13 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
                         </Body>
                         <Body gray>
                             <PetIdentity
-                                loading={loadingPet}
                                 data={pet}
+                                loading={loadingPet}
                                 button={{
                                     icon: "far edit",
                                     text: "Update Pet",
                                     loading: loadingPet,
-                                    onPress: go.bind(null, "pet__form", pet),
+                                    onPress: go.bind(null, "pet__form", { id: petID }),
                                     iconRight: true,
                                 }}
                             />

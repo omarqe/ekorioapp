@@ -1,0 +1,574 @@
+[
+    {
+        "id": 1,
+        "name": "Cat",
+        "status": "0001",
+        "createdAt": "2021-10-18T21:00:51+08:00",
+        "updatedAt": "2021-10-18T21:00:51+08:00",
+        "breeds": [
+            {
+                "id": "abyssinian",
+                "name": "Abyssinian",
+                "status": "0001"
+            },
+            {
+                "id": "american_curl",
+                "name": "American Curl",
+                "status": "0001"
+            },
+            {
+                "id": "american_shorthair",
+                "name": "American Shorthair",
+                "status": "0001"
+            },
+            {
+                "id": "balinese",
+                "name": "Balinese",
+                "status": "0001"
+            },
+            {
+                "id": "bengal",
+                "name": "Bengal",
+                "status": "0001"
+            },
+            {
+                "id": "birman",
+                "name": "Birman",
+                "status": "0001"
+            },
+            {
+                "id": "bombay",
+                "name": "Bombay",
+                "status": "0001"
+            },
+            {
+                "id": "british_longhair",
+                "name": "British Longhair",
+                "status": "0001"
+            },
+            {
+                "id": "british_shorthair",
+                "name": "British Shorthair",
+                "status": "0001"
+            },
+            {
+                "id": "burmese",
+                "name": "Burmese",
+                "status": "0001"
+            },
+            {
+                "id": "cartreux",
+                "name": "Cartreux",
+                "status": "0001"
+            },
+            {
+                "id": "donskoy",
+                "name": "Donskoy",
+                "status": "0001"
+            },
+            {
+                "id": "european_shorthair",
+                "name": "European Shorthair",
+                "status": "0001"
+            },
+            {
+                "id": "havana_brown",
+                "name": "Havana Brown",
+                "status": "0001"
+            },
+            {
+                "id": "himalayan",
+                "name": "Himalayan",
+                "status": "0001"
+            },
+            {
+                "id": "kinkalow",
+                "name": "Kinkalow",
+                "status": "0001"
+            },
+            {
+                "id": "maine_coon",
+                "name": "Maine Coon",
+                "status": "0001"
+            },
+            {
+                "id": "manx",
+                "name": "Manx",
+                "status": "0001"
+            },
+            {
+                "id": "munchkin",
+                "name": "Munchkin",
+                "status": "0001"
+            },
+            {
+                "id": "norwegian_forest",
+                "name": "Norwegian Forest",
+                "status": "0001"
+            },
+            {
+                "id": "persian",
+                "name": "Persian",
+                "status": "0001"
+            },
+            {
+                "id": "ragdoll",
+                "name": "Ragdoll",
+                "status": "0001"
+            },
+            {
+                "id": "ragmuffin",
+                "name": "Ragmuffin",
+                "status": "0001"
+            },
+            {
+                "id": "russian_blue",
+                "name": "Russian Blue",
+                "status": "0001"
+            },
+            {
+                "id": "savannah",
+                "name": "Savannah",
+                "status": "0001"
+            },
+            {
+                "id": "scottish_fold",
+                "name": "Scottish Fold",
+                "status": "0001"
+            },
+            {
+                "id": "siamese",
+                "name": "Siamese",
+                "status": "0001"
+            },
+            {
+                "id": "siberian",
+                "name": "Siberian",
+                "status": "0001"
+            },
+            {
+                "id": "somalian",
+                "name": "Somalian",
+                "status": "0001"
+            },
+            {
+                "id": "sphynx",
+                "name": "Sphynx",
+                "status": "0001"
+            },
+            {
+                "id": "thai",
+                "name": "Thai",
+                "status": "0001"
+            },
+            {
+                "id": "turkish_angora",
+                "name": "Turkish Angora",
+                "status": "0001"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Dog",
+        "status": "0001",
+        "createdAt": "2021-10-18T21:00:51+08:00",
+        "updatedAt": "2021-10-18T21:00:51+08:00",
+        "breeds": [
+            {
+                "id": "american_pit_bull",
+                "name": "American Pit Bull",
+                "status": "0001"
+            },
+            {
+                "id": "beagle",
+                "name": "Beagle",
+                "status": "0001"
+            },
+            {
+                "id": "bemese_mountain",
+                "name": "Bemese Mountain",
+                "status": "0001"
+            },
+            {
+                "id": "bichone_frise",
+                "name": "Bichone Frise",
+                "status": "0001"
+            },
+            {
+                "id": "border_collie",
+                "name": "Border Collie",
+                "status": "0001"
+            },
+            {
+                "id": "boxer",
+                "name": "Boxer",
+                "status": "0001"
+            },
+            {
+                "id": "bulldog",
+                "name": "Bulldog",
+                "status": "0001"
+            },
+            {
+                "id": "chihuahua",
+                "name": "Chihuahua",
+                "status": "0001"
+            },
+            {
+                "id": "chow_chow",
+                "name": "Chow Chow",
+                "status": "0001"
+            },
+            {
+                "id": "dachshund",
+                "name": "Dachshund",
+                "status": "0001"
+            },
+            {
+                "id": "dobermann",
+                "name": "Dobermann",
+                "status": "0001"
+            },
+            {
+                "id": "french_bulldog",
+                "name": "French Bulldog",
+                "status": "0001"
+            },
+            {
+                "id": "german_shepherd",
+                "name": "German Shepherd",
+                "status": "0001"
+            },
+            {
+                "id": "golden_retriever",
+                "name": "Golden Retriever",
+                "status": "0001"
+            },
+            {
+                "id": "great_dane",
+                "name": "Great Dane",
+                "status": "0001"
+            },
+            {
+                "id": "labrador_retriever",
+                "name": "Labrador Retriever",
+                "status": "0001"
+            },
+            {
+                "id": "maltese",
+                "name": "Maltese",
+                "status": "0001"
+            },
+            {
+                "id": "maltipoo",
+                "name": "Maltipoo",
+                "status": "0001"
+            },
+            {
+                "id": "pembroke_welsh_corgi",
+                "name": "Pembroke Welsh Corgi",
+                "status": "0001"
+            },
+            {
+                "id": "pomeranian",
+                "name": "Pomeranian",
+                "status": "0001"
+            },
+            {
+                "id": "poodle",
+                "name": "Poodle",
+                "status": "0001"
+            },
+            {
+                "id": "pug",
+                "name": "Pug",
+                "status": "0001"
+            },
+            {
+                "id": "rottweiler",
+                "name": "Rottweiler",
+                "status": "0001"
+            },
+            {
+                "id": "samoyed",
+                "name": "Samoyed",
+                "status": "0001"
+            },
+            {
+                "id": "sarabi",
+                "name": "Sarabi",
+                "status": "0001"
+            },
+            {
+                "id": "shiba_inu",
+                "name": "Shiba Inu",
+                "status": "0001"
+            },
+            {
+                "id": "shih_tzu",
+                "name": "Shih Tzu",
+                "status": "0001"
+            },
+            {
+                "id": "siberian_husky",
+                "name": "Siberian Husky",
+                "status": "0001"
+            },
+            {
+                "id": "yorkshire_terrier",
+                "name": "Yorkshire Terrier",
+                "status": "0001"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Rabbit",
+        "status": "0001",
+        "createdAt": "2021-10-18T21:00:51+08:00",
+        "updatedAt": "2021-10-18T21:00:51+08:00",
+        "breeds": [
+            {
+                "id": "altex",
+                "name": "Altex",
+                "status": "0001"
+            },
+            {
+                "id": "american_fuzzy_lop",
+                "name": "American Fuzzy Lop",
+                "status": "0001"
+            },
+            {
+                "id": "angora",
+                "name": "Angora",
+                "status": "0001"
+            },
+            {
+                "id": "argenté",
+                "name": "Argenté",
+                "status": "0001"
+            },
+            {
+                "id": "belgian_hare",
+                "name": "Belgian Hare",
+                "status": "0001"
+            },
+            {
+                "id": "checkered_giant",
+                "name": "Checkered Giant",
+                "status": "0001"
+            },
+            {
+                "id": "czech_spot",
+                "name": "Czech Spot",
+                "status": "0001"
+            },
+            {
+                "id": "dwarf_hotot",
+                "name": "Dwarf Hotot",
+                "status": "0001"
+            },
+            {
+                "id": "english_lop",
+                "name": "English Lop",
+                "status": "0001"
+            },
+            {
+                "id": "english_spot",
+                "name": "English Spot",
+                "status": "0001"
+            },
+            {
+                "id": "flemish_giant",
+                "name": "Flemish Giant",
+                "status": "0001"
+            },
+            {
+                "id": "french_lop",
+                "name": "French Lop",
+                "status": "0001"
+            },
+            {
+                "id": "golden_glavcot",
+                "name": "Golden Glavcot",
+                "status": "0001"
+            },
+            {
+                "id": "havana",
+                "name": "Havana",
+                "status": "0001"
+            },
+            {
+                "id": "holland_lop",
+                "name": "Holland Lop",
+                "status": "0001"
+            },
+            {
+                "id": "lilac",
+                "name": "Lilac",
+                "status": "0001"
+            },
+            {
+                "id": "messner_lop",
+                "name": "Messner Lop",
+                "status": "0001"
+            },
+            {
+                "id": "orylag",
+                "name": "Orylag",
+                "status": "0001"
+            },
+            {
+                "id": "palomino",
+                "name": "Palomino",
+                "status": "0001"
+            },
+            {
+                "id": "perlfeh",
+                "name": "Perlfeh",
+                "status": "0001"
+            },
+            {
+                "id": "plush_lop",
+                "name": "Plush Lop",
+                "status": "0001"
+            },
+            {
+                "id": "polish",
+                "name": "Polish",
+                "status": "0001"
+            },
+            {
+                "id": "rex",
+                "name": "Rex",
+                "status": "0001"
+            },
+            {
+                "id": "rhinelander",
+                "name": "Rhinelander",
+                "status": "0001"
+            },
+            {
+                "id": "teddy",
+                "name": "Teddy",
+                "status": "0001"
+            },
+            {
+                "id": "tri_coloured_dutch",
+                "name": "Tri Coloured Dutch",
+                "status": "0001"
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Bird",
+        "status": "0001",
+        "createdAt": "2021-10-18T21:00:51+08:00",
+        "updatedAt": "2021-10-18T21:00:51+08:00"
+    },
+    {
+        "id": 5,
+        "name": "Turtle",
+        "status": "0001",
+        "createdAt": "2021-10-18T21:00:51+08:00",
+        "updatedAt": "2021-10-18T21:00:51+08:00",
+        "breeds": [
+            {
+                "id": "bog_turtle",
+                "name": "Bog Turtle",
+                "status": "0001"
+            },
+            {
+                "id": "chinese_pond_turtle",
+                "name": "Chinese Pond Turtle",
+                "status": "0001"
+            },
+            {
+                "id": "common_box",
+                "name": "Common Box",
+                "status": "0001"
+            },
+            {
+                "id": "common_musk",
+                "name": "Common Musk",
+                "status": "0001"
+            },
+            {
+                "id": "diamondback_terrapin",
+                "name": "Diamondback Terrapin",
+                "status": "0001"
+            },
+            {
+                "id": "painted_turtle",
+                "name": "Painted Turtle",
+                "status": "0001"
+            },
+            {
+                "id": "russian_tortoise",
+                "name": "Russian Tortoise",
+                "status": "0001"
+            },
+            {
+                "id": "spotted_turtle",
+                "name": "Spotted Turtle",
+                "status": "0001"
+            },
+            {
+                "id": "wood_turtle",
+                "name": "Wood Turtle",
+                "status": "0001"
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "name": "Hamster",
+        "status": "0001",
+        "createdAt": "2021-10-18T21:00:51+08:00",
+        "updatedAt": "2021-10-18T21:00:51+08:00",
+        "breeds": [
+            {
+                "id": "chinese_hamster",
+                "name": "Chinese Hamster",
+                "status": "0001"
+            },
+            {
+                "id": "dwarf_campbell_russian",
+                "name": "Dwarf Campbell Russian",
+                "status": "0001"
+            },
+            {
+                "id": "dwarf_roborovski",
+                "name": "Dwarf Roborovski",
+                "status": "0001"
+            },
+            {
+                "id": "dwarf_winter_white_russian",
+                "name": "Dwarf Winter White Russian",
+                "status": "0001"
+            },
+            {
+                "id": "european_hamster",
+                "name": "European Hamster",
+                "status": "0001"
+            },
+            {
+                "id": "guinea_pig",
+                "name": "Guinea Pig",
+                "status": "0001"
+            },
+            {
+                "id": "mongolian_gerbil",
+                "name": "Mongolian Gerbil",
+                "status": "0001"
+            },
+            {
+                "id": "syrian_hamster",
+                "name": "Syrian Hamster",
+                "status": "0001"
+            }
+        ]
+    }
+]

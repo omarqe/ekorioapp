@@ -3,24 +3,27 @@ import PetType from "./pet-type";
 import PropTypes from "prop-types";
 import { FlatList, StyleSheet } from "react-native";
 
-export default function PetTypes({ types = [], active, onPress, disabled = [] }) {
+export default function SpeciesList({ data = [], active, onPress, disabled = [] }) {
     const _keyExtractor = (item, index) => item + index;
-    const _renderItem = ({ item: type }) => {
-        const isActive = active === type;
+    const _renderItem = ({ item }) => {
+        const { id, name } = item;
+        const isActive = id === active;
+
         return (
             <PetType
-                type={type}
+                id={id}
+                name={name}
                 style={styles.item}
                 active={isActive}
                 onPress={onPress}
-                disabled={disabled.indexOf(type) > -1}
+                disabled={disabled.indexOf(id) > -1}
             />
         );
     };
 
     return (
         <FlatList
-            data={types}
+            data={data}
             style={styles.style}
             renderItem={_renderItem}
             keyExtractor={_keyExtractor}
@@ -40,9 +43,9 @@ const styles = StyleSheet.create({
     },
 });
 
-PetTypes.propTypes = {
+SpeciesList.propTypes = {
     types: PropTypes.arrayOf(PropTypes.string),
-    active: PropTypes.string,
+    active: PropTypes.number,
     onPress: PropTypes.func,
     disabled: PropTypes.arrayOf(PropTypes.string),
 };
