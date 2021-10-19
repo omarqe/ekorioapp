@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import CT from "../../const";
 
 import Pet from "../../components/pet";
-import Text from "../../components/text";
 import Badge from "../../components/badge";
 import Button from "../../components/button";
 import TopBar from "../../components/topbar";
@@ -20,6 +19,7 @@ import { View, StyleSheet } from "react-native";
 import _map from "lodash/map";
 import _get from "lodash/get";
 import _find from "lodash/find";
+import _findIndex from "lodash/findIndex";
 import _clone from "lodash/clone";
 import _sortBy from "lodash/sortBy";
 import _toLower from "lodash/toLower";
@@ -28,38 +28,13 @@ import _makeBirthdate from "../../functions/makeBirthdate";
 
 import net from "../../functions/net";
 import http from "../../functions/http";
+import toast from "../../functions/toast";
 
 export default function PetFormScreen({ navigation, route }) {
     const [data, setData] = useState(null);
     const [species, setSpecies] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [loadingData, setLoadingData] = useState(true);
-
-    const petID = _get(route, "params.id", null);
-    const disabled = !data?.speciesId;
-    const isUpdate = petID !== null;
-    const pageTitle = isUpdate ? "Update Pet" : "Add Pet";
-
-    const _onChange = (value, name) => setData({ ...data, [name]: value });
-    const _onChangePetSpecies = (speciesId) => {
-        if (speciesId !== data?.speciesId) {
-            setData({ ...data, speciesId, breedId: null });
-        }
-    };
-
-    const breeds = _find(species, { id: data?.speciesId })?.breeds;
-    const breedNameFromOptions = _find(breeds, { id: data?.breedId })?.name || "Unknown Breed";
-    const breedOptions = _sortBy(
-        (breeds ?? []).map(({ name: label, id: value }) => {
-            return { label, value };
-        }),
-        "label"
-    );
-
-    let disabledSpecies = [];
-    if (isUpdate) {
-        disabledSpecies = _map(species, "id");
-        disabledSpecies.splice(disabledSpecies.indexOf(data?.species?.id), 1);
-    }
 
     // Initialize
     useEffect(() => {
@@ -83,6 +58,7 @@ export default function PetFormScreen({ navigation, route }) {
                     setLoadingData(false);
                 });
         } else {
+            setData({ ...data, gender: "male", birthday: new Date() });
             http.get("/pets/species")
                 .then(({ data }) => {
                     setSpecies(data);
@@ -94,7 +70,45 @@ export default function PetFormScreen({ navigation, route }) {
         }
     }, []);
 
-    const genderIcon = { male: "far mars", female: "far venus" };
+    const _onChange = (value, name) => setData({ ...data, [name]: value });
+    const _onChangePetSpecies = (speciesId) => {
+        if (speciesId !== data?.speciesId) {
+            setData({ ...data, speciesId, breedId: null });
+        }
+    };
+    const _onSubmit = () => {
+        const x = isUpdate ? http.put("/pets/update", net.data(data)) : http.post("/pets/update", net.data(data));
+        setLoading(true);
+        x.then(({ data: o }) => {
+            if (o?.success) {
+                toast.fromData(o, "response[0].message");
+                navigation.goBack({ recentPetData: o });
+            }
+            setLoading(false);
+        }).catch(({ response }) => net.handleCatch(response, setLoading));
+    };
+
+    const petID = _get(route, "params.id", null);
+    const disabled = loading || !data?.speciesId;
+    const isUpdate = petID !== null;
+    const pageTitle = isUpdate ? "Update Pet" : "Add Pet";
+
+    const breeds = _find(species, { id: data?.speciesId })?.breeds;
+    const breedNameFromOptions = _find(breeds, { id: data?.breedId })?.name || "Unknown Breed";
+    const breedOptions = _sortBy(
+        (breeds ?? []).map(({ name: label, id: value }) => {
+            return { label, value };
+        }),
+        "label"
+    );
+    breedOptions.splice(_findIndex(breedOptions, { value: "others" }), 1);
+
+    let disabledSpecies = [];
+    if (isUpdate) {
+        disabledSpecies = _map(species, "id");
+        disabledSpecies.splice(disabledSpecies.indexOf(data?.species?.id), 1);
+    }
+
     const birthday = data?.birthday || new Date();
     const fields = [
         {
@@ -128,9 +142,9 @@ export default function PetFormScreen({ navigation, route }) {
                 type: "select",
                 label: "Breed",
                 value: data?.breedId,
+                options: [...breedOptions, { label: "Others", value: "others" }],
                 disabled: disabled || isUpdate,
                 defaultValue: "others",
-                options: [...breedOptions, { label: "Others", value: "others" }],
             },
         ],
         [
@@ -190,13 +204,13 @@ export default function PetFormScreen({ navigation, route }) {
                         <View style={[styles.section, { marginBottom: 15 }]}>
                             <Heading text="Pet Details" disabled={disabled} />
                             <FloatingFields fields={fields} onChange={_onChange} disabled={disabled} />
-                            {disabled && (
+                            {disabled && !isUpdate && (
                                 <View style={styles.overlay}>
                                     <Heading text="Please choose pet species first" centered />
                                 </View>
                             )}
                         </View>
-                        <Button text={pageTitle} color="yellow" disabled={disabled} />
+                        <Button text={pageTitle} color="yellow" disabled={disabled} loading={loading} onPress={_onSubmit} />
                     </Body>
                 </Layout>
             </Container>
