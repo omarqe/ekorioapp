@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import CT from "../../const";
 
 import Pet from "../../components/pet";
-import Icon from "../../components/icon";
+import Text from "../../components/text";
 import Badge from "../../components/badge";
 import Button from "../../components/button";
 import TopBar from "../../components/topbar";
@@ -15,7 +15,6 @@ import SpeciesList from "../../components/pet/species-list";
 import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
-
 import { View, StyleSheet } from "react-native";
 
 import _map from "lodash/map";
@@ -44,7 +43,7 @@ export default function PetFormScreen({ navigation, route }) {
     const _onChangePetSpecies = (speciesId) => setData({ ...data, speciesId, breedId: null });
 
     const breeds = _find(species, { id: data?.speciesId })?.breeds;
-    const breedNameFromOptions = _find(breeds, { id: data?.breedId })?.name;
+    const breedNameFromOptions = _find(breeds, { id: data?.breedId })?.name || "Unknown Breed";
     const breedOptions = _sortBy(
         (breeds ?? []).map(({ name: label, id: value }) => {
             return { label, value };
@@ -54,10 +53,6 @@ export default function PetFormScreen({ navigation, route }) {
 
     // Initialize
     useEffect(() => {
-        http.get("/pets/species")
-            .then(({ data }) => setSpecies(data))
-            .catch(({ response }) => net.handleCatch(response, setLoadingData));
-
         if (isUpdate) {
             Promise.all([net.get(`/pet/${petID}`), net.get("/pets/species")])
                 .then(([{ data }, { data: species }]) => {
@@ -80,25 +75,16 @@ export default function PetFormScreen({ navigation, route }) {
                     }
                     setLoadingData(false);
                 });
-
-            http.get(`/pets/${petID}`)
+        } else {
+            http.get("/pets/species")
                 .then(({ data }) => {
-                    data.birthday = _makeBirthdate(data?.birthday);
-                    data.breedId = data?.breed?.id;
-                    data.speciesId = data?.species?.id;
-                    setData(data);
+                    setSpecies(data);
                     setLoadingData(false);
                 })
                 .catch(({ response }) => {
-                    net.handleCatch(response);
-                    if (response?.status === 404) {
-                        navigation.goBack();
-                    }
-                    setLoadingData(false);
+                    net.handleCatch(response, setLoadingData);
                 });
-            return;
         }
-        setLoadingData(false);
     }, []);
 
     const genderIcon = { male: "far mars", female: "far venus" };
@@ -172,7 +158,7 @@ export default function PetFormScreen({ navigation, route }) {
                             imageBaseStyle={styles.petImageBase}
                             phIconProps={{ color: CT.BG_PURPLE_200 }}
                         />
-                        {breedNameFromOptions && <Badge text={breedNameFromOptions} style={styles.petBadge} color="purple" />}
+                        <Badge text={breedNameFromOptions} style={styles.petBadge} color="purple" />
                     </Header>
                     <Body gray flex overlap topRounded>
                         <View style={styles.section}>
@@ -182,6 +168,9 @@ export default function PetFormScreen({ navigation, route }) {
                         <View style={[styles.section, { marginBottom: 15 }]}>
                             <Heading text="Pet Details" disabled={disabled} />
                             <FloatingFields fields={fields} onChange={_onChange} disabled={disabled} />
+                            <View style={styles.overlay}>
+                                <Heading text="Please choose pet species first" centered />
+                            </View>
                         </View>
                         <Button text={pageTitle} color="yellow" disabled={disabled} />
                     </Body>
@@ -193,7 +182,17 @@ export default function PetFormScreen({ navigation, route }) {
 
 const styles = StyleSheet.create({
     section: {
+        position: "relative",
         marginBottom: 30,
+    },
+    overlay: {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        position: "absolute",
+        alignItems: "center",
+        justifyContent: "center",
     },
     headerContent: {
         alignItems: "center",

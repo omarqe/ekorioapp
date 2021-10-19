@@ -15,6 +15,7 @@ const Heading = ({
     subtitle,
     gapless = false,
     disabled = false,
+    centered = false,
     textStyle: customTextStyle,
     kickerStyle: customKickerStyle,
     subtitleStyle: customSubtitleStyle,
@@ -30,6 +31,11 @@ const Heading = ({
 
     if (badge !== null) badge.style = { ...badge?.style, marginLeft: 5 };
     if (gapless) baseStyle = { ...baseStyle, marginBottom: 0 };
+    if (centered) {
+        textStyle = { ...textStyle, textAlign: "center" };
+        kickerStyle = { ...kickerStyle, textAlign: "center" };
+        subtitleStyle = { ...subtitleStyle, textAlign: "center" };
+    }
 
     return (
         <View style={baseStyle} {...restProps}>
@@ -52,6 +58,7 @@ Heading.propTypes = {
     badge: PropTypes.object,
     kicker: PropTypes.string,
     subtitle: PropTypes.string,
+    centered: PropTypes.bool,
     textStyle: PropTypes.object,
     kickerStyle: PropTypes.object,
     subtitleStyle: PropTypes.object,
