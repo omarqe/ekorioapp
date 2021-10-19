@@ -168,9 +168,11 @@ export default function PetFormScreen({ navigation, route }) {
                         <View style={[styles.section, { marginBottom: 15 }]}>
                             <Heading text="Pet Details" disabled={disabled} />
                             <FloatingFields fields={fields} onChange={_onChange} disabled={disabled} />
-                            <View style={styles.overlay}>
-                                <Heading text="Please choose pet species first" centered />
-                            </View>
+                            {disabled && (
+                                <View style={styles.overlay}>
+                                    <Heading text="Please choose pet species first" centered />
+                                </View>
+                            )}
                         </View>
                         <Button text={pageTitle} color="yellow" disabled={disabled} />
                     </Body>
