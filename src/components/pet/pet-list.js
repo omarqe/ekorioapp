@@ -43,7 +43,7 @@ export default function PetList({ data = [], margin = 4, loading = false, checke
                 data={data}
                 style={{ overflow: "visible" }}
                 renderItem={_renderItem}
-                keyExtractor={({ id }) => id.toString()}
+                keyExtractor={({ id }) => id?.toString()}
                 contentContainerStyle={styles.base}
                 showsHorizontalScrollIndicator={false}
                 horizontal

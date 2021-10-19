@@ -82,7 +82,7 @@ export default function PetFormScreen({ navigation, route }) {
         x.then(({ data: o }) => {
             if (o?.success) {
                 toast.fromData(o, "response[0].message");
-                navigation.goBack({ recentPetData: o });
+                navigation.navigate("home", { recentPet: o?.payload });
             }
             setLoading(false);
         }).catch(({ response }) => net.handleCatch(response, setLoading));

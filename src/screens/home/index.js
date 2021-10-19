@@ -27,11 +27,13 @@ import _env from "../../functions/env";
 import _find from "lodash/find";
 import _times from "lodash/times";
 import _first from "lodash/first";
+import _clone from "lodash/clone";
 import _sortBy from "lodash/sortBy";
 import _isEmpty from "lodash/isEmpty";
+import _findIndex from "lodash/findIndex";
 import _capitalize from "lodash/capitalize";
 
-const HomeScreen = connectActionSheet(({ navigation }) => {
+const HomeScreen = connectActionSheet(({ navigation, route }) => {
     const go = (key, options = {}) => navigation.navigate(key, options);
     const [loading, setLoading] = useState(true);
     const [loadingPet, setLoadingPet] = useState(true);
@@ -42,8 +44,7 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
     const [healthData, setHealthData] = useState({});
     const { showActionSheetWithOptions } = useActionSheet();
 
-    const pet = _find(pets, { id: petID });
-
+    // Initialize home screen
     useEffect(() => {
         http.get("/pets")
             .then(({ data }) => {
@@ -57,6 +58,27 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
             })
             .catch(({ response }) => net.handleCatch(response, setLoadingPet));
     }, []);
+
+    // Update the newly updated/created pet
+    const pet = _find(pets, { id: petID });
+    const recentPet = route?.params?.recentPet;
+    useEffect(() => {
+        const id = recentPet?.id;
+        const index = _findIndex(pets, { id });
+
+        if (id !== null && id !== undefined) {
+            setLoadingPet(true);
+            http.get(`/pets/${id}`)
+                .then(({ data }) => {
+                    let newPetsData = _clone(pets);
+                    if (index > -1) newPetsData[index] = data;
+                    else newPetsData = [...newPetsData, data];
+                    setPets(newPetsData);
+                    setLoadingPet(false);
+                })
+                .catch(() => setLoadingPet(false));
+        }
+    }, [recentPet]);
 
     const emptyPets = pets?.length < 1 && !loadingPet;
     const hasHealthData = !_isEmpty(healthData) && !_isEmpty(healthData?.charts) && !_isEmpty(healthData?.categories);
@@ -100,7 +122,6 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         if (loading || id === healthData?.id) {
             return;
         }
-
         setPetID(id);
         getHealthData(id);
     };
