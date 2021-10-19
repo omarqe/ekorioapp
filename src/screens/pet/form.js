@@ -77,7 +77,7 @@ export default function PetFormScreen({ navigation, route }) {
         }
     };
     const _onSubmit = () => {
-        const x = isUpdate ? http.put("/pets/update", net.data(data)) : http.post("/pets/update", net.data(data));
+        const x = isUpdate ? http.put("/pets/update", net.data(data)) : http.post("/pets/create", net.data(data));
         setLoading(true);
         x.then(({ data: o }) => {
             if (o?.success) {
@@ -204,7 +204,7 @@ export default function PetFormScreen({ navigation, route }) {
                         <View style={[styles.section, { marginBottom: 15 }]}>
                             <Heading text="Pet Details" disabled={disabled} />
                             <FloatingFields fields={fields} onChange={_onChange} disabled={disabled} />
-                            {disabled && !isUpdate && (
+                            {disabled && !isUpdate && !loading && (
                                 <View style={styles.overlay}>
                                     <Heading text="Please choose pet species first" centered />
                                 </View>
