@@ -35,6 +35,7 @@ export default {
         "email",
         "phone",
         "number",
+        "decimal",
         "username",
         "password",
         "textarea",

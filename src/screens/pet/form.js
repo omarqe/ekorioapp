@@ -156,7 +156,7 @@ export default function PetFormScreen({ navigation, route }) {
                 disabled: disabled || isUpdate,
                 dateFormat: CT.DATE_FORMAT_PRETTY,
             },
-            { name: "weight", value: data?.weight, label: "Weight (kg)", type: "number", placeholder: "0.00" },
+            { name: "weight", value: data?.weight, label: "Weight (kg)", type: "decimal", placeholder: "0.00" },
         ],
         {
             name: "bio",

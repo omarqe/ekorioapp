@@ -145,6 +145,7 @@ export default function FloatingField({
         name: { autoCapitalize: "words", textContentType: type },
         email: { keyboardType: "email-address", autoCapitalize: "none", textContentType: "emailAddress" },
         number: { keyboardType: "number-pad" },
+        decimal: { keyboardType: "decimal-pad" },
         password: { secureTextEntry: true, textContentType: "password", multiline: false },
         textarea: { multiline: true },
     };
@@ -212,6 +213,7 @@ export default function FloatingField({
 
         default:
             const alignItems = type === "textarea" ? "flex-start" : "center";
+            console.log("type", type);
 
             return (
                 <View>
