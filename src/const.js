@@ -145,4 +145,23 @@ export default {
     ERRORS: {
         MISSING_VERIFY_DATA: "Some data are missing for verification, please try signing in instead",
     },
+
+    STATES: [
+        "Kedah",
+        "Penang",
+        "Terengganu",
+        "Johor",
+        "Perlis",
+        "Kelantan",
+        "Melaka",
+        "N. Sembilan",
+        "Perak",
+        "Pahang",
+        "Selangor",
+        "Sabah",
+        "Sarawak",
+        "Kuala Lumpur",
+        "Labuan",
+        "Putrajaya",
+    ],
 };

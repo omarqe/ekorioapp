@@ -14,46 +14,53 @@ import KeyboardAvoiding from "../../components/keyboard-avoiding";
 import { countries } from "countries-list";
 import { View, StyleSheet } from "react-native";
 
-import account from "../../../data/account.json";
+import _map from "lodash/map";
 import _sortBy from "lodash/sortBy";
 import _lowerCase from "lodash/lowerCase";
 import _makeBirthdate from "../../functions/makeBirthdate";
 
-export default function AccountSettingsScreen({ navigation }) {
+import net from "../../functions/net";
+import http from "../../functions/http";
+import toast from "../../functions/toast";
+
+export default function AccountSettingsScreen({ navigation, route }) {
     const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(false);
     const { address } = data ?? {};
-    const _onChange = (value, name) => setData({ ...data, [name]: value });
+
     const _onChangeAddress = (value, name) => setData({ ...data, address: { ...data?.address, [name]: value } });
+    const _onChange = (value, name) => setData({ ...data, [name]: value });
+    const _onSubmit = () => {
+        setLoading(true);
+        Object.keys(address).map((key) => {
+            if (address.hasOwnProperty(key)) {
+                data[`address.${key}`] = address[key];
+            }
+        });
+        http.put("/users/update", net.data(data))
+            .then(({ data }) => {
+                navigation.navigate("account", { shouldRefresh: Date.now() });
+                toast.fromData(data, "response[0].message");
+            })
+            .catch(({ response }) => net.handleCatch(response, setLoading));
+    };
 
     const countryOptions = Object.keys(countries).map((key) => {
         if (countries.hasOwnProperty(key)) {
             const { name } = countries[key];
-            return { value: _lowerCase(key), label: name };
+            return { value: name, label: name };
         }
     });
-    const stateOptions = [
-        { value: "kedah", label: "Kedah" },
-        { value: "penang", label: "Penang" },
-        { value: "terengganu", label: "Terengganu" },
-        { value: "johor", label: "Johor" },
-        { value: "perlis", label: "Perlis" },
-        { value: "kelantan", label: "Kelantan" },
-        { value: "melaka", label: "Melaka" },
-        { value: "n_sembilan", label: "N. Sembilan" },
-        { value: "perak", label: "Perak" },
-        { value: "pahang", label: "Pahang" },
-        { value: "selangor", label: "Selangor" },
-        { value: "sabah", label: "Sabah" },
-        { value: "sarawak", label: "Sarawak" },
-        { value: "wpkl", label: "Kuala Lumpur" },
-        { value: "wpl", label: "Labuan" },
-        { value: "wpp", label: "Putrajaya" },
-    ];
+    const stateOptions = CT.STATES.map((state) => {
+        return { label: state, value: state };
+    });
 
     useEffect(() => {
-        setData({ ...account, birthday: _makeBirthdate(account?.birthday) });
+        const { user } = route?.params || {};
+        setData({ ...user, birthday: _makeBirthdate(user?.birthday) });
     }, []);
 
+    const isUpdate = data?.id !== null && data?.id !== undefined;
     const fieldGroups = [
         {
             heading: "Personal Details",
@@ -67,6 +74,7 @@ export default function AccountSettingsScreen({ navigation }) {
                     type: "phone",
                     label: "Phone Number",
                     value: data?.phone,
+                    disabled: isUpdate,
                     callingCode: data?.callingCode,
                     placeholder: "123456789",
                 },
@@ -129,7 +137,7 @@ export default function AccountSettingsScreen({ navigation }) {
                 [
                     {
                         name: "state",
-                        type: address?.country === "my" ? "select" : "text",
+                        type: address?.country === "Malaysia" ? "select" : "text",
                         label: "State",
                         value: address?.state,
                         placeholder: "Selangor",
@@ -162,10 +170,10 @@ export default function AccountSettingsScreen({ navigation }) {
                         {fieldGroups.map(({ heading, onChange, description, fields }, i) => (
                             <View key={i} style={{ marginBottom: 25 }}>
                                 <Heading text={heading} subtitle={description} />
-                                <FloatingFields fields={fields} onChange={onChange} />
+                                <FloatingFields fields={fields} onChange={onChange} disabled={loading} />
                             </View>
                         ))}
-                        <Button text="Update Account" color="yellow" onPress={navigation.goBack} />
+                        <Button text="Update Account" color="yellow" onPress={_onSubmit} loading={loading} />
                     </Body>
                 </Layout>
             </Container>
