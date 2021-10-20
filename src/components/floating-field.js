@@ -115,7 +115,9 @@ export default function FloatingField({
         }
     };
     const _onOpenCallingCode = () => {
-        CT.IS_ANDROID ? callingCodeRef?.current?.focus() : setCCPicker(true);
+        if (!disabled) {
+            CT.IS_ANDROID ? callingCodeRef?.current?.focus() : setCCPicker(true);
+        }
     };
 
     // Correct value type
@@ -222,7 +224,7 @@ export default function FloatingField({
                                     <View style={styles.countryFlagContainer}>
                                         <Image source={countryFlag} style={styles.countryFlag} />
                                     </View>
-                                    <Text style={styles.callingCode} allowFontScaling={false}>
+                                    <Text style={[styles.callingCode, disabledTextStyle]} allowFontScaling={false}>
                                         +{callingCode}
                                     </Text>
                                     <Icon icon="caret-down" style={styles.callingCodesCaret} />
