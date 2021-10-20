@@ -61,7 +61,7 @@ export default function Pet(props) {
     } else if (isLight) {
         baseStyle = { ...baseStyle, backgroundColor: CT.BG_GRAY_100 };
         nameStyle = { ...nameStyle, color: checked ? CT.BG_GRAY_800 : CT.BG_GRAY_400 };
-        imageBaseStyle = { ...imageBaseStyle, backgroundColor: CT.BG_GRAY_200 };
+        imageBaseStyle = { ...imageBaseStyle, backgroundColor: CT.BG_GRAY_100 };
         if (CT.IS_IOS) {
             baseStyle = { ...baseStyle, backgroundColor: CT.BG_WHITE, ...CT.SHADOW_MD, shadowOpacity: 0.09 };
         }
