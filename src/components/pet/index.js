@@ -53,8 +53,6 @@ export default function Pet(props) {
         backgroundColor: isLight ? CT.CTA_POSITIVE : CT.BG_PURPLE_500,
     };
 
-    let shimmerColors = [CT.BG_PURPLE_600, CT.BG_PURPLE_600, CT.BG_PURPLE_500];
-
     // Alter the styles based on several conditions
     if (pressed) baseStyle = { ...baseStyle, transform: [{ scale: 0.97 }] };
     if (active) {
@@ -63,7 +61,6 @@ export default function Pet(props) {
     } else if (isLight) {
         baseStyle = { ...baseStyle, backgroundColor: CT.BG_GRAY_100 };
         nameStyle = { ...nameStyle, color: checked ? CT.BG_GRAY_800 : CT.BG_GRAY_400 };
-        shimmerColors = [CT.BG_GRAY_100, CT.BG_GRAY_100, CT.BG_GRAY_50];
         imageBaseStyle = { ...imageBaseStyle, backgroundColor: CT.BG_GRAY_200 };
         if (CT.IS_IOS) {
             baseStyle = { ...baseStyle, backgroundColor: CT.BG_WHITE, ...CT.SHADOW_MD, shadowOpacity: 0.09 };
@@ -76,13 +73,14 @@ export default function Pet(props) {
     }
 
     const imageBase = [styles.imageBase, imageBaseStyle, _imageBaseStyle];
+    const shimmerColor = isLight ? "gray" : "purple";
 
     return (
         <Pressable {..._omit(props, ["onPressIn", "onPressOut"])} {...pressable}>
             <View style={[styles.base, baseStyle, _baseStyle]}>
                 {_renderIf(
                     loading,
-                    <Shimmer style={imageBase} colors={shimmerColors} />,
+                    <Shimmer style={imageBase} color={shimmerColor} />,
                     <View style={imageBase}>
                         {_renderIf(
                             image,
@@ -113,7 +111,7 @@ export default function Pet(props) {
                 _renderIf(
                     loading,
                     <View style={styles.nameShimmer}>
-                        <Shimmer width={40} height={10} colors={shimmerColors} />
+                        <Shimmer width={40} height={10} color={shimmerColor} />
                     </View>,
                     <Text style={[styles.name, nameStyle, _nameStyle]} numberOfLines={1}>
                         {name}
