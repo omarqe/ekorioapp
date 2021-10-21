@@ -1,5 +1,7 @@
 import React from "react";
+import CT from "../../const";
 import Pet from "./";
+import Text from "../text";
 import PropTypes from "prop-types";
 import { View, FlatList, StyleSheet } from "react-native";
 
@@ -16,8 +18,15 @@ export default function PetList({ data = [], margin = 4, loading = false, checke
     }
 
     data = _sortBy(data, "name");
-    if (!loading) {
+    if (!loading && typeof onAddPet === "function") {
         data = [{ id: 0, name: "Add Pet", phIcon: "plus", onPress: onAddPet }, ...data];
+    } else if (!loading && data?.length < 1 && typeof onAddPet !== "function") {
+        return (
+            <View style={styles.emptyPet}>
+                <Text style={styles.emptyHeading}>No pet was added yet</Text>
+                <Text style={styles.emptySubtitle}>Please add a new pet first before booking an appointment.</Text>
+            </View>
+        );
     }
 
     const _renderItem = ({ item, index }) => {
@@ -61,6 +70,22 @@ const styles = StyleSheet.create({
     },
     container: {
         marginLeft: -3,
+    },
+    emptyPet: {
+        width: "100%",
+        padding: 10,
+        borderRadius: 8,
+        backgroundColor: CT.BG_GRAY_100,
+    },
+    emptyHeading: {
+        color: CT.BG_GRAY_800,
+        fontSize: 12,
+        fontWeight: "600",
+        marginBottom: 2,
+    },
+    emptySubtitle: {
+        color: CT.BG_GRAY_500,
+        fontSize: 12,
     },
 });
 
