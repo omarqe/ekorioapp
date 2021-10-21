@@ -107,7 +107,7 @@ export default function Pet(props) {
             </View>
 
             {_renderIf(
-                name !== "" && name !== null && name !== undefined,
+                loading || (name !== "" && name !== null && name !== undefined),
                 _renderIf(
                     loading,
                     <View style={styles.nameShimmer}>
