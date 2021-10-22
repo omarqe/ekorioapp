@@ -68,12 +68,6 @@ export default function ListItem({
                     subtitle,
                     _renderIf(loading, <Shimmer width={100} height={8} />, <Text style={styles.subtitle}>{subtitle}</Text>)
                 )}
-                {badge && (
-                    <View style={styles.badgeContainer}>
-                        {_renderIf(loading, <Shimmer width={60} height={12} />, <Badge xs {...badge} />)}
-                    </View>
-                )}
-
                 {_renderIf(
                     loading,
                     <View style={styles.tags}>
@@ -95,6 +89,12 @@ export default function ListItem({
                     )
                 )}
             </View>
+
+            {badge && (
+                <View style={styles.badgeContainer}>
+                    {_renderIf(loading, <Shimmer width={60} height={12} />, <Badge xs {...badge} />)}
+                </View>
+            )}
         </Pressable>
     );
 }
@@ -120,8 +120,8 @@ const styles = StyleSheet.create({
     },
     badgeContainer: {
         top: 0,
-        right: 0,
-        position: "absolute",
+        height: "100%",
+        alignItems: "flex-start",
     },
     title: {
         color: CT.FONT_COLOR,
