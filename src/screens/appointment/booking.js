@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CT from "../../const";
 
 import Header from "../../components/layout/header";
 import Layout from "../../components/layout";
 import Body from "../../components/layout/body";
+import Empty from "../../components/empty";
 import BookingTime from "../../components/appointmnet/booking-time";
 import BookingModal from "../../components/appointmnet/booking-modal";
 import BookingBanner from "../../components/appointmnet/booking-banner";
+
+import DatePickerArt from "../../../assets/arts/ginger-cat-759.svg";
+import VetClosedArt from "../../../assets/arts/ginger-cat-79.svg";
 
 import Text from "../../components/text";
 import TopBar from "../../components/topbar";
@@ -20,120 +24,240 @@ import KeyboardAvoiding from "../../components/keyboard-avoiding";
 
 import { View, StyleSheet } from "react-native";
 
-import _moment from "moment";
-import _numeral from "numeral";
+import net from "../../functions/net";
+import http from "../../functions/http";
+import toast from "../../functions/toast";
+import moment from "moment";
+import numeral from "numeral";
+
+import _renderIf from "../../functions/renderIf";
+import _clone from "lodash/clone";
+import _find from "lodash/find";
+import _findIndex from "lodash/findIndex";
+
+const isToday = (date) => {
+    const format = "DD/MM/YYYY";
+    const today = moment().format(format);
+    const selectedDate = date.format(format);
+    return today === selectedDate;
+};
 
 export default function AppointmentBookingScreen({ navigation }) {
-    const today = _moment().toDate();
-    const whitelistDates = [{ start: _moment(), end: _moment().add(1, "month") }];
+    const today = moment().set({ hour: 0, minute: 0 });
+    const whitelistDates = [{ start: moment(), end: moment().add(1, "month") }];
 
-    const [date, setDate] = useState(today);
-    const [time, setTime] = useState(null);
-    const [vetIndex, setVetIndex] = useState(null);
     const [vetPopup, setVetPopup] = useState(false);
+    const [time, setTime] = useState(null);
+    const [data, setData] = useState({ petId: 0, vetId: 0, serviceId: 0, date: today, remarks: "" });
+    const [vetData, setVetData] = useState([]);
+    const [petData, setPetData] = useState([]);
+    const [serviceTypes, setServiceTypes] = useState([]);
 
-    const data = [
-        {
-            text: "Petsville Animal Clinic, Cyberjaya",
-            subtitle: "D-G-3A, Jalan Vita 1, Plaza Crystalville, Lingkaran Cyber",
-        },
-        {
-            text: "Felycat Animal Clinic, Cyberjaya",
-            subtitle: "Ground Floor G-75, Biz Avenue II, Lingkaran Cyber",
-        },
-        {
-            text: "Petunia Animal Clinic, Puchong",
-            subtitle: "GM-30A, Jalan Putra Perdana 5d/1, Taman Putra Perdana",
-        },
-        {
-            text: "Bandar Puteri Vet Clinic, Puchong",
-            subtitle: "16, Jalan Puteri 5/8, Bandar Puteri, 47100 Puchong",
-        },
-    ];
+    const [loading, setLoading] = useState(true);
+    const [loadingVet, setLoadingVet] = useState(false);
+    const [loadingForm, setLoadingForm] = useState(false);
 
+    useEffect(() => {
+        Promise.all([http.get("/appointments/services"), http.get("/pets")])
+            .then(([{ data: serviceTypes }, { data: pets }]) => {
+                if (pets?.length > 0) setPetData(pets);
+                if (serviceTypes?.length > 0) {
+                    const types = serviceTypes.map(({ id: value, name: label }) => {
+                        return { label, value: value?.toString() };
+                    });
+                    setServiceTypes(types);
+                }
+                setLoading(false);
+            })
+            .catch(({ response }) => net.handleCatch(response, setLoading));
+    }, []);
+
+    const date = data?.date;
     const fields = [
         {
+            name: "serviceId",
             type: "select",
             label: "Service Type",
+            value: data?.serviceId,
+            options: serviceTypes,
             placeholder: "Please select",
-            options: [
-                { value: "general", label: "Health Checkup" },
-                { value: "grooming", label: "Grooming" },
-                { value: "boarding", label: "Boarding" },
-                { value: "dermatology", label: "Dermatology" },
-                { value: "surgery", label: "Surgery" },
-            ],
         },
         {
+            name: "remarks",
             type: "textarea",
             label: "Remarks",
+            value: data?.remarks,
             placeholder: "Write some remarks",
         },
     ];
 
-    const _onResetDate = () => setDate(today);
-    const _onSelectDate = (date) => setDate(_moment(date));
-    const _onSelectTime = (time) => setTime(time);
-
-    const _onVetPopupOpen = () => setVetPopup(true);
+    const _onResetDate = () => setData({ ...data, date: today });
+    const _onSelectDate = (date) => setData({ ...data, date: moment(date) });
+    const _onSelectTime = (t) => setTime(time === t ? null : t);
+    const _onSelectPet = (petId) => setData({ ...data, petId });
+    const _onChangeDetails = (value, name) => setData({ ...data, [name]: value?.toString() });
     const _onVetPopupClose = () => setVetPopup(false);
-    const _onChoose = (index) => {
-        setVetIndex(index);
+    const _onVetPopupOpen = () => {
+        if (vetData?.length < 1) {
+            setLoadingVet(true);
+            http.get("/vets")
+                .then(({ data }) => {
+                    setVetData(data);
+                    setVetPopup(true);
+                    setLoadingVet(false);
+                })
+                .catch(({ response }) => net.handleCatch(response, setLoading));
+            return;
+        }
+        setVetPopup(true);
+    };
+    const _onVetSelect = (vetId) => {
+        setData({ ...data, vetId });
         setVetPopup(false);
     };
+    const _onSubmit = () => {
+        const formdata = { ...data, date: date?.set({ hour: time, minute: 0, second: 0 }).toISOString() };
+
+        setLoadingForm(true);
+        http.post("/appointments/create", net.data(formdata))
+            .then(({ data }) => {
+                setLoadingForm(false);
+                if (data?.success) {
+                    toast.fromData(data, "response[0].message");
+                    navigation.navigate("appointment", data?.payload);
+                }
+            })
+            .catch(({ response }) => net.handleCatch(response, setLoadingForm));
+    };
+
+    let steps = [false, false, false];
+    const now = moment().hour();
+    const dayOfWeek = moment(date).weekday();
+
+    const vetIndex = _findIndex(vetData, { id: data?.vetId });
+    const currentVet = vetData[vetIndex];
+    const isClosed = currentVet && !operation?.open;
+    const operation = _find(currentVet?.day, { day: dayOfWeek });
+
+    // Hide closed hours for the chosen vet
+    let hiddenHours = [];
+    let unavailableHours = [];
+    for (let hr = 0; hr < 24; hr++) {
+        if (hr < operation?.start || hr > operation?.end) {
+            hiddenHours = [...hiddenHours, hr];
+        }
+        if (isToday(date) && hr <= now) {
+            unavailableHours = [...unavailableHours, hr];
+        }
+    }
+
+    // Showing pet and appointment time
+    if (currentVet && operation?.open && date) steps[0] = true;
+    if (data?.petId > 0) steps[1] = true;
+    if (currentVet && operation?.open && date && time) steps[2] = true;
 
     return (
         <KeyboardAvoiding>
             <Container>
                 <TopBar
                     title="Book Appointment"
-                    leftIconProps={{ onPress: navigation.goBack }}
                     leftIcon="arrow-left"
-                    rightIcon={_moment(date).isAfter(today) ? "history" : null}
-                    rightIconProps={{ onPress: _onResetDate, disabled: !_moment(date).isAfter(today) }}
+                    rightIcon={!isToday(date) ? "history" : null}
+                    leftIconProps={{ onPress: navigation.goBack }}
+                    rightIconProps={{ onPress: _onResetDate, disabled: !date.isAfter(today) }}
                 />
 
                 <Layout gray withHeader>
-                    <Header style={styles.header} contentStyle={styles.headerContent}>
-                        <CalendarStrip selectedDate={date} datesWhitelist={whitelistDates} onDateSelected={_onSelectDate} />
-                    </Header>
-                    <BookingBanner data={data[vetIndex]} offset={offset} onPress={_onVetPopupOpen} />
-                    <Body style={styles.body} gray flex topRounded>
-                        <View style={[styles.section, { marginBottom: 30 }]}>
-                            <Heading text="Appointment Time" />
-                            <BookingTime
-                                onSelect={_onSelectTime}
-                                hidden={[0, 1, 2, 3, 4, 5, 6, 7, 22, 23]}
-                                unavailable={[8, 9]}
-                                selected={time}
+                    {!loading && (
+                        <Header style={styles.header} contentStyle={styles.headerContent}>
+                            <CalendarStrip
+                                selectedDate={date}
+                                datesWhitelist={whitelistDates}
+                                onDateSelected={_onSelectDate}
                             />
-                        </View>
+                        </Header>
+                    )}
+                    <BookingBanner data={currentVet} offset={offset} onPress={_onVetPopupOpen} loading={loadingForm} />
+                    <Body style={styles.body} gray flex topRounded>
+                        {_renderIf(
+                            steps[0] === true,
+                            <React.Fragment>
+                                <View style={[styles.section, { marginBottom: 30 }]}>
+                                    <Heading kicker="Step 1:" text="Choose a Pet" kickerStyle={styles.kicker} />
+                                    <View style={[styles.pets, { opacity: loadingForm ? 0.5 : 1 }]}>
+                                        <PetList
+                                            data={petData}
+                                            theme="light"
+                                            checked={data?.petId}
+                                            loading={loading}
+                                            onPress={_onSelectPet}
+                                        />
+                                        {loadingForm && <View style={styles.overlay} />}
+                                    </View>
+                                </View>
+                                <View style={[styles.section, { marginBottom: 30, opacity: !steps[1] ? 0.5 : 1 }]}>
+                                    <Heading kicker="Step 2:" text="Appointment Time" kickerStyle={styles.kicker} />
+                                    <BookingTime
+                                        loading={loading}
+                                        selected={time}
+                                        disabled={currentVet === undefined || !steps[1] || loadingForm}
+                                        onSelect={_onSelectTime}
+                                        hidden={hiddenHours}
+                                        unavailable={unavailableHours}
+                                    />
+                                </View>
+                            </React.Fragment>,
+                            <Empty
+                                artProps={{ height: isClosed ? 120 : 160, style: { marginBottom: isClosed ? 20 : 0 } }}
+                                art={isClosed ? VetClosedArt : DatePickerArt}
+                                title={isClosed ? `${currentVet?.name} is closed` : "Please select date and vet"}
+                                subtitle={isClosed ? "Please find other veterinar or try another time" : null}
+                            />
+                        )}
 
-                        <View style={styles.section}>
-                            <Heading text="Choose a Pet" />
-                            <View style={styles.pets}>
-                                <PetList checked={3} theme="light" />
+                        {steps[0] && (
+                            <View style={{ opacity: steps[2] ? 1 : 0.5 }}>
+                                <View style={[styles.section, { marginBottom: 15 }]}>
+                                    <Heading kicker="Step 3:" text="Appointment Details" kickerStyle={styles.kicker} />
+                                    <FloatingFields
+                                        fields={fields}
+                                        disabled={!steps[2] || loadingForm}
+                                        onChange={_onChangeDetails}
+                                    />
+                                </View>
+                                <Button
+                                    text="Book Appointment"
+                                    color="yellow"
+                                    disabled={!steps[2]}
+                                    loading={loadingForm}
+                                    onPress={_onSubmit}
+                                />
+                                {steps[0] && steps[2] && (
+                                    <Text style={styles.summary}>
+                                        {"Your appointment will be set on "}
+                                        <Text style={styles.sumHighlight}>{moment(date).format("ddd, D MMMM, YYYY")}</Text>
+                                        {" @ "}
+                                        <Text style={styles.sumHighlight}>
+                                            {numeral(time).format("00.00").replace(".", ":")}
+                                        </Text>
+                                        {" at "}
+                                        <Text style={styles.sumHighlight}>{currentVet?.name}.</Text>
+                                    </Text>
+                                )}
                             </View>
-                        </View>
-
-                        <View style={[styles.section, { marginBottom: 15 }]}>
-                            <FloatingFields fields={fields} />
-                        </View>
-
-                        <Button text="Book Appointment" color="yellow" />
-
-                        <Text style={styles.summary}>
-                            Your appointment will be set on{" "}
-                            <Text style={styles.sumHighlight}>{_moment(date).format("ddd, D MMMM, YYYY")}</Text>
-                            {" @ "}
-                            <Text style={styles.sumHighlight}>{_numeral(time).format("00.00").replace(".", ":")}</Text>
-                            {" at "}
-                            <Text style={styles.sumHighlight}>{data[vetIndex]?.text}.</Text>
-                        </Text>
+                        )}
                     </Body>
                 </Layout>
 
-                <BookingModal data={data} open={vetPopup} onClose={_onVetPopupClose} onChoose={_onChoose} />
+                <BookingModal
+                    dayOfWeek={dayOfWeek}
+                    now={now}
+                    data={vetData}
+                    open={vetPopup}
+                    onClose={_onVetPopupClose}
+                    onChoose={_onVetSelect}
+                    loading={loadingVet}
+                />
             </Container>
         </KeyboardAvoiding>
     );
@@ -158,18 +282,32 @@ const styles = StyleSheet.create({
         paddingRight: 15,
     },
     section: {
+        position: "relative",
         marginBottom: 20,
     },
+    overlay: {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        position: "absolute",
+    },
     summary: {
-        color: CT.BG_GRAY_300,
-        fontSize: 14,
+        color: CT.BG_GRAY_400,
+        fontSize: 12,
         marginTop: 10,
         textAlign: "center",
         lineHeight: 20,
         paddingHorizontal: 20,
     },
     sumHighlight: {
-        color: CT.BG_GRAY_400,
+        color: CT.BG_GRAY_500,
+        fontSize: 12,
         fontWeight: "600",
+    },
+    kicker: {
+        fontSize: 10,
+        fontWeight: "700",
+        textTransform: "uppercase",
     },
 });
