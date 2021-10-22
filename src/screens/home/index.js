@@ -16,6 +16,8 @@ import TopBar from "../../components/topbar";
 import Container from "../../components/container";
 import ButtonIcon from "../../components/button-icon";
 
+import EmptyPetArt from "../../../assets/arts/ginger-cat-79.svg";
+
 import { View, StyleSheet } from "react-native";
 import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
 
@@ -163,6 +165,8 @@ const HomeScreen = connectActionSheet(({ navigation, route }) => {
                     emptyPets,
                     <Body gray flex topRounded>
                         <Empty
+                            art={EmptyPetArt}
+                            artProps={{ height: 130 }}
                             title="Wow.. it's so quiet over here 😿"
                             button={{ text: "Add Pet", onPress: go.bind(null, "pet__form", null) }}
                             subtitle="Apparently, you do not own any pet yet."

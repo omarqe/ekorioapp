@@ -9,8 +9,9 @@ import BookingTime from "../../components/appointmnet/booking-time";
 import BookingModal from "../../components/appointmnet/booking-modal";
 import BookingBanner from "../../components/appointmnet/booking-banner";
 
+import EmptyPetArt from "../../../assets/arts/ginger-cat-79.svg";
+import VetClosedArt from "../../../assets/arts/ginger-cat-737.svg";
 import DatePickerArt from "../../../assets/arts/ginger-cat-759.svg";
-import VetClosedArt from "../../../assets/arts/ginger-cat-79.svg";
 
 import Text from "../../components/text";
 import TopBar from "../../components/topbar";
@@ -116,7 +117,8 @@ export default function AppointmentBookingScreen({ navigation }) {
         setVetPopup(false);
     };
     const _onSubmit = () => {
-        const formdata = { ...data, date: date?.set({ hour: time, minute: 0, second: 0 }).toISOString() };
+        const format = "YYYY-MM-DDTHH:mm:ss+08:00";
+        const formdata = { ...data, date: date?.set({ hour: time, minute: 0, second: 0 }).format(format) };
 
         setLoadingForm(true);
         http.post("/appointments/create", net.data(formdata))
@@ -168,7 +170,7 @@ export default function AppointmentBookingScreen({ navigation }) {
                 />
 
                 <Layout gray withHeader>
-                    {!loading && (
+                    {!loading && petData?.length > 0 && (
                         <Header style={styles.header} contentStyle={styles.headerContent}>
                             <CalendarStrip
                                 selectedDate={date}
@@ -177,74 +179,101 @@ export default function AppointmentBookingScreen({ navigation }) {
                             />
                         </Header>
                     )}
-                    <BookingBanner data={currentVet} offset={offset} onPress={_onVetPopupOpen} loading={loadingForm} />
+
+                    {!loading && petData?.length > 0 && (
+                        <BookingBanner data={currentVet} offset={offset} onPress={_onVetPopupOpen} loading={loadingForm} />
+                    )}
+
                     <Body style={styles.body} gray flex topRounded>
                         {_renderIf(
-                            steps[0] === true,
-                            <React.Fragment>
-                                <View style={[styles.section, { marginBottom: 30 }]}>
-                                    <Heading kicker="Step 1:" text="Choose a Pet" kickerStyle={styles.kicker} />
-                                    <View style={[styles.pets, { opacity: loadingForm ? 0.5 : 1 }]}>
-                                        <PetList
-                                            data={petData}
-                                            theme="light"
-                                            checked={data?.petId}
-                                            loading={loading}
-                                            onPress={_onSelectPet}
-                                        />
-                                        {loadingForm && <View style={styles.overlay} />}
-                                    </View>
-                                </View>
-                                <View style={[styles.section, { marginBottom: 30, opacity: !steps[1] ? 0.5 : 1 }]}>
-                                    <Heading kicker="Step 2:" text="Appointment Time" kickerStyle={styles.kicker} />
-                                    <BookingTime
-                                        loading={loading}
-                                        selected={time}
-                                        disabled={currentVet === undefined || !steps[1] || loadingForm}
-                                        onSelect={_onSelectTime}
-                                        hidden={hiddenHours}
-                                        unavailable={unavailableHours}
-                                    />
-                                </View>
-                            </React.Fragment>,
+                            petData?.length < 1,
                             <Empty
-                                artProps={{ height: isClosed ? 120 : 160, style: { marginBottom: isClosed ? 20 : 0 } }}
-                                art={isClosed ? VetClosedArt : DatePickerArt}
-                                title={isClosed ? `${currentVet?.name} is closed` : "Please select date and vet"}
-                                subtitle={isClosed ? "Please find other veterinar or try another time" : null}
-                            />
-                        )}
-
-                        {steps[0] && (
-                            <View style={{ opacity: steps[2] ? 1 : 0.5 }}>
-                                <View style={[styles.section, { marginBottom: 15 }]}>
-                                    <Heading kicker="Step 3:" text="Appointment Details" kickerStyle={styles.kicker} />
-                                    <FloatingFields
-                                        fields={fields}
-                                        disabled={!steps[2] || loadingForm}
-                                        onChange={_onChangeDetails}
+                                art={EmptyPetArt}
+                                artProps={{ height: 130 }}
+                                title="You don't have any pet."
+                                subtitle="Please add new, then start booking appointment"
+                                button={{ text: "Add Pet", onPress: navigation.navigate.bind(null, "pet__form", null) }}
+                            />,
+                            <React.Fragment>
+                                {_renderIf(
+                                    steps[0] === true,
+                                    <React.Fragment>
+                                        <View style={[styles.section, { marginBottom: 30 }]}>
+                                            <Heading kicker="Step 1:" text="Choose a Pet" kickerStyle={styles.kicker} />
+                                            <View style={[styles.pets, { opacity: loadingForm ? 0.5 : 1 }]}>
+                                                <PetList
+                                                    data={petData}
+                                                    theme="light"
+                                                    checked={data?.petId}
+                                                    loading={loading}
+                                                    onPress={_onSelectPet}
+                                                />
+                                                {loadingForm && <View style={styles.overlay} />}
+                                            </View>
+                                        </View>
+                                        <View style={[styles.section, { marginBottom: 30, opacity: !steps[1] ? 0.5 : 1 }]}>
+                                            <Heading kicker="Step 2:" text="Appointment Time" kickerStyle={styles.kicker} />
+                                            <BookingTime
+                                                loading={loading}
+                                                selected={time}
+                                                disabled={currentVet === undefined || !steps[1] || loadingForm}
+                                                onSelect={_onSelectTime}
+                                                hidden={hiddenHours}
+                                                unavailable={unavailableHours}
+                                            />
+                                        </View>
+                                    </React.Fragment>,
+                                    <Empty
+                                        art={isClosed ? VetClosedArt : DatePickerArt}
+                                        title={isClosed ? `${currentVet?.name} is closed` : "Please select date and vet"}
+                                        subtitle={isClosed ? "Please find other veterinar or try another time" : null}
+                                        artProps={{
+                                            style: { marginBottom: 0, marginLeft: isClosed ? 30 : 0 },
+                                            height: isClosed ? 200 : 160,
+                                        }}
                                     />
-                                </View>
-                                <Button
-                                    text="Book Appointment"
-                                    color="yellow"
-                                    disabled={!steps[2]}
-                                    loading={loadingForm}
-                                    onPress={_onSubmit}
-                                />
-                                {steps[0] && steps[2] && (
-                                    <Text style={styles.summary}>
-                                        {"Your appointment will be set on "}
-                                        <Text style={styles.sumHighlight}>{moment(date).format("ddd, D MMMM, YYYY")}</Text>
-                                        {" @ "}
-                                        <Text style={styles.sumHighlight}>
-                                            {numeral(time).format("00.00").replace(".", ":")}
-                                        </Text>
-                                        {" at "}
-                                        <Text style={styles.sumHighlight}>{currentVet?.name}.</Text>
-                                    </Text>
                                 )}
-                            </View>
+                                {_renderIf(
+                                    steps[0],
+                                    <React.Fragment>
+                                        <View style={{ opacity: steps[2] ? 1 : 0.5 }}>
+                                            <View style={[styles.section, { marginBottom: 15 }]}>
+                                                <Heading
+                                                    kicker="Step 3:"
+                                                    text="Appointment Details"
+                                                    kickerStyle={styles.kicker}
+                                                />
+                                                <FloatingFields
+                                                    fields={fields}
+                                                    disabled={!steps[2] || loadingForm}
+                                                    onChange={_onChangeDetails}
+                                                />
+                                            </View>
+                                            <Button
+                                                text="Book Appointment"
+                                                color="yellow"
+                                                disabled={!steps[2]}
+                                                loading={loadingForm}
+                                                onPress={_onSubmit}
+                                            />
+                                            {steps[0] && steps[2] && (
+                                                <Text style={styles.summary}>
+                                                    {"Your appointment will be set on "}
+                                                    <Text style={styles.sumHighlight}>
+                                                        {moment(date).format("ddd, D MMMM, YYYY")}
+                                                    </Text>
+                                                    {" @ "}
+                                                    <Text style={styles.sumHighlight}>
+                                                        {numeral(time).format("00.00").replace(".", ":")}
+                                                    </Text>
+                                                    {" at "}
+                                                    <Text style={styles.sumHighlight}>{currentVet?.name}.</Text>
+                                                </Text>
+                                            )}
+                                        </View>
+                                    </React.Fragment>
+                                )}
+                            </React.Fragment>
                         )}
                     </Body>
                 </Layout>
