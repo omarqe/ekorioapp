@@ -28,7 +28,7 @@ const Badge = (props) => {
     ];
     const colors = {
         red: { base: { backgroundColor: "#FE8F8F" }, text: { color: "#8D2828" } },
-        green: { base: { backgroundColor: "#80ED99" }, text: { color: "#007580" } },
+        green: { base: { backgroundColor: "#B1E693" }, text: { color: "#3E7C17" } },
         purple: { base: { backgroundColor: CT.BG_PURPLE_500 }, text: { color: CT.BG_PURPLE_100 } },
         yellow: { base: { backgroundColor: CT.BG_YELLOW_500 }, text: { color: CT.BG_YELLOW_900 } },
     };
