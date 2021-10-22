@@ -213,8 +213,6 @@ export default function FloatingField({
 
         default:
             const alignItems = type === "textarea" ? "flex-start" : "center";
-            console.log("type", type);
-
             return (
                 <View>
                     <Pressable style={[baseStyle, disabledStyle]} onPress={_onPressFocusInput}>
