@@ -14,7 +14,16 @@ import _find from "lodash/find";
 import _filter from "lodash/filter";
 import _renderIf from "../../functions/renderIf";
 
-export default function BookingModal({ data, now, dayOfWeek, open = false, loading = false, onClose, onChoose }) {
+export default function BookingModal({
+    data,
+    now,
+    dayOfWeek,
+    open = false,
+    isToday = false,
+    loading = false,
+    onClose,
+    onChoose,
+}) {
     const ModalHeader = () => {
         return (
             <React.Fragment>
@@ -35,11 +44,16 @@ export default function BookingModal({ data, now, dayOfWeek, open = false, loadi
             const o = today?.start < 12 ? "AM" : "PM";
 
             // Open indicator
-            let badge = { text: "Open", color: "green" };
-            if (!today?.open || now > today?.end) {
-                badge = { text: "Closed", color: "red" };
-            } else if (today?.open && now < today?.start) {
-                badge = { text: `Opens ${today?.start}${o}` };
+            let badge = null;
+            if (isToday) {
+                if (now < today?.start) {
+                    const start = today?.start > 12 ? today?.start - 12 : today?.start;
+                    badge = { text: `Opens ${start}${o}` };
+                } else if (!today?.open || now > today?.end) {
+                    badge = { text: "Closed", color: "red" };
+                }
+            } else {
+                badge = today?.open ? { text: "Open", color: "green" } : { text: "Closed", color: "red" };
             }
 
             return { id, text: `${name}, ${city}`, subtitle: subtitle, badge };
@@ -120,6 +134,7 @@ BookingModal.propTypes = {
     now: PropTypes.number,
     data: PropTypes.arrayOf(PropTypes.object),
     open: PropTypes.bool,
+    isToday: PropTypes.bool,
     onPress: PropTypes.func,
     onChoose: PropTypes.func,
 };

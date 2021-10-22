@@ -32,16 +32,10 @@ import moment from "moment";
 import numeral from "numeral";
 
 import _renderIf from "../../functions/renderIf";
+import _isToday from "../../functions/isToday";
 import _clone from "lodash/clone";
 import _find from "lodash/find";
 import _findIndex from "lodash/findIndex";
-
-const isToday = (date) => {
-    const format = "DD/MM/YYYY";
-    const today = moment().format(format);
-    const selectedDate = date.format(format);
-    return today === selectedDate;
-};
 
 export default function AppointmentBookingScreen({ navigation }) {
     const today = moment().set({ hour: 0, minute: 0 });
@@ -93,7 +87,7 @@ export default function AppointmentBookingScreen({ navigation }) {
     ];
 
     const _onResetDate = () => setData({ ...data, date: today });
-    const _onSelectDate = (date) => setData({ ...data, date: moment(date) });
+    const _onSelectDate = (date) => setData({ ...data, date: !loading ? moment(date) : data.date });
     const _onSelectTime = (t) => setTime(time === t ? null : t);
     const _onSelectPet = (petId) => setData({ ...data, petId });
     const _onChangeDetails = (value, name) => setData({ ...data, [name]: value?.toString() });
@@ -134,12 +128,13 @@ export default function AppointmentBookingScreen({ navigation }) {
 
     let steps = [false, false, false];
     const now = moment().hour();
+    const isToday = _isToday(date);
     const dayOfWeek = moment(date).weekday();
 
     const vetIndex = _findIndex(vetData, { id: data?.vetId });
     const currentVet = vetData[vetIndex];
-    const isClosed = currentVet && !operation?.open;
     const operation = _find(currentVet?.day, { day: dayOfWeek });
+    const isClosed = currentVet && (!operation?.open || (isToday && (now < operation?.start || now > operation?.end)));
 
     // Hide closed hours for the chosen vet
     let hiddenHours = [];
@@ -148,14 +143,14 @@ export default function AppointmentBookingScreen({ navigation }) {
         if (hr < operation?.start || hr > operation?.end) {
             hiddenHours = [...hiddenHours, hr];
         }
-        if (isToday(date) && hr <= now) {
+        if (isToday && hr <= now) {
             unavailableHours = [...unavailableHours, hr];
         }
     }
 
     // Showing pet and appointment time
-    if (currentVet && operation?.open && date) steps[0] = true;
-    if (data?.petId > 0) steps[1] = true;
+    if (currentVet && date) steps[0] = true;
+    if (currentVet && data?.petId > 0) steps[1] = true;
     if (currentVet && operation?.open && date && time) steps[2] = true;
 
     return (
@@ -164,7 +159,7 @@ export default function AppointmentBookingScreen({ navigation }) {
                 <TopBar
                     title="Book Appointment"
                     leftIcon="arrow-left"
-                    rightIcon={!isToday(date) ? "history" : null}
+                    rightIcon={!isToday ? "history" : null}
                     leftIconProps={{ onPress: navigation.goBack }}
                     rightIconProps={{ onPress: _onResetDate, disabled: !date.isAfter(today) }}
                 />
@@ -196,7 +191,7 @@ export default function AppointmentBookingScreen({ navigation }) {
                             />,
                             <React.Fragment>
                                 {_renderIf(
-                                    steps[0] === true,
+                                    !isClosed && steps[0] === true,
                                     <React.Fragment>
                                         <View style={[styles.section, { marginBottom: 30 }]}>
                                             <Heading kicker="Step 1:" text="Choose a Pet" kickerStyle={styles.kicker} />
@@ -234,7 +229,7 @@ export default function AppointmentBookingScreen({ navigation }) {
                                     />
                                 )}
                                 {_renderIf(
-                                    steps[0],
+                                    !isClosed && steps[0],
                                     <React.Fragment>
                                         <View style={{ opacity: steps[2] ? 1 : 0.5 }}>
                                             <View style={[styles.section, { marginBottom: 15 }]}>
@@ -283,6 +278,7 @@ export default function AppointmentBookingScreen({ navigation }) {
                     now={now}
                     data={vetData}
                     open={vetPopup}
+                    isToday={isToday}
                     onClose={_onVetPopupClose}
                     onChoose={_onVetSelect}
                     loading={loadingVet}
