@@ -12,8 +12,8 @@ import Empty from "../../components/empty";
 import TopBar from "../../components/topbar";
 import Container from "../../components/container";
 
-import { TabView } from "react-native-tab-view";
 import { StyleSheet } from "react-native";
+import { TabView, SceneMap } from "react-native-tab-view";
 
 import net from "../../functions/net";
 import http from "../../functions/http";
@@ -28,7 +28,8 @@ const Scene = ({ data = [], loading = false, onPress }) => {
     if (loading) {
         data = [];
         for (let i = 1; i < 3; i++) {
-            data = [...data, { text: i.toString(), subtitle: null }];
+            const key = i.toString();
+            data = [...data, { text: key, subtitle: key, badge: { text: key } }];
         }
     }
 
@@ -58,51 +59,18 @@ const AppointmentScreen = ({ navigation }) => {
         );
     };
 
-    const [state, setState] = useState({ index: 0, routes: [] });
     const [loading, setLoading] = useState(true);
+    const [loadingData, setLoadingData] = useState(true);
     const [appointments, setAppointments] = useState({});
-
-    useEffect(() => {
-        http.get("/appointments/services")
-            .then(({ data: services }) => {
-                if (services?.length > 0) {
-                    const routes = services.map(({ id, name: label }) => {
-                        return { id, key: _toLower(label), label };
-                    });
-                    setState({ index: 0, routes });
-                    setLoading(false);
-                }
-            })
-            .catch(({ response }) => net.handleCatch(response, setLoading));
-    }, []);
-
-    useEffect(() => {
-        const index = state.index;
-        const routeData = _get(state?.routes, `[${index}]`, {});
-        const serviceID = routeData?.id || null;
-        const serviceKey = routeData?.key || null;
-
-        if (serviceID !== null && serviceKey !== null) {
-            http.get(`/appointments/from/service/${serviceID}`)
-                .then(({ data }) => {
-                    if (data?.length > 0) {
-                        const items = data.map(({ date, service, pet, veterinar: vet }) => {
-                            return {
-                                text: <Time date={date} />,
-                                subtitle: [vet?.name, vet?.city].join(", "),
-                                badge: { text: "Pending" },
-                                tags: [
-                                    { icon: "magic", text: service?.name },
-                                    { icon: "cat", text: pet?.name },
-                                ],
-                            };
-                        });
-                        setAppointments({ ...appointments, [serviceKey]: items });
-                    }
-                })
-                .catch(({ response }) => net.handleCatch(response, setLoading));
-        }
-    }, [state?.index, _get(state, "routes[0].id")]);
+    const [state, setState] = useState({
+        index: 0,
+        routes: [
+            { id: 1, key: "grooming", label: "Grooming" },
+            { id: 2, key: "boarding", label: "Boarding" },
+            { id: 3, key: "surgery", label: "Surgery" },
+            { id: 4, key: "general", label: "General" },
+        ],
+    });
 
     const scenes = _createSceneMap(state?.routes, Scene, _onPressItem, loading);
     const _onIndexChange = (index) => setState({ ...state, index });
@@ -112,7 +80,7 @@ const AppointmentScreen = ({ navigation }) => {
         const key = route?.key;
         const Scene = scenes[key];
         if (Scene !== undefined && Scene !== null) {
-            return <Scene data={appointments[key]} onPress={_onPressItem} loading={loading} />;
+            return <Scene data={appointments[key]} onPress={_onPressItem} loading={loadingData} />;
         }
         return null;
     };
@@ -127,6 +95,54 @@ const AppointmentScreen = ({ navigation }) => {
             />
         </Header>
     );
+    const _fetchAppointments = (key, id) => {
+        setLoadingData(!(appointments[key] && appointments[key]?.length > 0));
+        http.get(`/appointments/from/service/${id}`)
+            .then(({ data: apmts }) => {
+                setLoadingData(false);
+                if (apmts?.length > 0) {
+                    const items = apmts.map(({ date, service, pet, veterinar: vet }) => {
+                        return {
+                            text: <Time date={date} />,
+                            badge: { text: "Pending" },
+                            subtitle: [vet?.name, vet?.city].join(", "),
+                            tags: [
+                                { icon: "magic", text: service?.name },
+                                { icon: "cat", text: pet?.name },
+                            ],
+                        };
+                    });
+                    setAppointments({ ...appointments, [key]: items });
+                }
+            })
+            .catch(({ response }) => net.handleCatch(response, setLoadingData));
+    };
+
+    useEffect(() => {
+        http.get("/appointments/services")
+            .then(({ data: services }) => {
+                if (services?.length > 0) {
+                    const routes = services.map(({ id, name: label }, i) => {
+                        const key = _toLower(label);
+                        if (i === 0) {
+                            _fetchAppointments(key, id);
+                        }
+
+                        return { id, key, label };
+                    });
+                    setState({ index: 0, routes });
+                    setLoading(false);
+                }
+            })
+            .catch(({ response }) => net.handleCatch(response, setLoading));
+    }, []);
+
+    useEffect(() => {
+        const route = _get(state, `routes[${state.index}]`);
+        const id = route?.id;
+        const key = route?.key;
+        _fetchAppointments(key, id);
+    }, [state.index]);
 
     return (
         <Container>
