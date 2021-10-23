@@ -7,7 +7,7 @@ import http from "./http";
 import status from "./status";
 import moment from "moment";
 
-export default function fetchAppointments(key, serviceID, data = {}, setData, setLoading) {
+export default function fetchAppointments(key, serviceID, data = {}, setData, setLoading, excludes = []) {
     const Time = ({ date }) => {
         const d = moment(date);
         return (
@@ -21,7 +21,7 @@ export default function fetchAppointments(key, serviceID, data = {}, setData, se
     };
 
     setLoading(!data[key]);
-    http.get(`/appointments/by/service/${serviceID}`)
+    http.get(`/appointments/by/service/${serviceID}`, { params: { excludes: excludes.join(",") } })
         .then(({ data: apmts }) => {
             setLoading(false);
             if (apmts?.length > 0) {

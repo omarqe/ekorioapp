@@ -11,34 +11,23 @@ import TopBar from "../../components/topbar";
 import PetSwitch from "../../components/pet/pet-switch";
 import Container from "../../components/container";
 import EmptyArt from "../../../assets/arts/ginger-cat-722.svg";
+import AppointmentScene from "../../components/appointmnet/appointment-scene";
 
 import { TabView } from "react-native-tab-view";
 import { StyleSheet } from "react-native";
 
+import status from "../../functions/status";
+import _get from "lodash/get";
 import _first from "lodash/first";
 import _renderIf from "../../functions/renderIf";
 import _createSceneMap from "../../functions/createSceneMap";
-
-const Scene = ({ data, onPress }) => {
-    return (
-        <Layout scrollEnabled={false} gray>
-            <Body gray flex expanded>
-                {_renderIf(
-                    data?.length > 0,
-                    <List list={data} onPress={onPress} padded bounces scrollEnabled />,
-                    <Empty
-                        art={EmptyArt}
-                        artProps={{ style: { marginBottom: -10 } }}
-                        title="Oh mom, look it's empty! 👀"
-                        subtitle="Your upcoming appointments will appear here"
-                    />
-                )}
-            </Body>
-        </Layout>
-    );
-};
+import _fetchServiceTypes from "../../functions/fetchServiceTypes";
+import _fetchAppointments from "../../functions/fetchAppointments";
 
 const PetHealthRecordsScreen = ({ navigation, route }) => {
+    const [records, setRecords] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [loadingData, setLoadingData] = useState(true);
     const [petID, setPetID] = useState(null);
     const [state, setState] = useState({
         index: 0,
@@ -50,31 +39,45 @@ const PetHealthRecordsScreen = ({ navigation, route }) => {
         ],
     });
 
-    // Initialisation
-    useEffect(() => {
-        const petID = route?.params?.petID;
-        setPetID(petID ? petID : _first(pets)?.id);
-    }, []);
-
     const pets = [];
-    const scenes = _createSceneMap(state?.routes, Scene);
+    const scenes = _createSceneMap(state?.routes, AppointmentScene);
     const _onIndexChange = (index) => setState({ ...state, index });
     const _onPressItem = (index) => navigation.navigate("pet__health-details");
+    const _onSwitchPet = (id, index) => setPetID(id);
     const _renderScene = ({ route }) => {
         const key = route?.key;
         const Scene = scenes[key];
         if (Scene !== undefined && Scene !== null) {
-            return <Scene />;
+            return (
+                <Scene data={records[key]} initiated={records !== undefined} loading={loadingData} onPress={_onPressItem} />
+            );
         }
     };
     const _renderTabBar = ({ navigationState: state }) => (
         <Header style={styles.header}>
-            <Tabs tabs={state?.routes} active={state?.index} onPress={_onIndexChange} alwaysBounceHorizontal={false} />
+            <Tabs
+                tabs={state?.routes}
+                active={state?.index}
+                onPress={_onIndexChange}
+                loading={loading}
+                alwaysBounceHorizontal={false}
+            />
         </Header>
     );
-    const _onSwitch = (id, index) => {
-        setPetID(id);
-    };
+
+    // Initialisation
+    const excludes = ["pending", "confirmed", "active"].map((key) => status.id(key));
+    useEffect(() => {
+        setPetID(route?.params?.petID);
+        _fetchServiceTypes(setState, setLoading, setRecords, setLoadingData, excludes);
+    }, []);
+
+    useEffect(() => {
+        const route = _get(state, `routes[${state.index}]`);
+        const id = route?.id;
+        const key = route?.key;
+        _fetchAppointments(key, id, records, setRecords, setLoadingData, excludes);
+    }, [state?.index]);
 
     return (
         <Container>
@@ -83,7 +86,7 @@ const PetHealthRecordsScreen = ({ navigation, route }) => {
                 title="Health Records"
                 leftIcon="arrow-left"
                 leftIconProps={{ onPress: navigation.goBack }}
-                rightComponent={<PetSwitch pets={pets} checked={petID} onSwitch={_onSwitch} />}
+                rightComponent={<PetSwitch pets={pets} checked={petID} onSwitch={_onSwitchPet} />}
             />
             <TabView
                 renderScene={_renderScene}

@@ -1,26 +1,15 @@
 import React, { useState, useEffect } from "react";
-import CT from "../../const";
 
-import Body from "../../components/layout/body";
-import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
-
 import Tabs from "../../components/tabs";
-import Text from "../../components/text";
-import List from "../../components/list";
-import Empty from "../../components/empty";
 import TopBar from "../../components/topbar";
 import Container from "../../components/container";
-import EmptyArt from "../../../assets/arts/ginger-cat-722.svg";
+import AppointmentScene from "../../components/appointmnet/appointment-scene";
 
 import { TabView } from "react-native-tab-view";
 import { StyleSheet } from "react-native";
 
-import net from "../../functions/net";
-import http from "../../functions/http";
-import moment from "moment";
 import status from "../../functions/status";
-
 import _get from "lodash/get";
 import _clone from "lodash/clone";
 import _toLower from "lodash/toLower";
@@ -28,34 +17,6 @@ import _renderIf from "../../functions/renderIf";
 import _createSceneMap from "../../functions/createSceneMap";
 import _fetchServiceTypes from "../../functions/fetchServiceTypes";
 import _fetchAppointments from "../../functions/fetchAppointments";
-
-const Scene = ({ data = [], loading = false, initiated = false, onPress }) => {
-    if (loading || !initiated) {
-        data = [];
-        loading = true;
-        for (let i = 1; i < 3; i++) {
-            const key = i.toString();
-            data = [...data, { text: key, subtitle: key, badge: { text: key } }];
-        }
-    }
-
-    return (
-        <Layout scrollEnabled={false} gray>
-            <Body gray flex expanded>
-                {_renderIf(
-                    data?.length > 0,
-                    <List list={data} loading={loading} onPress={onPress} bounces scrollEnabled />,
-                    <Empty
-                        art={EmptyArt}
-                        artProps={{ style: { marginBottom: -10 } }}
-                        title="Oh mom, look it's empty! 👀"
-                        subtitle="Your upcoming appointments will appear here"
-                    />
-                )}
-            </Body>
-        </Layout>
-    );
-};
 
 const AppointmentScreen = ({ navigation, route }) => {
     const [loading, setLoading] = useState(true);
@@ -71,7 +32,7 @@ const AppointmentScreen = ({ navigation, route }) => {
         ],
     });
 
-    const scenes = _createSceneMap(state?.routes, Scene, _onPressItem, loading);
+    const scenes = _createSceneMap(state?.routes, AppointmentScene);
     const _onIndexChange = (index) => setState({ ...state, index });
     const _onPressBookingAppointment = () => navigation.navigate("appointment__booking");
     const _onPressItem = (index) => {
@@ -101,12 +62,13 @@ const AppointmentScreen = ({ navigation, route }) => {
     );
 
     // Initialization
-    useEffect(() => _fetchServiceTypes(setState, setLoading, setAppointments, setLoadingData), []);
+    const excludes = [status.id("completed")];
+    useEffect(() => _fetchServiceTypes(setState, setLoading, setAppointments, setLoadingData, excludes), []);
     useEffect(() => {
         const route = _get(state, `routes[${state.index}]`);
         const id = route?.id;
         const key = route?.key;
-        _fetchAppointments(key, id, appointments, setAppointments, setLoadingData);
+        _fetchAppointments(key, id, appointments, setAppointments, setLoadingData, excludes);
     }, [state.index, route?.params?.shouldRefresh]);
 
     return (
