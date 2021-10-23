@@ -10,11 +10,10 @@ import Empty from "../../components/empty";
 import TopBar from "../../components/topbar";
 import PetSwitch from "../../components/pet/pet-switch";
 import Container from "../../components/container";
+import EmptyArt from "../../../assets/arts/ginger-cat-722.svg";
 
-import pets from "../../../data/pets.json";
-
+import { TabView } from "react-native-tab-view";
 import { StyleSheet } from "react-native";
-import { TabView, SceneMap } from "react-native-tab-view";
 
 import _first from "lodash/first";
 import _renderIf from "../../functions/renderIf";
@@ -27,7 +26,12 @@ const Scene = ({ data, onPress }) => {
                 {_renderIf(
                     data?.length > 0,
                     <List list={data} onPress={onPress} padded bounces scrollEnabled />,
-                    <Empty title="Oh mom, look it's empty! 👀" subtitle="Your upcoming appointments will appear here" />
+                    <Empty
+                        art={EmptyArt}
+                        artProps={{ style: { marginBottom: -10 } }}
+                        title="Oh mom, look it's empty! 👀"
+                        subtitle="Your upcoming appointments will appear here"
+                    />
                 )}
             </Body>
         </Layout>
@@ -39,47 +43,30 @@ const PetHealthRecordsScreen = ({ navigation, route }) => {
     const [state, setState] = useState({
         index: 0,
         routes: [
-            {
-                key: "general",
-                label: "General",
-                data: [
-                    {
-                        text: "Friday, 13 August 2021",
-                        subtitle: "Cheshire was infected by virus and needs ...",
-                        badge: { text: "Checkup" },
-                        tags: [
-                            { icon: "map-marker-alt", text: "Petsville Animal Clinic" },
-                            { icon: "cat", text: "Cheshire" },
-                        ],
-                    },
-                ],
-            },
-            {
-                key: "boarding",
-                label: "Boarding",
-                data: [],
-            },
-            {
-                key: "surgery",
-                label: "Surgery",
-                data: [],
-            },
-            {
-                key: "others",
-                label: "Others",
-                data: [],
-            },
+            { key: "grooming", label: "Grooming" },
+            { key: "boarding", label: "Boarding" },
+            { key: "surgery", label: "Surgery" },
+            { key: "general", label: "General" },
         ],
     });
 
     // Initialisation
     useEffect(() => {
-        setPetID(route?.params?.petID ? route?.params?.petID : _first(pets)?.id);
+        const petID = route?.params?.petID;
+        setPetID(petID ? petID : _first(pets)?.id);
     }, []);
 
+    const pets = [];
+    const scenes = _createSceneMap(state?.routes, Scene);
     const _onIndexChange = (index) => setState({ ...state, index });
     const _onPressItem = (index) => navigation.navigate("pet__health-details");
-    const _renderScene = SceneMap(_createSceneMap(state?.routes, _onPressItem, Scene));
+    const _renderScene = ({ route }) => {
+        const key = route?.key;
+        const Scene = scenes[key];
+        if (Scene !== undefined && Scene !== null) {
+            return <Scene />;
+        }
+    };
     const _renderTabBar = ({ navigationState: state }) => (
         <Header style={styles.header}>
             <Tabs tabs={state?.routes} active={state?.index} onPress={_onIndexChange} alwaysBounceHorizontal={false} />
