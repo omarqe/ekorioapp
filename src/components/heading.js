@@ -52,10 +52,7 @@ const Heading = ({
                 )}
                 {badge && <Badge xs={size < 2} {...badge} />}
             </View>
-            {_renderIf(
-                subtitle,
-                _renderIf(loading, <Shimmer width={120} height={8} />, <Text style={subtitleStyle}>{subtitle}</Text>)
-            )}
+            {subtitle && _renderIf(loading, <Shimmer width={120} height={8} />, <Text style={subtitleStyle}>{subtitle}</Text>)}
         </View>
     );
 };
