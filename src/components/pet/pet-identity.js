@@ -61,10 +61,10 @@ const PetIdentity = ({ data = {}, button = null, loading = false }) => {
             { label: "Microchip ID", path: "microchipId", verifiedKey: "microchipVerified" },
             { label: "Breed", path: "breed.name" },
             { label: "Gender", path: "gender", special: (v) => _capitalize(v) },
+            { label: "Weight", path: "weight", special: (v) => `${v} kg` },
             { label: "Birthday", path: "birthday", special: (v) => moment(v).format("MMMM D, YYYY") },
             { label: "Age", path: "birthday", special: getPetYear },
             { label: "Age (in human years)", path: "birthday", special: getHumanYear },
-            { label: "Weight", path: "weight", special: (v) => `${v} kg` },
         ];
         fields.map(({ path, special, value = null, verifiedKey = null }, i) => {
             let verified = false;
