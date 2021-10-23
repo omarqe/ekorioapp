@@ -11,22 +11,25 @@ import List from "../../components/list";
 import Empty from "../../components/empty";
 import TopBar from "../../components/topbar";
 import Container from "../../components/container";
+import EmptyArt from "../../../assets/arts/ginger-cat-722.svg";
 
+import { TabView } from "react-native-tab-view";
 import { StyleSheet } from "react-native";
-import { TabView, SceneMap } from "react-native-tab-view";
 
 import net from "../../functions/net";
 import http from "../../functions/http";
 import moment from "moment";
+
 import _get from "lodash/get";
 import _clone from "lodash/clone";
 import _toLower from "lodash/toLower";
 import _renderIf from "../../functions/renderIf";
 import _createSceneMap from "../../functions/createSceneMap";
 
-const Scene = ({ data = [], loading = false, onPress }) => {
-    if (loading) {
+const Scene = ({ data = [], loading = false, initiated = false, onPress }) => {
+    if (loading || !initiated) {
         data = [];
+        loading = true;
         for (let i = 1; i < 3; i++) {
             const key = i.toString();
             data = [...data, { text: key, subtitle: key, badge: { text: key } }];
@@ -39,14 +42,19 @@ const Scene = ({ data = [], loading = false, onPress }) => {
                 {_renderIf(
                     data?.length > 0,
                     <List list={data} loading={loading} onPress={onPress} bounces scrollEnabled />,
-                    <Empty title="Oh mom, look it's empty! 👀" subtitle="Your upcoming appointments will appear here" />
+                    <Empty
+                        art={EmptyArt}
+                        artProps={{ style: { marginBottom: -10 } }}
+                        title="Oh mom, look it's empty! 👀"
+                        subtitle="Your upcoming appointments will appear here"
+                    />
                 )}
             </Body>
         </Layout>
     );
 };
 
-const AppointmentScreen = ({ navigation }) => {
+const AppointmentScreen = ({ navigation, route }) => {
     const Time = ({ date }) => {
         const d = moment(date);
         return (
@@ -74,13 +82,18 @@ const AppointmentScreen = ({ navigation }) => {
 
     const scenes = _createSceneMap(state?.routes, Scene, _onPressItem, loading);
     const _onIndexChange = (index) => setState({ ...state, index });
-    const _onPressItem = (index) => navigation.navigate("appointment__details");
     const _onPressBookingAppointment = () => navigation.navigate("appointment__booking");
+    const _onPressItem = (index) => {
+        const key = _get(state, `routes[${state.index}].key`);
+        const id = _get(appointments, `[${key}][${index}].id`);
+        navigation.navigate("appointment__details", { id });
+    };
     const _renderScene = ({ route }) => {
         const key = route?.key;
+        const data = appointments[key];
         const Scene = scenes[key];
         if (Scene !== undefined && Scene !== null) {
-            return <Scene data={appointments[key]} onPress={_onPressItem} loading={loadingData} />;
+            return <Scene data={data} initiated={data !== undefined} loading={loadingData} onPress={_onPressItem} />;
         }
         return null;
     };
@@ -96,13 +109,15 @@ const AppointmentScreen = ({ navigation }) => {
         </Header>
     );
     const _fetchAppointments = (key, id) => {
-        setLoadingData(!(appointments[key] && appointments[key]?.length > 0));
+        setLoadingData(!appointments[key]);
+
         http.get(`/appointments/from/service/${id}`)
             .then(({ data: apmts }) => {
                 setLoadingData(false);
                 if (apmts?.length > 0) {
-                    const items = apmts.map(({ date, service, pet, veterinar: vet }) => {
+                    const items = apmts.map(({ id, date, service, pet, veterinar: vet }) => {
                         return {
+                            id,
                             text: <Time date={date} />,
                             badge: { text: "Pending" },
                             subtitle: [vet?.name, vet?.city].join(", "),
@@ -113,7 +128,9 @@ const AppointmentScreen = ({ navigation }) => {
                         };
                     });
                     setAppointments({ ...appointments, [key]: items });
+                    return;
                 }
+                setAppointments({ ...appointments, [key]: [] });
             })
             .catch(({ response }) => net.handleCatch(response, setLoadingData));
     };
@@ -130,6 +147,7 @@ const AppointmentScreen = ({ navigation }) => {
 
                         return { id, key, label };
                     });
+                    console.log("routes", routes);
                     setState({ index: 0, routes });
                     setLoading(false);
                 }
@@ -142,7 +160,7 @@ const AppointmentScreen = ({ navigation }) => {
         const id = route?.id;
         const key = route?.key;
         _fetchAppointments(key, id);
-    }, [state.index]);
+    }, [state.index, route?.params?.shouldRefresh]);
 
     return (
         <Container>

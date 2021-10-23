@@ -2,9 +2,12 @@ import React from "react";
 import CT from "../const.js";
 import Text from "./text";
 import Badge from "./badge";
+import Shimmer from "./shimmer";
 import PropTypes from "prop-types";
 
 import { View, StyleSheet } from "react-native";
+
+import _renderIf from "../functions/renderIf";
 
 const Heading = ({
     size = 0,
@@ -13,6 +16,7 @@ const Heading = ({
     kicker,
     badge = null,
     subtitle,
+    loading = false,
     gapless = false,
     disabled = false,
     centered = false,
@@ -39,12 +43,19 @@ const Heading = ({
 
     return (
         <View style={baseStyle} {...restProps}>
-            {kicker && <Text style={kickerStyle}>{kicker}</Text>}
+            {kicker && _renderIf(loading, <Shimmer width={80} height={8} />, <Text style={kickerStyle}>{kicker}</Text>)}
             <View style={styles.title}>
-                <Text style={[textStyle, { color: disabled ? CT.BG_GRAY_300 : textStyle?.color }]}>{text}</Text>
+                {_renderIf(
+                    loading,
+                    <Shimmer width={180} height={12} style={{ marginTop: 5, marginBottom: 6 }} />,
+                    <Text style={[textStyle, { color: disabled ? CT.BG_GRAY_300 : textStyle?.color }]}>{text}</Text>
+                )}
                 {badge && <Badge xs={size < 2} {...badge} />}
             </View>
-            {subtitle && <Text style={subtitleStyle}>{subtitle}</Text>}
+            {_renderIf(
+                subtitle,
+                _renderIf(loading, <Shimmer width={120} height={8} />, <Text style={subtitleStyle}>{subtitle}</Text>)
+            )}
         </View>
     );
 };
@@ -52,6 +63,7 @@ const Heading = ({
 Heading.propTypes = {
     disabled: PropTypes.bool,
     gapless: PropTypes.bool,
+    loading: PropTypes.bool,
     style: PropTypes.object,
     size: PropTypes.oneOf([0, 1, 2, 3, 4]),
     text: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
