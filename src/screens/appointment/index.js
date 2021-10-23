@@ -12,14 +12,15 @@ import Empty from "../../components/empty";
 import TopBar from "../../components/topbar";
 import Container from "../../components/container";
 
+import { TabView } from "react-native-tab-view";
 import { StyleSheet } from "react-native";
-import { TabView, SceneMap } from "react-native-tab-view";
 
 import net from "../../functions/net";
 import http from "../../functions/http";
 import moment from "moment";
 import _get from "lodash/get";
 import _clone from "lodash/clone";
+import _toLower from "lodash/toLower";
 import _renderIf from "../../functions/renderIf";
 import _createSceneMap from "../../functions/createSceneMap";
 
@@ -36,7 +37,7 @@ const Scene = ({ data = [], loading = false, onPress }) => {
             <Body gray flex expanded>
                 {_renderIf(
                     data?.length > 0,
-                    <List list={data} loading={loading} onPress={onPress} padded bounces scrollEnabled />,
+                    <List list={data} loading={loading} onPress={onPress} bounces scrollEnabled />,
                     <Empty title="Oh mom, look it's empty! 👀" subtitle="Your upcoming appointments will appear here" />
                 )}
             </Body>
@@ -59,14 +60,14 @@ const AppointmentScreen = ({ navigation }) => {
 
     const [state, setState] = useState({ index: 0, routes: [] });
     const [loading, setLoading] = useState(true);
-    const [loadingData, setLoadingData] = useState(false);
+    const [appointments, setAppointments] = useState({});
 
     useEffect(() => {
         http.get("/appointments/services")
             .then(({ data: services }) => {
                 if (services?.length > 0) {
-                    const routes = services.map(({ id, name: label }, i) => {
-                        return { id, key: `${label}_${id}`, label, data: [] };
+                    const routes = services.map(({ id, name: label }) => {
+                        return { id, key: _toLower(label), label };
                     });
                     setState({ index: 0, routes });
                     setLoading(false);
@@ -79,13 +80,13 @@ const AppointmentScreen = ({ navigation }) => {
         const index = state.index;
         const routeData = _get(state?.routes, `[${index}]`, {});
         const serviceID = routeData?.id || null;
+        const serviceKey = routeData?.key || null;
 
-        if (serviceID !== null) {
+        if (serviceID !== null && serviceKey !== null) {
             http.get(`/appointments/from/service/${serviceID}`)
                 .then(({ data }) => {
                     if (data?.length > 0) {
-                        let routes = _clone(state?.routes);
-                        let item = data.map(({ date, service, pet, veterinar: vet }) => {
+                        const items = data.map(({ date, service, pet, veterinar: vet }) => {
                             return {
                                 text: <Time date={date} />,
                                 subtitle: [vet?.name, vet?.city].join(", "),
@@ -96,19 +97,25 @@ const AppointmentScreen = ({ navigation }) => {
                                 ],
                             };
                         });
-                        routes[index].data = item;
-                        setState({ index, routes });
+                        setAppointments({ ...appointments, [serviceKey]: items });
                     }
                 })
-                .catch(({ response }) => net.handleCatch(response, setLoadingData));
+                .catch(({ response }) => net.handleCatch(response, setLoading));
         }
     }, [state?.index, _get(state, "routes[0].id")]);
 
+    const scenes = _createSceneMap(state?.routes, Scene, _onPressItem, loading);
     const _onIndexChange = (index) => setState({ ...state, index });
     const _onPressItem = (index) => navigation.navigate("appointment__details");
     const _onPressBookingAppointment = () => navigation.navigate("appointment__booking");
-
-    const _renderScene = SceneMap(_createSceneMap(state?.routes, _onPressItem, Scene, {}, loading));
+    const _renderScene = ({ route }) => {
+        const key = route?.key;
+        const Scene = scenes[key];
+        if (Scene !== undefined && Scene !== null) {
+            return <Scene data={appointments[key]} onPress={_onPressItem} loading={loading} />;
+        }
+        return null;
+    };
     const _renderTabBar = ({ navigationState: state }) => (
         <Header style={styles.header}>
             <Tabs

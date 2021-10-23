@@ -1,6 +1,7 @@
-export default function createSceneMap(routes = [], onPress, body, scenes = {}, loading) {
+export default function createSceneMap(routes = [], body) {
+    let scenes = {};
     routes.map(({ key, data }) => {
-        scenes = { ...scenes, [key]: body.bind(null, { data, loading, onPress }) };
+        scenes = { ...scenes, [key]: body };
     });
 
     return scenes;
