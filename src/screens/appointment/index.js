@@ -26,6 +26,8 @@ import _clone from "lodash/clone";
 import _toLower from "lodash/toLower";
 import _renderIf from "../../functions/renderIf";
 import _createSceneMap from "../../functions/createSceneMap";
+import _fetchServiceTypes from "../../functions/fetchServiceTypes";
+import _fetchAppointments from "../../functions/fetchAppointments";
 
 const Scene = ({ data = [], loading = false, initiated = false, onPress }) => {
     if (loading || !initiated) {
@@ -56,18 +58,6 @@ const Scene = ({ data = [], loading = false, initiated = false, onPress }) => {
 };
 
 const AppointmentScreen = ({ navigation, route }) => {
-    const Time = ({ date }) => {
-        const d = moment(date);
-        return (
-            <React.Fragment>
-                <Text style={styles.time}>
-                    {d.format(CT.DATE_FORMAT_PRETTY)} <Text style={{ color: CT.BG_GRAY_200 }}>@</Text> {d.format("h:mm")}
-                </Text>
-                <Text style={{ color: CT.BG_GRAY_500, fontSize: 12, fontWeight: "600" }}>{d.format("a")}</Text>
-            </React.Fragment>
-        );
-    };
-
     const [loading, setLoading] = useState(true);
     const [loadingData, setLoadingData] = useState(true);
     const [appointments, setAppointments] = useState({});
@@ -109,56 +99,14 @@ const AppointmentScreen = ({ navigation, route }) => {
             />
         </Header>
     );
-    const _fetchAppointments = (key, id) => {
-        setLoadingData(!appointments[key]);
-        http.get(`/appointments/by/service/${id}`)
-            .then(({ data: apmts }) => {
-                setLoadingData(false);
-                if (apmts?.length > 0) {
-                    const items = apmts.map(({ id, date, service, pet, status: st, veterinar: vet }) => {
-                        return {
-                            id,
-                            text: <Time date={date} />,
-                            badge: { text: status.text(st), color: status.color(st) },
-                            subtitle: [vet?.name, vet?.city].join(", "),
-                            tags: [
-                                { icon: "magic", text: service?.name },
-                                { icon: "cat", text: pet?.name },
-                            ],
-                        };
-                    });
-                    setAppointments({ ...appointments, [key]: items });
-                    return;
-                }
-                setAppointments({ ...appointments, [key]: [] });
-            })
-            .catch(({ response }) => net.handleCatch(response, setLoadingData));
-    };
 
-    useEffect(() => {
-        http.get("/appointments/services")
-            .then(({ data: services }) => {
-                if (services?.length > 0) {
-                    const routes = services.map(({ id, name: label }, i) => {
-                        const key = _toLower(label);
-                        if (i === 0) {
-                            _fetchAppointments(key, id);
-                        }
-
-                        return { id, key, label };
-                    });
-                    setState({ index: 0, routes });
-                    setLoading(false);
-                }
-            })
-            .catch(({ response }) => net.handleCatch(response, setLoading));
-    }, []);
-
+    // Initialization
+    useEffect(() => _fetchServiceTypes(setState, setLoading, setAppointments, setLoadingData), []);
     useEffect(() => {
         const route = _get(state, `routes[${state.index}]`);
         const id = route?.id;
         const key = route?.key;
-        _fetchAppointments(key, id);
+        _fetchAppointments(key, id, appointments, setAppointments, setLoadingData);
     }, [state.index, route?.params?.shouldRefresh]);
 
     return (
