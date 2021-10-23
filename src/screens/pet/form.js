@@ -189,7 +189,7 @@ export default function PetFormScreen({ navigation, route }) {
                             imageBaseStyle={styles.petImageBase}
                             phIconProps={{ color: CT.BG_PURPLE_200 }}
                         />
-                        <Badge text={breedNameFromOptions} style={styles.petBadge} color="purple" />
+                        <Badge text={breedNameFromOptions} style={styles.petBadge} color="purple_dark" />
                     </Header>
                     <Body gray flex overlap topRounded>
                         <View style={styles.section}>
