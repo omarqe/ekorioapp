@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     },
     diagnosis: {
         color: CT.BG_GRAY_600,
-        fontSize: 14,
-        lineHeight: 24,
+        fontSize: 12,
+        lineHeight: 20,
     },
 });
