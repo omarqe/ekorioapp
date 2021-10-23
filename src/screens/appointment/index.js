@@ -19,6 +19,7 @@ import { StyleSheet } from "react-native";
 import net from "../../functions/net";
 import http from "../../functions/http";
 import moment from "moment";
+import status from "../../functions/status";
 
 import _get from "lodash/get";
 import _clone from "lodash/clone";
@@ -114,11 +115,11 @@ const AppointmentScreen = ({ navigation, route }) => {
             .then(({ data: apmts }) => {
                 setLoadingData(false);
                 if (apmts?.length > 0) {
-                    const items = apmts.map(({ id, date, service, pet, veterinar: vet }) => {
+                    const items = apmts.map(({ id, date, service, pet, status: st, veterinar: vet }) => {
                         return {
                             id,
                             text: <Time date={date} />,
-                            badge: { text: "Pending" },
+                            badge: { text: status.text(st), color: status.color(st) },
                             subtitle: [vet?.name, vet?.city].join(", "),
                             tags: [
                                 { icon: "magic", text: service?.name },
