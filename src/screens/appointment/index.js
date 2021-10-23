@@ -111,7 +111,7 @@ const AppointmentScreen = ({ navigation, route }) => {
     const _fetchAppointments = (key, id) => {
         setLoadingData(!appointments[key]);
 
-        http.get(`/appointments/from/service/${id}`)
+        http.get(`/appointments/by/service/${id}`)
             .then(({ data: apmts }) => {
                 setLoadingData(false);
                 if (apmts?.length > 0) {
