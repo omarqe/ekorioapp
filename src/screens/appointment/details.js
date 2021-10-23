@@ -32,7 +32,7 @@ export default function AppointmentDetailsScreen({ navigation, route }) {
     const pet = data?.pet;
     const vet = data?.veterinar;
     const date = moment(data?.date);
-    const topbar = { title: "Appointment Details", leftIcon: "arrow-left", leftIconProps: { onPress: navigation.goBack } };
+    const topbar = { title: "Appointment", leftIcon: "arrow-left", leftIconProps: { onPress: navigation.goBack } };
     const heading = {
         subtitle: [vet?.name, vet?.city].join(", "),
         text: (
@@ -74,7 +74,7 @@ export default function AppointmentDetailsScreen({ navigation, route }) {
             loading={loading}
             topbar={topbar}
             heading={heading}
-            badgeText="Checkup"
+            badgeText={data?.service?.name}
             bannerIcon="directions"
             bannerOptions="onGetDirections"
             {...options}
