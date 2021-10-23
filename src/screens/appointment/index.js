@@ -146,7 +146,6 @@ const AppointmentScreen = ({ navigation, route }) => {
 
                         return { id, key, label };
                     });
-                    console.log("routes", routes);
                     setState({ index: 0, routes });
                     setLoading(false);
                 }
