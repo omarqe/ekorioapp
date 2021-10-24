@@ -42,10 +42,16 @@ const AppointmentScreen = ({ navigation, route }) => {
     };
     const _renderScene = ({ route }) => {
         const key = route?.key;
-        const data = appointments[key];
         const Scene = scenes[key];
         if (Scene !== undefined && Scene !== null) {
-            return <Scene data={data} initiated={data !== undefined} loading={loadingData} onPress={_onPressItem} />;
+            return (
+                <Scene
+                    data={appointments[key]}
+                    loading={loadingData}
+                    onPress={_onPressItem}
+                    initiated={appointments[key] !== undefined}
+                />
+            );
         }
         return null;
     };

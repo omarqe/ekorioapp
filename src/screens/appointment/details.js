@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CT from "../../const";
 import Text from "../../components/text";
+import Badge from "../../components/badge";
 import Message from "../../components/message";
 import PetIdentity from "../../components/pet/pet-identity";
 import DetailContainer from "../../components/detail-container";
@@ -71,7 +72,7 @@ export default function AppointmentDetailsScreen({ navigation, route }) {
         },
         confirmed: {
             color: "green",
-            title: "Appointment is Confirmed",
+            title: "Appointment is Confirmed!",
             text: "Great! Your appointment has been confirmed by the veterinar. See you there!",
         },
     }[statusSlug];
@@ -102,8 +103,8 @@ export default function AppointmentDetailsScreen({ navigation, route }) {
                     title={message?.title}
                     color={message?.color}
                     style={{ padding: 15 }}
-                    textStyle={{ fontSize: 13, lineHeight: 16 }}
-                    titleStyle={{ fontSize: 15, marginBottom: 5 }}
+                    textStyle={{ fontSize: 12, lineHeight: 16 }}
+                    titleStyle={{ fontSize: 14, marginBottom: 5 }}
                 />
             </View>
             <PetIdentity data={pet} loading={loading} />

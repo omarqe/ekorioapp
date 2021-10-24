@@ -41,7 +41,10 @@ const PetHealthRecordsScreen = ({ navigation, route }) => {
     const scenes = _createSceneMap(state?.routes, AppointmentScene);
     const excludes = ["pending", "confirmed", "active"].map((key) => status.id(key));
     const _onIndexChange = (index) => setState({ ...state, index });
-    const _onSwitchPet = (id) => setPetID(id);
+    const _onSwitchPet = (id) => {
+        setPetID(id);
+        setRecords({});
+    };
     const _onPressItem = (index) => {
         const key = _get(state, `routes[${state.index}].key`);
         const id = _get(records, `[${key}][${index}].id`);
@@ -52,7 +55,12 @@ const PetHealthRecordsScreen = ({ navigation, route }) => {
         const Scene = scenes[key];
         if (Scene !== undefined && Scene !== null) {
             return (
-                <Scene data={records[key]} initiated={records !== undefined} loading={loadingData} onPress={_onPressItem} />
+                <Scene
+                    data={records[key]}
+                    loading={loadingData}
+                    onPress={_onPressItem}
+                    initiated={records[key] !== undefined}
+                />
             );
         }
     };
