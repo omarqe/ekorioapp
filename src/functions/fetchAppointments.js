@@ -24,7 +24,6 @@ export default function fetchAppointments(key, data = {}, setData, setLoading, p
     if (params?.excludes !== undefined && _isArray(params?.excludes)) {
         params.excludes = params.excludes.join(",");
     }
-    console.log("params", params);
 
     setLoading(!data[key]);
     http.get(`/appointments/by/custom`, { params })
@@ -43,8 +42,6 @@ export default function fetchAppointments(key, data = {}, setData, setLoading, p
                         ],
                     };
                 });
-
-                console.log("items:", items);
                 setData({ ...data, [key]: items });
                 return;
             }
