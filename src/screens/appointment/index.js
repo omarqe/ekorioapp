@@ -63,12 +63,12 @@ const AppointmentScreen = ({ navigation, route }) => {
 
     // Initialization
     const excludes = [status.id("completed")];
-    useEffect(() => _fetchServiceTypes(setState, setLoading, setAppointments, setLoadingData, excludes), []);
+    useEffect(() => _fetchServiceTypes(setState, setLoading, setAppointments, setLoadingData, { excludes }), []);
     useEffect(() => {
         const route = _get(state, `routes[${state.index}]`);
-        const id = route?.id;
         const key = route?.key;
-        _fetchAppointments(key, id, appointments, setAppointments, setLoadingData, excludes);
+        const serviceId = route?.id;
+        _fetchAppointments(key, appointments, setAppointments, setLoadingData, { serviceId, excludes });
     }, [state.index, route?.params?.shouldRefresh]);
 
     return (

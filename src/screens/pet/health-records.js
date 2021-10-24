@@ -72,15 +72,16 @@ const PetHealthRecordsScreen = ({ navigation, route }) => {
 
     // Initialisation
     useEffect(() => {
-        setPetID(route?.params?.petID);
-        _fetchServiceTypes(setState, setLoading, setRecords, setLoadingData, excludes);
+        const petId = route?.params?.petID;
+        setPetID(petId);
+        _fetchServiceTypes(setState, setLoading, setRecords, setLoadingData, { petId, excludes });
     }, []);
 
     useEffect(() => {
         const route = _get(state, `routes[${state.index}]`);
-        const id = route?.id;
-        const key = route?.key;
-        _fetchAppointments(key, id, records, setRecords, setLoadingData, excludes);
+        const petId = petID;
+        const serviceId = route?.id;
+        _fetchAppointments(route?.key, records, setRecords, setLoadingData, { serviceId, petId, excludes });
     }, [state?.index]);
 
     return (

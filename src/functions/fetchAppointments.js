@@ -6,8 +6,9 @@ import net from "./net";
 import http from "./http";
 import status from "./status";
 import moment from "moment";
+import _isArray from "lodash/isArray";
 
-export default function fetchAppointments(key, serviceID, data = {}, setData, setLoading, excludes = []) {
+export default function fetchAppointments(key, data = {}, setData, setLoading, params = {}) {
     const Time = ({ date }) => {
         const d = moment(date);
         return (
@@ -20,8 +21,13 @@ export default function fetchAppointments(key, serviceID, data = {}, setData, se
         );
     };
 
+    if (params?.excludes !== undefined && _isArray(params?.excludes)) {
+        params.excludes = params.excludes.join(",");
+    }
+    console.log("params", params);
+
     setLoading(!data[key]);
-    http.get(`/appointments/by/service/${serviceID}`, { params: { excludes: excludes.join(",") } })
+    http.get(`/appointments/by/custom`, { params })
         .then(({ data: apmts }) => {
             setLoading(false);
             if (apmts?.length > 0) {
@@ -38,6 +44,7 @@ export default function fetchAppointments(key, serviceID, data = {}, setData, se
                     };
                 });
 
+                console.log("items:", items);
                 setData({ ...data, [key]: items });
                 return;
             }
