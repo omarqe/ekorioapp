@@ -28,6 +28,7 @@ const Badge = (props) => {
     ];
     const colors = {
         red: { base: { backgroundColor: "#FE8F8F" }, text: { color: "#8D2828" } },
+        blue: { base: { backgroundColor: "#A2D2FF" }, text: { color: "#193498" } },
         green: { base: { backgroundColor: "#B1E693" }, text: { color: "#3E7C17" } },
         yellow: { base: { backgroundColor: CT.BG_YELLOW_300 }, text: { color: CT.BG_YELLOW_900 } },
         purple: { base: { backgroundColor: CT.BG_PURPLE_200 }, text: { color: CT.BG_PURPLE_600 } },
@@ -57,7 +58,7 @@ Badge.propTypes = {
     size: PropTypes.number,
     text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     style: PropTypes.object,
-    color: PropTypes.oneOf(["red", "green", "yellow", "purple", "purple_dark", "default"]),
+    color: PropTypes.oneOf(["red", "blue", "green", "yellow", "purple", "purple_dark", "default"]),
     textStyle: PropTypes.object,
 };
 

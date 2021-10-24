@@ -10,7 +10,7 @@ const statuses = [
     { id: "0005", text: "deactivated", color: "red" },
     { id: "0006", text: "confirmed", color: "green" },
     { id: "0007", text: "cancelled", color: "red" },
-    { id: "0008", text: "completed", color: "green" },
+    { id: "0008", text: "completed", color: "blue" },
 ];
 
 export default {
