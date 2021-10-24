@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from "react";
 
-import Body from "../../components/layout/body";
-import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
 
 import Tabs from "../../components/tabs";
-import List from "../../components/list";
-import Empty from "../../components/empty";
 import TopBar from "../../components/topbar";
 import PetSwitch from "../../components/pet/pet-switch";
 import Container from "../../components/container";
-import EmptyArt from "../../../assets/arts/ginger-cat-722.svg";
 import AppointmentScene from "../../components/appointmnet/appointment-scene";
 
 import { TabView } from "react-native-tab-view";
 import { StyleSheet } from "react-native";
 
+import net from "../../functions/net";
+import http from "../../functions/http";
 import status from "../../functions/status";
+
 import _get from "lodash/get";
 import _first from "lodash/first";
 import _renderIf from "../../functions/renderIf";
@@ -28,6 +26,7 @@ const PetHealthRecordsScreen = ({ navigation, route }) => {
     const [records, setRecords] = useState({});
     const [loading, setLoading] = useState(true);
     const [loadingData, setLoadingData] = useState(true);
+    const [pets, setPets] = useState([]);
     const [petID, setPetID] = useState(null);
     const [state, setState] = useState({
         index: 0,
@@ -39,7 +38,6 @@ const PetHealthRecordsScreen = ({ navigation, route }) => {
         ],
     });
 
-    const pets = [];
     const scenes = _createSceneMap(state?.routes, AppointmentScene);
     const excludes = ["pending", "confirmed", "active"].map((key) => status.id(key));
     const _onIndexChange = (index) => setState({ ...state, index });
@@ -73,8 +71,12 @@ const PetHealthRecordsScreen = ({ navigation, route }) => {
     // Initialisation
     useEffect(() => {
         const petId = route?.params?.petID;
-        setPetID(petId);
         _fetchServiceTypes(setState, setLoading, setRecords, setLoadingData, { petId, excludes });
+
+        setPetID(petId);
+        http.get("/pets")
+            .then(({ data }) => setPets(data?.length > 0 ? data : []))
+            .catch(({ response }) => net.handleCatch(response));
     }, []);
 
     useEffect(() => {
