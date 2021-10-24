@@ -79,6 +79,15 @@ export default {
     CTA_NEUTRAL: "#2c84ff",
     BORDER_FOCUS: "#96BAFF",
 
+    COLORED_STYLES: {
+        red: { base: { backgroundColor: "#FE8F8F" }, text: { color: "#8D2828" } },
+        blue: { base: { backgroundColor: "#A2D2FF" }, text: { color: "#3D56B2" } },
+        green: { base: { backgroundColor: "#B1E693" }, text: { color: "#3E7C17" } },
+        yellow: { base: { backgroundColor: "#FFD574" }, text: { color: "#C36A2D" } },
+        purple: { base: { backgroundColor: "#d1c7da" }, text: { color: "#362549" } },
+        purple_dark: { base: { backgroundColor: "#533b6b" }, text: { color: "#e3dce9" } },
+    },
+
     FONT_COLOR: "#323f4b",
     FONT_COLOR_LIGHT: "#616e7c",
 

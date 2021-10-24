@@ -12,6 +12,7 @@ const Badge = (props) => {
     if (xs) size = 0;
     else if (lg) size = 2;
 
+    const colors = CT.COLORED_STYLES;
     const sizes = [
         {
             base: { padding: 4, paddingLeft: 5, paddingRight: 6, borderRadius: 6 },
@@ -26,14 +27,6 @@ const Badge = (props) => {
             text: { fontSize: 14 },
         },
     ];
-    const colors = {
-        red: { base: { backgroundColor: "#FE8F8F" }, text: { color: "#8D2828" } },
-        blue: { base: { backgroundColor: "#A2D2FF" }, text: { color: "#193498" } },
-        green: { base: { backgroundColor: "#B1E693" }, text: { color: "#3E7C17" } },
-        yellow: { base: { backgroundColor: CT.BG_YELLOW_300 }, text: { color: CT.BG_YELLOW_900 } },
-        purple: { base: { backgroundColor: CT.BG_PURPLE_200 }, text: { color: CT.BG_PURPLE_600 } },
-        purple_dark: { base: { backgroundColor: CT.BG_PURPLE_500 }, text: { color: CT.BG_PURPLE_100 } },
-    };
 
     return (
         <View style={[styles.base, sizes[size]?.base, colors[color]?.base, style]}>
