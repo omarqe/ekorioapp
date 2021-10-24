@@ -51,7 +51,7 @@ Badge.propTypes = {
     size: PropTypes.number,
     text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     style: PropTypes.object,
-    color: PropTypes.oneOf(["red", "blue", "green", "yellow", "purple", "purple_dark", "default"]),
+    color: PropTypes.oneOf(Object.keys(CT.COLORED_STYLES)),
     textStyle: PropTypes.object,
 };
 

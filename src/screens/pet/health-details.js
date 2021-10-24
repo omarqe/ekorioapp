@@ -11,9 +11,11 @@ import { View, Linking, StyleSheet } from "react-native";
 import net from "../../functions/net";
 import http from "../../functions/http";
 import toast from "../../functions/toast";
+import status from "../../functions/status";
 import moment from "moment";
 
 import _renderIf from "../../functions/renderIf";
+import Message from "../../components/message";
 
 export default function PetHealthDetailsScreen({ navigation, route }) {
     const [data, setData] = useState({});
@@ -21,9 +23,11 @@ export default function PetHealthDetailsScreen({ navigation, route }) {
 
     const pet = data?.pet;
     const vet = data?.veterinar;
+    const meds = data?.prescriptions || [];
     const date = moment(data?.date);
     const topbar = { title: "Health Details", leftIcon: "arrow-left", leftIconProps: { onPress: navigation.goBack } };
     const heading = {
+        subtitle: [vet?.name, vet?.city].join(", "),
         text: (
             <Text>
                 {date.format(CT.DATE_FORMAT_PRETTY)}
@@ -34,7 +38,6 @@ export default function PetHealthDetailsScreen({ navigation, route }) {
                 </Text>
             </Text>
         ),
-        subtitle: [vet?.name, vet?.city].join(", "),
     };
     const options = {
         options: ["Call", "Send WhatsApp", "Cancel"],
@@ -61,7 +64,7 @@ export default function PetHealthDetailsScreen({ navigation, route }) {
             topbar={topbar}
             loading={loading}
             heading={heading}
-            badgeText="Checkup"
+            badgeText={data?.service?.name}
             bannerIcon="directions"
             bannerOptions="onGetDirections"
             {...options}
@@ -76,23 +79,69 @@ export default function PetHealthDetailsScreen({ navigation, route }) {
                             <Shimmer width={210} height={8} style={{ marginBottom: 8 }} />
                             <Shimmer width={180} height={8} />
                         </View>,
-                        <Text style={styles.diagnosis}>{data?.diagnosis || "No diagnosis avaialble."}</Text>
+                        _renderIf(
+                            data?.diagnosis?.length > 0,
+                            <Text style={styles.diagnosis}>{data?.diagnosis}</Text>,
+                            <Message
+                                title="No diagnosis added."
+                                text="There's no diagnosis added by the veterinarian."
+                                style={styles.message}
+                            />
+                        )
                     )}
                 </View>
             </View>
 
             <View style={styles.section}>
                 <View style={styles.medCard}>
-                    <Heading text="Prescription" badge={{ text: 2 }} gapless />
-                    <View style={[styles.medicine, { paddingBottom: 0 }]}>
-                        <Text style={styles.medName}>Tylosin Capsule</Text>
-                        <Text style={styles.medDesc}>To treat diarrhea and intestinal tract.</Text>
-                        <View style={styles.medBadges}>
-                            <Text style={styles.medBadgeText}>1&times; morning</Text>
-                            <Text style={styles.middot}>&bull;</Text>
-                            <Text style={styles.medBadgeText}>1&times; evening</Text>
+                    <Heading text="Prescription" badge={{ text: meds?.length }} />
+                    {_renderIf(
+                        loading,
+                        <View style={{ marginTop: 0 }}>
+                            <Shimmer width={100} height={10} style={{ marginBottom: 5 }} />
+                            <Shimmer width={200} height={8} style={{ marginBottom: 10 }} />
+                            <View style={{ flexDirection: "row" }}>
+                                <Shimmer width={55} height={6} style={{ marginRight: 3 }} />
+                                <Shimmer width={55} height={6} />
+                            </View>
+                        </View>,
+                        <View style={{ marginTop: 0 }}>
+                            {_renderIf(
+                                meds?.length > 0,
+                                meds.map(({ name, description, ...rest }, i) => {
+                                    let dot = -1;
+                                    const labels = ["morning", "afternoon", "evening", "night"];
+                                    return (
+                                        <View key={i} style={[styles.medicine, { marginTop: i > 0 ? 10 : 0 }]}>
+                                            <Text style={styles.medName}>{name}</Text>
+                                            <Text style={styles.medDesc}>{description || "No description."}</Text>
+                                            <View style={styles.medBadges}>
+                                                {labels.map((key, j) => {
+                                                    const n = rest[key];
+                                                    if (n > 0) {
+                                                        dot++;
+                                                        return (
+                                                            <React.Fragment key={j}>
+                                                                {dot > 0 && <Text style={styles.middot}>&bull;</Text>}
+                                                                <Text style={styles.medBadgeText}>
+                                                                    {n}&times; {labels[j]}
+                                                                </Text>
+                                                            </React.Fragment>
+                                                        );
+                                                    }
+                                                })}
+                                            </View>
+                                        </View>
+                                    );
+                                }),
+                                <Message
+                                    title="No prescription added."
+                                    text="The veterinarian did not add any meds."
+                                    style={styles.message}
+                                />
+                            )}
                         </View>
-                    </View>
+                    )}
                 </View>
             </View>
 
@@ -114,7 +163,7 @@ const styles = StyleSheet.create({
         paddingVertical: 3,
     },
     middot: {
-        top: -2,
+        top: -4,
         color: CT.BG_GRAY_100,
         fontSize: 18,
         marginHorizontal: 3,
@@ -139,6 +188,11 @@ const styles = StyleSheet.create({
         color: CT.BG_GRAY_300,
         fontSize: 12,
         fontWeight: "400",
+    },
+    message: {
+        borderWidth: 1,
+        borderColor: CT.BG_GRAY_100,
+        backgroundColor: CT.BG_GRAY_50,
     },
 
     section: {
