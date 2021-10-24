@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     base: {
         width: "100%",
         padding: 10,
-        borderRadius: 5,
+        borderRadius: 8,
         flexDirection: "row",
     },
     text: {

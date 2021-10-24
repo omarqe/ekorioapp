@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import CT from "../../const";
 import Text from "../../components/text";
+import Message from "../../components/message";
 import PetIdentity from "../../components/pet/pet-identity";
 import DetailContainer from "../../components/detail-container";
-import { Alert, Linking, StyleSheet } from "react-native";
+import { View, Alert, Linking, StyleSheet } from "react-native";
 
 import net from "../../functions/net";
 import http from "../../functions/http";
 import toast from "../../functions/toast";
 import moment from "moment";
+import status from "../../functions/status";
+import _toLower from "lodash/toLower";
 
 export default function AppointmentDetailsScreen({ navigation, route }) {
     const id = route?.params?.id;
@@ -59,6 +62,20 @@ export default function AppointmentDetailsScreen({ navigation, route }) {
         ],
     };
 
+    const statusSlug = _toLower(status.text(data?.status));
+    const message = {
+        pending: {
+            color: "yellow",
+            title: "Appointment is Pending",
+            text: "Your appointment is currently pending confirmation by the veterinar.",
+        },
+        confirmed: {
+            color: "green",
+            title: "Appointment is Confirmed",
+            text: "Great! Your appointment has been confirmed by the veterinar. See you there!",
+        },
+    }[statusSlug];
+
     useEffect(() => {
         http.get(`/appointments/${id}`)
             .then(({ data }) => {
@@ -79,6 +96,16 @@ export default function AppointmentDetailsScreen({ navigation, route }) {
             bannerOptions="onGetDirections"
             {...options}
         >
+            <View style={{ marginBottom: 20 }}>
+                <Message
+                    text={message?.text}
+                    title={message?.title}
+                    color={message?.color}
+                    style={{ padding: 15 }}
+                    textStyle={{ fontSize: 13, lineHeight: 16 }}
+                    titleStyle={{ fontSize: 15, marginBottom: 5 }}
+                />
+            </View>
             <PetIdentity data={pet} loading={loading} />
         </DetailContainer>
     );

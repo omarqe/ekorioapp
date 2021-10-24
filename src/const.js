@@ -84,7 +84,7 @@ export default {
         blue: { base: { backgroundColor: "#A2D2FF" }, text: { color: "#3D56B2" } },
         gray: { base: { backgroundColor: "#e1e7ed" }, text: { color: "#52606d" } },
         green: { base: { backgroundColor: "#B1E693" }, text: { color: "#3E7C17" } },
-        yellow: { base: { backgroundColor: "#FFD574" }, text: { color: "#C36A2D" } },
+        yellow: { base: { backgroundColor: "#FFD574" }, text: { color: "#bc6c25" } },
         purple: { base: { backgroundColor: "#d1c7da" }, text: { color: "#533b6b" } },
         purple_dark: { base: { backgroundColor: "#533b6b" }, text: { color: "#e3dce9" } },
     },
