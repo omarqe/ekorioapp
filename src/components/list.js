@@ -10,7 +10,7 @@ import _findLastIndex from "lodash/findLastIndex";
 
 LogBox.ignoreLogs(["VirtualizedLists should never be nested inside"]);
 
-export default function List({ list = [], sections = [], padded = false, onPress, ...restProps }) {
+export default function List({ list = [], sections = [], padded = false, loading = false, onPress, ...restProps }) {
     const isSectioned = _isArray(sections) && sections.length > 0;
     const isListed = _isArray(list) && list.length > 0;
 
@@ -19,7 +19,7 @@ export default function List({ list = [], sections = [], padded = false, onPress
     const _keyExtractor = ({ text, subtitle }, index) => text + subtitle + index;
     const _renderItem = ({ item, index, section }) => {
         const _onPress = (index) => {
-            if (typeof onPress === "function") {
+            if (typeof onPress === "function" && !loading) {
                 onPress(index);
             }
         };
@@ -28,6 +28,7 @@ export default function List({ list = [], sections = [], padded = false, onPress
             <ListItem
                 last={index === _findLastIndex(isSectioned ? section?.data : list)}
                 padded={padded}
+                loading={loading}
                 onPress={_onPress.bind(null, index)}
                 {...item}
             />
@@ -90,8 +91,9 @@ const styles = StyleSheet.create({
 });
 
 List.propTypes = {
-    padded: PropTypes.bool,
     list: PropTypes.arrayOf(PropTypes.object),
+    padded: PropTypes.bool,
+    loading: PropTypes.bool,
     onPress: PropTypes.func,
     sections: PropTypes.arrayOf(PropTypes.object),
 };

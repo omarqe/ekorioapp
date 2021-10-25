@@ -1,13 +1,24 @@
 import React, { useState } from "react";
 import CT from "../../const";
 import Text from "../text";
+import Shimmer from "../shimmer";
 import PropTypes from "prop-types";
 import { View, Pressable, StyleSheet } from "react-native";
 
 import _range from "lodash/range";
 import _numeral from "numeral";
+import _renderIf from "../../functions/renderIf";
 
-const Time = ({ times, width = 90, onSelect, hidden = [], unavailable = [], selected = 0 }) => {
+const Time = ({
+    times,
+    width = 90,
+    hidden = [],
+    loading = false,
+    disabled = false,
+    selected = 0,
+    onSelect,
+    unavailable = [],
+}) => {
     return times.map((time, i) => {
         let itemStyle = [styles.time, { width }];
         let timeText = styles.timeText;
@@ -30,17 +41,24 @@ const Time = ({ times, width = 90, onSelect, hidden = [], unavailable = [], sele
         return (
             <Pressable
                 key={i}
-                style={itemStyle}
+                style={[itemStyle, { opacity: disabled ? 0.6 : 1 }]}
+                disabled={disabled}
                 onPressIn={typeof onSelect === "function" && !isUnavailable ? onSelect.bind(null, time) : null}
             >
-                <Text style={timeText}>{_numeral(time).format("00.00").replace(".", ":")}</Text>
-                <Text style={meridiemText}>{time < 12 ? "am" : "pm"}</Text>
+                {_renderIf(
+                    loading,
+                    <Shimmer width={width - styles.time?.padding * 4} height={6} style={styles.shimmer} />,
+                    <React.Fragment>
+                        <Text style={timeText}>{_numeral(time).format("00.00").replace(".", ":")}</Text>
+                        <Text style={meridiemText}>{time < 12 ? "am" : "pm"}</Text>
+                    </React.Fragment>
+                )}
             </Pressable>
         );
     });
 };
 
-export default function BookingTime({ onSelect, hidden, selected, unavailable }) {
+export default function BookingTime({ onSelect = null, loading = false, ...restProps }) {
     const _onLayout = (e) => setWidth(e?.nativeEvent?.layout?.width);
 
     const [width, setWidth] = useState(0);
@@ -57,12 +75,11 @@ export default function BookingTime({ onSelect, hidden, selected, unavailable })
                     <Text style={styles.groupText}>{title}</Text>
                     <View style={styles.slots}>
                         <Time
-                            onSelect={onSelect}
                             times={times}
                             width={unitw}
-                            hidden={hidden}
-                            selected={selected}
-                            unavailable={unavailable}
+                            loading={loading}
+                            onSelect={!loading && onSelect !== null ? onSelect : null}
+                            {...restProps}
                         />
                     </View>
                 </View>
@@ -104,6 +121,10 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         ...CT.SHADOW_SM,
     },
+    shimmer: {
+        marginTop: 4,
+        marginBottom: 4,
+    },
     timeText: {
         color: CT.BG_GRAY_600,
         fontSize: 12,
@@ -120,5 +141,6 @@ BookingTime.propTypes = {
     onSelect: PropTypes.func,
     hidden: PropTypes.array,
     selected: PropTypes.number,
+    disabled: PropTypes.bool,
     available: PropTypes.array,
 };

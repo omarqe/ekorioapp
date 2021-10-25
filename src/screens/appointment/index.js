@@ -1,136 +1,81 @@
-import React, { useState } from "react";
-import CT from "../../const";
+import React, { useState, useEffect } from "react";
 
-import Body from "../../components/layout/body";
-import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
-
 import Tabs from "../../components/tabs";
-import Text from "../../components/text";
-import List from "../../components/list";
-import Empty from "../../components/empty";
 import TopBar from "../../components/topbar";
 import Container from "../../components/container";
+import AppointmentScene from "../../components/appointmnet/appointment-scene";
 
+import { TabView } from "react-native-tab-view";
 import { StyleSheet } from "react-native";
-import { TabView, SceneMap } from "react-native-tab-view";
 
+import status from "../../functions/status";
+import _get from "lodash/get";
+import _clone from "lodash/clone";
+import _toLower from "lodash/toLower";
 import _renderIf from "../../functions/renderIf";
 import _createSceneMap from "../../functions/createSceneMap";
+import _fetchServiceTypes from "../../functions/fetchServiceTypes";
+import _fetchAppointments from "../../functions/fetchAppointments";
 
-const Scene = ({ data, onPress }) => {
-    return (
-        <Layout scrollEnabled={false} gray>
-            <Body gray flex expanded>
-                {_renderIf(
-                    data?.length > 0,
-                    <List list={data} onPress={onPress} padded bounces scrollEnabled />,
-                    <Empty title="Oh mom, look it's empty! 👀" subtitle="Your upcoming appointments will appear here" />
-                )}
-            </Body>
-        </Layout>
-    );
-};
-
-const AppointmentScreen = ({ navigation }) => {
-    const Time = () => (
-        <React.Fragment>
-            <Text style={styles.time}>
-                Fri, 13 Aug 2021 <Text style={{ color: CT.BG_GRAY_200 }}>@</Text> 3:00
-            </Text>
-            <Text style={{ color: CT.BG_GRAY_500, fontSize: 12, fontWeight: "600" }}>pm</Text>
-        </React.Fragment>
-    );
-
+const AppointmentScreen = ({ navigation, route }) => {
+    const [loading, setLoading] = useState(true);
+    const [loadingData, setLoadingData] = useState(true);
+    const [appointments, setAppointments] = useState({});
     const [state, setState] = useState({
         index: 0,
         routes: [
-            {
-                key: "general",
-                label: "General",
-                data: [
-                    {
-                        text: <Time />,
-                        subtitle: "Petsville Animal Clinic, Cyberjaya",
-                        badge: { text: "Pending" },
-                        tags: [
-                            // { icon: "clock", text: "3:00pm" },
-                            { icon: "stethoscope", text: "Checkup" },
-                            { icon: "cat", text: "Cheshire" },
-                        ],
-                    },
-                    {
-                        text: <Time />,
-                        subtitle: "Petsville Animal Clinic, Cyberjaya",
-                        badge: { text: "Confirmed" },
-                        tags: [
-                            // { icon: "clock", text: "3:00pm" },
-                            { icon: "stethoscope", text: "Checkup" },
-                            { icon: "cat", text: "Cheshire" },
-                        ],
-                    },
-                ],
-            },
-            {
-                key: "boarding",
-                label: "Boarding",
-                data: [
-                    {
-                        text: <Time />,
-                        subtitle: "Catzonia, Petaling Jaya",
-                        badge: { text: "Pending" },
-                        tags: [
-                            // { icon: "clock", text: "3:00pm" },
-                            { icon: "magic", text: "Grooming" },
-                            { icon: "cat", text: "Cheshire" },
-                        ],
-                    },
-                    {
-                        text: <Time />,
-                        subtitle: "Catzonia, Petaling Jaya",
-                        badge: { text: "Pending" },
-                        tags: [
-                            // { icon: "clock", text: "3:00pm" },
-                            { icon: "concierge-bell", text: "Boarding" },
-                            { icon: "cat", text: "Cheshire" },
-                        ],
-                    },
-                ],
-            },
-            {
-                key: "surgery",
-                label: "Surgery",
-                data: [],
-            },
-            {
-                key: "others",
-                label: "Others",
-                data: [
-                    {
-                        text: <Time />,
-                        subtitle: "Catzonia, Petaling Jaya",
-                        badge: { text: "Pending" },
-                        tags: [
-                            // { icon: "clock", text: "3:00pm" },
-                            { icon: "stethoscope", text: "Service" },
-                            { icon: "cat", text: "Cheshire" },
-                        ],
-                    },
-                ],
-            },
+            { id: 1, key: "grooming", label: "Grooming" },
+            { id: 2, key: "boarding", label: "Boarding" },
+            { id: 3, key: "surgery", label: "Surgery" },
+            { id: 4, key: "general", label: "General" },
         ],
     });
 
+    const scenes = _createSceneMap(state?.routes, AppointmentScene);
     const _onIndexChange = (index) => setState({ ...state, index });
-    const _onPressItem = (index) => navigation.navigate("appointment__details");
     const _onPressBookingAppointment = () => navigation.navigate("appointment__booking");
-
-    const _renderScene = SceneMap(_createSceneMap(state?.routes, _onPressItem, Scene));
+    const _onPressItem = (index) => {
+        const key = _get(state, `routes[${state.index}].key`);
+        const id = _get(appointments, `[${key}][${index}].id`);
+        navigation.navigate("appointment__details", { id });
+    };
+    const _renderScene = ({ route }) => {
+        const key = route?.key;
+        const Scene = scenes[key];
+        if (Scene !== undefined && Scene !== null) {
+            return (
+                <Scene
+                    data={appointments[key]}
+                    loading={loadingData}
+                    onPress={_onPressItem}
+                    initiated={appointments[key] !== undefined}
+                />
+            );
+        }
+        return null;
+    };
     const _renderTabBar = ({ navigationState: state }) => (
         <Header style={styles.header}>
-            <Tabs tabs={state?.routes} active={state?.index} onPress={_onIndexChange} alwaysBounceHorizontal={false} />
+            <Tabs
+                loading={loading}
+                tabs={state?.routes}
+                active={state?.index}
+                onPress={_onIndexChange}
+                alwaysBounceHorizontal={false}
+            />
         </Header>
     );
+
+    // Initialization
+    const excludes = [status.id("completed")];
+    useEffect(() => _fetchServiceTypes(setState, setLoading, setAppointments, setLoadingData, { excludes }), []);
+    useEffect(() => {
+        const route = _get(state, `routes[${state.index}]`);
+        const key = route?.key;
+        const serviceId = route?.id;
+        _fetchAppointments(key, appointments, setAppointments, setLoadingData, { serviceId, excludes });
+    }, [state.index, route?.params?.shouldRefresh]);
 
     return (
         <Container>

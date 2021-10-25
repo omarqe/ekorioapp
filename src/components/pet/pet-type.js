@@ -10,22 +10,23 @@ import Bird from "../../../assets/pet-types/bird.svg";
 import Rabbit from "../../../assets/pet-types/rabbit.svg";
 import Turtle from "../../../assets/pet-types/turtle.svg";
 
+import _toLower from "lodash/toLower";
+
 import { View, Pressable, StyleSheet } from "react-native";
 export default function PetType(props) {
-    let { type, style = {}, active, onPress: _onPress, disabled = false } = props;
+    let { id, name, style = {}, active, onPress: _onPress, disabled = false } = props;
 
     const icon = { cat: Cat, dog: Dog, bird: Bird, rabbit: Rabbit, turtle: Turtle };
-    const onPress = typeof _onPress === "function" && !disabled ? _onPress.bind(null, type) : null;
+    const PetIcon = icon[_toLower(name)] ?? null;
+    const onPress = typeof _onPress === "function" && !disabled ? _onPress.bind(null, id) : null;
     const disabledStyle = onPress === null || disabled ? { opacity: 0.4 } : null;
-
-    const PetIcon = icon[type] ?? null;
 
     return (
         <Pressable style={disabledStyle} onPress={onPress} disabled={disabled}>
             <View style={[styles.base, active ? styles.baseActive : {}, style]}>
-                {icon[type] ? <PetIcon width={48} /> : <Icon icon="fas paw" size={28} color={CT.BG_PURPLE_500} />}
+                {PetIcon !== null ? <PetIcon width={48} /> : <Icon icon="fas paw" size={28} color={CT.BG_PURPLE_500} />}
             </View>
-            <Text style={[styles.type, active ? styles.typeActive : {}]}>{type}</Text>
+            <Text style={[styles.type, active ? styles.typeActive : {}]}>{name}</Text>
         </Pressable>
     );
 }

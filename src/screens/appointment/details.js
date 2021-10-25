@@ -1,33 +1,51 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CT from "../../const";
 import Text from "../../components/text";
+import Badge from "../../components/badge";
+import Message from "../../components/message";
 import PetIdentity from "../../components/pet/pet-identity";
 import DetailContainer from "../../components/detail-container";
+import { View, Alert, Linking, StyleSheet } from "react-native";
 
-import { Alert, Linking, StyleSheet } from "react-native";
+import net from "../../functions/net";
+import http from "../../functions/http";
+import toast from "../../functions/toast";
+import moment from "moment";
+import status from "../../functions/status";
+import _toLower from "lodash/toLower";
 
-export default function AppointmentDetailsScreen({ navigation }) {
-    const petData = [
-        { label: "Name", value: "Cheshire" },
-        { label: "Microchip ID", value: "0028031030021", verified: true },
-        { label: "Parent's Name", value: "Eve Harrison" },
-        { label: "Colors", value: ["#3E4C59", "#9AA5B1"] },
-        { label: "Breed", value: "British Shorthair" },
-        { label: "Birthday", value: "Jan 1, 2021" },
-        { label: "Age (Cat Year)", value: "7 months" },
-        { label: "Age (Human Year)", value: "11 years" },
-        { label: "Gender", value: "Male" },
-        { label: "Weight", value: "2.50 kg" },
-    ];
+export default function AppointmentDetailsScreen({ navigation, route }) {
+    const id = route?.params?.id;
+    const [data, setData] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [loadingAction, setLoadingAction] = useState(false);
 
-    const topbar = { title: "Appointment Details", leftIcon: "arrow-left", leftIconProps: { onPress: navigation.goBack } };
+    const _onCancelAppointment = () => {
+        setLoadingAction(true);
+        http.put("/appointments/cancel", net.data({ id, reason: "Cancelled by user" }))
+            .then(({ data }) => {
+                setLoadingAction(false);
+                toast.fromData(data, "response[0].message");
+                if (data?.success) {
+                    navigation.navigate("appointment", { shouldRefresh: Date.now() });
+                }
+            })
+            .catch(({ response }) => net.handleCatch(response, setLoadingAction));
+    };
+
+    const pet = data?.pet;
+    const vet = data?.veterinar;
+    const date = moment(data?.date);
+    const topbar = { title: "Appointment", leftIcon: "arrow-left", leftIconProps: { onPress: navigation.goBack } };
     const heading = {
-        subtitle: "Petsville Animal Clinic, Cyberjaya",
+        subtitle: [vet?.name, vet?.city].join(", "),
         text: (
             <Text>
-                {"Friday, 3 August "}
+                {date.format(CT.DATE_FORMAT_PRETTY)}
                 <Text style={styles.time}>
-                    <Text style={styles.at}>@</Text> 3.00<Text style={styles.meridiem}>pm</Text>
+                    <Text style={styles.at}> @ </Text>
+                    {date.format("h.mm")}
+                    <Text style={styles.meridiem}>{date.format("a")}</Text>
                 </Text>
             </Text>
         ),
@@ -40,21 +58,56 @@ export default function AppointmentDetailsScreen({ navigation }) {
             () => Linking.openURL("https://wa.me/60126647006"),
             Alert.alert.bind(null, "Are you sure?", "Are you sure you want to cancel this appointment?", [
                 { text: "Cancel", style: "cancel", onPress: () => null },
-                { text: "Confirm", style: "destructive", onPress: navigation.goBack },
+                { text: "Confirm", style: "destructive", onPress: _onCancelAppointment },
             ]),
         ],
     };
 
+    const statusSlug = _toLower(status.text(data?.status));
+    const message = {
+        pending: {
+            color: "yellow",
+            title: "Appointment is Pending",
+            text: "Your appointment is currently pending confirmation by the veterinar.",
+        },
+        confirmed: {
+            color: "green",
+            title: "Appointment is Confirmed!",
+            text: "Great! Your appointment has been confirmed by the veterinar. See you there!",
+        },
+    }[statusSlug];
+
+    useEffect(() => {
+        http.get(`/appointments/${id}`)
+            .then(({ data }) => {
+                setData(data);
+                setLoading(false);
+            })
+            .catch(({ response }) => net.handleCatch(response, setLoading));
+    }, []);
+
     return (
         <DetailContainer
+            loadingAction={loadingAction}
+            loading={loading}
             topbar={topbar}
             heading={heading}
-            badgeText="Checkup"
+            badgeText={data?.service?.name}
             bannerIcon="directions"
             bannerOptions="onGetDirections"
             {...options}
         >
-            <PetIdentity data={petData} />
+            <View style={{ marginBottom: 20 }}>
+                <Message
+                    text={message?.text}
+                    title={message?.title}
+                    color={message?.color}
+                    style={{ padding: 15 }}
+                    textStyle={{ fontSize: 12, lineHeight: 16 }}
+                    titleStyle={{ fontSize: 14, marginBottom: 5 }}
+                />
+            </View>
+            <PetIdentity data={pet} loading={loading} />
         </DetailContainer>
     );
 }

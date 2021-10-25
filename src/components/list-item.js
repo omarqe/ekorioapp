@@ -4,9 +4,15 @@ import CT from "../const";
 import Icon from "./icon";
 import Text from "./text";
 import Badge from "./badge";
+import Shimmer from "./shimmer";
 import PropTypes from "prop-types";
 import { View, Pressable, StyleSheet } from "react-native";
+
+import _times from "lodash/times";
+import _renderIf from "../functions/renderIf";
+
 export default function ListItem({
+    loading = false,
     padded = false,
     tags,
     badge,
@@ -20,53 +26,75 @@ export default function ListItem({
 }) {
     const [pressed, setPressed] = useState(false);
     const _onPressIn = () => {
-        setPressed(true);
-        if (typeof onPressIn === "function") {
-            onPressIn();
+        if (!loading) {
+            setPressed(true);
+            if (typeof onPressIn === "function") {
+                onPressIn();
+            }
         }
     };
     const _onPressOut = () => {
-        setPressed(false);
-        if (typeof onPressOut === "function") {
-            onPressOut();
+        if (!loading) {
+            setPressed(false);
+            if (typeof onPressOut === "function") {
+                onPressOut();
+            }
         }
     };
 
     let baseStyle = styles.base;
-
     if (last) baseStyle = { ...baseStyle, borderBottomWidth: 1 };
     if (padded) baseStyle = { ...baseStyle, paddingVertical: 15 };
     if (pressed) baseStyle = { ...baseStyle, backgroundColor: CT.BG_GRAY_50 };
 
     return (
-        <Pressable style={baseStyle} onPressIn={_onPressIn} onPressOut={_onPressOut} {...restProps}>
+        <Pressable style={baseStyle} onPressIn={_onPressIn} onPressOut={_onPressOut} disabled={loading} {...restProps}>
             {icon && (
                 <View style={styles.iconContainer}>
-                    <Icon icon={`fal ${icon}`} size={20} color={CT.BG_GRAY_300} />
+                    {_renderIf(
+                        loading,
+                        <Shimmer width={25} height={25} style={{ borderRadius: 20 }} />,
+                        <Icon icon={`fal ${icon}`} size={20} color={CT.BG_GRAY_300} />
+                    )}
                 </View>
             )}
             <View style={styles.labelContainer}>
-                <Text style={styles.title}>{text}</Text>
-                {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
-                {badge && (
-                    <View style={styles.badgeContainer}>
-                        <Badge xs {...badge} />
-                    </View>
+                {_renderIf(
+                    loading,
+                    <Shimmer height={12} style={{ marginBottom: 5 }} />,
+                    <Text style={styles.title}>{text}</Text>
                 )}
-
-                {tags && (
+                {_renderIf(
+                    subtitle,
+                    _renderIf(loading, <Shimmer width={100} height={8} />, <Text style={styles.subtitle}>{subtitle}</Text>)
+                )}
+                {_renderIf(
+                    loading,
                     <View style={styles.tags}>
-                        {tags.map(({ icon, text, iconProps }, i) => {
-                            return (
-                                <View key={i} style={styles.tagItem}>
-                                    <Icon icon={`fal ${icon}`} size={12} style={styles.tagIcon} {...iconProps} />
-                                    <Text style={styles.tagText}>{text}</Text>
-                                </View>
-                            );
-                        })}
-                    </View>
+                        {_times(2).map((n) => (
+                            <Shimmer key={n} width={30} height={8} style={{ marginRight: 5 }} />
+                        ))}
+                    </View>,
+                    tags && (
+                        <View style={styles.tags}>
+                            {tags.map(({ icon, text, iconProps }, i) => {
+                                return (
+                                    <View key={i} style={styles.tagItem}>
+                                        <Icon icon={`fal ${icon}`} size={12} style={styles.tagIcon} {...iconProps} />
+                                        <Text style={styles.tagText}>{text}</Text>
+                                    </View>
+                                );
+                            })}
+                        </View>
+                    )
                 )}
             </View>
+
+            {badge && (
+                <View style={styles.badgeContainer}>
+                    {_renderIf(loading, <Shimmer width={60} height={12} />, <Badge xs {...badge} />)}
+                </View>
+            )}
         </Pressable>
     );
 }
@@ -92,8 +120,8 @@ const styles = StyleSheet.create({
     },
     badgeContainer: {
         top: 0,
-        right: 0,
-        position: "absolute",
+        height: "100%",
+        alignItems: "flex-start",
     },
     title: {
         color: CT.FONT_COLOR,

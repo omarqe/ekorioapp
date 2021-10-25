@@ -3,7 +3,7 @@ import CT from "../../const.js";
 import PropTypes from "prop-types";
 import { View, ScrollView, StyleSheet } from "react-native";
 
-const Layout = ({ base = "white", gray = false, withHeader = false, children, ...restProps }) => {
+const Layout = ({ base = "white", style = {}, gray = false, withHeader = false, children, ...restProps }) => {
     if (gray) base = "gray";
     const baseColor = { white: CT.BG_WHITE, gray: CT.BG_GRAY_50, purple: CT.BG_PURPLE_900 };
     const topStyle = { ...styles.backdrop, top: 0, backgroundColor: withHeader ? baseColor.purple : baseColor[base] };
@@ -13,7 +13,7 @@ const Layout = ({ base = "white", gray = false, withHeader = false, children, ..
         <View style={styles.base}>
             <View style={topStyle} />
             <View style={bottomStyle} />
-            <ScrollView contentContainerStyle={styles.bodyContentContainer} {...restProps}>
+            <ScrollView contentContainerStyle={[styles.bodyContentContainer, style]} {...restProps}>
                 {children}
             </ScrollView>
         </View>
@@ -23,6 +23,7 @@ const Layout = ({ base = "white", gray = false, withHeader = false, children, ..
 Layout.propTypes = {
     base: PropTypes.oneOf(["gray", "white", "purple"]),
     gray: PropTypes.bool,
+    style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     withHeader: PropTypes.bool,
     contentProps: PropTypes.object,
 };

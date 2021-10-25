@@ -6,35 +6,52 @@ import Text from "../text";
 import Badge from "../badge";
 import Modal from "../modal";
 import Heading from "../heading";
+import Shimmer from "../shimmer";
 import PropTypes from "prop-types";
 
 import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 
 import _find from "lodash/find";
+import _clone from "lodash/clone";
+import _orderBy from "lodash/orderBy";
 import _isArray from "lodash/isArray";
 import _renderIf from "../../functions/renderIf";
 import _makeColor from "../../functions/makeColor";
 
-export default function HealthCategories({ data = [] }) {
+export default function HealthCategories({ loading = false, data = [] }) {
+    if (loading) {
+        data = [];
+        for (let i = 0; i < 3; i++) {
+            data = [...data, {}];
+        }
+    } else if (data?.length < 1 && !loading) {
+        return <React.Fragment />;
+    }
+
     const [openID, setOpenID] = useState(null);
     const [pressedIndex, setPressedIndex] = useState(null);
-
     const current = _find(data, { id: openID });
     const currentColor = _makeColor(current?.score, 10);
 
-    const _onPressOut = () => setPressedIndex(null);
-    const _onPressIn = (index) => setPressedIndex(index);
+    const _onPressOut = () => togglePressed(null);
+    const _onPressIn = (index) => togglePressed(index);
     const _onClose = () => setOpenID(null);
     const _onPress = (id) => {
-        if (_find(data, { id })) {
+        if (_find(data, { id }) && !loading) {
             setOpenID(id);
         }
     };
+    const togglePressed = (state) => {
+        if (!loading) setPressedIndex(state);
+    };
 
     if (_isArray(data) && data.length > 0) {
+        data = _orderBy(data, "score", "asc");
+
         return (
             <View style={styles.base}>
                 {data.map(({ id, label, score }, i) => {
+                    score = Math.ceil(score);
                     const color = _makeColor(score ?? 0, 10);
                     const isPressed = pressedIndex === i;
                     const iconColor = isPressed ? CT.BG_GRAY_300 : CT.BG_GRAY_200;
@@ -63,15 +80,18 @@ export default function HealthCategories({ data = [] }) {
                     return (
                         <TouchableWithoutFeedback {...props}>
                             <View style={itemStyle}>
-                                <View style={styles.badgeContainer}>
-                                    <Badge
-                                        text={`${score}/10`}
-                                        style={{ backgroundColor: color?.background }}
-                                        textStyle={{ ...styles.badge, color: color?.text }}
-                                        xs
-                                    />
-                                </View>
-                                <Text style={styles.label}>{label}</Text>
+                                <Shimmer loading={loading} height={10} contentStyle={styles.shimmer}>
+                                    <View style={styles.badgeContainer}>
+                                        <Badge
+                                            text={`${score}/10`}
+                                            style={{ backgroundColor: color?.background }}
+                                            textStyle={{ ...styles.badge, color: color?.text }}
+                                            xs
+                                        />
+                                    </View>
+                                    <Text style={styles.label}>{label}</Text>
+                                </Shimmer>
+
                                 <Icon icon="fas chevron-right" size={12} color={iconColor} style={styles.icon} />
                             </View>
                         </TouchableWithoutFeedback>
@@ -86,7 +106,7 @@ export default function HealthCategories({ data = [] }) {
                     open={openID !== null}
                     style={{ backgroundColor: CT.BG_GRAY_50 }}
                     badge={{
-                        text: `${current?.score}/10`,
+                        text: `${Math.ceil(current?.score)}/10`,
                         style: { backgroundColor: currentColor?.background },
                         textStyle: { color: currentColor?.text },
                     }}
@@ -101,10 +121,10 @@ export default function HealthCategories({ data = [] }) {
                             {_renderIf(
                                 (current?.factors ?? [])?.length < 1,
                                 <Text style={styles.factor}>No factor known.</Text>,
-                                (current?.factors ?? []).map(({ value, important }, i) => (
-                                    <Text key={i} style={[styles.factor, important ? styles.factorImportant : null]}>
-                                        {value}
-                                        <Text style={[styles.factorDot, important ? styles.factorDotImportant : null]}>
+                                (_orderBy(current?.factors, "critical", "desc") ?? []).map(({ text, critical }, i) => (
+                                    <Text key={i} style={[styles.factor, critical ? styles.factorCritical : null]}>
+                                        {text}
+                                        <Text style={[styles.factorDot, critical ? styles.factorDotCritical : null]}>
                                             {i === current?.factors?.length - 1 ? "" : " • "}
                                         </Text>
                                     </Text>
@@ -115,7 +135,7 @@ export default function HealthCategories({ data = [] }) {
                     <View style={styles.section}>
                         <Heading text="Explanation" style={styles.sectionHeading} />
                         <Text style={[styles.factor, { lineHeight }]}>
-                            {current?.explanation ?? "No explanation available."}
+                            {current?.explanation !== "" ? current?.explanation : "No explanation available."}
                         </Text>
                     </View>
                 </Modal>
@@ -175,23 +195,28 @@ const styles = StyleSheet.create({
         color: CT.BG_GRAY_600,
         fontSize: 13,
     },
-    factorImportant: {
-        color: CT.BG_GRAY_700,
+    factorCritical: {
+        color: "#df7373",
         fontWeight: "700",
     },
     factorDot: {
         color: CT.BG_GRAY_200,
         fontWeight: "700",
     },
-    factorDotImportant: {
-        color: CT.BG_GRAY_200,
+    factorDotCritical: {
+        color: CT.BG_GRAY_200, // "#fcb9b2",
     },
     modalHeader: {
         paddingBottom: 25,
         backgroundColor: CT.BG_WHITE,
     },
+    shimmer: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
 });
 
 HealthCategories.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
+    loading: PropTypes.bool,
 };

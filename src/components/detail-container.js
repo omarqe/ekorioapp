@@ -10,6 +10,7 @@ import Text from "./text";
 import Badge from "./badge";
 import TopBar from "./topbar";
 import Banner from "./banner";
+import Shimmer from "./shimmer";
 import Heading from "./heading";
 import Container from "./container";
 import ButtonIcon from "./button-icon";
@@ -18,9 +19,11 @@ import PropTypes from "prop-types";
 import { View, StyleSheet } from "react-native";
 import { useActionSheet, connectActionSheet } from "@expo/react-native-action-sheet";
 
+import _renderIf from "../functions/renderIf";
+
 const DetailContainer = connectActionSheet((props) => {
     let { children, badgeText, topbar = {}, heading = {} } = props;
-    const { options = [], optionConfig = {}, optionCommands = [] } = props;
+    const { options = [], optionConfig = {}, optionCommands = [], loading = false, loadingAction = false } = props;
     const { bannerOptions = [], bannerIcon, bannerIconColor, bannerOptionConfig = {}, bannerOptionCommands = [] } = props;
     const { showActionSheetWithOptions } = useActionSheet();
 
@@ -87,13 +90,21 @@ const DetailContainer = connectActionSheet((props) => {
     }
 
     return (
-        <Container>
+        <Container loading={loadingAction}>
             {topbar && <TopBar {...topbar} />}
             <Header contentStyle={styles.headerContent} style={styles.header}>
                 <Banner style={styles.banner} contentStyle={styles.bannerContentContainer}>
                     <View style={styles.bannerContent}>
                         <View style={styles.badgeContainer}>
-                            {badgeText && <Badge text={badgeText} style={{ marginRight: 5 }} xs />}
+                            {_renderIf(
+                                badgeText,
+                                _renderIf(
+                                    loading,
+                                    <Shimmer width={50} height={15} />,
+                                    <Badge text={badgeText} style={{ marginRight: 5 }} xs />
+                                )
+                            )}
+
                             {heading?.time && (
                                 <View style={styles.timeContent}>
                                     <Icon icon="fas clock" size={12} style={styles.timeIcon} />
@@ -101,9 +112,9 @@ const DetailContainer = connectActionSheet((props) => {
                                 </View>
                             )}
                         </View>
-                        <Heading size={0} gapless {...heading} />
+                        <Heading loading={loading} gapless {...heading} />
                     </View>
-                    {bannerOptions?.length > 0 && (
+                    {!loading && bannerOptions?.length > 0 && (
                         <ButtonIcon
                             icon={bannerIcon ?? "ellipsis-h"}
                             style={styles.directions}
@@ -208,6 +219,9 @@ DetailContainer.propTypes = {
     topbar: PropTypes.object.isRequired,
     heading: PropTypes.object.isRequired,
     badgeText: PropTypes.string,
+
+    loading: PropTypes.bool,
+    loadingAction: PropTypes.bool,
 };
 
 export default DetailContainer;

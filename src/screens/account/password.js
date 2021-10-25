@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import CT from "../../const";
 
 import Button from "../../components/button";
@@ -14,27 +14,73 @@ import KeyboardAvoiding from "../../components/keyboard-avoiding";
 
 import { View, StyleSheet } from "react-native";
 
+import net from "../../functions/net";
+import http from "../../functions/http";
+import toast from "../../functions/toast";
+import store from "../../functions/store";
+
 export default function AccountPasswordScreen({ navigation }) {
+    const [data, setData] = useState({ old_password: "", password: "", confirm_password: "" });
+    const [loading, setLoading] = useState(false);
+
     const fieldGroups = [
         {
             heading: "Old Password",
-            fields: [{ type: "password", label: "Old Password", defaultValue: "password" }],
+            fields: [
+                {
+                    name: "old_password",
+                    type: "password",
+                    label: "Old Password",
+                    value: data?.old_password,
+                    placeholder: "••••••••",
+                },
+            ],
         },
         {
             heading: "New Password",
             fields: [
-                { type: "password", label: "New Password", placeholder: "••••••••", strengthGuide: true },
-                { type: "password", label: "Confirm New Password", placeholder: "••••••••", strengthGuide: true },
+                {
+                    name: "password",
+                    type: "password",
+                    label: "New Password",
+                    value: data?.password,
+                    placeholder: "••••••••",
+                    strengthGuide: true,
+                },
+                {
+                    name: "confirm_password",
+                    type: "password",
+                    label: "Confirm New Password",
+                    value: data?.confirm_password,
+                    placeholder: "••••••••",
+                    strengthGuide: true,
+                },
             ],
         },
     ];
-
     const passwordPoints = [
         "At least 8 characters",
         "At least one special character (e.g: !@#$%^&*-)",
         "Contain of letters and numbers",
         "Contain of uppercase and lowercase letters",
     ];
+
+    const _onChange = (value, name) => setData({ ...data, [name]: value });
+    const _onSubmit = () => {
+        setLoading(true);
+        store.get("uid").then((uid) => {
+            data.id = uid;
+            http.put("/users/change_password", net.data(data))
+                .then(({ data }) => {
+                    if (data?.success) {
+                        navigation.goBack();
+                        toast.fromData(data, "response[0].message");
+                        setLoading(false);
+                    }
+                })
+                .catch(({ response }) => net.handleCatch(response, setLoading));
+        });
+    };
 
     return (
         <KeyboardAvoiding>
@@ -50,7 +96,7 @@ export default function AccountPasswordScreen({ navigation }) {
                         {fieldGroups.map(({ heading, description, fields }, i) => (
                             <View key={i} style={{ marginBottom: 25 }}>
                                 <Heading text={heading} subtitle={description} />
-                                <FloatingFields fields={fields} />
+                                <FloatingFields fields={fields} onChange={_onChange} disabled={loading} />
                             </View>
                         ))}
 
@@ -64,7 +110,7 @@ export default function AccountPasswordScreen({ navigation }) {
                             ))}
                         </View>
 
-                        <Button text="Update Password" color="yellow" onPress={navigation.goBack} />
+                        <Button text="Update Password" color="yellow" onPress={_onSubmit} loading={loading} />
                     </Body>
                 </Layout>
             </Container>
@@ -74,19 +120,18 @@ export default function AccountPasswordScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     guideContainer: {
-        marginTop: 5,
         marginBottom: 15,
     },
     guide: {
         color: CT.BG_GRAY_400,
-        fontSize: 16,
-        marginBottom: 10,
+        fontSize: 12,
+        marginBottom: 8,
     },
     guideBullet: {
         color: CT.BG_GRAY_400,
-        fontSize: 16,
+        fontSize: 12,
         paddingLeft: 10,
-        marginBottom: 10,
+        marginBottom: 8,
     },
     bullet: {
         color: CT.BG_GRAY_400,

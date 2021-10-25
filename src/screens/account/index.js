@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import CT from "../../const";
 import Context from "../../components/context";
 
@@ -9,14 +9,25 @@ import Header from "../../components/layout/header";
 import Text from "../../components/text";
 import List from "../../components/list";
 import TopBar from "../../components/topbar";
+import Shimmer from "../../components/shimmer";
 import Heading from "../../components/heading";
 import Container from "../../components/container";
 
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 
-const AccountScreen = ({ navigation }) => {
+import net from "../../functions/net";
+import http from "../../functions/http";
+import store from "../../functions/store";
+import moment from "moment";
+import _renderIf from "../../functions/renderIf";
+
+const AccountScreen = ({ navigation, route }) => {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+
     const go = (name) => navigation.navigate(name);
     const auth = useContext(Context.Auth);
+    const since = moment(user?.createdAt).fromNow();
     const sections = [
         {
             title: "Personal",
@@ -25,7 +36,7 @@ const AccountScreen = ({ navigation }) => {
                 {
                     icon: "cog",
                     text: "Account Settings",
-                    onPress: go.bind(null, "account__settings"),
+                    onPress: navigation.navigate.bind(null, "account__settings", { user }),
                     subtitle: "Update your account details",
                 },
                 {
@@ -65,22 +76,60 @@ const AccountScreen = ({ navigation }) => {
         },
     ];
 
+    const onLogout = () => {
+        store.delete("token");
+        store.delete("uid");
+        if (typeof auth.setAuthed === "function") {
+            auth.setAuthed(false);
+        }
+    };
+
+    useEffect(() => {
+        // Get user's data
+        store.get("uid").then((uid) => {
+            http.get(`/users/${uid}`)
+                .then(({ data: user }) => {
+                    setUser(user);
+                    setLoading(false);
+                })
+                .catch(({ response }) => net.handleCatch(response, setLoading));
+        });
+    }, []);
+
+    // Refresh data
+    useEffect(() => {
+        setLoading(true);
+        http.get(`/users/${user?.id}`)
+            .then(({ data }) => {
+                setUser(data);
+                setLoading(false);
+            })
+            .catch(({ response }) => net.handleCatch(response, setLoading));
+    }, [route?.params?.shouldRefresh]);
+
     return (
         <Container>
             <TopBar type={2} />
             <Layout gray withHeader>
                 <Header>
-                    <Heading
-                        text="Eve Harrison"
-                        subtitle="Member since 2 weeks ago"
-                        textStyle={styles.headerText}
-                        subtitleStyle={styles.headerSub}
-                        gapless
-                    />
+                    {_renderIf(
+                        loading,
+                        <View style={{ flexDirection: "column" }}>
+                            <Shimmer color="purple" />
+                            <Shimmer color="purple" width={100} height={8} style={{ marginTop: 5 }} />
+                        </View>,
+                        <Heading
+                            text={user?.name}
+                            subtitle={`Member since ${since}`}
+                            textStyle={styles.headerText}
+                            subtitleStyle={styles.headerSub}
+                            gapless
+                        />
+                    )}
                 </Header>
                 <Body gray flex expanded>
-                    <List sections={sections} />
-                    <TouchableOpacity style={{ marginTop: 5 }} onPress={auth.onLogout}>
+                    <List sections={sections} loading={loading} />
+                    <TouchableOpacity style={{ marginTop: 5 }} onPress={onLogout}>
                         <Text style={styles.logout}>Log out from account</Text>
                     </TouchableOpacity>
                 </Body>

@@ -5,71 +5,111 @@ import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
 
-import Modal from "../../components/modal";
 import PetList from "../../components/pet/pet-list";
 import PetIdentity from "../../components/pet/pet-identity";
 import HealthCharts from "../../components/pet/health-charts";
 import HealthCategories from "../../components/pet/health-categories";
 
+import Empty from "../../components/empty";
 import Heading from "../../components/heading";
 import TopBar from "../../components/topbar";
 import Container from "../../components/container";
 import ButtonIcon from "../../components/button-icon";
 
+import EmptyPetArt from "../../../assets/arts/ginger-cat-79.svg";
+
 import { View, StyleSheet } from "react-native";
 import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
 
+import net from "../../functions/net";
+import http from "../../functions/http";
+
+import _renderIf from "../../functions/renderIf";
+import _env from "../../functions/env";
 import _find from "lodash/find";
 import _times from "lodash/times";
 import _first from "lodash/first";
+import _clone from "lodash/clone";
+import _sortBy from "lodash/sortBy";
+import _isEmpty from "lodash/isEmpty";
+import _findIndex from "lodash/findIndex";
 import _capitalize from "lodash/capitalize";
 
-import pets from "../../../data/pets.json";
-import health from "../../../data/health.json";
-import petTypes from "../../../data/pet-types.json";
-
-const HomeScreen = connectActionSheet(({ navigation }) => {
+const HomeScreen = connectActionSheet(({ navigation, route }) => {
     const go = (key, options = {}) => navigation.navigate(key, options);
-    const [data, setData] = useState(null);
-    const [healthData, setHealthData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [loadingPet, setLoadingPet] = useState(true);
+    const [loadingSurvey, setLoadingSurvey] = useState(false);
+
+    const [pets, setPets] = useState([]);
+    const [petID, setPetID] = useState(null);
+    const [healthData, setHealthData] = useState({});
     const { showActionSheetWithOptions } = useActionSheet();
 
-    useEffect(() => {
-        const data = _first(pets);
-        const id = data?.id;
-        const healthData = _find(health, { id });
+    // Update the newly updated/created pet
+    const pet = _find(pets, { id: petID });
+    const recentPet = route?.params?.recentPet;
 
-        setData(data);
-        setHealthData(healthData);
-    }, []);
+    const emptyPets = pets?.length < 1 && !loadingPet;
+    const hasHealthData = !_isEmpty(healthData) && !_isEmpty(healthData?.charts) && !_isEmpty(healthData?.categories);
 
-    const healthChartsData = healthData?.chart;
-    const healthCategoriesData = _find(healthData?.categories, { current: true })?.data;
-    const displayData = [
-        { label: "Name", value: data?.name },
-        { label: "Microchip ID", value: data?.microchipID, verified: data?.microchipVerified },
-        { label: "Parent's Name", value: "Eve Harrison" },
-        { label: "Colors", value: ["#3E4C59", "#9AA5B1"] },
-        { label: "Breed", value: _find(_find(petTypes, { id: data?.type })?.breeds, { value: data?.breedID })?.label },
-        { label: "Birthday", value: data?.birthday },
-        { label: "Age (Cat Year)", value: data?.agePet },
-        { label: "Age (Human Year)", value: data?.ageHuman },
-        { label: "Gender", value: _capitalize(data?.gender) },
-        { label: "Weight", value: `${data?.weight} kg` },
-    ];
+    const healthChartTitle = loadingPet ? "Health Report" : `${pet?.name}'s Health`;
+    const healthChartSubtitle = loading ? "Loading.." : hasHealthData ? "Last evaluated 3 weeks ago" : "Not available";
 
+    const healthChartsData = healthData?.charts;
+    const healthCategories = healthData?.categories;
+    const placeholderChart = { charts: [], categories: [] };
+
+    // Fetch health data from our server
+    const getHealthData = (petID) => {
+        setLoading(true);
+        http.get(`/reports/pet/${petID}`)
+            .then(({ data }) => {
+                setLoading(false);
+                const payload = data?.payload;
+                const reports = { charts: payload?.charts, categories: payload?.categories };
+                if (!_isEmpty(reports) && !_isEmpty(reports?.charts) && !_isEmpty(reports?.categories)) {
+                    setHealthData(reports);
+                    return;
+                }
+                setHealthData(placeholderChart);
+            })
+            .catch(() => {
+                setLoading(false);
+                setHealthData(placeholderChart);
+            });
+    };
+    const _onStartSurvey = () => {
+        setLoadingSurvey(true);
+        Promise.all([http.post("/survey/records/create", net.data({ petId: petID })), http.get("/survey/sections")])
+            .then(([{ data: record }, { data: survey }]) => {
+                setLoadingSurvey(false);
+                const recordID = record?.payload?.id;
+                if (record?.success && recordID !== "" && survey?.length > 0) {
+                    go("pet__health-survey", { pet, survey, recordID });
+                }
+            })
+            .catch(([{ response }, { response: resposneSurvey }]) => {
+                net.handleCatch(response);
+                net.handleCatch(resposneSurvey);
+                setLoadingSurvey(false);
+            });
+    };
     const _onChangePet = (id) => {
-        setData(_find(pets, { id }));
-        setHealthData(_find(health, { id }));
+        if (loading || id === healthData?.id) {
+            return;
+        }
+        setPetID(id);
+        getHealthData(id);
     };
     const _onOptions = () => {
-        const options = ["Update Pet", "Reevaluate Health", "View Health Records", "Done"];
+        const options = ["Update Pet", `${hasHealthData ? "Reevaluate" : "Evaluate"} Health`, "View Health Records", "Done"];
         const cancelButtonIndex = 3;
         showActionSheetWithOptions({ options, cancelButtonIndex }, (buttonIndex) => {
             const cmd = [
-                go.bind(null, "pet__form", data),
-                go.bind(null, "pet__health-survey", { petID: data?.id }),
-                go.bind(null, "pet__health-records", { petID: data?.id }),
+                go.bind(null, "pet__form", pet),
+                _onStartSurvey,
+                go.bind(null, "pet__health-records", { petID: pet?.id }),
             ];
             if (typeof cmd[buttonIndex] === "function") {
                 cmd[buttonIndex]();
@@ -77,41 +117,108 @@ const HomeScreen = connectActionSheet(({ navigation }) => {
         });
     };
 
+    // Initialize home screen
+    useEffect(() => {
+        http.get("/pets")
+            .then(({ data }) => {
+                setLoadingPet(false);
+                if (data?.length > 0) {
+                    const petID = _first(_sortBy(data, "name"))?.id;
+                    setPets(data);
+                    setPetID(petID);
+                    getHealthData(petID);
+                }
+            })
+            .catch(({ response }) => net.handleCatch(response, setLoadingPet));
+    }, []);
+
+    // After answering survey, refresh health data
+    useEffect(() => getHealthData(petID), [route?.params?.shouldRefresh]);
+
+    // After adding/updating a pet, add/refresh their data
+    useEffect(() => {
+        const id = recentPet?.id;
+        const index = _findIndex(pets, { id });
+
+        if (id !== null && id !== undefined) {
+            setLoadingPet(true);
+            http.get(`/pets/${id}`)
+                .then(({ data }) => {
+                    let newPetsData = _clone(pets);
+                    if (index > -1) newPetsData[index] = data;
+                    else newPetsData = [...newPetsData, data];
+                    setPets(newPetsData);
+                    setLoadingPet(false);
+                })
+                .catch(() => setLoadingPet(false));
+        }
+    }, [recentPet]);
+
     return (
-        <Container>
+        <Container loading={loadingSurvey}>
             <TopBar type={2} rightIcon="plus" rightIconProps={{ onPress: go.bind(null, "pet__form", null) }} />
 
             <Layout gray withHeader>
-                <Header horizontal overlap>
-                    <PetList size={65} margin={4} active={data?.id} onPress={_onChangePet} />
-                </Header>
+                {!emptyPets && (
+                    <Header horizontal overlap>
+                        <PetList
+                            data={pets}
+                            size={65}
+                            margin={4}
+                            active={pet?.id}
+                            loading={loadingPet}
+                            onPress={_onChangePet}
+                            onAddPet={go.bind(null, "pet__form", null)}
+                        />
+                    </Header>
+                )}
 
-                <Body topRounded overlap>
-                    <View style={styles.headingSection}>
-                        <Heading size={0} text={`${data?.name}'s Health`} subtitle="Last evaluated 3 weeks ago" gapless />
-                        <View style={styles.actionBtnContainer}>
-                            <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={_onOptions} inverted />
-                        </View>
-                    </View>
-                    <View style={styles.section}>
-                        <HealthCharts data={healthChartsData} />
-                    </View>
-                    <View style={{ ...styles.section, marginBottom: 0 }}>
-                        <HealthCategories data={healthCategoriesData} />
-                    </View>
-                </Body>
-
-                <Body gray>
-                    <PetIdentity
-                        data={displayData}
-                        button={{
-                            icon: "far edit",
-                            text: "Update Pet",
-                            onPress: go.bind(null, "pet__form", data),
-                            iconRight: true,
-                        }}
-                    />
-                </Body>
+                {_renderIf(
+                    emptyPets,
+                    <Body gray flex topRounded>
+                        <Empty
+                            art={EmptyPetArt}
+                            artProps={{ height: 130 }}
+                            title="Wow.. it's so quiet over here 😿"
+                            button={{ text: "Add Pet", onPress: go.bind(null, "pet__form", null) }}
+                            subtitle="Apparently, you do not own any pet yet."
+                        />
+                    </Body>,
+                    <React.Fragment>
+                        <Body topRounded overlap>
+                            <View style={styles.headingSection}>
+                                <Heading size={0} text={healthChartTitle} subtitle={healthChartSubtitle} gapless />
+                                <View style={styles.actionBtnContainer}>
+                                    <ButtonIcon icon="ellipsis-h" style={{ marginRight: -10 }} onPress={_onOptions} inverted />
+                                </View>
+                            </View>
+                            <View style={styles.section}>
+                                <HealthCharts
+                                    name={pet?.name}
+                                    data={healthChartsData}
+                                    loading={loading}
+                                    onStartSurvey={_onStartSurvey}
+                                />
+                            </View>
+                            <View style={{ ...styles.section, marginBottom: 0 }}>
+                                <HealthCategories data={healthCategories} loading={loading} />
+                            </View>
+                        </Body>
+                        <Body gray>
+                            <PetIdentity
+                                data={pet}
+                                loading={loadingPet}
+                                button={{
+                                    icon: "far edit",
+                                    text: "Update Pet",
+                                    loading: loadingPet,
+                                    onPress: go.bind(null, "pet__form", { id: petID }),
+                                    iconRight: true,
+                                }}
+                            />
+                        </Body>
+                    </React.Fragment>
+                )}
             </Layout>
         </Container>
     );
@@ -162,6 +269,11 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "600",
         textDecorationLine: "underline",
+    },
+
+    emptyLayout: {
+        alignItems: "center",
+        justifyContent: "center",
     },
 });
 

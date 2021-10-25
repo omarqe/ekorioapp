@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "chart": [
+        "charts": [
             {
                 "id": "physical",
                 "value": 0.25,
@@ -70,26 +70,7 @@
     },
     {
         "id": 2,
-        "chart": [
-            {
-                "id": "physical",
-                "value": 0.49,
-                "delta": 0.1,
-                "indicator": "up"
-            },
-            {
-                "id": "nutrition",
-                "value": 0.89,
-                "delta": 0.25,
-                "indicator": "up"
-            },
-            {
-                "id": "lifestyle",
-                "value": 0.99,
-                "delta": 0.3,
-                "indicator": "up"
-            }
-        ],
+        "charts": [],
         "categories": [
             {
                 "createdAt": "",
@@ -104,7 +85,7 @@
     },
     {
         "id": 3,
-        "chart": [
+        "charts": [
             {
                 "id": "physical",
                 "value": 0.55,
@@ -138,7 +119,7 @@
     },
     {
         "id": 4,
-        "chart": [
+        "charts": [
             {
                 "id": "physical",
                 "value": 0.57,
@@ -172,7 +153,7 @@
     },
     {
         "id": 5,
-        "chart": [
+        "charts": [
             {
                 "id": "physical",
                 "value": 0.74,
@@ -206,7 +187,7 @@
     },
     {
         "id": 6,
-        "chart": [
+        "charts": [
             {
                 "id": "physical",
                 "value": 0.3,
@@ -240,7 +221,7 @@
     },
     {
         "id": 7,
-        "chart": [
+        "charts": [
             {
                 "id": "physical",
                 "value": 0.86,

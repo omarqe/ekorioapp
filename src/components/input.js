@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import CT from "../const.js";
 import Icon from "./icon";
 import Text from "./text";
@@ -7,7 +7,7 @@ import ModalPicker from "./modal-picker";
 import PropTypes from "prop-types";
 
 import { countries } from "countries-list";
-import { View, Image, Pressable, TextInput, StyleSheet } from "react-native";
+import { View, Image, Pressable, TextInput, StyleSheet, Keyboard } from "react-native";
 
 import _find from "lodash/find";
 import _uniqBy from "lodash/uniqBy";
@@ -24,6 +24,7 @@ const Input = ({
     onChange,
     onFocus,
     onBlur,
+    disabled = false,
     inputStyle = {},
     nameCC,
     callingCode = CT.DEFAULT_CALLING_CODE,
@@ -44,8 +45,15 @@ const Input = ({
     const countryAbbrv = _lowerCase(_find(callingCodes, { value: callingCode })?.abbrv);
     const countryFlag = { uri: `https://countryflags.io/${countryAbbrv}/flat/64.png` };
 
+    // When disabled, dismiss keyboard
+    useEffect(() => {
+        if (disabled) {
+            Keyboard.dismiss();
+        }
+    }, [disabled]);
+
     const _onPressFocusInput = () => {
-        if (inputRef?.current) {
+        if (inputRef?.current && !disabled) {
             inputRef?.current.focus();
             _onFocus();
         }
@@ -95,6 +103,8 @@ const Input = ({
 
     return (
         <Pressable style={inputBaseStyle} onPress={_onPressFocusInput}>
+            {disabled && <View style={styles.disabledOverlay} />}
+
             {_renderIf(
                 ["tel", "phone"].indexOf(type) > -1, // Calling Code Picker
                 <Pressable style={styles.callingCodes} onPress={setCCPicker.bind(null, true)}>
@@ -144,6 +154,7 @@ Input.propTypes = {
     onBlur: PropTypes.func,
     type: PropTypes.oneOf(CT.INPUT_TYPES),
     style: PropTypes.object,
+    disabled: PropTypes.bool,
     inputStyle: PropTypes.object,
     placeholder: PropTypes.string,
 };
@@ -160,6 +171,7 @@ const styles = StyleSheet.create({
     inputBase: {
         padding: 15,
         fontSize: 16,
+        position: "relative",
         alignItems: "center",
         borderWidth: 1,
         borderColor: CT.BG_GRAY_100,
@@ -204,6 +216,17 @@ const styles = StyleSheet.create({
         top: CT.IS_IOS ? -1 : 0,
         color: CT.BG_GRAY_200,
         marginLeft: CT.IS_IOS ? 1 : 2,
+    },
+    disabledOverlay: {
+        top: -1,
+        left: -1,
+        right: -1,
+        bottom: -1,
+        zIndex: 99,
+        opacity: 0.5,
+        position: "absolute",
+        borderRadius: radius,
+        backgroundColor: CT.BG_WHITE,
     },
 });
 

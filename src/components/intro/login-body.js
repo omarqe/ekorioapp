@@ -9,7 +9,7 @@ import { View, StyleSheet } from "react-native";
 
 const LoginBody = ({ label, fields = [] }) => {
     const context = useContext(Context.Login);
-    const { fields: fieldsContext, onSubmit, grouping = false } = context;
+    const { fields: fieldsContext, loading, onChange, onSubmit, grouping = false } = context;
     if (fieldsContext !== undefined && typeof fieldsContext === "object") {
         fields = fieldsContext;
     }
@@ -19,9 +19,9 @@ const LoginBody = ({ label, fields = [] }) => {
             <WaveForm />
             <View style={styles.body}>
                 <View style={styles.content}>
-                    <Fields fields={fields} grouping={grouping} />
+                    <Fields fields={fields} disabled={loading} grouping={grouping} onChange={onChange} />
                 </View>
-                <Button text={label} color="yellow" onPress={onSubmit} />
+                <Button text={label} color="yellow" onPress={onSubmit} loading={loading} />
             </View>
         </View>
     );

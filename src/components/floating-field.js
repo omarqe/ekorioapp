@@ -115,7 +115,9 @@ export default function FloatingField({
         }
     };
     const _onOpenCallingCode = () => {
-        CT.IS_ANDROID ? callingCodeRef?.current?.focus() : setCCPicker(true);
+        if (!disabled) {
+            CT.IS_ANDROID ? callingCodeRef?.current?.focus() : setCCPicker(true);
+        }
     };
 
     // Correct value type
@@ -124,12 +126,14 @@ export default function FloatingField({
     // Handle styles
     let baseStyle = { ...styles.base, ...style };
     let disabledStyle = {};
+    let disabledTextStyle = {};
     let disabledLabelStyle = {};
     if (focused) baseStyle = { ...baseStyle, borderColor: CT.BORDER_FOCUS };
     if (gapless) baseStyle = { ...baseStyle, marginBottom: 0 };
     if (type === "textarea") baseStyle = { ...baseStyle, minHeight: 120 };
     if (disabled) {
-        disabledStyle = { shadowOpacity: 0, opacity: 0.7 };
+        disabledStyle = { shadowOpacity: 0, opacity: 0.6 };
+        disabledTextStyle = { color: CT.BG_GRAY_300 };
         disabledLabelStyle = { color: CT.BG_GRAY_300 };
     }
 
@@ -141,13 +145,12 @@ export default function FloatingField({
         name: { autoCapitalize: "words", textContentType: type },
         email: { keyboardType: "email-address", autoCapitalize: "none", textContentType: "emailAddress" },
         number: { keyboardType: "number-pad" },
+        decimal: { keyboardType: "decimal-pad" },
         password: { secureTextEntry: true, textContentType: "password", multiline: false },
         textarea: { multiline: true },
     };
     typeProps.phone = typeProps.tel;
     typeProps.username = typeProps.name;
-
-    // For type=date && type=select
 
     switch (type) {
         case "date":
@@ -159,7 +162,7 @@ export default function FloatingField({
             const textRightPadding = { paddingRight: 20 };
             const pickerProps = { ref: inputRef, selectedValue: value, onValueChange: _onValueChange, style: styles.picker };
             const valueProps = {
-                style: [styles.input, textColor, textRightPadding, { top: CT.IS_ANDROID ? -3 : 0 }],
+                style: [styles.input, textColor, textRightPadding, { top: CT.IS_ANDROID ? -3 : 0 }, disabledTextStyle],
                 numberOfLines: 1,
                 allowFontScaling: false,
             };
@@ -210,7 +213,6 @@ export default function FloatingField({
 
         default:
             const alignItems = type === "textarea" ? "flex-start" : "center";
-
             return (
                 <View>
                     <Pressable style={[baseStyle, disabledStyle]} onPress={_onPressFocusInput}>
@@ -222,7 +224,7 @@ export default function FloatingField({
                                     <View style={styles.countryFlagContainer}>
                                         <Image source={countryFlag} style={styles.countryFlag} />
                                     </View>
-                                    <Text style={styles.callingCode} allowFontScaling={false}>
+                                    <Text style={[styles.callingCode, disabledTextStyle]} allowFontScaling={false}>
                                         +{callingCode}
                                     </Text>
                                     <Icon icon="caret-down" style={styles.callingCodesCaret} />
@@ -252,7 +254,7 @@ export default function FloatingField({
                             <TextInput
                                 ref={inputRef}
                                 value={value}
-                                style={[styles.input, type === "textarea" ? { height: "auto" } : null]}
+                                style={[styles.input, type === "textarea" ? { height: "auto" } : null, disabledTextStyle]}
                                 onBlur={_onBlur}
                                 onFocus={_onFocus}
                                 editable={!disabled}
@@ -384,7 +386,7 @@ const styles = StyleSheet.create({
     },
     strengthLabel: {
         color: CT.BG_GRAY_300,
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: "500",
         marginLeft: 3,
     },

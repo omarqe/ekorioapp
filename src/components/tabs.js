@@ -1,10 +1,20 @@
 import React, { useState } from "react";
 import CT from "../const";
 import Text from "./text";
+import Shimmer from "./shimmer";
 import PropTypes from "prop-types";
 import { View, ScrollView, Pressable, StyleSheet } from "react-native";
 
-export default function Tabs({ tabs = [], active = 0, onPress, onPressIn, onPressOut, ...restProps }) {
+import _renderIf from "../functions/renderIf";
+
+export default function Tabs({ tabs = [], active = 0, loading = false, onPress, onPressIn, onPressOut, ...restProps }) {
+    if (loading) {
+        tabs = [];
+        for (let i = 0; i < 4; i++) {
+            tabs = [...tabs, { key: i, label: null }];
+        }
+    }
+
     if (tabs?.length > 0) {
         const [pressedIndex, setPressedIndex] = useState(null);
         const _onPressIn = (index) => {
@@ -48,12 +58,16 @@ export default function Tabs({ tabs = [], active = 0, onPress, onPressIn, onPres
                             <Pressable
                                 key={index}
                                 style={itemStyle}
-                                onPress={onPress.bind(null, index)}
+                                onPress={!loading ? onPress.bind(null, index) : null}
                                 onPressIn={_onPressIn}
                                 onPressOut={_onPressOut}
                                 {...restProps}
                             >
-                                <Text style={textStyle}>{label}</Text>
+                                {_renderIf(
+                                    loading,
+                                    <Shimmer color="purple" width={60} height={8} style={styles.shimmer} />,
+                                    <Text style={textStyle}>{label}</Text>
+                                )}
                             </Pressable>
                         );
                     })}
@@ -97,10 +111,16 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontWeight: "600",
     },
+    shimmer: {
+        alignSelf: "center",
+        marginTop: 5,
+        marginBottom: 5,
+    },
 });
 
 Tabs.propTypes = {
     tabs: PropTypes.arrayOf(PropTypes.object),
     active: PropTypes.number,
     onPress: PropTypes.func,
+    loading: PropTypes.bool,
 };

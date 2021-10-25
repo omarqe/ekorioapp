@@ -23,7 +23,7 @@ export default {
     LOW_RESOLUTION: PixelRatio.get() < 3,
 
     DATE_FORMAT: "MMMM D YYYY, h:mm:ss",
-    DATE_FORMAT_PRETTY: "D MMM, YYYY",
+    DATE_FORMAT_PRETTY: "D MMMM, YYYY",
 
     INPUT_TYPES: [
         "url",
@@ -35,6 +35,7 @@ export default {
         "email",
         "phone",
         "number",
+        "decimal",
         "username",
         "password",
         "textarea",
@@ -42,6 +43,7 @@ export default {
 
     DEFAULT_CALLING_CODE: 60, // Malaysia (+60)
     DEFAULT_ANIMATION_TIMING: 200, // Used in dashboard charts
+    WAITING_DEMO: 500,
 
     BG_BLACK: "#000000",
     BG_WHITE: "#FFFFFF",
@@ -77,6 +79,16 @@ export default {
     CTA_NEUTRAL: "#2c84ff",
     BORDER_FOCUS: "#96BAFF",
 
+    COLORED_STYLES: {
+        red: { base: { backgroundColor: "#FE8F8F" }, text: { color: "#8D2828" } },
+        blue: { base: { backgroundColor: "#A2D2FF" }, text: { color: "#3D56B2" } },
+        gray: { base: { backgroundColor: "#e1e7ed" }, text: { color: "#52606d" } },
+        green: { base: { backgroundColor: "#B1E693" }, text: { color: "#3E7C17" } },
+        yellow: { base: { backgroundColor: "#FFD574" }, text: { color: "#bc6c25" } },
+        purple: { base: { backgroundColor: "#d1c7da" }, text: { color: "#533b6b" } },
+        purple_dark: { base: { backgroundColor: "#533b6b" }, text: { color: "#e3dce9" } },
+    },
+
     FONT_COLOR: "#323f4b",
     FONT_COLOR_LIGHT: "#616e7c",
 
@@ -87,7 +99,7 @@ export default {
     ACTIVE_OPACITY: 0.55,
     TOPBAR_MIN_HEIGHT: isIOS ? 115 : 95,
     FIELD_BOTTOM_SPACING: 15,
-    LOGIN_OTP_TIMEOUT: 60,
+    LOGIN_OTP_TIMEOUT: 60 * 2,
     LOGIN_CONTENT_PADDING: 30,
     SHADOW_SM: {
         shadowOpacity: 0.06,
@@ -129,4 +141,38 @@ export default {
         },
         elevation: 3,
     },
+
+    STATUS: {
+        ACTIVE: "0001",
+        PENDING: "0002",
+        DELETED: "0003",
+        SUSPENDED: "0004",
+        DEACTIVATED: "0005",
+        CONFIRMED: "0006",
+        CANCELLED: "0007",
+        COMPLETED: "0008",
+    },
+
+    ERRORS: {
+        MISSING_VERIFY_DATA: "Some data are missing for verification, please try signing in instead",
+    },
+
+    STATES: [
+        "Kedah",
+        "Penang",
+        "Terengganu",
+        "Johor",
+        "Perlis",
+        "Kelantan",
+        "Melaka",
+        "N. Sembilan",
+        "Perak",
+        "Pahang",
+        "Selangor",
+        "Sabah",
+        "Sarawak",
+        "Kuala Lumpur",
+        "Labuan",
+        "Putrajaya",
+    ],
 };

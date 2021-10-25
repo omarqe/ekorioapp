@@ -11,7 +11,7 @@ import { View, Image, Pressable, FlatList, StyleSheet } from "react-native";
 import _replace from "lodash/replace";
 import _isArray from "lodash/isArray";
 
-export default function SurveyQuestion({ pet, type = 1, options, question, values, onPress }) {
+export default function SurveyQuestion({ pet, type = 1, factors, text, values, onPress }) {
     const [contentWidth, setContentWidth] = useState(0);
     const _onContentLayout = (e) => setContentWidth(e?.nativeEvent?.layout?.width);
 
@@ -33,7 +33,7 @@ export default function SurveyQuestion({ pet, type = 1, options, question, value
     // Replace question text with appropriate data (if any)
     const re = new RegExp(Object.keys(identity).join("|"), "gi");
     const kicker = ["Choose all that apply", "Choose one that applies"][type - 1] ?? "";
-    const questionText = _replace(question, re, (key) => identity[key]);
+    const questionText = _replace(text, re, (key) => identity[key]);
 
     // Options renderer
     const _keyExtractor = ({ item }, index) => `${item?.id}_${index}`.toString();
@@ -53,7 +53,7 @@ export default function SurveyQuestion({ pet, type = 1, options, question, value
         <View onLayout={_onContentLayout}>
             <Heading kicker={kicker} text={questionText} textStyle={styles.questionText} />
             <FlatList
-                data={options}
+                data={factors}
                 style={styles.options}
                 contentContainerStyle={styles.optionsContent}
                 keyExtractor={_keyExtractor}
@@ -64,12 +64,12 @@ export default function SurveyQuestion({ pet, type = 1, options, question, value
     );
 }
 
-const Option = ({ id: optionID, type, value, image = null, re, width, identity, checked = false, onPress }) => {
+const Option = ({ id: optionID, type, text, image = null, re, width, identity, checked = false, onPress }) => {
     const [pressed, setPressed] = useState(false);
 
     const isRadio = type === 2;
     const icon = isRadio ? "circle" : "check";
-    const optionText = _replace(value, re, (key) => identity[key]);
+    const optionText = _replace(text, re, (key) => identity[key]);
     const optionTextWidth = { width: width - (styles.checkbox.width + styles.checkbox.marginRight) };
 
     const checkboxStyle = [
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
 SurveyQuestion.propTypes = {
     pet: PropTypes.object,
     type: PropTypes.number,
-    options: PropTypes.arrayOf(PropTypes.object),
+    factors: PropTypes.arrayOf(PropTypes.object),
     checked: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
     question: PropTypes.string,
     onPress: PropTypes.func,

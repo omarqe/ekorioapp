@@ -3,7 +3,7 @@ import Field from "./field";
 import Context from "./context";
 import PropTypes from "prop-types";
 
-const fields = ({ fields = [], grouping = false }) => {
+const fields = ({ fields = [], grouping = false, ...restProps }) => {
     let refs = [];
     const Provider = Context.Fields.Provider;
 
@@ -24,7 +24,7 @@ const fields = ({ fields = [], grouping = false }) => {
 
         return (
             <Provider key={i} value={{ ref: refs[i] }}>
-                <Field {...props} />
+                <Field {...restProps} {...props} />
             </Provider>
         );
     });
@@ -33,6 +33,7 @@ const fields = ({ fields = [], grouping = false }) => {
 fields.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.object),
     grouping: PropTypes.bool,
+    onChange: PropTypes.func,
 };
 
 export default fields;

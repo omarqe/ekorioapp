@@ -1,93 +1,98 @@
 import React, { useState, useEffect } from "react";
 
-import Body from "../../components/layout/body";
-import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
 
 import Tabs from "../../components/tabs";
-import List from "../../components/list";
-import Empty from "../../components/empty";
 import TopBar from "../../components/topbar";
 import PetSwitch from "../../components/pet/pet-switch";
 import Container from "../../components/container";
+import AppointmentScene from "../../components/appointmnet/appointment-scene";
 
-import pets from "../../../data/pets.json";
-
+import { TabView } from "react-native-tab-view";
 import { StyleSheet } from "react-native";
-import { TabView, SceneMap } from "react-native-tab-view";
 
+import net from "../../functions/net";
+import http from "../../functions/http";
+import status from "../../functions/status";
+
+import _get from "lodash/get";
 import _first from "lodash/first";
 import _renderIf from "../../functions/renderIf";
 import _createSceneMap from "../../functions/createSceneMap";
-
-const Scene = ({ data, onPress }) => {
-    return (
-        <Layout scrollEnabled={false} gray>
-            <Body gray flex expanded>
-                {_renderIf(
-                    data?.length > 0,
-                    <List list={data} onPress={onPress} padded bounces scrollEnabled />,
-                    <Empty title="Oh mom, look it's empty! 👀" subtitle="Your upcoming appointments will appear here" />
-                )}
-            </Body>
-        </Layout>
-    );
-};
+import _fetchServiceTypes from "../../functions/fetchServiceTypes";
+import _fetchAppointments from "../../functions/fetchAppointments";
 
 const PetHealthRecordsScreen = ({ navigation, route }) => {
+    const [records, setRecords] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [loadingData, setLoadingData] = useState(true);
+    const [pets, setPets] = useState([]);
     const [petID, setPetID] = useState(null);
     const [state, setState] = useState({
         index: 0,
         routes: [
-            {
-                key: "general",
-                label: "General",
-                data: [
-                    {
-                        text: "Friday, 13 August 2021",
-                        subtitle: "Cheshire was infected by virus and needs ...",
-                        badge: { text: "Checkup" },
-                        tags: [
-                            { icon: "map-marker-alt", text: "Petsville Animal Clinic" },
-                            { icon: "cat", text: "Cheshire" },
-                        ],
-                    },
-                ],
-            },
-            {
-                key: "boarding",
-                label: "Boarding",
-                data: [],
-            },
-            {
-                key: "surgery",
-                label: "Surgery",
-                data: [],
-            },
-            {
-                key: "others",
-                label: "Others",
-                data: [],
-            },
+            { key: "grooming", label: "Grooming" },
+            { key: "boarding", label: "Boarding" },
+            { key: "surgery", label: "Surgery" },
+            { key: "general", label: "General" },
         ],
     });
 
-    // Initialisation
-    useEffect(() => {
-        setPetID(route?.params?.petID ? route?.params?.petID : _first(pets)?.id);
-    }, []);
-
+    const scenes = _createSceneMap(state?.routes, AppointmentScene);
+    const excludes = ["pending", "confirmed", "active"].map((key) => status.id(key));
     const _onIndexChange = (index) => setState({ ...state, index });
-    const _onPressItem = (index) => navigation.navigate("pet__health-details");
-    const _renderScene = SceneMap(_createSceneMap(state?.routes, _onPressItem, Scene));
+    const _onSwitchPet = (id) => {
+        setPetID(id);
+        setRecords({});
+    };
+    const _onPressItem = (index) => {
+        const key = _get(state, `routes[${state.index}].key`);
+        const id = _get(records, `[${key}][${index}].id`);
+        navigation.navigate("pet__health-details", { id });
+    };
+    const _renderScene = ({ route }) => {
+        const key = route?.key;
+        const Scene = scenes[key];
+        if (Scene !== undefined && Scene !== null) {
+            return (
+                <Scene
+                    data={records[key]}
+                    loading={loadingData}
+                    onPress={_onPressItem}
+                    initiated={records[key] !== undefined}
+                />
+            );
+        }
+    };
     const _renderTabBar = ({ navigationState: state }) => (
         <Header style={styles.header}>
-            <Tabs tabs={state?.routes} active={state?.index} onPress={_onIndexChange} alwaysBounceHorizontal={false} />
+            <Tabs
+                tabs={state?.routes}
+                active={state?.index}
+                onPress={_onIndexChange}
+                loading={loading}
+                alwaysBounceHorizontal={false}
+            />
         </Header>
     );
-    const _onSwitch = (id, index) => {
-        setPetID(id);
-    };
+
+    // Initialisation
+    useEffect(() => {
+        const petId = route?.params?.petID;
+        _fetchServiceTypes(setState, setLoading, setRecords, setLoadingData, { petId, excludes });
+
+        setPetID(petId);
+        http.get("/pets")
+            .then(({ data }) => setPets(data?.length > 0 ? data : []))
+            .catch(({ response }) => net.handleCatch(response));
+    }, []);
+
+    useEffect(() => {
+        const route = _get(state, `routes[${state.index}]`);
+        const petId = petID;
+        const serviceId = route?.id;
+        _fetchAppointments(route?.key, records, setRecords, setLoadingData, { serviceId, petId, excludes });
+    }, [state?.index, petID]);
 
     return (
         <Container>
@@ -96,7 +101,7 @@ const PetHealthRecordsScreen = ({ navigation, route }) => {
                 title="Health Records"
                 leftIcon="arrow-left"
                 leftIconProps={{ onPress: navigation.goBack }}
-                rightComponent={<PetSwitch pets={pets} checked={petID} onSwitch={_onSwitch} />}
+                rightComponent={<PetSwitch pets={pets} checked={petID} onSwitch={_onSwitchPet} />}
             />
             <TabView
                 renderScene={_renderScene}
