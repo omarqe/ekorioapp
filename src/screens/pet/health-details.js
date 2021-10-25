@@ -160,7 +160,6 @@ const styles = StyleSheet.create({
     },
     medicine: {
         marginTop: 10,
-        paddingVertical: 3,
     },
     middot: {
         top: -4,
