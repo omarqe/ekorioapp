@@ -24,9 +24,9 @@ import http from "../../functions/http";
 import toast from "../../functions/toast";
 
 export default function AccountSettingsScreen({ navigation, route }) {
-    const [data, setData] = useState(null);
+    const [data, setData] = useState({});
     const [loading, setLoading] = useState(false);
-    const { address } = data ?? {};
+    const { address = {} } = data ?? {};
 
     const _onChangeAddress = (value, name) => setData({ ...data, address: { ...data?.address, [name]: value } });
     const _onChange = (value, name) => setData({ ...data, [name]: value });
@@ -39,6 +39,7 @@ export default function AccountSettingsScreen({ navigation, route }) {
         });
         http.put("/users/update", net.data(data))
             .then(({ data }) => {
+                setLoading(false);
                 navigation.navigate("account", { shouldRefresh: Date.now() });
                 toast.fromData(data, "response[0].message");
             })
@@ -57,7 +58,14 @@ export default function AccountSettingsScreen({ navigation, route }) {
 
     useEffect(() => {
         const { user } = route?.params || {};
-        setData({ ...user, birthday: _makeBirthdate(user?.birthday) });
+        setData({
+            ...user,
+            birthday: _makeBirthdate(user?.birthday),
+            address: {
+                ...user?.address,
+                country: user?.address?.country || "Malaysia",
+            },
+        });
     }, []);
 
     const isUpdate = data?.id !== null && data?.id !== undefined;
