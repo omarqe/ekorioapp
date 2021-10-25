@@ -14,6 +14,7 @@ import SurveyQuestion from "../../components/pet/survey-question";
 import ProgressBarSurvey from "../../components/progressbar-survey";
 
 import { View, StyleSheet } from "react-native";
+import * as Haptics from "expo-haptics";
 
 import net from "../../functions/net";
 import http from "../../functions/http";
@@ -53,8 +54,12 @@ export default function PetHealthSurveyScreen({ navigation, route }) {
     const isFinal = qIndex === questions?.length - 1;
     const sectionIndicator = `Section ${sectionTh}`;
 
+    // Send haptics feedback to the user
+    const sendHaptics = (style = Haptics.ImpactFeedbackStyle.Light) => Haptics.impactAsync(style);
+
     // Handle what happens when pressing next
     const _onNext = () => {
+        sendHaptics(Haptics.ImpactFeedbackStyle.Medium);
         const options = { arrayFormat: "brackets" };
         const postdata = { id: recordID, questionId: qID, factors: answer?.values };
         http.post("/survey/records/answer", net.data(postdata, options))
@@ -76,6 +81,7 @@ export default function PetHealthSurveyScreen({ navigation, route }) {
             .catch(({ response }) => net.handleCatch(response, setLoading));
     };
     const _onPrev = () => {
+        sendHaptics(Haptics.ImpactFeedbackStyle.Medium);
         if (qIndex > 0) {
             setLoading(true);
             const newIndex = qIndex - 1;
@@ -91,6 +97,7 @@ export default function PetHealthSurveyScreen({ navigation, route }) {
         }
     };
     const _onCheckOption = (optionID, checked) => {
+        sendHaptics();
         // Handle what happens when toggling options
         let clonedAnswers = _clone(answers);
         const ansIndex = _findIndex(clonedAnswers, { id: qID });
@@ -148,7 +155,7 @@ export default function PetHealthSurveyScreen({ navigation, route }) {
                     <View style={styles.card}>
                         <SurveyQuestion {...q} pet={pet} onPress={_onCheckOption} values={answer?.values} />
                         <View style={styles.buttonContainer}>
-                            {qIndex > 0 && (
+                            {qIndex > 0 && !loading && (
                                 <Button
                                     small
                                     loading={loading}
@@ -162,13 +169,12 @@ export default function PetHealthSurveyScreen({ navigation, route }) {
                             <Button
                                 small
                                 iconRight
-                                loading={loading}
                                 text={isFinal ? "Get Reports" : "Next Question"}
                                 icon="arrow-right"
                                 color="purple"
                                 style={styles.button}
                                 onPress={_onNext}
-                                disabled={disabled}
+                                disabled={disabled || loading}
                             />
                         </View>
                     </View>

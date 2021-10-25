@@ -13,7 +13,7 @@ const Button = (props) => {
     let variant = {};
     const [width, setWidth] = useState(0);
     const [pressed, setPressed] = useState(0);
-    const { small = false, disabled = false, loading = false } = props;
+    const { small = false, disabled = false, loading = false, useShimmer = false } = props;
     const { text, style, textStyle, color = "default", onPress, icon, iconRight } = props;
 
     const colors = {
@@ -68,7 +68,7 @@ const Button = (props) => {
                 </View>
                 {loading &&
                     _renderIf(
-                        small,
+                        small && useShimmer,
                         <View onLayout={onLayout} style={styles.shimmer}>
                             <Shimmer width={width} height={6} />
                         </View>,
@@ -127,6 +127,7 @@ Button.propTypes = {
     color: PropTypes.oneOf(["default", "yellow", "purple"]),
     style: PropTypes.object,
     textStyle: PropTypes.object,
+    useShimmer: PropTypes.bool,
 };
 
 export default Button;
