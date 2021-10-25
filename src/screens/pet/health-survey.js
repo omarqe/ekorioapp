@@ -59,7 +59,7 @@ export default function PetHealthSurveyScreen({ navigation, route }) {
 
     // Handle what happens when pressing next
     const _onNext = () => {
-        sendHaptics(Haptics.ImpactFeedbackStyle.Medium);
+        sendHaptics();
         const options = { arrayFormat: "brackets" };
         const postdata = { id: recordID, questionId: qID, factors: answer?.values };
         http.post("/survey/records/answer", net.data(postdata, options))
@@ -82,7 +82,7 @@ export default function PetHealthSurveyScreen({ navigation, route }) {
             .catch(({ response }) => net.handleCatch(response, setLoading));
     };
     const _onPrev = () => {
-        sendHaptics(Haptics.ImpactFeedbackStyle.Medium);
+        sendHaptics();
         if (qIndex > 0) {
             setLoading(true);
             const newIndex = qIndex - 1;
