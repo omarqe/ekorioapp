@@ -77,8 +77,6 @@ export default function HealthCharts({ data = [], loading = false, name = null, 
                     const value = values[i];
                     const vPer100 = (v * 100).toFixed(0);
                     const dPer100 = (delta * 100).toFixed(0);
-                    const indicatorIcon = { up: "chevron-circle-up", down: "chevron-circle-down" }[indicator];
-                    const indicatorColor = indicator === "up" ? CT.CTA_POSITIVE : CT.CTA_NEGATIVE;
                     const chartProps = {
                         withCustomBarColorFromData: true,
                         hideLegend: true,
@@ -99,6 +97,10 @@ export default function HealthCharts({ data = [], loading = false, name = null, 
                             },
                         },
                     };
+
+                    let indicatorIcon = { up: "chevron-circle-up", down: "chevron-circle-down" }[indicator];
+                    let indicatorColor = indicator === "up" ? CT.CTA_POSITIVE : CT.CTA_NEGATIVE;
+                    if (delta === 0) indicatorColor = CT.BG_GRAY_400;
 
                     return (
                         <View key={i} style={styles.column}>
@@ -137,7 +139,7 @@ export default function HealthCharts({ data = [], loading = false, name = null, 
                                                     style={styles.indicatorIcon}
                                                 />
                                                 <Text style={[styles.chartDescValue, { color: indicatorColor }]}>
-                                                    {`${vPer100}% `}
+                                                    {`${dPer100}% `}
                                                 </Text>
                                                 <Text style={styles.chartDescText}>from</Text>
                                             </View>
@@ -146,13 +148,6 @@ export default function HealthCharts({ data = [], loading = false, name = null, 
                                             </View>
                                             <Text></Text>
                                         </View>
-
-                                        {/* <Text style={styles.chartDesc}>
-                                            <Text style={[styles.indicator, { color: indicatorColor }]}>
-                                                <Icon icon={indicatorIcon} color={indicatorColor} size={10} /> {dPer100}%
-                                            </Text>
-                                            from previous record
-                                        </Text> */}
                                     </React.Fragment>
                                 )}
                             </View>

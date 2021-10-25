@@ -15,8 +15,9 @@ import ProgressBarSurvey from "../../components/progressbar-survey";
 
 import { View, StyleSheet } from "react-native";
 
-import pets from "../../../data/pets.json";
-import survey from "../../../data/survey/survey.json";
+import net from "../../functions/net";
+import http from "../../functions/http";
+import toast from "../../functions/toast";
 
 import _flatten from "lodash/flatten";
 import _clone from "lodash/clone";
@@ -26,10 +27,13 @@ import _findIndex from "lodash/findIndex";
 import _upperFirst from "lodash/upperFirst";
 
 export default function PetHealthSurveyScreen({ navigation, route }) {
-    const petID = _get(route, "params.petID");
-    const pet = _get(route, "params.pet");
+    const pet = _get(route, "params.pet", null);
+    const petID = _get(pet, "id", null);
+    const survey = _get(route, "params.survey");
+    const recordID = _get(route, "params.recordID", null);
     const [qIndex, setQIndex] = useState(0);
     const [answers, setAnswers] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     // Flatten all questions and calculate total and current question's number
     const questions = _flatten(survey.map(({ questions }) => questions));
@@ -45,23 +49,49 @@ export default function PetHealthSurveyScreen({ navigation, route }) {
 
     // Get section data based on question ID
     const section = _find(survey, (o) => _findIndex(o?.questions, { id: qID }) > -1);
-    const sectionTh = _findIndex(survey, { type: section?.type }) + 1;
-    const isFinal = sectionTh === survey?.length;
-    const sectionIndicator = isFinal ? "Finishing Up" : `Section ${sectionTh}`;
-
-    useEffect(() => {
-        if (_findIndex(answers, { id: qID }) < 0) {
-            // When answer is not yet in the state, let's create one
-            setAnswers([...answers, { id: qID, values: [] }]);
-        }
-    }, [qIndex]);
+    const sectionTh = _findIndex(survey, { name: section?.name }) + 1;
+    const isFinal = qIndex === questions?.length - 1;
+    const sectionIndicator = `Section ${sectionTh}`;
 
     // Handle what happens when pressing next
-    const _onNext = () => (qIndex < total - 1 ? setQIndex(qIndex + 1) : null);
-    const _onPrev = () => (qIndex > 0 ? setQIndex(qIndex - 1) : null);
-
-    // Handle what happens when toggling options
+    const _onNext = () => {
+        const options = { arrayFormat: "brackets" };
+        const postdata = { id: recordID, questionId: qID, factors: answer?.values };
+        http.post("/survey/records/answer", net.data(postdata, options))
+            .then(({ data }) => {
+                if (data?.success) {
+                    if (isFinal) {
+                        http.put("/survey/records/finish", net.data({ id: recordID }))
+                            .then(({ data }) => {
+                                if (data?.success) {
+                                    navigation.navigate("home", { shouldRefresh: Date.now() });
+                                }
+                            })
+                            .catch(({ response }) => net.handleCatch(response));
+                        return;
+                    }
+                    qIndex < total - 1 ? setQIndex(qIndex + 1) : null;
+                }
+            })
+            .catch(({ response }) => net.handleCatch(response, setLoading));
+    };
+    const _onPrev = () => {
+        if (qIndex > 0) {
+            setLoading(true);
+            const newIndex = qIndex - 1;
+            const questionId = _get(questions, `[${newIndex}].id`);
+            http.post("/survey/records/answer/undo", net.data({ id: recordID, questionId }))
+                .then(({ data }) => {
+                    setLoading(false);
+                    if (data?.success) {
+                        setQIndex(newIndex);
+                    }
+                })
+                .catch(({ response }) => net.handleCatch(response, setLoading));
+        }
+    };
     const _onCheckOption = (optionID, checked) => {
+        // Handle what happens when toggling options
         let clonedAnswers = _clone(answers);
         const ansIndex = _findIndex(clonedAnswers, { id: qID });
         const answer = clonedAnswers[ansIndex];
@@ -80,6 +110,21 @@ export default function PetHealthSurveyScreen({ navigation, route }) {
         setAnswers(clonedAnswers);
     };
 
+    useEffect(() => {
+        if (petID === null || recordID === null) {
+            toast.show("Survey record is not created, please try again");
+            navigation.goBack();
+        }
+    }, []);
+
+    useEffect(() => {
+        // When answer is not yet in the state, let's create one
+        if (_findIndex(answers, { id: qID }) < 0) {
+            setAnswers([...answers, { id: qID, values: [] }]);
+        }
+        console.log("isFinal:", isFinal);
+    }, [qIndex]);
+
     return (
         <Container style={{ backgroundColor: CT.BG_PURPLE_900 }}>
             <TopBar
@@ -91,7 +136,7 @@ export default function PetHealthSurveyScreen({ navigation, route }) {
             <Header contentStyle={styles.headerContent}>
                 <Heading
                     size={1}
-                    text={`${sectionIndicator}: ${_upperFirst(section?.type)}`}
+                    text={`${sectionIndicator}: ${_upperFirst(section?.name)}`}
                     kicker={`Question ${questionTh} of ${total}`}
                     style={styles.heading}
                     textStyle={styles.headingText}
@@ -107,6 +152,7 @@ export default function PetHealthSurveyScreen({ navigation, route }) {
                             {qIndex > 0 && (
                                 <Button
                                     small
+                                    loading={loading}
                                     text="Previous"
                                     icon="chevron-left"
                                     style={styles.buttonPrev}
@@ -117,11 +163,12 @@ export default function PetHealthSurveyScreen({ navigation, route }) {
                             <Button
                                 small
                                 iconRight
+                                loading={loading}
                                 text={isFinal ? "Get Reports" : "Next Question"}
                                 icon="arrow-right"
                                 color="purple"
                                 style={styles.button}
-                                onPress={isFinal ? navigation.goBack : _onNext}
+                                onPress={_onNext}
                                 disabled={disabled}
                             />
                         </View>

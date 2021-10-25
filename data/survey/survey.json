@@ -7,7 +7,7 @@
                 "type": 1,
                 "required": false,
                 "question": "Which activities does {name} do?",
-                "options": [
+                "factors": [
                     { "id": 1, "value": "Spending time outdoor unsupervised" },
                     { "id": 2, "value": "Spending time outdoor supervised or on a leash" },
                     { "id": 3, "value": "Socializing with cats from outside of your home" },
@@ -24,7 +24,7 @@
                 "type": 2,
                 "required": false,
                 "question": "Considering {name}'s activities, about how often does {genderPronoun} get exercise?",
-                "options": [
+                "factors": [
                     { "id": 10, "value": "Daily" },
                     { "id": 11, "value": "A few times a week" },
                     { "id": 12, "value": "A few times a month" },
@@ -37,7 +37,7 @@
                 "type": 1,
                 "required": false,
                 "question": "Do you use a product to protect {name} against these common parasites?",
-                "options": [
+                "factors": [
                     { "id": 15, "value": "Heartworm" },
                     { "id": 16, "value": "Fleas" },
                     { "id": 17, "value": "Ticks" },
@@ -49,7 +49,7 @@
                 "type": 2,
                 "required": false,
                 "question": "Do you travel or plan to travel with {name} outside of your local community?",
-                "options": [
+                "factors": [
                     { "id": 19, "value": "Yes" },
                     { "id": 20, "value": "No" }
                 ]
@@ -59,7 +59,7 @@
                 "type": 2,
                 "required": false,
                 "question": "When riding in a car or other form of transportation, {name}:",
-                "options": [
+                "factors": [
                     { "id": 21, "value": "Sleeps/enjoys the ride" },
                     {
                         "id": 22,
@@ -72,7 +72,7 @@
                 "type": 1,
                 "required": false,
                 "question": "{name} has exposure to:",
-                "options": [
+                "factors": [
                     { "id": 23, "value": "Small pets (ferrets, birds, reptiles, etc.), livestock or horses" },
                     { "id": 24, "value": "Wildlife (deer, raccoons, rodents, etc.)" },
                     { "id": 25, "value": "People who care for other cats" }
@@ -83,7 +83,7 @@
                 "type": 2,
                 "required": false,
                 "question": "Is {name} ever around people with weakened immune systems (children <5 years of age, seniors, pregnant women, people on high doses of steroid, organ transplant patients, or patients with cancer, diabetes, chronic disease, or HIV/AIDS)?",
-                "options": [
+                "factors": [
                     { "id": 26, "value": "Yes/Maybe" },
                     { "id": 27, "value": "No" }
                 ]
@@ -93,7 +93,7 @@
                 "type": 1,
                 "required": false,
                 "question": "Does {name} do any of the following?",
-                "options": [
+                "factors": [
                     { "id": 28, "value": "Unwanted begging or pestering for food" },
                     { "id": 29, "value": "Stealing food (from garbage, counters, tables)" },
                     { "id": 30, "value": "Playing with ribbon, string or floss" },
@@ -117,7 +117,7 @@
                 "type": 2,
                 "required": false,
                 "question": "Have you noticed any recent change in {name} weight?",
-                "options": [
+                "factors": [
                     { "id": 39, "value": "No change in weight" },
                     { "id": 40, "value": "Increased weight" },
                     { "id": 41, "value": "Decreased weight" },
@@ -129,7 +129,7 @@
                 "type": 2,
                 "required": false,
                 "question": "Any recent change in appetite for {name}?",
-                "options": [
+                "factors": [
                     { "id": 43, "value": "No change in appetite" },
                     { "id": 44, "value": "Increased appetite" },
                     { "id": 45, "value": "Decreased appetite" },
@@ -141,7 +141,7 @@
                 "type": 1,
                 "required": false,
                 "question": "What type of food(s) does {name} eat?",
-                "options": [
+                "factors": [
                     { "id": 47, "value": "Dry food" },
                     { "id": 48, "value": "Semi-moist food (dry mixed with water or broth, pouch, roll)" },
                     { "id": 49, "value": "Wet food (canned)" },
@@ -161,7 +161,7 @@
                 "type": 2,
                 "required": false,
                 "question": "Using graphic below,select the cat shape that best describes {name}:",
-                "options": [
+                "factors": [
                     {
                         "id": 59,
                         "image": "https://img.omvr.io/ekorio/cat-body-charts/very-thin.png",
@@ -199,7 +199,7 @@
                 "type": 1,
                 "required": false,
                 "question": "Has {name} recently had any of the following?",
-                "options": [
+                "factors": [
                     { "id": 64, "value": "Formed but soft or liquid stools (diarrhea)" },
                     { "id": 65, "value": "Blood in the stool" },
                     { "id": 66, "value": "Dark stool (almost black or tar-like in appearance)" },
@@ -218,7 +218,7 @@
                 "type": 1,
                 "required": false,
                 "question": "Have you recently noticed {name}:",
-                "options": [
+                "factors": [
                     { "id": 75, "value": "Drinking more water than usual" },
                     { "id": 76, "value": "Urinating larger amounts or more often than usual" },
                     { "id": 77, "value": "Having urine accidents outside the litter box" },
@@ -234,7 +234,7 @@
                 "type": 1,
                 "required": false,
                 "question": "Have you recently noticed any of the following with {name}'s eyes?",
-                "options": [
+                "factors": [
                     { "id": 83, "value": "Redness or squinting of eyes" },
                     { "id": 84, "value": "Tearing, discharge, crusting or darkened fur around the eyes" },
                     { "id": 85, "value": "Scratching, rubbing or hair loss around the eyes" },
@@ -247,7 +247,7 @@
                 "type": 1,
                 "required": false,
                 "question": "Have you recently noticed any of the following with {name}'s ears?",
-                "options": [
+                "factors": [
                     { "id": 88, "value": "Smelly or dirty ears (brown, black or other \"gunk\" present)" },
                     { "id": 89, "value": "Sores, scabs, crusts, swellings or small bumps on ears" },
                     { "id": 90, "value": "Frequent head shaking, scratching or rubbing at ears" },
@@ -260,7 +260,7 @@
                 "type": 1,
                 "required": false,
                 "question": "Have you recently noticed any of the following with {name}'s mouth?",
-                "options": [
+                "factors": [
                     { "id": 93, "value": "Bad breath" },
                     { "id": 94, "value": "Plaque, tartar or discolored teeth (tan, yellow, brown)" },
                     { "id": 95, "value": "Loose, broken or newly missing teeth" },
@@ -277,7 +277,7 @@
                 "type": 1,
                 "required": false,
                 "question": "Thinking about {name}'s skin and coat, have you noticed:",
-                "options": [
+                "factors": [
                     { "id": 102, "value": "Swellings or lumps (whether old or new)" },
                     { "id": 103, "value": "Sores, scabs, crusts or white, flaky material like dandruff" },
                     { "id": 104, "value": "Fleas or flea dirt (flea dirt looks like tiny coffee grounds on the skin)" },
@@ -295,7 +295,7 @@
                 "type": 1,
                 "required": false,
                 "question": "Have you noticed {name}:",
-                "options": [
+                "factors": [
                     { "id": 112, "value": "Stiff or slower when moving, jumping , standing up or using stairs" },
                     { "id": 113, "value": "Favoring a paw or limping" },
                     { "id": 114, "value": "Upset when picked up or held a certain way" },
@@ -309,7 +309,7 @@
                 "type": 1,
                 "required": false,
                 "question": "Has {name} recently shown any of the following?",
-                "options": [
+                "factors": [
                     { "id": 118, "value": "Hiding or sleeping more" },
                     { "id": 119, "value": "Less likely to come when called" },
                     { "id": 120, "value": "Less interaction with people or other animals" },
@@ -328,7 +328,7 @@
                 "type": 1,
                 "required": false,
                 "question": "Has {name} had any of the following lately?",
-                "options": [
+                "factors": [
                     { "id": 129, "value": "Discharge from the nose (yellow, white, green or red)" },
                     { "id": 130, "value": "Panting" },
                     { "id": 131, "value": "Persistent coughing or hacking" },
@@ -349,7 +349,7 @@
                 "type": 2,
                 "required": false,
                 "question": "Is there any other information about {name} you would like to capture in the report?",
-                "options": [
+                "factors": [
                     { "id": 137, "value": "Yes" },
                     { "id": 138, "value": "No" }
                 ]

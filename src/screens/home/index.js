@@ -111,14 +111,21 @@ const HomeScreen = connectActionSheet(({ navigation, route }) => {
                 setHealthData(placeholderChart);
             });
     };
-
     const _onStartSurvey = () => {
         setLoadingSurvey(true);
-        const t = setTimeout(() => {
-            go("pet__health-survey", { pet, petID });
-            setLoadingSurvey(false);
-            clearTimeout(t);
-        }, CT.WAITING_DEMO / 3);
+        Promise.all([http.post("/survey/records/create", net.data({ petId: petID })), http.get("/survey/sections")])
+            .then(([{ data: record }, { data: survey }]) => {
+                setLoadingSurvey(false);
+                const recordID = record?.payload?.id;
+                if (record?.success && recordID !== "" && survey?.length > 0) {
+                    go("pet__health-survey", { pet, survey, recordID });
+                }
+            })
+            .catch(([{ response }, { response: resposneSurvey }]) => {
+                net.handleCatch(response);
+                net.handleCatch(resposneSurvey);
+                setLoadingSurvey(false);
+            });
     };
     const _onChangePet = (id) => {
         if (loading || id === healthData?.id) {

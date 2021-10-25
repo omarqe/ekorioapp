@@ -11,5 +11,5 @@ export default {
             setLoading(false);
         }
     },
-    data: (input) => qs.stringify(input),
+    data: (input, options = {}) => qs.stringify(input, options),
 };
