@@ -9,7 +9,7 @@ import EmptyArt from "../../../assets/arts/ginger-cat-722.svg";
 
 import _renderIf from "../../functions/renderIf";
 
-export default function AppointmentScene({ data = [], loading = false, initiated = false, onPress }) {
+export default function AppointmentScene({ data = [], loading = false, initiated = false, onPress, onEndReached }) {
     if (loading || !initiated) {
         data = [];
         loading = true;
@@ -24,7 +24,7 @@ export default function AppointmentScene({ data = [], loading = false, initiated
             <Body gray flex expanded>
                 {_renderIf(
                     data?.length > 0,
-                    <List list={data} loading={loading} onPress={onPress} bounces scrollEnabled />,
+                    <List list={data} loading={loading} onPress={onPress} onEndReached={onEndReached} bounces scrollEnabled />,
                     <Empty
                         art={EmptyArt}
                         artProps={{ style: { marginBottom: -10 } }}
@@ -42,4 +42,5 @@ AppointmentScene.propTypes = {
     loading: PropTypes.bool,
     initiated: PropTypes.bool,
     onPress: PropTypes.func,
+    onEndReached: PropTypes.func,
 };
