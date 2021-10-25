@@ -14,6 +14,7 @@ import _get from "lodash/get";
 import _clone from "lodash/clone";
 import _toLower from "lodash/toLower";
 import _renderIf from "../../functions/renderIf";
+import _findIndex from "lodash/findIndex";
 import _createSceneMap from "../../functions/createSceneMap";
 import _fetchServiceTypes from "../../functions/fetchServiceTypes";
 import _fetchAppointments from "../../functions/fetchAppointments";
@@ -75,7 +76,14 @@ const AppointmentScreen = ({ navigation, route }) => {
         const key = route?.key;
         const serviceId = route?.id;
         _fetchAppointments(key, appointments, setAppointments, setLoadingData, { serviceId, excludes });
-    }, [state.index, route?.params?.shouldRefresh]);
+    }, [state.index]);
+    useEffect(() => {
+        const serviceId = _get(route, "params.serviceID", null);
+        const index = _findIndex(state.routes, (o) => o.id == serviceId);
+        if (state.index !== index) {
+            setState({ ...state, index });
+        }
+    }, [route?.params?.shouldRefresh]);
 
     return (
         <Container>

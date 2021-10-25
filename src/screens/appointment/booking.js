@@ -124,11 +124,17 @@ export default function AppointmentBookingScreen({ navigation }) {
 
         setLoadingForm(true);
         http.post("/appointments/create", net.data(formdata))
-            .then(({ data }) => {
+            .then(({ data = {} }) => {
+                const { payload, success = false } = data;
+
                 setLoadingForm(false);
                 if (data?.success) {
                     toast.fromData(data, "response[0].message");
-                    navigation.navigate("appointment", data?.payload);
+                    navigation.navigate("appointment", {
+                        id: payload?.id,
+                        serviceID: formdata.serviceId,
+                        shouldRefresh: Date.now(),
+                    });
                 }
             })
             .catch(({ response }) => net.handleCatch(response, setLoadingForm));
