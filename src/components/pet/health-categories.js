@@ -9,6 +9,7 @@ import Heading from "../heading";
 import Shimmer from "../shimmer";
 import PropTypes from "prop-types";
 
+import * as Haptics from "expo-haptics";
 import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 
 import _find from "lodash/find";
@@ -39,6 +40,7 @@ export default function HealthCategories({ loading = false, data = [] }) {
     const _onPress = (id) => {
         if (_find(data, { id }) && !loading) {
             setOpenID(id);
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         }
     };
     const togglePressed = (state) => {

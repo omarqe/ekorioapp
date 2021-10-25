@@ -69,6 +69,7 @@ export default function PetHealthSurveyScreen({ navigation, route }) {
                         http.put("/survey/records/finish", net.data({ id: recordID }))
                             .then(({ data }) => {
                                 if (data?.success) {
+                                    toast.fromData(data, "response[0].message");
                                     navigation.navigate("home", { shouldRefresh: Date.now() });
                                 }
                             })
@@ -97,7 +98,7 @@ export default function PetHealthSurveyScreen({ navigation, route }) {
         }
     };
     const _onCheckOption = (optionID, checked) => {
-        sendHaptics();
+        Haptics.selectionAsync();
         // Handle what happens when toggling options
         let clonedAnswers = _clone(answers);
         const ansIndex = _findIndex(clonedAnswers, { id: qID });
