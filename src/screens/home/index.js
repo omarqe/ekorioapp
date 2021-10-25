@@ -46,41 +46,9 @@ const HomeScreen = connectActionSheet(({ navigation, route }) => {
     const [healthData, setHealthData] = useState({});
     const { showActionSheetWithOptions } = useActionSheet();
 
-    // Initialize home screen
-    useEffect(() => {
-        http.get("/pets")
-            .then(({ data }) => {
-                setLoadingPet(false);
-                if (data?.length > 0) {
-                    const petID = _first(_sortBy(data, "name"))?.id;
-                    setPets(data);
-                    setPetID(petID);
-                    getHealthData(petID);
-                }
-            })
-            .catch(({ response }) => net.handleCatch(response, setLoadingPet));
-    }, []);
-
     // Update the newly updated/created pet
     const pet = _find(pets, { id: petID });
     const recentPet = route?.params?.recentPet;
-    useEffect(() => {
-        const id = recentPet?.id;
-        const index = _findIndex(pets, { id });
-
-        if (id !== null && id !== undefined) {
-            setLoadingPet(true);
-            http.get(`/pets/${id}`)
-                .then(({ data }) => {
-                    let newPetsData = _clone(pets);
-                    if (index > -1) newPetsData[index] = data;
-                    else newPetsData = [...newPetsData, data];
-                    setPets(newPetsData);
-                    setLoadingPet(false);
-                })
-                .catch(() => setLoadingPet(false));
-        }
-    }, [recentPet]);
 
     const emptyPets = pets?.length < 1 && !loadingPet;
     const hasHealthData = !_isEmpty(healthData) && !_isEmpty(healthData?.charts) && !_isEmpty(healthData?.categories);
@@ -148,6 +116,43 @@ const HomeScreen = connectActionSheet(({ navigation, route }) => {
             }
         });
     };
+
+    // Initialize home screen
+    useEffect(() => {
+        http.get("/pets")
+            .then(({ data }) => {
+                setLoadingPet(false);
+                if (data?.length > 0) {
+                    const petID = _first(_sortBy(data, "name"))?.id;
+                    setPets(data);
+                    setPetID(petID);
+                    getHealthData(petID);
+                }
+            })
+            .catch(({ response }) => net.handleCatch(response, setLoadingPet));
+    }, []);
+
+    // After answering survey, refresh health data
+    useEffect(() => getHealthData(petID), [route?.params?.shouldRefresh]);
+
+    // After adding/updating a pet, add/refresh their data
+    useEffect(() => {
+        const id = recentPet?.id;
+        const index = _findIndex(pets, { id });
+
+        if (id !== null && id !== undefined) {
+            setLoadingPet(true);
+            http.get(`/pets/${id}`)
+                .then(({ data }) => {
+                    let newPetsData = _clone(pets);
+                    if (index > -1) newPetsData[index] = data;
+                    else newPetsData = [...newPetsData, data];
+                    setPets(newPetsData);
+                    setLoadingPet(false);
+                })
+                .catch(() => setLoadingPet(false));
+        }
+    }, [recentPet]);
 
     return (
         <Container loading={loadingSurvey}>
