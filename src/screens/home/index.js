@@ -56,11 +56,10 @@ const HomeScreen = connectActionSheet(({ navigation, route }) => {
 
     const reportDate = moment(healthData?.date);
     const healthChartTitle = loadingPet ? "Health Report" : `${pet?.name}'s Health`;
-    const healthChartSubtitle = loading
-        ? "Loading.."
-        : hasHealthData
-        ? `Last evaluated ${reportDate.fromNow()}`
-        : "Not available";
+    let healthChartSubtitle = hasHealthData ? `Last evaluated ${reportDate.fromNow()}` : "Not available";
+    if (loading) {
+        healthChartSubtitle = "Loading..";
+    }
 
     const healthChartsData = healthData?.charts;
     const healthCategories = healthData?.categories;
@@ -73,7 +72,7 @@ const HomeScreen = connectActionSheet(({ navigation, route }) => {
             .then(({ data }) => {
                 setLoading(false);
                 const payload = data?.payload;
-                const reports = { date: data?.updatedAt, charts: payload?.charts, categories: payload?.categories };
+                const reports = { date: payload?.createdAt, charts: payload?.charts, categories: payload?.categories };
                 if (!_isEmpty(reports) && !_isEmpty(reports?.charts) && !_isEmpty(reports?.categories)) {
                     setHealthData(reports);
                     return;
