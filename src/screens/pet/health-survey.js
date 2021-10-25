@@ -122,7 +122,6 @@ export default function PetHealthSurveyScreen({ navigation, route }) {
         if (_findIndex(answers, { id: qID }) < 0) {
             setAnswers([...answers, { id: qID, values: [] }]);
         }
-        console.log("isFinal:", isFinal);
     }, [qIndex]);
 
     return (
