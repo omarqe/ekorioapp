@@ -144,7 +144,7 @@ export default function HealthCharts({ data = [], loading = false, name = null, 
                                                 <Text style={styles.chartDescText}>from</Text>
                                             </View>
                                             <View>
-                                                <Text style={styles.chartDescText}>previous record</Text>
+                                                <Text style={styles.chartDescText}>previous report</Text>
                                             </View>
                                             <Text></Text>
                                         </View>
