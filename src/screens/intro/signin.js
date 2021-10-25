@@ -45,6 +45,8 @@ export default function SigninScreen({ navigation }) {
                     return;
                 }
 
+                auth.setUID(uid);
+                auth.setToken(token);
                 auth.setAuthed(true);
                 store.save("token", token);
                 store.save("uid", uid?.toString());
