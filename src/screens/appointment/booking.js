@@ -24,6 +24,7 @@ import FloatingFields from "../../components/floating-fields";
 import KeyboardAvoiding from "../../components/keyboard-avoiding";
 
 import { View, StyleSheet } from "react-native";
+import * as Haptics from "expo-haptics";
 
 import net from "../../functions/net";
 import http from "../../functions/http";
@@ -86,8 +87,15 @@ export default function AppointmentBookingScreen({ navigation }) {
         },
     ];
 
-    const _onResetDate = () => setData({ ...data, date: today });
-    const _onSelectDate = (date) => setData({ ...data, date: !loading ? moment(date) : data.date });
+    const sendHaptics = (style = Haptics.ImpactFeedbackStyle.Light) => Haptics.impactAsync(style);
+    const _onResetDate = () => {
+        sendHaptics(Haptics.ImpactFeedbackStyle.Heavy);
+        setData({ ...data, date: today });
+    };
+    const _onSelectDate = (date) => {
+        sendHaptics();
+        setData({ ...data, date: !loading ? moment(date) : data.date });
+    };
     const _onSelectTime = (t) => setTime(time === t ? null : t);
     const _onSelectPet = (petId) => setData({ ...data, petId });
     const _onChangeDetails = (value, name) => setData({ ...data, [name]: value?.toString() });
