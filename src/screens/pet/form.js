@@ -118,7 +118,7 @@ export default function PetFormScreen({ navigation, route }) {
             placeholder: "Give your pet a name",
         },
         {
-            name: "microchipID",
+            name: "microchipId",
             label: "Microchip ID",
             value: data?.microchipId,
             guide: "This microchip ID is non-editable once verified by the admin.",

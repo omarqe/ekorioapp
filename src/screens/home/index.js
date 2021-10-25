@@ -23,6 +23,7 @@ import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sh
 
 import net from "../../functions/net";
 import http from "../../functions/http";
+import moment from "moment";
 
 import _renderIf from "../../functions/renderIf";
 import _env from "../../functions/env";
@@ -53,12 +54,17 @@ const HomeScreen = connectActionSheet(({ navigation, route }) => {
     const emptyPets = pets?.length < 1 && !loadingPet;
     const hasHealthData = !_isEmpty(healthData) && !_isEmpty(healthData?.charts) && !_isEmpty(healthData?.categories);
 
+    const reportDate = moment(healthData?.date);
     const healthChartTitle = loadingPet ? "Health Report" : `${pet?.name}'s Health`;
-    const healthChartSubtitle = loading ? "Loading.." : hasHealthData ? "Last evaluated 3 weeks ago" : "Not available";
+    const healthChartSubtitle = loading
+        ? "Loading.."
+        : hasHealthData
+        ? `Last evaluated ${reportDate.fromNow()}`
+        : "Not available";
 
     const healthChartsData = healthData?.charts;
     const healthCategories = healthData?.categories;
-    const placeholderChart = { charts: [], categories: [] };
+    const placeholderChart = { date: null, charts: [], categories: [] };
 
     // Fetch health data from our server
     const getHealthData = (petID) => {
@@ -67,7 +73,7 @@ const HomeScreen = connectActionSheet(({ navigation, route }) => {
             .then(({ data }) => {
                 setLoading(false);
                 const payload = data?.payload;
-                const reports = { charts: payload?.charts, categories: payload?.categories };
+                const reports = { date: data?.updatedAt, charts: payload?.charts, categories: payload?.categories };
                 if (!_isEmpty(reports) && !_isEmpty(reports?.charts) && !_isEmpty(reports?.categories)) {
                     setHealthData(reports);
                     return;
@@ -148,6 +154,7 @@ const HomeScreen = connectActionSheet(({ navigation, route }) => {
                     if (index > -1) newPetsData[index] = data;
                     else newPetsData = [...newPetsData, data];
                     setPets(newPetsData);
+                    setPetID(id);
                     setLoadingPet(false);
                 })
                 .catch(() => setLoadingPet(false));
