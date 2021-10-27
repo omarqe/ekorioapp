@@ -1,7 +1,30 @@
 import "dotenv/config";
 export default {
     name: "Ekorio",
+    slug: "ekorio",
+    icon: "./assets/icon.png",
     version: "1.0.0",
+    orientation: "portrait",
+    splash: {
+        image: "./assets/splash.png",
+        resizeMode: "contain",
+        backgroundColor: "#1a1424",
+    },
+    updates: {
+        fallbackToCacheTimeout: 0,
+    },
+    assetBundlePatterns: ["**/*"],
+    ios: {
+        bundleIdentifier: "com.omenlo.ekorio",
+        supportsTablet: true,
+    },
+    android: {
+        package: "com.omenlo.ekorio",
+        adaptiveIcon: {
+            foregroundImage: "./assets/adaptive-icon.png",
+            backgroundColor: "#FFFFFF",
+        },
+    },
     extra: {
         DEVENV: process.env.DEVENV,
         API_SECRET: process.env.API_SECRET,
