@@ -12,7 +12,7 @@ import hasMissingDataToVerify from "../../functions/hasMissingDataToVerify";
 
 export default function SignupScreen({ navigation }) {
     const [loading, setLoading] = useState(false);
-    const [data, setData] = useState({ cc: 60, name: "", email: "", phone: "", password: "" });
+    const [data, setData] = useState({ cc: 60, name: "", email: "", phone: "", password: "", birthday: new Date() });
 
     const onChange = (value, name) => setData({ ...data, [name]: value });
     const onSubmit = () => {

@@ -16,10 +16,12 @@ export default {
     assetBundlePatterns: ["**/*"],
     ios: {
         bundleIdentifier: "com.omenlo.ekorio",
+        buildNumber: "1.0.0",
         supportsTablet: true,
     },
     android: {
         package: "com.omenlo.ekorio",
+        versionCode: 1,
         adaptiveIcon: {
             foregroundImage: "./assets/adaptive-icon.png",
             backgroundColor: "#FFFFFF",
