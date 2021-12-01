@@ -28,7 +28,6 @@ export default {
         },
     },
     extra: {
-        DEVENV: process.env.DEVENV,
         API_SECRET: process.env.API_SECRET,
         API_HOST: process.env.API_HOST,
         API_HOST_DEV: process.env.API_HOST_DEV,
