@@ -77,11 +77,11 @@ const AccountScreen = ({ navigation, route }) => {
     ];
 
     const onLogout = () => {
-        store.delete("token");
-        store.delete("uid");
-        if (typeof auth.setAuthed === "function") {
-            auth.setAuthed(false);
-        }
+        Promise.all([store.delete("token"), store.delete("uid")]).then(() => {
+            if (typeof auth.setUID === "function") auth.setUID(null);
+            if (typeof auth.setToken === "function") auth.setToken(null);
+            if (typeof auth.setAuthed === "function") auth.setAuthed(false);
+        });
     };
 
     useEffect(() => {

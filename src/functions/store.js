@@ -1,13 +1,13 @@
-import { setItemAsync, getItemAsync, deleteItemAsync } from "expo-secure-store";
+import * as SecureStore from "expo-secure-store";
 
 export default {
     save: async (key, value) => {
-        await setItemAsync(key, value);
+        return await SecureStore.setItemAsync(key, value);
     },
     get: async (key) => {
-        return await getItemAsync(key);
+        return await SecureStore.getItemAsync(key);
     },
     delete: async (key) => {
-        deleteItemAsync(key);
+        return await SecureStore.deleteItemAsync(key);
     },
 };
