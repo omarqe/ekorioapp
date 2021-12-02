@@ -31,12 +31,12 @@ export default function SigninScreen({ navigation }) {
             .then(({ data: o = {} }) => {
                 setLoading(false);
 
-                const { uid, token, cc, phone, verified } = o?.payload;
+                const { uid, token, csrf, cc, phone, verified } = o?.payload;
                 if (token?.length < 1) {
                     toast.show(data?.response[0]?.message);
                     return;
                 } else if (!verified) {
-                    const verifyData = { uid, token, cc, phone };
+                    const verifyData = { uid, token, csrf, cc, phone };
                     if (hasMissingDataToVerify(verifyData)) {
                         toast.show(CT.ERRORS.MISSING_VERIFY_DATA);
                         return;
@@ -46,9 +46,10 @@ export default function SigninScreen({ navigation }) {
                 }
 
                 auth.setUID(uid);
-                auth.setToken(token);
+                auth.setToken({ token, csrf });
                 auth.setAuthed(true);
                 store.save("token", token);
+                store.save("csrf", csrf);
                 store.save("uid", uid?.toString());
             })
             .catch(({ response }) => net.handleCatch(response, setLoading));

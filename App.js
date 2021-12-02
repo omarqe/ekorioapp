@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import http from "./src/functions/http";
 import store from "./src/functions/store";
 import Context from "./src/components/context";
@@ -20,25 +20,31 @@ library.add(fab, far, fal, fas);
 export default function App() {
     const [fontsLoaded] = useFonts({ Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold });
     const [uid, setUID] = useState(0);
-    const [token, setToken] = useState(null);
+    const [token, setToken] = useState({ token: null, csrf: null });
     const [authed, setAuthed] = useState(false);
     const AuthProvider = Context.Auth.Provider;
 
-    if (token !== null && token?.length > 0) {
-        http.interceptors.request.use((config) => {
-            const headers = { ...config.headers, Authorization: `Bearer ${token}` };
-            return { ...config, headers };
-        });
-    }
-
     // We should check the auth token over here
-    Promise.all([store.get("token"), store.get("uid")]).then(([token, uid]) => {
-        if (token?.length > 0) {
-            setUID(uid);
-            setToken(token);
-            setAuthed(true);
+    useEffect(() => {
+        Promise.all([store.get("token"), store.get("csrf"), store.get("uid")]).then(([token, csrf, id]) => {
+            if (token?.length > 0) {
+                setUID(id);
+                setToken({ token, csrf });
+                setAuthed(true);
+            }
+        });
+    }, [authed]);
+
+    useEffect(() => {
+        let authInterceptor = null;
+        if (token !== null) {
+            authInterceptor = http.interceptors.request.use((config) => {
+                const headers = { ...config.headers, Authorization: `Bearer ${token?.token}`, "X-CSRF-Token": token?.csrf };
+                return { ...config, headers };
+            });
         }
-    });
+        return () => http.interceptors.request.eject(authInterceptor);
+    }, [token]);
 
     if (!fontsLoaded) {
         return <AppLoading />;
