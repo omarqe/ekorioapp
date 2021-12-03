@@ -37,7 +37,7 @@ export default function App() {
 
     useEffect(() => {
         let authInterceptor = null;
-        if (token !== null) {
+        if (token?.token !== null) {
             authInterceptor = http.interceptors.request.use((config) => {
                 const headers = { ...config.headers, Authorization: `Bearer ${token?.token}`, "X-CSRF-Token": token?.csrf };
                 return { ...config, headers };
