@@ -55,7 +55,8 @@ export default function AppointmentBookingScreen({ navigation }) {
 
     useEffect(() => {
         Promise.all([http.get("/appointments/services"), http.get("/pets")])
-            .then(([{ data: serviceTypes }, { data: pets }]) => {
+            .then(([{ data: serviceTypes }, { data: petsData }]) => {
+                const { payload: pets = [] } = petsData;
                 if (pets?.length > 0) setPetData(pets);
                 if (serviceTypes?.length > 0) {
                     const types = serviceTypes.map(({ id: value, name: label }) => {

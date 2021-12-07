@@ -126,10 +126,12 @@ const HomeScreen = connectActionSheet(({ navigation, route }) => {
     useEffect(() => {
         http.get("/pets")
             .then(({ data }) => {
+                const { payload: pets = [] } = data;
+
                 setLoadingPet(false);
-                if (data?.length > 0) {
-                    const petID = _first(_sortBy(data, "name"))?.id;
-                    setPets(data);
+                if (pets?.length > 0) {
+                    const petID = _first(_sortBy(pets, "name"))?.id;
+                    setPets(pets);
                     setPetID(petID);
                     getHealthData(petID);
                 }
