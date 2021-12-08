@@ -124,7 +124,8 @@ const HomeScreen = connectActionSheet(({ navigation, route }) => {
 
     // Initialize home screen
     useEffect(() => {
-        http.get("/pets")
+        const params = { self: true };
+        http.get("/pets", { params })
             .then(({ data }) => {
                 const { payload: pets = [] } = data;
 
