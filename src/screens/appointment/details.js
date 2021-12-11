@@ -97,16 +97,18 @@ export default function AppointmentDetailsScreen({ navigation, route }) {
             bannerOptions="onGetDirections"
             {...options}
         >
-            <View style={{ marginBottom: 20 }}>
-                <Message
-                    text={message?.text}
-                    title={message?.title}
-                    color={message?.color}
-                    style={{ padding: 15 }}
-                    textStyle={{ fontSize: 12, lineHeight: 16 }}
-                    titleStyle={{ fontSize: 14, marginBottom: 5 }}
-                />
-            </View>
+            {["pending"].indexOf(statusSlug) > -1 && (
+                <View style={{ marginBottom: 20 }}>
+                    <Message
+                        text={message?.text}
+                        title={message?.title}
+                        color={message?.color}
+                        style={{ padding: 15 }}
+                        textStyle={{ fontSize: 12, lineHeight: 16 }}
+                        titleStyle={{ fontSize: 14, marginBottom: 5 }}
+                    />
+                </View>
+            )}
             <PetIdentity data={pet} loading={loading} />
         </DetailContainer>
     );

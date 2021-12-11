@@ -108,13 +108,13 @@ export default function PetHealthDetailsScreen({ navigation, route }) {
                         <View style={{ marginTop: 0 }}>
                             {_renderIf(
                                 meds?.length > 0,
-                                meds.map(({ name, description, ...rest }, i) => {
+                                meds.map(({ name, /*description,*/ ...rest }, i) => {
                                     let dot = -1;
                                     const labels = ["morning", "afternoon", "evening", "night"];
                                     return (
                                         <View key={i} style={[styles.medicine, { marginTop: i > 0 ? 10 : 0 }]}>
                                             <Text style={styles.medName}>{name}</Text>
-                                            <Text style={styles.medDesc}>{description || "No description."}</Text>
+                                            {/* <Text style={styles.medDesc}>{description || "No description."}</Text> */}
                                             <View style={styles.medBadges}>
                                                 {labels.map((key, j) => {
                                                     const n = rest[key];
@@ -124,7 +124,8 @@ export default function PetHealthDetailsScreen({ navigation, route }) {
                                                             <React.Fragment key={j}>
                                                                 {dot > 0 && <Text style={styles.middot}>&bull;</Text>}
                                                                 <Text style={styles.medBadgeText}>
-                                                                    {n}&times; {labels[j]}
+                                                                    <Text style={styles.medBadgeTimes}>{n}&times;</Text>
+                                                                    {` ${labels[j]}`}
                                                                 </Text>
                                                             </React.Fragment>
                                                         );
@@ -179,14 +180,19 @@ const styles = StyleSheet.create({
     },
     medBadges: {
         display: "flex",
-        marginTop: 5,
+        marginTop: 2,
         flexDirection: "row",
         justifyContent: "flex-start",
     },
     medBadgeText: {
-        color: CT.BG_GRAY_300,
+        color: CT.BG_GRAY_400,
         fontSize: 12,
         fontWeight: "400",
+    },
+    medBadgeTimes: {
+        color: CT.BG_GRAY_600,
+        fontSize: 12,
+        fontWeight: "600",
     },
     message: {
         borderWidth: 1,

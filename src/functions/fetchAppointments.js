@@ -27,10 +27,12 @@ export default function fetchAppointments(key, data = {}, setData, setLoading, p
 
     setLoading(!data[key]);
     http.get(`/appointments/by/custom`, { params })
-        .then(({ data: apmts }) => {
+        .then(({ data: a = {} }) => {
             setLoading(false);
-            if (apmts?.length > 0) {
-                const items = apmts.map(({ id, date, service, pet, status: st, veterinar: vet }) => {
+
+            const { payload: appointments } = a;
+            if (appointments?.length > 0) {
+                const items = appointments.map(({ id, date, service, pet, status: st, veterinar: vet }) => {
                     return {
                         id,
                         text: <Time date={date} />,
