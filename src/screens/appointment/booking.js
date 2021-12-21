@@ -54,7 +54,8 @@ export default function AppointmentBookingScreen({ navigation }) {
     const [loadingForm, setLoadingForm] = useState(false);
 
     useEffect(() => {
-        Promise.all([http.get("/appointments/services"), http.get("/pets")])
+        const params = { self: true };
+        Promise.all([http.get("/appointments/services"), http.get("/pets", { params })])
             .then(([{ data: serviceTypes }, { data: petsData }]) => {
                 const { payload: pets = [] } = petsData;
                 if (pets?.length > 0) setPetData(pets);
@@ -105,8 +106,9 @@ export default function AppointmentBookingScreen({ navigation }) {
         if (vetData?.length < 1) {
             setLoadingVet(true);
             http.get("/vets")
-                .then(({ data }) => {
-                    setVetData(data);
+                .then(({ data = {} }) => {
+                    const { payload } = data;
+                    setVetData(payload);
                     setVetPopup(true);
                     setLoadingVet(false);
                 })
