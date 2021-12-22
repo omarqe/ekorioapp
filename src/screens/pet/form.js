@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
 import { View, StyleSheet } from "react-native";
+
+import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 
 import CT from "../../const";
@@ -39,6 +41,7 @@ const PetFormScreen = connectActionSheet(({ navigation, route }) => {
     const [loading, setLoading] = useState(false);
     const [loadingData, setLoadingData] = useState(true);
     const [localImage, setLocalImage] = useState(null);
+    const [localImageBase64, setLocalImageBase64] = useState(null);
 
     // Initialize
     useEffect(() => {
@@ -78,11 +81,14 @@ const PetFormScreen = connectActionSheet(({ navigation, route }) => {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            quality: 1,
+            quality: 0.5,
             aspect: [1, 1],
         });
         if (!result.cancelled) {
             setLocalImage(result.uri);
+            FileSystem.readAsStringAsync(result.uri, { encoding: "base64" }).then((base64) => {
+                setLocalImageBase64(base64);
+            });
         }
     };
     const _onTakePhotoWithCamera = async () => {
@@ -114,15 +120,17 @@ const PetFormScreen = connectActionSheet(({ navigation, route }) => {
         });
     };
     const _onSubmit = () => {
-        setLoading(true);
+        // If we're uploading profile picture for this pet, use the base64
+        if (localImage && localImageBase64) {
+            data.image = localImageBase64;
+        }
 
-        const submit = isUpdate ? http.put("/pets/update", net.data(data)) : http.post("/pets/create", net.data(data));
-        const upload = null;
-        Promise.all([submit])
-            .then(([{ data: submitData }]) => {
-                if (submitData?.success) {
-                    toast.fromData(submitData, "response[0].message");
-                    navigation.navigate("home", { recentPet: submitData?.payload });
+        setLoading(true);
+        (isUpdate ? http.put("/pets/update", net.data(data)) : http.post("/pets/create", net.data(data)))
+            .then(({ data }) => {
+                if (data?.success) {
+                    toast.fromData(data, "response[0].message");
+                    navigation.navigate("home", { recentPet: data?.payload });
                 }
                 setLoading(false);
             })
