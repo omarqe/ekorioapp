@@ -83,7 +83,10 @@ const PetHealthRecordsScreen = ({ navigation, route }) => {
 
         setPetID(petId);
         http.get("/pets")
-            .then(({ data }) => setPets(data?.length > 0 ? data : []))
+            .then(({ data = {} }) => {
+                const { payload = [] } = data;
+                setPets(payload);
+            })
             .catch(({ response }) => net.handleCatch(response));
     }, []);
 

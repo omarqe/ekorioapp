@@ -42,7 +42,7 @@ const PetSwitch = ({ pets = [], checked, onSwitch, onPressIn, onPressOut, supres
         <React.Fragment>
             <Pressable style={styles.base} onPress={_onOpen} onPressIn={_onPressIn} onPressOut={_onPressOut}>
                 {!supressed && <Icon icon="fas caret-down" size={18} color={pressed ? CT.BG_PURPLE_600 : CT.BG_PURPLE_500} />}
-                <Pet size={34} style={styles.petImage} image={currentPet?.imageURL} onPress={_onOpen} />
+                <Pet size={34} style={styles.petImage} image={currentPet?.image} onPress={_onOpen} />
             </Pressable>
 
             <Modal title="Choose Pet" open={open} onClose={_onClose}>
