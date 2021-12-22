@@ -2,17 +2,18 @@ import React, { useState } from "react";
 import CT from "../../const";
 import Text from "../text";
 import Icon from "../icon";
+import Shimmer from "../shimmer";
 import PropTypes from "prop-types";
 import { View, Image, Pressable, StyleSheet } from "react-native";
 
 import _omit from "lodash/omit";
 import _renderIf from "../../functions/renderIf";
-import Shimmer from "../shimmer";
+import _getPetImageSrc from "../../functions/getPetImageSrc";
 
 export default function Pet(props) {
+    let { name, image = null, theme = "default", active, checked } = props;
     const [pressed, setPressed] = useState(false);
     const { loading = false, deemphasized = false, defaultSource = false } = props;
-    const { name, image = null, theme = "default", active, checked } = props;
     const { size = 60, padding = 3, borderRadius = null } = props;
     const { phIcon = null, phIconProps } = props;
 
@@ -29,7 +30,9 @@ export default function Pet(props) {
     const height = width;
     const radius = borderRadius ? borderRadius : size * 0.35;
     const isLight = theme === "light";
+    const hasImage = image && image?.length > 0;
 
+    image = _getPetImageSrc(image);
     const imageURL = typeof image === "string" ? { uri: image } : image;
     const imageProps = defaultSource ? { defaultSource: imageURL } : { source: imageURL };
 
@@ -83,7 +86,7 @@ export default function Pet(props) {
                     <Shimmer style={imageBase} color={shimmerColor} />,
                     <View style={imageBase}>
                         {_renderIf(
-                            image,
+                            hasImage,
                             <Image style={[styles.image, imageStyle, _imageStyle]} resizeMode="cover" {...imageProps} />,
                             _renderIf(
                                 !loading,
