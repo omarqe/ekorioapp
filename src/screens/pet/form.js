@@ -77,15 +77,19 @@ export default function PetFormScreen({ navigation, route }) {
         }
     };
     const _onSubmit = () => {
-        const x = isUpdate ? http.put("/pets/update", net.data(data)) : http.post("/pets/create", net.data(data));
         setLoading(true);
-        x.then(({ data: o }) => {
-            if (o?.success) {
-                toast.fromData(o, "response[0].message");
-                navigation.navigate("home", { recentPet: o?.payload });
-            }
-            setLoading(false);
-        }).catch(({ response }) => net.handleCatch(response, setLoading));
+
+        const submit = isUpdate ? http.put("/pets/update", net.data(data)) : http.post("/pets/create", net.data(data));
+        const upload = null;
+        Promise.all([submit])
+            .then(([{ data: submitData }]) => {
+                if (submitData?.success) {
+                    toast.fromData(submitData, "response[0].message");
+                    navigation.navigate("home", { recentPet: submitData?.payload });
+                }
+                setLoading(false);
+            })
+            .catch(({ response }) => net.handleCatch(response, setLoading));
     };
 
     const petID = _get(route, "params.id", null);
@@ -183,7 +187,7 @@ export default function PetFormScreen({ navigation, route }) {
                             borderRadius={35}
                             padding={5}
                             size={130}
-                            image={data?.imageURL}
+                            image={data?.image}
                             nameStyle={styles.petName}
                             baseStyle={styles.petBase}
                             imageBaseStyle={styles.petImageBase}
