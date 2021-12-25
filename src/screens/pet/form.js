@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
 import { View, StyleSheet } from "react-native";
 
-import * as FileSystem from "expo-file-system";
-import * as ImagePicker from "expo-image-picker";
-
 import CT from "../../const";
 import Pet from "../../components/pet";
 import Badge from "../../components/badge";
@@ -33,6 +30,7 @@ import _makeBirthdate from "../../functions/makeBirthdate";
 import net from "../../functions/net";
 import http from "../../functions/http";
 import toast from "../../functions/toast";
+import onOpenGallery from "../../functions/onOpenGallery";
 
 const PetFormScreen = connectActionSheet(({ navigation, route }) => {
     const { showActionSheetWithOptions } = useActionSheet();
@@ -77,20 +75,8 @@ const PetFormScreen = connectActionSheet(({ navigation, route }) => {
         }
     }, []);
 
-    const _onPickPhotoFromGallery = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            allowsEditing: true,
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            quality: 0.5,
-            aspect: [1, 1],
-        });
-        if (!result.cancelled) {
-            setLocalImage(result.uri);
-            FileSystem.readAsStringAsync(result.uri, { encoding: "base64" }).then((base64) => {
-                setLocalImageBase64(base64);
-            });
-        }
-    };
+    const _onPickPhotoFromGallery = async () => onOpenGallery(setLocalImage, setLocalImageBase64);
+
     const _onTakePhotoWithCamera = async () => {
         toast.show("Please allow camera access in your phone's settings.");
     };
