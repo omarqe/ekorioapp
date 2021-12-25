@@ -13,7 +13,7 @@ import _getPetImageSrc from "../../functions/getPetImageSrc";
 export default function Pet(props) {
     let { name, image = null, theme = "default", active, checked } = props;
     const [pressed, setPressed] = useState(false);
-    const { loading = false, deemphasized = false, defaultSource = false } = props;
+    const { useLocalImage = false, loading = false, deemphasized = false, defaultSource = false } = props;
     const { size = 60, padding = 3, borderRadius = null } = props;
     const { phIcon = null, phIconProps } = props;
 
@@ -32,8 +32,8 @@ export default function Pet(props) {
     const isLight = theme === "light";
     const hasImage = image && image?.length > 0;
 
-    image = _getPetImageSrc(image);
-    const imageURL = typeof image === "string" ? { uri: image } : image;
+    const remoteImage = _getPetImageSrc(image);
+    const imageURL = typeof image === "string" ? { uri: useLocalImage ? image : remoteImage } : image;
     const imageProps = defaultSource ? { defaultSource: imageURL } : { source: imageURL };
 
     let pressable = {};

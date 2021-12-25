@@ -5,6 +5,9 @@ export default {
     icon: "./assets/icon.png",
     version: "1.0.0",
     orientation: "portrait",
+    plugins: [
+        ["expo-image-picker", { photosPermission: "The app accesses your photos to let you share them with your friends." }],
+    ],
     splash: {
         image: "./assets/splash.png",
         resizeMode: "contain",

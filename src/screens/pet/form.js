@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
-import CT from "../../const";
+import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
+import { View, StyleSheet } from "react-native";
 
+import * as FileSystem from "expo-file-system";
+import * as ImagePicker from "expo-image-picker";
+
+import CT from "../../const";
 import Pet from "../../components/pet";
 import Badge from "../../components/badge";
 import Button from "../../components/button";
@@ -14,7 +19,6 @@ import SpeciesList from "../../components/pet/species-list";
 import Body from "../../components/layout/body";
 import Layout from "../../components/layout";
 import Header from "../../components/layout/header";
-import { View, StyleSheet } from "react-native";
 
 import _map from "lodash/map";
 import _get from "lodash/get";
@@ -30,11 +34,14 @@ import net from "../../functions/net";
 import http from "../../functions/http";
 import toast from "../../functions/toast";
 
-export default function PetFormScreen({ navigation, route }) {
+const PetFormScreen = connectActionSheet(({ navigation, route }) => {
+    const { showActionSheetWithOptions } = useActionSheet();
     const [data, setData] = useState(null);
     const [species, setSpecies] = useState([]);
     const [loading, setLoading] = useState(false);
     const [loadingData, setLoadingData] = useState(true);
+    const [localImage, setLocalImage] = useState(null);
+    const [localImageBase64, setLocalImageBase64] = useState(null);
 
     // Initialize
     useEffect(() => {
@@ -70,22 +77,60 @@ export default function PetFormScreen({ navigation, route }) {
         }
     }, []);
 
+    const _onPickPhotoFromGallery = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality: 0.5,
+            aspect: [1, 1],
+        });
+        if (!result.cancelled) {
+            setLocalImage(result.uri);
+            FileSystem.readAsStringAsync(result.uri, { encoding: "base64" }).then((base64) => {
+                setLocalImageBase64(base64);
+            });
+        }
+    };
+    const _onTakePhotoWithCamera = async () => {
+        toast.show("Please allow camera access in your phone's settings.");
+    };
+
     const _onChange = (value, name) => setData({ ...data, [name]: value });
     const _onChangePetSpecies = (speciesId) => {
         if (speciesId !== data?.speciesId) {
             setData({ ...data, speciesId, breedId: null });
         }
     };
-    const _onSubmit = () => {
-        setLoading(true);
+    const _onChangePhoto = () => {
+        let options = ["Choose from Gallery", "Open Camera"];
+        let hasImage = data?.image && data?.image?.length > 0;
+        if (hasImage) {
+            options = [...options, "Remove Image"];
+        }
+        options = [...options, "Cancel"];
 
-        const submit = isUpdate ? http.put("/pets/update", net.data(data)) : http.post("/pets/create", net.data(data));
-        const upload = null;
-        Promise.all([submit])
-            .then(([{ data: submitData }]) => {
-                if (submitData?.success) {
-                    toast.fromData(submitData, "response[0].message");
-                    navigation.navigate("home", { recentPet: submitData?.payload });
+        const cancelButtonIndex = options?.length - 1;
+        const destructiveButtonIndex = hasImage ? 2 : null;
+
+        showActionSheetWithOptions({ options, cancelButtonIndex, destructiveButtonIndex }, (buttonIndex) => {
+            const cmd = [_onPickPhotoFromGallery, _onTakePhotoWithCamera];
+            if (typeof cmd[buttonIndex] === "function") {
+                cmd[buttonIndex]();
+            }
+        });
+    };
+    const _onSubmit = () => {
+        // If we're uploading profile picture for this pet, use the base64
+        if (localImage && localImageBase64) {
+            data.image = localImageBase64;
+        }
+
+        setLoading(true);
+        (isUpdate ? http.put("/pets/update", net.data(data)) : http.post("/pets/create", net.data(data)))
+            .then(({ data }) => {
+                if (data?.success) {
+                    toast.fromData(data, "response[0].message");
+                    navigation.navigate("home", { recentPet: data?.payload });
                 }
                 setLoading(false);
             })
@@ -187,9 +232,11 @@ export default function PetFormScreen({ navigation, route }) {
                             borderRadius={35}
                             padding={5}
                             size={130}
-                            image={data?.image}
+                            image={localImage ?? data?.image}
+                            onPress={_onChangePhoto}
                             nameStyle={styles.petName}
                             baseStyle={styles.petBase}
+                            useLocalImage={localImage !== null && localImage?.length > 0}
                             imageBaseStyle={styles.petImageBase}
                             phIconProps={{ color: CT.BG_PURPLE_200 }}
                         />
@@ -220,7 +267,7 @@ export default function PetFormScreen({ navigation, route }) {
             </Container>
         </KeyboardAvoiding>
     );
-}
+});
 
 const styles = StyleSheet.create({
     section: {
@@ -257,3 +304,5 @@ const styles = StyleSheet.create({
         marginTop: 3,
     },
 });
+
+export default PetFormScreen;
