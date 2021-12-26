@@ -19,6 +19,7 @@ import BellIconActive from "../../assets/icons/bell__active.svg";
 
 // Navigation Stacks
 import HomeStacks from "./stacks-home";
+import CameraScreen from "../screens/camera";
 import NotificationScreen from "../screens/home/notification";
 // import VeterinarStacks from "./stacks-veterinar";
 import AppointmentStacks from "./stacks-appointment";
@@ -89,9 +90,10 @@ export default {
             },
         ];
 
+        const headerShown = false;
         const shadowSize = CT.LOW_RESOLUTION ? 23 : 25;
         const screenOptions = ({ route }) => ({
-            headerShown: false,
+            headerShown,
             tabBarStyle,
             tabBarItemStyle,
             tabBarIcon: ({ focused }) => {
@@ -110,12 +112,19 @@ export default {
             },
         });
 
-        return (
+        const AuthenticatedTabs = () => (
             <Tab.Navigator screenOptions={screenOptions}>
                 {tabs.map((props, i) => (
                     <Tab.Screen key={i} {...props} />
                 ))}
             </Tab.Navigator>
+        );
+
+        return (
+            <Stack.Navigator>
+                <Stack.Screen name="authtabs" component={AuthenticatedTabs} options={{ headerShown }} />
+                <Stack.Screen name="camera" component={CameraScreen} options={{ headerShown }} />
+            </Stack.Navigator>
         );
     },
 };

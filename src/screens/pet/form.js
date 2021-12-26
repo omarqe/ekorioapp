@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sheet";
 import { View, StyleSheet } from "react-native";
 
+import * as FileSystem from "expo-file-system";
+
 import CT from "../../const";
 import Pet from "../../components/pet";
 import Badge from "../../components/badge";
@@ -33,6 +35,9 @@ import toast from "../../functions/toast";
 import onOpenGallery from "../../functions/onOpenGallery";
 
 const PetFormScreen = connectActionSheet(({ navigation, route }) => {
+    const petID = _get(route, "params.id", null);
+    const recentPhotoFromCamera = route?.params?.recentPhoto; // Photo taken directly from camera
+
     const { showActionSheetWithOptions } = useActionSheet();
     const [data, setData] = useState(null);
     const [species, setSpecies] = useState([]);
@@ -75,11 +80,22 @@ const PetFormScreen = connectActionSheet(({ navigation, route }) => {
         }
     }, []);
 
-    const _onPickPhotoFromGallery = async () => onOpenGallery(setLocalImage, setLocalImageBase64);
+    useEffect(() => {
+        if (localImage !== null && localImage?.length > 0) {
+            FileSystem.readAsStringAsync(localImage, { encoding: "base64" }).then((base64) => {
+                setLocalImageBase64(base64);
+            });
+        }
+    }, [localImage]);
 
-    const _onTakePhotoWithCamera = async () => {
-        toast.show("Please allow camera access in your phone's settings.");
-    };
+    useEffect(() => {
+        if (recentPhotoFromCamera && recentPhotoFromCamera?.length > 0) {
+            setLocalImage(recentPhotoFromCamera);
+        }
+    }, [recentPhotoFromCamera]);
+
+    const _onOpenGallery = async () => onOpenGallery(setLocalImage);
+    const _onOpenCamera = async () => navigation.navigate("camera", { petID });
 
     const _onChange = (value, name) => setData({ ...data, [name]: value });
     const _onChangePetSpecies = (speciesId) => {
@@ -88,7 +104,7 @@ const PetFormScreen = connectActionSheet(({ navigation, route }) => {
         }
     };
     const _onChangePhoto = () => {
-        let options = ["Choose from Gallery", "Open Camera"];
+        let options = ["Open Camera", "Choose from Gallery"];
         let hasImage = data?.image && data?.image?.length > 0;
         if (hasImage) {
             options = [...options, "Remove Image"];
@@ -99,7 +115,7 @@ const PetFormScreen = connectActionSheet(({ navigation, route }) => {
         const destructiveButtonIndex = hasImage ? 2 : null;
 
         showActionSheetWithOptions({ options, cancelButtonIndex, destructiveButtonIndex }, (buttonIndex) => {
-            const cmd = [_onPickPhotoFromGallery, _onTakePhotoWithCamera];
+            const cmd = [_onOpenCamera, _onOpenGallery];
             if (typeof cmd[buttonIndex] === "function") {
                 cmd[buttonIndex]();
             }
@@ -123,7 +139,6 @@ const PetFormScreen = connectActionSheet(({ navigation, route }) => {
             .catch(({ response }) => net.handleCatch(response, setLoading));
     };
 
-    const petID = _get(route, "params.id", null);
     const disabled = loading || !data?.speciesId;
     const isUpdate = petID !== null;
     const pageTitle = isUpdate ? "Update Pet" : "Add Pet";
