@@ -193,7 +193,7 @@ export default function FloatingField({
                                 />
                             ),
                             _renderIf(
-                                datePicker || CT.IS_IOS,
+                                (datePicker || CT.IS_IOS) && !disabled,
                                 <View style={CT.IS_IOS ? [styles.dateTimePicker, inputLayout] : null}>
                                     <DateTimePicker
                                         mode="date"
