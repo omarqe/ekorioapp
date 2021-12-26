@@ -15,7 +15,6 @@ import Heading from "../../components/heading";
 import TopBar from "../../components/topbar";
 import Container from "../../components/container";
 import ButtonIcon from "../../components/button-icon";
-
 import EmptyPetArt from "../../../assets/arts/ginger-cat-79.svg";
 
 import { View, StyleSheet } from "react-native";
@@ -24,6 +23,7 @@ import { connectActionSheet, useActionSheet } from "@expo/react-native-action-sh
 import net from "../../functions/net";
 import http from "../../functions/http";
 import moment from "moment";
+import * as Haptics from "expo-haptics";
 
 import _renderIf from "../../functions/renderIf";
 import _env from "../../functions/env";
@@ -101,6 +101,7 @@ const HomeScreen = connectActionSheet(({ navigation, route }) => {
             });
     };
     const _onChangePet = (id) => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         if (loading || id === healthData?.id) {
             return;
         }
