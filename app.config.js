@@ -3,7 +3,7 @@ export default {
     name: "Ekorio",
     slug: "ekorio",
     icon: "./assets/icon.png",
-    version: "1.0.0",
+    version: "1.0.1",
     orientation: "portrait",
     plugins: [
         ["expo-image-picker", { photosPermission: "The app accesses your photos to let you share them with your friends." }],
