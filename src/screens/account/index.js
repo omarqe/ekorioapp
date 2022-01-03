@@ -94,7 +94,7 @@ const AccountScreen = ({ navigation, route }) => {
                 })
                 .catch(({ response }) => net.handleCatch(response, setLoading));
         });
-    }, [user]);
+    }, []);
 
     // Refresh data
     useEffect(() => {
