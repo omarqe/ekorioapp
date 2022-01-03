@@ -54,7 +54,7 @@ const AccountScreen = ({ navigation, route }) => {
                 {
                     icon: "gift",
                     text: "Refer Friends",
-                    onPress: go.bind(null, "account__referral"),
+                    onPress: navigation.navigate.bind(null, "account__referral", { user }),
                     subtitle: "Invite your friends to Ekorio",
                 },
             ],
