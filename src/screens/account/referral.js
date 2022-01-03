@@ -10,19 +10,34 @@ import TopBar from "../../components/topbar";
 import Container from "../../components/container";
 import CatLaptopArt from "../../../assets/arts/ginger-cat-759.svg";
 
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { Share, View, Linking, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function AccountReferralScreen({ navigation, route }) {
     const { user: data } = route?.params ?? {};
     const refBaseURL = process.env.REFERRAL_URL ?? "https://ekorioadmin.vercel.app/signup";
     const refURL = `${refBaseURL}/${data?.refId}`;
+    const shareContent = `Hi, I'm inviting you to join Ekorio. Click here to sign up: ${refURL}`;
+
+    const _onShare = async () => await Share.share({ url: refURL, message: shareContent });
+    const _onPress = (type) => {
+        switch (type) {
+            case "facebook":
+                return Linking.openURL(`https://www.facebook.com/sharer/sharer.php?u=${refURL}&quote=${shareContent}`);
+            case "whatsapp":
+            case "telegram":
+                return Linking.openURL(`${type}://send?text=${shareContent}`);
+            case "twitter":
+                return Linking.openURL(`twitter://post?message=${shareContent}`);
+        }
+    };
+
     const shareIcons = [
-        { icon: "fab facebook", bgColor: "#1877F2", onPress: () => alert("Sharing on Facebook") },
-        { icon: "fab facebook-messenger", bgColor: "#0099FF" },
-        { icon: "fab twitter", bgColor: "#20A1F2" },
-        { icon: "fab telegram", bgColor: "#379AD8" },
-        { icon: "fab whatsapp", bgColor: "#30D366" },
-        { icon: "far ellipsis-h", color: CT.BG_GRAY_400, bgColor: CT.BG_GRAY_100 },
+        { icon: "fab facebook", bgColor: "#1877F2", onPress: _onPress.bind(null, "facebook") },
+        { icon: "fab twitter", bgColor: "#20A1F2", onPress: _onPress.bind(null, "twitter") },
+        { icon: "fab whatsapp", bgColor: "#30D366", onPress: _onPress.bind(null, "whatsapp") },
+        // { icon: "fab telegram", bgColor: "#379AD8" },
+        // { icon: "fab facebook-messenger", bgColor: "#0099FF" },
+        { icon: "far ellipsis-h", color: CT.BG_GRAY_400, bgColor: CT.BG_GRAY_100, onPress: _onShare },
     ];
 
     return (
@@ -41,8 +56,8 @@ export default function AccountReferralScreen({ navigation, route }) {
                         <CatLaptopArt height={150} />
                     </View>
                     <View style={{ ...styles.section, padding: 10, marginTop: 15 }}>
-                        <Text style={{ fontSize: 12, color: CT.BG_GRAY_500 }}>Share this link to your friends:</Text>
-                        <Text style={{ fontSize: 14, fontWeight: "600", paddingTop: 10, textAlign: "center" }} selectable>
+                        <Text style={{ fontSize: 14, color: CT.BG_GRAY_500 }}>Share this link to your friends:</Text>
+                        <Text style={styles.refURL} selectable>
                             {refURL}
                         </Text>
                     </View>
@@ -100,5 +115,12 @@ const styles = StyleSheet.create({
         marginLeft: 2,
         marginRight: 2,
         borderRadius: 40,
+    },
+    refURL: {
+        fontSize: 16,
+        fontWeight: "600",
+        paddingTop: 10,
+        lineHeight: 20,
+        textAlign: "center",
     },
 });
