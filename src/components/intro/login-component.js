@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import CT from "../../const";
+
 import PropTypes from "prop-types";
 import LoginBody from "./login-body";
 import LoginHeader from "./login-header";
 import StarsBackdrop from "./stars-backdrop";
-import { View, StyleSheet, Keyboard, KeyboardAvoidingView } from "react-native";
+import { View, StyleSheet, Keyboard } from "react-native";
 
-const LoginComponent = ({ title, subtitle, btnLabel }) => {
+const LoginComponent = ({ title, subtitle, btnLabel, forgot = false, onToggleForgot, withForgotFacility = false }) => {
     const [keyboardShown, setKeyboardShown] = useState(false);
     useEffect(() => {
         const keyboardWillShowListener = Keyboard.addListener("keyboardWillShow", () => setKeyboardShown(true));
@@ -22,7 +22,12 @@ const LoginComponent = ({ title, subtitle, btnLabel }) => {
             <StarsBackdrop />
             <View style={styles.container}>
                 <LoginHeader title={title} subtitle={subtitle} keyboardShown={keyboardShown} />
-                <LoginBody label={btnLabel} />
+                <LoginBody
+                    label={btnLabel}
+                    forgot={forgot}
+                    onToggleForgot={onToggleForgot}
+                    withForgotFacility={withForgotFacility}
+                />
             </View>
         </React.Fragment>
     );

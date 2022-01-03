@@ -3,12 +3,13 @@ import toast from "./toast";
 
 export default {
     handleCatch: (r, setLoading) => {
+        if (typeof setLoading === "function") setLoading(false);
         if (r?.data !== undefined) {
+            const hidden = ["Missing or malformed JWT"];
             const message = r.data?.response[0]?.message;
-            toast.show(message);
-        }
-        if (typeof setLoading === "function") {
-            setLoading(false);
+            if (hidden.indexOf(message) < 0) {
+                toast.show(message);
+            }
         }
     },
     data: (input, options = {}) => qs.stringify(input, options),

@@ -10,8 +10,11 @@ const fields = ({ fields = [], grouping = false, ...restProps }) => {
     return fields.map((props, i) => {
         refs.push(useRef(null));
         const next = i + 1;
+        const style = props?.style ?? {};
+        const hidden = props?.hidden ?? false;
         const isLastInput = i === fields.length - 1;
 
+        if (hidden) props.style = { ...style, display: "none" };
         if (isLastInput) props.last = true;
         if (grouping) {
             if (props?.returnKeyType === undefined && !isLastInput) {

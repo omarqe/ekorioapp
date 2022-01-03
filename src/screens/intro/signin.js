@@ -15,25 +15,60 @@ import _clone from "lodash/clone";
 
 export default function SigninScreen({ navigation }) {
     const [loading, setLoading] = useState(false);
+    const [forgot, setForgot] = useState(false);
     const [data, setData] = useState({ email: "", password: "" });
 
     const Provider = Context.Login.Provider;
     const auth = useContext(Context.Auth);
     const fields = [
-        { name: "email", type: "email", label: "Email Address", value: data?.email, placeholder: "john@email.com" },
-        { name: "password", type: "password", label: "Password", value: data?.password, placeholder: "••••••••" },
+        {
+            name: "email",
+            type: "email",
+            label: "Email Address",
+            value: data?.email,
+            style: forgot ? { marginBottom: -15 } : {},
+            placeholder: "john@email.com",
+        },
+        {
+            name: "password",
+            type: "password",
+            label: "Password",
+            value: data?.password,
+            hidden: forgot,
+            placeholder: "••••••••",
+        },
     ];
 
     const onChange = (value, name) => setData({ ...data, [name]: value });
     const onSubmit = () => {
         setLoading(true);
+        if (forgot) {
+            http.post("/users/forgot_password", net.data({ email: data.email }))
+                .then(({ data: o }) => {
+                    setForgot(false);
+                    setLoading(false);
+                    const { success = false } = o;
+                    if (success) {
+                        toast.show(o?.response[0]?.message);
+                        return;
+                    }
+                })
+                .catch(({ response }) => {
+                    setForgot(false);
+                    net.handleCatch(response, setLoading);
+                });
+
+            return;
+        }
+
         http.post("/auth/signin", net.data(data))
             .then(({ data: o = {} }) => {
                 setLoading(false);
 
-                const { uid, token, csrf, cc, phone, verified } = o?.payload;
+                const { payload = {} } = o;
+                const { uid, token, csrf, cc, phone, verified } = payload;
                 if (token?.length < 1) {
-                    toast.show(data?.response[0]?.message);
+                    toast.show(o?.response[0]?.message);
                     return;
                 } else if (!verified) {
                     const verifyData = { uid, token, csrf, cc, phone };
@@ -59,7 +94,14 @@ export default function SigninScreen({ navigation }) {
         <KeyboardAvoiding>
             <Container bgColor={CT.BG_PURPLE_900} paddingX={0} isLogin>
                 <Provider value={{ fields, navigation, onSubmit, onChange, loading, grouping: true }}>
-                    <LoginComponent title="Welcome Back! 👋" subtitle="Please sign in to your account." btnLabel="Sign In" />
+                    <LoginComponent
+                        title="Welcome Back! 👋"
+                        forgot={forgot}
+                        subtitle="Please sign in to your account."
+                        btnLabel={forgot ? "Reset Password" : "Sign In"}
+                        onToggleForgot={setForgot.bind(null, !forgot)}
+                        withForgotFacility
+                    />
                 </Provider>
             </Container>
         </KeyboardAvoiding>
