@@ -22,6 +22,7 @@ import moment from "moment";
 import _renderIf from "../../functions/renderIf";
 
 const AccountScreen = ({ navigation, route }) => {
+    const [uid, setUID] = useState(null);
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -83,6 +84,16 @@ const AccountScreen = ({ navigation, route }) => {
             if (typeof auth.setAuthed === "function") auth.setAuthed(false);
         });
     };
+
+    store.get("uid").then((uid) => setUID(uid));
+    useEffect(() => {
+        http.get(`/users/${uid}`)
+            .then(({ data: user }) => {
+                setUser(user);
+                setLoading(false);
+            })
+            .catch(({ response }) => net.handleCatch(response, setLoading));
+    }, [uid]);
 
     useEffect(() => {
         // Get user's data
