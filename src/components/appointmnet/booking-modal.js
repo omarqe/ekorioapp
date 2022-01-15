@@ -1,5 +1,5 @@
-import React from "react";
-import CT from "../../const";
+import React, { useState, useEffect } from "react";
+import { View, ScrollView, StyleSheet } from "react-native";
 
 import Text from "../text";
 import List from "../list";
@@ -8,10 +8,11 @@ import Modal from "../modal";
 import Empty from "../empty";
 import PropTypes from "prop-types";
 
-import { View, ScrollView, StyleSheet } from "react-native";
-
+import CT from "../../const";
+import http from "../../functions/http";
 import _find from "lodash/find";
 import _filter from "lodash/filter";
+import _includes from "lodash/includes";
 import _renderIf from "../../functions/renderIf";
 
 export default function BookingModal({
@@ -24,12 +25,28 @@ export default function BookingModal({
     onClose,
     onChoose,
 }) {
+    const [user, setUser] = useState({});
+    const { address = {} } = user;
+    const { street1, street2, postcode, city, state, country } = address;
+    const addressArr = [street1, street2, postcode, city, state, country];
+    const hasNoAddress = _includes(addressArr, "");
+
+    useEffect(() => {
+        http.get("/users/me").then(({ data = {} }) => {
+            if (Object.keys(data)?.length > 0) {
+                setUser(data);
+            }
+        });
+    }, []);
+
     const ModalHeader = () => {
         return (
             <React.Fragment>
                 <View style={styles.address}>
-                    <Text style={styles.addressKicker}>Current location</Text>
-                    <Text style={styles.addressText}>161, Jalan Teknokrat 5, 63000 Cyberjaya, Selangor</Text>
+                    <Text style={styles.addressKicker}>Current Location:</Text>
+                    <Text style={styles.addressText} numberOfLines={1}>
+                        {hasNoAddress ? "No location specified." : addressArr.join(", ")}
+                    </Text>
                 </View>
                 <Input style={styles.searchInput} icon="search" placeholder="Search for veterinar..." />
             </React.Fragment>
@@ -100,8 +117,9 @@ const styles = StyleSheet.create({
     },
     addressKicker: {
         color: CT.BG_PURPLE_400,
+        fontSize: 12,
         fontWeight: "500",
-        marginBottom: 3,
+        marginBottom: 4,
     },
     addressText: {
         color: CT.BG_PURPLE_100,

@@ -104,8 +104,10 @@ export default function AppointmentBookingScreen({ navigation }) {
     const _onVetPopupClose = () => setVetPopup(false);
     const _onVetPopupOpen = () => {
         if (vetData?.length < 1) {
+            const params = { lat: 2.924067, lng: 101.633281 };
+
             setLoadingVet(true);
-            http.get("/vets")
+            http.get("/vets/find", { params })
                 .then(({ data = {} }) => {
                     const { payload } = data;
                     setVetData(payload);
