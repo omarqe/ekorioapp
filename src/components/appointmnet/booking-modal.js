@@ -43,9 +43,9 @@ export default function BookingModal({
         return (
             <React.Fragment>
                 <View style={styles.address}>
-                    <Text style={styles.addressKicker}>Current Location:</Text>
+                    <Text style={styles.addressKicker}>Current Address:</Text>
                     <Text style={styles.addressText} numberOfLines={1}>
-                        {hasNoAddress ? "No location specified." : addressArr.join(", ")}
+                        {hasNoAddress ? "No address specified." : addressArr.join(", ")}
                     </Text>
                 </View>
                 <Input style={styles.searchInput} icon="search" placeholder="Search for veterinar..." />
