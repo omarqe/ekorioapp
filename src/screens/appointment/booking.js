@@ -25,6 +25,8 @@ import KeyboardAvoiding from "../../components/keyboard-avoiding";
 
 import { View, StyleSheet } from "react-native";
 import * as Haptics from "expo-haptics";
+import * as Location from "expo-location";
+import * as TaskManager from "expo-task-manager";
 
 import net from "../../functions/net";
 import http from "../../functions/http";
@@ -36,6 +38,7 @@ import _renderIf from "../../functions/renderIf";
 import _isToday from "../../functions/isToday";
 import _clone from "lodash/clone";
 import _find from "lodash/find";
+import _toast from "../../functions/toast";
 import _findIndex from "lodash/findIndex";
 
 export default function AppointmentBookingScreen({ navigation }) {
@@ -50,12 +53,25 @@ export default function AppointmentBookingScreen({ navigation }) {
     const [serviceTypes, setServiceTypes] = useState([]);
 
     const [loading, setLoading] = useState(true);
+    const [location, setLocation] = useState(null);
     const [loadingVet, setLoadingVet] = useState(false);
     const [loadingForm, setLoadingForm] = useState(false);
+    const { coords = {} } = location ?? {};
+    const { latitude: lat = null, longitude: lng = null } = coords;
 
     useEffect(() => {
-        const params = { self: true };
-        Promise.all([http.get("/appointments/services"), http.get("/pets", { params })])
+        (async () => {
+            const { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== "granted") {
+                _toast.show("Permission to access location was denied");
+                return;
+            }
+
+            const location = await Location.getCurrentPositionAsync({});
+            setLocation(location);
+        })();
+
+        Promise.all([http.get("/appointments/services"), http.get("/pets", { params: { self: true } })])
             .then(([{ data: serviceTypes }, { data: petsData }]) => {
                 const { payload: pets = [] } = petsData;
                 if (pets?.length > 0) setPetData(pets);
@@ -69,6 +85,26 @@ export default function AppointmentBookingScreen({ navigation }) {
             })
             .catch(({ response }) => net.handleCatch(response, setLoading));
     }, []);
+
+    useEffect(() => {
+        if (vetPopup) {
+            let params = {};
+            if (lat !== null && lng !== null) {
+                params = { lat, lng };
+            }
+
+            setLoadingVet(true);
+            http.get("/vets/find", { params })
+                .then(({ data = {} }) => {
+                    const { payload } = data;
+                    setVetData(payload);
+                    setVetPopup(true);
+                    setLoadingVet(false);
+                })
+                .catch(({ response }) => net.handleCatch(response, setLoading));
+            return;
+        }
+    }, [vetPopup]);
 
     const date = data?.date;
     const fields = [
@@ -102,23 +138,7 @@ export default function AppointmentBookingScreen({ navigation }) {
     const _onSelectPet = (petId) => setData({ ...data, petId });
     const _onChangeDetails = (value, name) => setData({ ...data, [name]: value?.toString() });
     const _onVetPopupClose = () => setVetPopup(false);
-    const _onVetPopupOpen = () => {
-        if (vetData?.length < 1) {
-            const params = { lat: 2.924067, lng: 101.633281 };
-
-            setLoadingVet(true);
-            http.get("/vets/find", { params })
-                .then(({ data = {} }) => {
-                    const { payload } = data;
-                    setVetData(payload);
-                    setVetPopup(true);
-                    setLoadingVet(false);
-                })
-                .catch(({ response }) => net.handleCatch(response, setLoading));
-            return;
-        }
-        setVetPopup(true);
-    };
+    const _onVetPopupOpen = () => setVetPopup(true);
     const _onVetSelect = (vetId) => {
         setData({ ...data, vetId });
         setVetPopup(false);
@@ -133,7 +153,7 @@ export default function AppointmentBookingScreen({ navigation }) {
                 const { payload, success = false } = data;
 
                 setLoadingForm(false);
-                if (data?.success) {
+                if (success) {
                     toast.fromData(data, "response[0].message");
                     navigation.navigate("appointment", {
                         id: payload?.id,

@@ -3,7 +3,7 @@ export default {
     name: "Ekorio",
     slug: "ekorio",
     icon: "./assets/icon.png",
-    version: "1.0.1",
+    version: "1.0.2",
     orientation: "portrait",
     plugins: [
         ["expo-image-picker", { photosPermission: "The app accesses your photos to let you share them with your friends." }],
@@ -18,16 +18,16 @@ export default {
     },
     assetBundlePatterns: ["**/*"],
     ios: {
-        buildNumber: "1.0.1",
+        buildNumber: "1.0.2",
         supportsTablet: true,
         bundleIdentifier: "com.omenlo.ekorio",
         infoPlist: {
-            UIBackgroundModes: ["location"],
+            UIBackgroundModes: ["location", "fetch"],
         },
     },
     android: {
         package: "com.omenlo.ekorio",
-        versionCode: 3,
+        versionCode: 4,
         adaptiveIcon: {
             foregroundImage: "./assets/adaptive-icon.png",
             backgroundColor: "#FFFFFF",
