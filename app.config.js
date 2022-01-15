@@ -18,9 +18,12 @@ export default {
     },
     assetBundlePatterns: ["**/*"],
     ios: {
-        bundleIdentifier: "com.omenlo.ekorio",
         buildNumber: "1.0.1",
         supportsTablet: true,
+        bundleIdentifier: "com.omenlo.ekorio",
+        infoPlist: {
+            UIBackgroundModes: ["location"],
+        },
     },
     android: {
         package: "com.omenlo.ekorio",
