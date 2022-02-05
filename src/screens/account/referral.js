@@ -15,7 +15,7 @@ import { Share, View, Linking, StyleSheet, TouchableOpacity } from "react-native
 export default function AccountReferralScreen({ navigation, route }) {
     const { user: data } = route?.params ?? {};
     const refBaseURL = process.env.REFERRAL_URL ?? "https://ekorioadmin.vercel.app/signup";
-    const refURL = `${refBaseURL}/${data?.refId}`;
+    const refURL = `${refBaseURL}?ref=${data?.refId}`;
     const shareContent = `Hi, I'm inviting you to join Ekorio. Click here to sign up: ${refURL}`;
 
     const _onShare = async () => await Share.share({ url: refURL, message: shareContent });
