@@ -158,6 +158,7 @@ const HomeScreen = connectActionSheet(({ navigation, route }) => {
                     else newPetsData = [...newPetsData, data];
                     setPets(newPetsData);
                     setPetID(id);
+                    setHealthData({});
                     setLoadingPet(false);
                 })
                 .catch(() => setLoadingPet(false));
