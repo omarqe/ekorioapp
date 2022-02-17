@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { LogBox } from "react-native";
 import http from "./src/functions/http";
 import store from "./src/functions/store";
 import Context from "./src/components/context";
@@ -24,6 +25,9 @@ export default function App() {
     const [authed, setAuthed] = useState(false);
     const AuthProvider = Context.Auth.Provider;
 
+    // Disable YellowBox warning, you can comment this anytime if you'd like to fix the issue(s)
+    LogBox.ignoreLogs(["Can't perform a React state update on an unmounted component."]);
+
     // We should check the auth token over here
     useEffect(() => {
         Promise.all([store.get("token"), store.get("csrf"), store.get("uid")]).then(([token, csrf, id]) => {
@@ -37,7 +41,7 @@ export default function App() {
 
     useEffect(() => {
         let authInterceptor = null;
-        if (token?.token !== null) {
+        if (token?.token !== null && token?.csrf !== null) {
             authInterceptor = http.interceptors.request.use((config) => {
                 const headers = { ...config.headers, Authorization: `Bearer ${token?.token}`, "X-CSRF-Token": token?.csrf };
                 return { ...config, headers };

@@ -20,14 +20,15 @@ import http from "../../functions/http";
 import store from "../../functions/store";
 import moment from "moment";
 import _renderIf from "../../functions/renderIf";
+import { isUndefined } from "lodash";
 
 const AccountScreen = ({ navigation, route }) => {
-    const [uid, setUID] = useState(null);
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
     const go = (name) => navigation.navigate(name);
     const auth = useContext(Context.Auth);
+    const uid = auth?.uid;
     const since = moment(user?.createdAt).fromNow();
     const sections = [
         {
@@ -77,6 +78,16 @@ const AccountScreen = ({ navigation, route }) => {
         },
     ];
 
+    const fetchAccount = async (uid) => {
+        setLoading(true);
+        return await http
+            .get(`/users/${uid}`)
+            .then(({ data: user }) => {
+                setUser(user);
+                setLoading(false);
+            })
+            .catch(({ response }) => net.handleCatch(response, setLoading));
+    };
     const onLogout = () => {
         Promise.all([store.delete("token"), store.delete("uid")]).then(() => {
             if (typeof auth.setUID === "function") auth.setUID(null);
@@ -85,38 +96,13 @@ const AccountScreen = ({ navigation, route }) => {
         });
     };
 
-    store.get("uid").then((uid) => setUID(uid));
     useEffect(() => {
-        http.get(`/users/${uid}`)
-            .then(({ data: user }) => {
-                setUser(user);
-                setLoading(false);
-            })
-            .catch(({ response }) => net.handleCatch(response, setLoading));
-    }, [uid]);
-
-    useEffect(() => {
-        // Get user's data
-        store.get("uid").then((uid) => {
-            http.get(`/users/${uid}`)
-                .then(({ data: user }) => {
-                    setUser(user);
-                    setLoading(false);
-                })
-                .catch(({ response }) => net.handleCatch(response, setLoading));
-        });
-    }, []);
-
-    // Refresh data
-    useEffect(() => {
-        setLoading(true);
-        http.get(`/users/${user?.id}`)
-            .then(({ data }) => {
-                setUser(data);
-                setLoading(false);
-            })
-            .catch(({ response }) => net.handleCatch(response, setLoading));
-    }, [route?.params?.shouldRefresh]);
+        if (uid !== null && uid !== isUndefined) {
+            fetchAccount(uid);
+            return;
+        }
+        store.get("uid").then((uid) => fetchAccount(uid));
+    }, [uid, route?.params?.shouldRefresh]);
 
     return (
         <Container>
