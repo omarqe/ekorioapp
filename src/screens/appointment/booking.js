@@ -71,16 +71,10 @@ export default function AppointmentBookingScreen({ navigation }) {
             setLocation(location);
         })();
 
-        Promise.all([http.get("/appointments/services"), http.get("/pets", { params: { self: true } })])
-            .then(([{ data: serviceTypes }, { data: petsData }]) => {
-                const { payload: pets = [] } = petsData;
+        http.get("/pets", { params: { self: true } })
+            .then(({ data: data }) => {
+                const { payload: pets = [] } = data;
                 if (pets?.length > 0) setPetData(pets);
-                if (serviceTypes?.length > 0) {
-                    const types = serviceTypes.map(({ id: value, name: label }) => {
-                        return { label, value: value?.toString() };
-                    });
-                    setServiceTypes(types);
-                }
                 setLoading(false);
             })
             .catch(({ response }) => net.handleCatch(response, setLoading));
@@ -142,6 +136,12 @@ export default function AppointmentBookingScreen({ navigation }) {
     const _onVetSelect = (vetId) => {
         setData({ ...data, vetId });
         setVetPopup(false);
+
+        const services = _find(vetData, (o) => o.id === vetId)?.services ?? [];
+        const providedServices = services.map(({ id: value, name: label }) => {
+            return { label, value: value?.toString() };
+        });
+        setServiceTypes(providedServices);
     };
     const _onSubmit = () => {
         const format = "YYYY-MM-DDTHH:mm:ss+08:00";

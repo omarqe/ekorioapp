@@ -4,7 +4,7 @@ import _toLower from "lodash/toLower";
 import _fetchAppointments from "./fetchAppointments";
 
 export default function fetchServiceTypes(setState, setLoading, setData, setLoadingData, params = {}) {
-    http.get("/appointments/services")
+    http.get("/services")
         .then(({ data: services }) => {
             if (services?.length > 0) {
                 const routes = services.map(({ id, name: label }, i) => {
